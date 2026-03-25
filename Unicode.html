@@ -4,9 +4,8 @@
 <!--
   Unicode Character Explorer
   Standalone, offline-capable XHTML 1.1 document.
-  No external resources. All Unicode 15.1 block data is embedded.
-  Serve with Content-Type: application/xhtml+xml for strict XHTML parsing,
-  or text/html for HTML5 parser compatibility.
+  No external resources. All 328 Unicode 15.1 blocks embedded verbatim from
+  https://www.unicode.org/Public/15.1.0/ucd/Blocks.txt
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
@@ -15,7 +14,6 @@
   <title>Unicode Character Explorer</title>
   <style type="text/css"><![CDATA[
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
       --bg:       #1a1a2e;
       --panel:    #16213e;
@@ -25,36 +23,28 @@
       --text:     #e0e0e0;
       --text-dim: #8a8a9a;
       --border:   #2a2a4a;
-      --mono:     "Cascadia Code", "Fira Code", "Consolas", "DejaVu Sans Mono", monospace;
-      --sans:     system-ui, -apple-system, "Segoe UI", Helvetica, Arial, sans-serif;
+      --mono:     "Cascadia Code","Fira Code","Consolas","DejaVu Sans Mono",monospace;
+      --sans:     system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
       --radius:   6px;
     }
-
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.5; }
     body { display: flex; flex-direction: column; min-height: 100vh; }
-
     header { background: var(--panel); border-bottom: 1px solid var(--border); padding: 14px 24px; display: flex; align-items: baseline; gap: 12px; flex-shrink: 0; }
     header h1 { font-size: 1.25rem; font-weight: 700; letter-spacing: 0.02em; color: #fff; }
     header span { font-size: 0.8rem; color: var(--text-dim); }
-
     #app { display: flex; flex: 1; overflow: hidden; }
-
-    #sidebar { width: 280px; min-width: 200px; max-width: 340px; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
+    #sidebar { width: 280px; min-width: 180px; background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; flex-shrink: 0; }
     #sidebar-controls { padding: 12px 14px 8px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
     #sidebar-controls > .sc-label { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); display: block; margin-bottom: 8px; }
-
     .btn-row { display: flex; gap: 6px; margin-bottom: 8px; flex-wrap: wrap; }
-
     button { cursor: pointer; border: none; border-radius: var(--radius); font-family: var(--sans); font-size: 0.8rem; padding: 5px 10px; transition: opacity 0.15s, background 0.15s; }
     button:hover { opacity: 0.85; }
     button:active { opacity: 0.7; }
     .btn-sm { background: var(--surface); color: var(--text); padding: 4px 8px; font-size: 0.75rem; }
     .btn-accent { background: var(--accent); color: #fff; font-weight: 600; font-size: 0.85rem; padding: 6px 14px; }
     .btn-secondary { background: var(--accent2); color: #fff; font-size: 0.85rem; padding: 6px 14px; }
-
     #block-search { width: 100%; background: var(--bg); border: 1px solid var(--border); border-radius: var(--radius); color: var(--text); font-family: var(--sans); font-size: 0.82rem; padding: 5px 9px; margin-bottom: 6px; outline: none; }
     #block-search:focus { border-color: var(--accent); }
-
     #block-list-wrap { flex: 1; overflow-y: auto; padding: 4px 0; }
     #block-list { list-style: none; }
     #block-list li { display: flex; align-items: center; padding: 3px 14px; cursor: pointer; transition: background 0.1s; gap: 8px; user-select: none; }
@@ -65,44 +55,34 @@
     .block-range { font-size: 0.7rem; color: var(--text-dim); font-family: var(--mono); flex-shrink: 0; }
     #block-list li.cat-header { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); padding: 10px 14px 3px; cursor: default; background: none; }
     #block-list li.cat-header:hover { background: none; }
-
     #main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
     #controls-bar { background: var(--panel); border-bottom: 1px solid var(--border); padding: 10px 20px; display: flex; align-items: center; flex-wrap: wrap; gap: 16px; flex-shrink: 0; }
     .control-group { display: flex; align-items: center; gap: 8px; }
     .control-label { font-size: 0.78rem; color: var(--text-dim); white-space: nowrap; }
-
     .mode-btns { display: flex; gap: 4px; flex-wrap: wrap; }
     .mode-btns label { display: flex; align-items: center; gap: 4px; padding: 4px 10px; border-radius: var(--radius); border: 1px solid var(--border); cursor: pointer; font-size: 0.78rem; transition: background 0.15s, border-color 0.15s; user-select: none; }
     .mode-btns input[type="radio"] { display: none; }
     .mode-btns label:has(input:checked) { background: var(--surface); border-color: var(--accent); color: #fff; }
     .mode-btns label:hover { background: rgba(255,255,255,0.06); }
-
     .toggle-label { display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; font-size: 0.82rem; }
     .toggle-label input[type="checkbox"] { accent-color: var(--accent); width: 14px; height: 14px; }
-
     #font-size-slider { width: 80px; accent-color: var(--accent); }
     #font-size-val { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); min-width: 2.5em; }
-
     #action-btns { margin-left: auto; display: flex; gap: 8px; align-items: center; }
-
     #status-bar { font-size: 0.75rem; color: var(--text-dim); padding: 0 20px; height: 28px; display: flex; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0; gap: 16px; }
-
     #output-wrap { flex: 1; overflow: auto; padding: 16px 20px; background: var(--bg); }
     #output { outline: none; min-height: 100%; }
-
-    .char-grid { display: flex; flex-wrap: wrap; gap: 2px; line-height: 1; }
-    .char-grid .gc { display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; border-radius: 3px; background: var(--panel); border: 1px solid var(--border); font-family: var(--mono); transition: background 0.1s; cursor: default; }
+    .char-grid { display: flex; flex-wrap: wrap; gap: 2px; }
+    .char-grid .gc { display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; border-radius: 3px; background: var(--panel); border: 1px solid var(--border); font-family: var(--mono); cursor: default; }
     .char-grid .gc:hover { background: var(--surface); border-color: var(--accent); }
-
     .char-grid-cp { display: flex; flex-wrap: wrap; gap: 4px; }
-    .char-grid-cp .gcc { display: flex; flex-direction: column; align-items: center; width: 3.8em; padding: 4px 2px 3px; border-radius: 4px; background: var(--panel); border: 1px solid var(--border); cursor: default; transition: background 0.1s; }
+    .char-grid-cp .gcc { display: flex; flex-direction: column; align-items: center; width: 3.8em; padding: 4px 2px 3px; border-radius: 4px; background: var(--panel); border: 1px solid var(--border); cursor: default; }
     .char-grid-cp .gcc:hover { background: var(--surface); border-color: var(--accent); }
     .char-grid-cp .gcc .glyph { font-family: var(--mono); line-height: 1.3; }
-    .char-grid-cp .gcc .cp { font-size: 0.55em; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; letter-spacing: -0.02em; }
-
+    .char-grid-cp .gcc .cp { font-size: 0.55em; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; }
     .char-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.85em; }
     .char-table thead th { text-align: left; padding: 6px 12px; background: var(--panel); border-bottom: 2px solid var(--border); color: var(--text-dim); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; position: sticky; top: 0; z-index: 1; }
-    .char-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); transition: background 0.1s; }
+    .char-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); }
     .char-table tbody tr:hover { background: rgba(255,255,255,0.04); }
     .char-table td { padding: 4px 12px; vertical-align: middle; }
     .char-table td.td-cp { color: var(--accent); white-space: nowrap; width: 7em; }
@@ -110,38 +90,29 @@
     .char-table td.td-name { color: var(--text-dim); font-size: 0.82em; font-family: var(--sans); }
     .char-table td.td-block { color: var(--text-dim); font-size: 0.78em; font-family: var(--sans); }
     .char-table tr.block-sep td { background: var(--panel); color: var(--accent); font-family: var(--sans); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 12px 4px; border-bottom: 1px solid var(--border); }
-
     .block-sep-heading { display: block; width: 100%; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 12px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--border); font-family: var(--sans); }
-
     #plain-text-out { font-family: var(--mono); white-space: pre-wrap; word-break: break-all; line-height: 1.8; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 200px; color: var(--text); user-select: text; }
-
     #placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); gap: 10px; text-align: center; }
     #placeholder .big { font-size: 3rem; }
     #placeholder p { max-width: 300px; font-size: 0.85rem; }
-
     ::-webkit-scrollbar { width: 7px; height: 7px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--accent2); }
-
-    @media (max-width: 640px) {
-      #sidebar { width: 200px; }
-      .mode-btns label { padding: 4px 6px; font-size: 0.72rem; }
-    }
   ]]></style>
 </head>
 <body>
 
 <header>
   <h1>Unicode Character Explorer</h1>
-  <span>Offline · Standalone · XHTML 1.1 · Unicode 15.1</span>
+  <span>Offline &#xB7; Standalone &#xB7; XHTML 1.1 &#xB7; Unicode 15.1 &#xB7; 328 blocks</span>
 </header>
 
 <div id="app">
   <nav id="sidebar">
     <div id="sidebar-controls">
       <span class="sc-label">Unicode Blocks</span>
-      <input type="text" id="block-search" placeholder="Filter blocks…" autocomplete="off" />
+      <input type="text" id="block-search" placeholder="Filter blocks&#x2026;" autocomplete="off" />
       <div class="btn-row">
         <button type="button" class="btn-sm" id="btn-all">All</button>
         <button type="button" class="btn-sm" id="btn-none">None</button>
@@ -199,64 +170,35 @@
 </div>
 
 <script type="text/javascript"><![CDATA[
-/* ═══════════════════════════════════════════════════════════════
-   Unicode 15.1 Complete Block List
+/* ================================================================
+   UNICODE 15.1 BLOCK LIST  (verbatim from Blocks-15.1.0.txt)
+   Format: ["Block Name", startCP, endCP, "Category"]
    Source: https://www.unicode.org/Public/15.1.0/ucd/Blocks.txt
-   Format: [ "Block Name", startCP, endCP, "Category" ]
-═══════════════════════════════════════════════════════════════ */
+================================================================ */
 var BLOCKS = [
-  // ── Basic Latin & Latin Extensions ──────────────────────────
-  ["Basic Latin",0x0000,0x007F,"Basic Latin & Extensions"],
-  ["Latin-1 Supplement",0x0080,0x00FF,"Basic Latin & Extensions"],
-  ["Latin Extended-A",0x0100,0x017F,"Basic Latin & Extensions"],
-  ["Latin Extended-B",0x0180,0x024F,"Basic Latin & Extensions"],
-  ["IPA Extensions",0x0250,0x02AF,"Basic Latin & Extensions"],
-  ["Spacing Modifier Letters",0x02B0,0x02FF,"Basic Latin & Extensions"],
-  ["Combining Diacritical Marks",0x0300,0x036F,"Basic Latin & Extensions"],
-  ["Latin Extended Additional",0x1E00,0x1EFF,"Basic Latin & Extensions"],
-  ["Latin Extended-C",0x2C60,0x2C7F,"Basic Latin & Extensions"],
-  ["Latin Extended-D",0xA720,0xA7FF,"Basic Latin & Extensions"],
-  ["Latin Extended-E",0xAB30,0xAB6F,"Basic Latin & Extensions"],
-  ["Latin Extended-F",0x10780,0x107BF,"Basic Latin & Extensions"],
-  ["Latin Extended-G",0x1DF00,0x1DFFF,"Basic Latin & Extensions"],
-  // ── Greek & Cyrillic ────────────────────────────────────────
-  ["Greek and Coptic",0x0370,0x03FF,"Greek & Cyrillic"],
-  ["Cyrillic",0x0400,0x04FF,"Greek & Cyrillic"],
-  ["Cyrillic Supplement",0x0500,0x052F,"Greek & Cyrillic"],
-  ["Cyrillic Extended-A",0x2DE0,0x2DFF,"Greek & Cyrillic"],
-  ["Cyrillic Extended-B",0xA640,0xA69F,"Greek & Cyrillic"],
-  ["Cyrillic Extended-C",0x1C80,0x1C8F,"Greek & Cyrillic"],
-  ["Cyrillic Extended-D",0x1E030,0x1E08F,"Greek & Cyrillic"],
-  ["Greek Extended",0x1F00,0x1FFF,"Greek & Cyrillic"],
-  ["Coptic",0x2C80,0x2CFF,"Greek & Cyrillic"],
-  ["Coptic Epact Numbers",0x102E0,0x102FF,"Greek & Cyrillic"],
-  // ── Middle Eastern Scripts ───────────────────────────────────
+  ["Basic Latin",0x0000,0x007F,"Latin & Extensions"],
+  ["Latin-1 Supplement",0x0080,0x00FF,"Latin & Extensions"],
+  ["Latin Extended-A",0x0100,0x017F,"Latin & Extensions"],
+  ["Latin Extended-B",0x0180,0x024F,"Latin & Extensions"],
+  ["IPA Extensions",0x0250,0x02AF,"Latin & Extensions"],
+  ["Spacing Modifier Letters",0x02B0,0x02FF,"Latin & Extensions"],
+  ["Combining Diacritical Marks",0x0300,0x036F,"Symbols & Punctuation"],
+  ["Greek and Coptic",0x0370,0x03FF,"Greek & Coptic"],
+  ["Cyrillic",0x0400,0x04FF,"Cyrillic"],
+  ["Cyrillic Supplement",0x0500,0x052F,"Cyrillic"],
+  ["Armenian",0x0530,0x058F,"Other European & Indigenous"],
   ["Hebrew",0x0590,0x05FF,"Middle Eastern Scripts"],
   ["Arabic",0x0600,0x06FF,"Middle Eastern Scripts"],
   ["Syriac",0x0700,0x074F,"Middle Eastern Scripts"],
-  ["Syriac Supplement",0x0860,0x086F,"Middle Eastern Scripts"],
   ["Arabic Supplement",0x0750,0x077F,"Middle Eastern Scripts"],
   ["Thaana",0x0780,0x07BF,"Middle Eastern Scripts"],
-  ["Arabic Extended-A",0x08A0,0x08FF,"Middle Eastern Scripts"],
-  ["Arabic Extended-B",0x0870,0x089F,"Middle Eastern Scripts"],
-  ["Arabic Extended-C",0x10EC0,0x10EFF,"Middle Eastern Scripts"],
-  ["Arabic Presentation Forms-A",0xFB50,0xFDFF,"Middle Eastern Scripts"],
-  ["Arabic Presentation Forms-B",0xFE70,0xFEFF,"Middle Eastern Scripts"],
-  ["Rumi Numeral Symbols",0x10E60,0x10E7F,"Middle Eastern Scripts"],
+  ["NKo",0x07C0,0x07FF,"Other Scripts & Supplements"],
   ["Samaritan",0x0800,0x083F,"Middle Eastern Scripts"],
   ["Mandaic",0x0840,0x085F,"Middle Eastern Scripts"],
-  ["Old Sogdian",0x10F00,0x10F2F,"Middle Eastern Scripts"],
-  ["Sogdian",0x10F30,0x10F6F,"Middle Eastern Scripts"],
-  ["Elymaic",0x10FE0,0x10FFF,"Middle Eastern Scripts"],
-  ["Nabataean",0x10880,0x108AF,"Middle Eastern Scripts"],
-  ["Hatran",0x108E0,0x108FF,"Middle Eastern Scripts"],
-  ["Palmyrene",0x10860,0x1087F,"Middle Eastern Scripts"],
-  ["Old North Arabian",0x10A80,0x10A9F,"Middle Eastern Scripts"],
-  ["Old South Arabian",0x10A60,0x10A7F,"Middle Eastern Scripts"],
-  // ── South Asian Scripts ──────────────────────────────────────
+  ["Syriac Supplement",0x0860,0x086F,"Middle Eastern Scripts"],
+  ["Arabic Extended-B",0x0870,0x089F,"Middle Eastern Scripts"],
+  ["Arabic Extended-A",0x08A0,0x08FF,"Middle Eastern Scripts"],
   ["Devanagari",0x0900,0x097F,"South Asian Scripts"],
-  ["Devanagari Extended",0xA8E0,0xA8FF,"South Asian Scripts"],
-  ["Devanagari Extended-A",0x11B00,0x11B5F,"South Asian Scripts"],
   ["Bengali",0x0980,0x09FF,"South Asian Scripts"],
   ["Gurmukhi",0x0A00,0x0A7F,"South Asian Scripts"],
   ["Gujarati",0x0A80,0x0AFF,"South Asian Scripts"],
@@ -266,206 +208,46 @@ var BLOCKS = [
   ["Kannada",0x0C80,0x0CFF,"South Asian Scripts"],
   ["Malayalam",0x0D00,0x0D7F,"South Asian Scripts"],
   ["Sinhala",0x0D80,0x0DFF,"South Asian Scripts"],
-  ["Sinhala Archaic Numbers",0x111E0,0x111FF,"South Asian Scripts"],
-  ["Vedic Extensions",0x1CD0,0x1CFF,"South Asian Scripts"],
-  ["Brahmi",0x11000,0x1107F,"South Asian Scripts"],
-  ["Kaithi",0x11080,0x110CF,"South Asian Scripts"],
-  ["Chakma",0x11100,0x1114F,"South Asian Scripts"],
-  ["Mahajani",0x11150,0x1117F,"South Asian Scripts"],
-  ["Sharada",0x11180,0x111DF,"South Asian Scripts"],
-  ["Khojki",0x11200,0x1124F,"South Asian Scripts"],
-  ["Khudawadi",0x112B0,0x112FF,"South Asian Scripts"],
-  ["Multani",0x11280,0x112AF,"South Asian Scripts"],
-  ["Newa",0x11400,0x1147F,"South Asian Scripts"],
-  ["Tirhuta",0x11480,0x114DF,"South Asian Scripts"],
-  ["Modi",0x11600,0x1165F,"South Asian Scripts"],
-  ["Nandinagari",0x119A0,0x119FF,"South Asian Scripts"],
-  ["Dogra",0x11800,0x1184F,"South Asian Scripts"],
-  ["Syloti Nagri",0xA800,0xA82F,"South Asian Scripts"],
-  ["Kharoshthi",0x10A00,0x10A5F,"South Asian Scripts"],
-  ["Limbu",0x1900,0x194F,"South Asian Scripts"],
-  ["Lepcha",0x1C00,0x1C4F,"South Asian Scripts"],
-  ["Ol Chiki",0x1C50,0x1C7F,"South Asian Scripts"],
-  ["Meetei Mayek",0xAAE0,0xAAFF,"South Asian Scripts"],
-  ["Meetei Mayek Extensions",0xAAE0,0xAAFF,"South Asian Scripts"],
-  ["Miao",0x16F00,0x16F9F,"South Asian Scripts"],
-  ["Warang Citi",0x118A0,0x118FF,"South Asian Scripts"],
-  ["Pau Cin Hau",0x11AC0,0x11AFF,"South Asian Scripts"],
-  ["Nag Mundari",0x1E4D0,0x1E4FF,"South Asian Scripts"],
-  // ── Southeast Asian Scripts ──────────────────────────────────
   ["Thai",0x0E00,0x0E7F,"Southeast Asian Scripts"],
   ["Lao",0x0E80,0x0EFF,"Southeast Asian Scripts"],
   ["Tibetan",0x0F00,0x0FFF,"Southeast Asian Scripts"],
   ["Myanmar",0x1000,0x109F,"Southeast Asian Scripts"],
-  ["Myanmar Extended-A",0xAA60,0xAA7F,"Southeast Asian Scripts"],
-  ["Myanmar Extended-B",0xA9E0,0xA9FF,"Southeast Asian Scripts"],
-  ["Myanmar Extended-C",0x116D0,0x116FF,"Southeast Asian Scripts"],
+  ["Georgian",0x10A0,0x10FF,"Other European & Indigenous"],
+  ["Hangul Jamo",0x1100,0x11FF,"East Asian"],
+  ["Ethiopic",0x1200,0x137F,"Other European & Indigenous"],
+  ["Ethiopic Supplement",0x1380,0x139F,"Other European & Indigenous"],
+  ["Cherokee",0x13A0,0x13FF,"Other European & Indigenous"],
+  ["Unified Canadian Aboriginal Syllabics",0x1400,0x167F,"Other European & Indigenous"],
+  ["Ogham",0x1680,0x169F,"Other European & Indigenous"],
+  ["Runic",0x16A0,0x16FF,"Other European & Indigenous"],
+  ["Tagalog",0x1700,0x171F,"Other European & Indigenous"],
+  ["Hanunoo",0x1720,0x173F,"Other European & Indigenous"],
+  ["Buhid",0x1740,0x175F,"Other European & Indigenous"],
+  ["Tagbanwa",0x1760,0x177F,"Other European & Indigenous"],
   ["Khmer",0x1780,0x17FF,"Southeast Asian Scripts"],
-  ["Khmer Symbols",0x19E0,0x19FF,"Southeast Asian Scripts"],
+  ["Mongolian",0x1800,0x18AF,"Southeast Asian Scripts"],
+  ["Unified Canadian Aboriginal Syllabics Extended",0x18B0,0x18FF,"Other European & Indigenous"],
+  ["Limbu",0x1900,0x194F,"South Asian Scripts"],
   ["Tai Le",0x1950,0x197F,"Southeast Asian Scripts"],
   ["New Tai Lue",0x1980,0x19DF,"Southeast Asian Scripts"],
-  ["Tai Tham",0x1A20,0x1AAF,"Southeast Asian Scripts"],
-  ["Tai Viet",0xAA80,0xAADF,"Southeast Asian Scripts"],
-  ["Cham",0xAA00,0xAA5F,"Southeast Asian Scripts"],
-  ["Batak",0x1BC0,0x1BFF,"Southeast Asian Scripts"],
-  ["Rejang",0xA930,0xA95F,"Southeast Asian Scripts"],
-  ["Javanese",0xA980,0xA9DF,"Southeast Asian Scripts"],
-  ["Sundanese",0x1B80,0x1BBF,"Southeast Asian Scripts"],
-  ["Sundanese Supplement",0x1CC0,0x1CCF,"Southeast Asian Scripts"],
-  ["Balinese",0x1B00,0x1B7F,"Southeast Asian Scripts"],
+  ["Khmer Symbols",0x19E0,0x19FF,"Southeast Asian Scripts"],
   ["Buginese",0x1A00,0x1A1F,"Southeast Asian Scripts"],
-  ["Makasar",0x11EE0,0x11EFF,"Southeast Asian Scripts"],
-  ["Lontara",0x1A00,0x1A1F,"Southeast Asian Scripts"],
-  ["Old Cham",0x11060,0x1107F,"Southeast Asian Scripts"],
-  // ── East Asian ──────────────────────────────────────────────
-  ["Bopomofo",0x3100,0x312F,"East Asian"],
-  ["Bopomofo Extended",0x31A0,0x31BF,"East Asian"],
-  ["CJK Radicals Supplement",0x2E80,0x2EFF,"East Asian"],
-  ["Kangxi Radicals",0x2F00,0x2FDF,"East Asian"],
-  ["Ideographic Description Characters",0x2FF0,0x2FFF,"East Asian"],
-  ["CJK Symbols and Punctuation",0x3000,0x303F,"East Asian"],
-  ["Hiragana",0x3040,0x309F,"East Asian"],
-  ["Katakana",0x30A0,0x30FF,"East Asian"],
-  ["Katakana Phonetic Extensions",0x31F0,0x31FF,"East Asian"],
-  ["Kana Extended-A",0x1B100,0x1B12F,"East Asian"],
-  ["Kana Extended-B",0x1AFF0,0x1AFFF,"East Asian"],
-  ["Kana Supplement",0x1B000,0x1B0FF,"East Asian"],
-  ["Small Kana Extension",0x1B130,0x1B16F,"East Asian"],
-  ["Hangul Jamo",0x1100,0x11FF,"East Asian"],
-  ["Hangul Jamo Extended-A",0xA960,0xA97F,"East Asian"],
-  ["Hangul Jamo Extended-B",0xD7B0,0xD7FF,"East Asian"],
-  ["Hangul Compatibility Jamo",0x3130,0x318F,"East Asian"],
-  ["Hangul Syllables",0xAC00,0xD7AF,"East Asian"],
-  ["Kanbun",0x3190,0x319F,"East Asian"],
-  ["CJK Unified Ideographs Extension A",0x3400,0x4DBF,"East Asian"],
-  ["CJK Unified Ideographs",0x4E00,0x9FFF,"East Asian"],
-  ["CJK Unified Ideographs Extension B",0x20000,0x2A6DF,"East Asian"],
-  ["CJK Unified Ideographs Extension C",0x2A700,0x2B73F,"East Asian"],
-  ["CJK Unified Ideographs Extension D",0x2B740,0x2B81F,"East Asian"],
-  ["CJK Unified Ideographs Extension E",0x2B820,0x2CEAF,"East Asian"],
-  ["CJK Unified Ideographs Extension F",0x2CEB0,0x2EBEF,"East Asian"],
-  ["CJK Unified Ideographs Extension G",0x30000,0x3134F,"East Asian"],
-  ["CJK Unified Ideographs Extension H",0x31350,0x323AF,"East Asian"],
-  ["CJK Unified Ideographs Extension I",0x2EBF0,0x2EE5F,"East Asian"],
-  ["CJK Compatibility Ideographs",0xF900,0xFAFF,"East Asian"],
-  ["CJK Compatibility Ideographs Supplement",0x2F800,0x2FA1F,"East Asian"],
-  ["CJK Compatibility",0x3300,0x33FF,"East Asian"],
-  ["CJK Compatibility Forms",0xFE30,0xFE4F,"East Asian"],
-  ["Enclosed CJK Letters and Months",0x3200,0x32FF,"East Asian"],
-  ["Enclosed Alphanumeric Supplement",0x1F100,0x1F1FF,"East Asian"],
-  ["Enclosed Ideographic Supplement",0x1F200,0x1F2FF,"East Asian"],
-  ["Yijing Hexagram Symbols",0x4DC0,0x4DFF,"East Asian"],
-  ["Nushu",0x1B170,0x1B2FF,"East Asian"],
-  ["Tangut",0x17000,0x187FF,"East Asian"],
-  ["Tangut Components",0x18800,0x18AFF,"East Asian"],
-  ["Tangut Supplement",0x18D00,0x18D7F,"East Asian"],
-  ["Khitan Small Script",0x18B00,0x18CFF,"East Asian"],
-  // ── Other Scripts ────────────────────────────────────────────
-  ["Georgian",0x10A0,0x10FF,"Other Scripts"],
-  ["Georgian Supplement",0x2D00,0x2D2F,"Other Scripts"],
-  ["Georgian Extended",0x1C90,0x1CBF,"Other Scripts"],
-  ["Ethiopic",0x1200,0x137F,"Other Scripts"],
-  ["Ethiopic Supplement",0x1380,0x139F,"Other Scripts"],
-  ["Ethiopic Extended",0x2D80,0x2DDF,"Other Scripts"],
-  ["Ethiopic Extended-A",0xAB00,0xAB2F,"Other Scripts"],
-  ["Ethiopic Extended-B",0x1E7E0,0x1E7FF,"Other Scripts"],
-  ["Cherokee",0x13A0,0x13FF,"Other Scripts"],
-  ["Cherokee Supplement",0xAB70,0xABBF,"Other Scripts"],
-  ["Mongolian",0x1800,0x18AF,"Other Scripts"],
-  ["Mongolian Supplement",0x11660,0x1166F,"Other Scripts"],
-  ["Phags-pa",0xA840,0xA87F,"Other Scripts"],
-  ["Soyombo",0x11A50,0x11AAF,"Other Scripts"],
-  ["Zanabazar Square",0x11A00,0x11A4F,"Other Scripts"],
-  ["Tibetan",0x0F00,0x0FFF,"Other Scripts"],
-  ["Yi Syllables",0xA000,0xA48F,"Other Scripts"],
-  ["Yi Radicals",0xA490,0xA4CF,"Other Scripts"],
-  ["Lisu",0xA4D0,0xA4FF,"Other Scripts"],
-  ["Lisu Supplement",0x11FB0,0x11FBF,"Other Scripts"],
-  ["Vai",0xA500,0xA63F,"Other Scripts"],
-  ["Bamum",0xA6A0,0xA6FF,"Other Scripts"],
-  ["Bamum Supplement",0x16800,0x16A3F,"Other Scripts"],
-  ["Mende Kikakui",0x1E800,0x1E8DF,"Other Scripts"],
-  ["Adlam",0x1E900,0x1E95F,"Other Scripts"],
-  ["N'Ko",0x07C0,0x07FF,"Other Scripts"],
-  ["Tifinagh",0x2D30,0x2D7F,"Other Scripts"],
-  ["Osmanya",0x10480,0x104AF,"Other Scripts"],
-  ["Vithkuqi",0x10570,0x105BF,"Other Scripts"],
-  ["Wancho",0x1E2C0,0x1E2FF,"Other Scripts"],
-  ["Yezidi",0x10E80,0x10EBF,"Other Scripts"],
-  ["Chorasmian",0x10FB0,0x10FDF,"Other Scripts"],
-  ["Dives Akuru",0x11900,0x1195F,"Other Scripts"],
-  ["Nyiakeng Puachue Hmong",0x1E100,0x1E14F,"Other Scripts"],
-  ["Toto",0x1E290,0x1E2BF,"Other Scripts"],
-  ["Pahawh Hmong",0x16B00,0x16B8F,"Other Scripts"],
-  ["Mro",0x16A40,0x16A6F,"Other Scripts"],
-  ["Khitan Small Script",0x18B00,0x18CFF,"Other Scripts"],
-  // ── Ancient & Historic Scripts ───────────────────────────────
-  ["Linear B Syllabary",0x10000,0x1007F,"Ancient & Historic Scripts"],
-  ["Linear B Ideograms",0x10080,0x100FF,"Ancient & Historic Scripts"],
-  ["Aegean Numbers",0x10100,0x1013F,"Ancient & Historic Scripts"],
-  ["Ancient Greek Numbers",0x10140,0x1018F,"Ancient & Historic Scripts"],
-  ["Ancient Symbols",0x10190,0x101CF,"Ancient & Historic Scripts"],
-  ["Phaistos Disc",0x101D0,0x101FF,"Ancient & Historic Scripts"],
-  ["Lycian",0x10280,0x1029F,"Ancient & Historic Scripts"],
-  ["Carian",0x102A0,0x102DF,"Ancient & Historic Scripts"],
-  ["Old Italic",0x10300,0x1032F,"Ancient & Historic Scripts"],
-  ["Gothic",0x10330,0x1034F,"Ancient & Historic Scripts"],
-  ["Old Permic",0x10350,0x1037F,"Ancient & Historic Scripts"],
-  ["Ugaritic",0x10380,0x1039F,"Ancient & Historic Scripts"],
-  ["Old Persian",0x103A0,0x103DF,"Ancient & Historic Scripts"],
-  ["Deseret",0x10400,0x1044F,"Ancient & Historic Scripts"],
-  ["Shavian",0x10450,0x1047F,"Ancient & Historic Scripts"],
-  ["Osage",0x10480,0x104AF,"Ancient & Historic Scripts"],
-  ["Elbasan",0x10500,0x1052F,"Ancient & Historic Scripts"],
-  ["Caucasian Albanian",0x10530,0x1056F,"Ancient & Historic Scripts"],
-  ["Linear A",0x10600,0x1077F,"Ancient & Historic Scripts"],
-  ["Cypriot Syllabary",0x10800,0x1083F,"Ancient & Historic Scripts"],
-  ["Imperial Aramaic",0x10840,0x1085F,"Ancient & Historic Scripts"],
-  ["Lydian",0x10920,0x1093F,"Ancient & Historic Scripts"],
-  ["Meroitic Hieroglyphs",0x10980,0x1099F,"Ancient & Historic Scripts"],
-  ["Meroitic Cursive",0x109A0,0x109FF,"Ancient & Historic Scripts"],
-  ["Kharoshthi",0x10A00,0x10A5F,"Ancient & Historic Scripts"],
-  ["Old South Arabian",0x10A60,0x10A7F,"Ancient & Historic Scripts"],
-  ["Old Sogdian",0x10F00,0x10F2F,"Ancient & Historic Scripts"],
-  ["Manichaean",0x10AC0,0x10AFF,"Ancient & Historic Scripts"],
-  ["Old Uyghur",0x10F70,0x10FAF,"Ancient & Historic Scripts"],
-  ["Avestan",0x10B00,0x10B3F,"Ancient & Historic Scripts"],
-  ["Inscriptional Parthian",0x10B40,0x10B5F,"Ancient & Historic Scripts"],
-  ["Inscriptional Pahlavi",0x10B60,0x10B7F,"Ancient & Historic Scripts"],
-  ["Psalter Pahlavi",0x10B80,0x10BAF,"Ancient & Historic Scripts"],
-  ["Old Turkic",0x10C00,0x10C4F,"Ancient & Historic Scripts"],
-  ["Old Hungarian",0x10C80,0x10CFF,"Ancient & Historic Scripts"],
-  ["Old Uyghur",0x10F70,0x10FAF,"Ancient & Historic Scripts"],
-  ["Hanifi Rohingya",0x10D00,0x10D3F,"Ancient & Historic Scripts"],
-  ["Phoenician",0x10900,0x1091F,"Ancient & Historic Scripts"],
-  ["Samaritan",0x0800,0x083F,"Ancient & Historic Scripts"],
-  ["Cuneiform",0x12000,0x123FF,"Ancient & Historic Scripts"],
-  ["Cuneiform Numbers and Punctuation",0x12400,0x1247F,"Ancient & Historic Scripts"],
-  ["Early Dynastic Cuneiform",0x12480,0x1254F,"Ancient & Historic Scripts"],
-  ["Sumero-Akkadian Cuneiform",0x12000,0x123FF,"Ancient & Historic Scripts"],
-  ["Egyptian Hieroglyphs",0x13000,0x1342F,"Ancient & Historic Scripts"],
-  ["Egyptian Hieroglyph Format Controls",0x13430,0x1343F,"Ancient & Historic Scripts"],
-  ["Anatolian Hieroglyphs",0x14400,0x1467F,"Ancient & Historic Scripts"],
-  ["Bamum Supplement",0x16800,0x16A3F,"Ancient & Historic Scripts"],
-  ["Mro",0x16A40,0x16A6F,"Ancient & Historic Scripts"],
-  ["Bassa Vah",0x16AD0,0x16AFF,"Ancient & Historic Scripts"],
-  ["Pahawh Hmong",0x16B00,0x16B8F,"Ancient & Historic Scripts"],
-  ["Medefaidrin",0x16E40,0x16E9F,"Ancient & Historic Scripts"],
-  ["Miao",0x16F00,0x16F9F,"Ancient & Historic Scripts"],
-  ["Tangsa",0x16A70,0x16ACF,"Ancient & Historic Scripts"],
-  ["Glagolitic",0x2C00,0x2C5F,"Ancient & Historic Scripts"],
-  ["Glagolitic Supplement",0x1E000,0x1E02F,"Ancient & Historic Scripts"],
-  ["Duployan",0x1BC00,0x1BC9F,"Ancient & Historic Scripts"],
-  ["Shorthand Format Controls",0x1BCA0,0x1BCAF,"Ancient & Historic Scripts"],
-  ["Sutton SignWriting",0x1D800,0x1DAAF,"Ancient & Historic Scripts"],
-  ["Nyiakeng Puachue Hmong",0x1E100,0x1E14F,"Ancient & Historic Scripts"],
-  ["Wancho",0x1E2C0,0x1E2BF,"Ancient & Historic Scripts"],
-  ["Mende Kikakui",0x1E800,0x1E8DF,"Ancient & Historic Scripts"],
-  ["Adlam",0x1E900,0x1E95F,"Ancient & Historic Scripts"],
-  ["Indic Siyaq Numbers",0x1EC70,0x1ECFF,"Ancient & Historic Scripts"],
-  ["Ottoman Siyaq Numbers",0x1ED00,0x1EDFF,"Ancient & Historic Scripts"],
-  ["Znamenny Musical Notation",0x1CF00,0x1CFCF,"Ancient & Historic Scripts"],
-  // ── Symbols & Punctuation ────────────────────────────────────
+  ["Tai Tham",0x1A20,0x1AAF,"Southeast Asian Scripts"],
+  ["Combining Diacritical Marks Extended",0x1AB0,0x1AFF,"Symbols & Punctuation"],
+  ["Balinese",0x1B00,0x1B7F,"Southeast Asian Scripts"],
+  ["Sundanese",0x1B80,0x1BBF,"Southeast Asian Scripts"],
+  ["Batak",0x1BC0,0x1BFF,"Southeast Asian Scripts"],
+  ["Lepcha",0x1C00,0x1C4F,"South Asian Scripts"],
+  ["Ol Chiki",0x1C50,0x1C7F,"South Asian Scripts"],
+  ["Cyrillic Extended-C",0x1C80,0x1C8F,"Cyrillic"],
+  ["Georgian Extended",0x1C90,0x1CBF,"Other European & Indigenous"],
+  ["Sundanese Supplement",0x1CC0,0x1CCF,"Southeast Asian Scripts"],
+  ["Vedic Extensions",0x1CD0,0x1CFF,"South Asian Scripts"],
+  ["Phonetic Extensions",0x1D00,0x1D7F,"Latin & Extensions"],
+  ["Phonetic Extensions Supplement",0x1D80,0x1DBF,"Latin & Extensions"],
+  ["Combining Diacritical Marks Supplement",0x1DC0,0x1DFF,"Symbols & Punctuation"],
+  ["Latin Extended Additional",0x1E00,0x1EFF,"Latin & Extensions"],
+  ["Greek Extended",0x1F00,0x1FFF,"Greek & Coptic"],
   ["General Punctuation",0x2000,0x206F,"Symbols & Punctuation"],
   ["Superscripts and Subscripts",0x2070,0x209F,"Symbols & Punctuation"],
   ["Currency Symbols",0x20A0,0x20CF,"Symbols & Punctuation"],
@@ -490,893 +272,380 @@ var BLOCKS = [
   ["Miscellaneous Mathematical Symbols-B",0x2980,0x29FF,"Symbols & Punctuation"],
   ["Supplemental Mathematical Operators",0x2A00,0x2AFF,"Symbols & Punctuation"],
   ["Miscellaneous Symbols and Arrows",0x2B00,0x2BFF,"Symbols & Punctuation"],
+  ["Glagolitic",0x2C00,0x2C5F,"Other Scripts & Supplements"],
+  ["Latin Extended-C",0x2C60,0x2C7F,"Latin & Extensions"],
+  ["Coptic",0x2C80,0x2CFF,"Greek & Coptic"],
+  ["Georgian Supplement",0x2D00,0x2D2F,"Other European & Indigenous"],
+  ["Tifinagh",0x2D30,0x2D7F,"Other Scripts & Supplements"],
+  ["Ethiopic Extended",0x2D80,0x2DDF,"Other European & Indigenous"],
+  ["Cyrillic Extended-A",0x2DE0,0x2DFF,"Cyrillic"],
   ["Supplemental Punctuation",0x2E00,0x2E7F,"Symbols & Punctuation"],
-  ["CJK Symbols and Punctuation",0x3000,0x303F,"Symbols & Punctuation"],
+  ["CJK Radicals Supplement",0x2E80,0x2EFF,"East Asian"],
+  ["Kangxi Radicals",0x2F00,0x2FDF,"East Asian"],
+  ["Ideographic Description Characters",0x2FF0,0x2FFF,"East Asian"],
+  ["CJK Symbols and Punctuation",0x3000,0x303F,"East Asian"],
+  ["Hiragana",0x3040,0x309F,"East Asian"],
+  ["Katakana",0x30A0,0x30FF,"East Asian"],
+  ["Bopomofo",0x3100,0x312F,"East Asian"],
+  ["Hangul Compatibility Jamo",0x3130,0x318F,"East Asian"],
+  ["Kanbun",0x3190,0x319F,"East Asian"],
+  ["Bopomofo Extended",0x31A0,0x31BF,"East Asian"],
+  ["CJK Strokes",0x31C0,0x31EF,"East Asian"],
+  ["Katakana Phonetic Extensions",0x31F0,0x31FF,"East Asian"],
+  ["Enclosed CJK Letters and Months",0x3200,0x32FF,"East Asian"],
+  ["CJK Compatibility",0x3300,0x33FF,"East Asian"],
+  ["CJK Unified Ideographs Extension A",0x3400,0x4DBF,"East Asian"],
+  ["Yijing Hexagram Symbols",0x4DC0,0x4DFF,"East Asian"],
+  ["CJK Unified Ideographs",0x4E00,0x9FFF,"East Asian"],
+  ["Yi Syllables",0xA000,0xA48F,"East Asian"],
+  ["Yi Radicals",0xA490,0xA4CF,"East Asian"],
+  ["Lisu",0xA4D0,0xA4FF,"Other Scripts & Supplements"],
+  ["Vai",0xA500,0xA63F,"Other Scripts & Supplements"],
+  ["Cyrillic Extended-B",0xA640,0xA69F,"Cyrillic"],
+  ["Bamum",0xA6A0,0xA6FF,"Other Scripts & Supplements"],
+  ["Modifier Tone Letters",0xA700,0xA71F,"Latin & Extensions"],
+  ["Latin Extended-D",0xA720,0xA7FF,"Latin & Extensions"],
+  ["Syloti Nagri",0xA800,0xA82F,"South Asian Scripts"],
+  ["Common Indic Number Forms",0xA830,0xA83F,"South Asian Scripts"],
+  ["Phags-pa",0xA840,0xA87F,"Other Scripts & Supplements"],
+  ["Saurashtra",0xA880,0xA8DF,"South Asian Scripts"],
+  ["Devanagari Extended",0xA8E0,0xA8FF,"South Asian Scripts"],
+  ["Kayah Li",0xA900,0xA92F,"South Asian Scripts"],
+  ["Rejang",0xA930,0xA95F,"Southeast Asian Scripts"],
+  ["Hangul Jamo Extended-A",0xA960,0xA97F,"East Asian"],
+  ["Javanese",0xA980,0xA9DF,"Southeast Asian Scripts"],
+  ["Myanmar Extended-B",0xA9E0,0xA9FF,"Southeast Asian Scripts"],
+  ["Cham",0xAA00,0xAA5F,"Southeast Asian Scripts"],
+  ["Myanmar Extended-A",0xAA60,0xAA7F,"Southeast Asian Scripts"],
+  ["Tai Viet",0xAA80,0xAADF,"Southeast Asian Scripts"],
+  ["Meetei Mayek Extensions",0xAAE0,0xAAFF,"South Asian Scripts"],
+  ["Ethiopic Extended-A",0xAB00,0xAB2F,"Other European & Indigenous"],
+  ["Latin Extended-E",0xAB30,0xAB6F,"Latin & Extensions"],
+  ["Cherokee Supplement",0xAB70,0xABBF,"Other European & Indigenous"],
+  ["Meetei Mayek",0xABC0,0xABFF,"South Asian Scripts"],
+  ["Hangul Syllables",0xAC00,0xD7AF,"East Asian"],
+  ["Hangul Jamo Extended-B",0xD7B0,0xD7FF,"East Asian"],
+  ["High Surrogates",0xD800,0xDB7F,"Specials"],
+  ["High Private Use Surrogates",0xDB80,0xDBFF,"Specials"],
+  ["Low Surrogates",0xDC00,0xDFFF,"Specials"],
+  ["Private Use Area",0xE000,0xF8FF,"Specials"],
+  ["CJK Compatibility Ideographs",0xF900,0xFAFF,"East Asian"],
+  ["Alphabetic Presentation Forms",0xFB00,0xFB4F,"Presentation Forms"],
+  ["Arabic Presentation Forms-A",0xFB50,0xFDFF,"Middle Eastern Scripts"],
+  ["Variation Selectors",0xFE00,0xFE0F,"Specials"],
+  ["Vertical Forms",0xFE10,0xFE1F,"Presentation Forms"],
+  ["Combining Half Marks",0xFE20,0xFE2F,"Presentation Forms"],
+  ["CJK Compatibility Forms",0xFE30,0xFE4F,"East Asian"],
+  ["Small Form Variants",0xFE50,0xFE6F,"Presentation Forms"],
+  ["Arabic Presentation Forms-B",0xFE70,0xFEFF,"Middle Eastern Scripts"],
+  ["Halfwidth and Fullwidth Forms",0xFF00,0xFFEF,"Presentation Forms"],
+  ["Specials",0xFFF0,0xFFFF,"Specials"],
+  ["Linear B Syllabary",0x10000,0x1007F,"Ancient & Historic Scripts"],
+  ["Linear B Ideograms",0x10080,0x100FF,"Ancient & Historic Scripts"],
+  ["Aegean Numbers",0x10100,0x1013F,"Ancient & Historic Scripts"],
+  ["Ancient Greek Numbers",0x10140,0x1018F,"Ancient & Historic Scripts"],
+  ["Ancient Symbols",0x10190,0x101CF,"Ancient & Historic Scripts"],
+  ["Phaistos Disc",0x101D0,0x101FF,"Ancient & Historic Scripts"],
+  ["Lycian",0x10280,0x1029F,"Ancient & Historic Scripts"],
+  ["Carian",0x102A0,0x102DF,"Ancient & Historic Scripts"],
+  ["Coptic Epact Numbers",0x102E0,0x102FF,"Greek & Coptic"],
+  ["Old Italic",0x10300,0x1032F,"Ancient & Historic Scripts"],
+  ["Gothic",0x10330,0x1034F,"Ancient & Historic Scripts"],
+  ["Old Permic",0x10350,0x1037F,"Ancient & Historic Scripts"],
+  ["Ugaritic",0x10380,0x1039F,"Ancient & Historic Scripts"],
+  ["Old Persian",0x103A0,0x103DF,"Ancient & Historic Scripts"],
+  ["Deseret",0x10400,0x1044F,"Ancient & Historic Scripts"],
+  ["Shavian",0x10450,0x1047F,"Ancient & Historic Scripts"],
+  ["Osmanya",0x10480,0x104AF,"Other Scripts & Supplements"],
+  ["Osage",0x104B0,0x104FF,"Ancient & Historic Scripts"],
+  ["Elbasan",0x10500,0x1052F,"Ancient & Historic Scripts"],
+  ["Caucasian Albanian",0x10530,0x1056F,"Ancient & Historic Scripts"],
+  ["Vithkuqi",0x10570,0x105BF,"Ancient & Historic Scripts"],
+  ["Linear A",0x10600,0x1077F,"Ancient & Historic Scripts"],
+  ["Latin Extended-F",0x10780,0x107BF,"Latin & Extensions"],
+  ["Cypriot Syllabary",0x10800,0x1083F,"Ancient & Historic Scripts"],
+  ["Imperial Aramaic",0x10840,0x1085F,"Ancient & Historic Scripts"],
+  ["Palmyrene",0x10860,0x1087F,"Ancient & Historic Scripts"],
+  ["Nabataean",0x10880,0x108AF,"Ancient & Historic Scripts"],
+  ["Hatran",0x108E0,0x108FF,"Ancient & Historic Scripts"],
+  ["Phoenician",0x10900,0x1091F,"Ancient & Historic Scripts"],
+  ["Lydian",0x10920,0x1093F,"Ancient & Historic Scripts"],
+  ["Meroitic Hieroglyphs",0x10980,0x1099F,"Ancient & Historic Scripts"],
+  ["Meroitic Cursive",0x109A0,0x109FF,"Ancient & Historic Scripts"],
+  ["Kharoshthi",0x10A00,0x10A5F,"Ancient & Historic Scripts"],
+  ["Old South Arabian",0x10A60,0x10A7F,"Ancient & Historic Scripts"],
+  ["Old North Arabian",0x10A80,0x10A9F,"Ancient & Historic Scripts"],
+  ["Manichaean",0x10AC0,0x10AFF,"Ancient & Historic Scripts"],
+  ["Avestan",0x10B00,0x10B3F,"Ancient & Historic Scripts"],
+  ["Inscriptional Parthian",0x10B40,0x10B5F,"Ancient & Historic Scripts"],
+  ["Inscriptional Pahlavi",0x10B60,0x10B7F,"Ancient & Historic Scripts"],
+  ["Psalter Pahlavi",0x10B80,0x10BAF,"Ancient & Historic Scripts"],
+  ["Old Turkic",0x10C00,0x10C4F,"Ancient & Historic Scripts"],
+  ["Old Hungarian",0x10C80,0x10CFF,"Ancient & Historic Scripts"],
+  ["Hanifi Rohingya",0x10D00,0x10D3F,"Ancient & Historic Scripts"],
+  ["Rumi Numeral Symbols",0x10E60,0x10E7F,"Other Scripts & Supplements"],
+  ["Yezidi",0x10E80,0x10EBF,"Other Scripts & Supplements"],
+  ["Arabic Extended-C",0x10EC0,0x10EFF,"Middle Eastern Scripts"],
+  ["Old Sogdian",0x10F00,0x10F2F,"Ancient & Historic Scripts"],
+  ["Sogdian",0x10F30,0x10F6F,"Ancient & Historic Scripts"],
+  ["Old Uyghur",0x10F70,0x10FAF,"Ancient & Historic Scripts"],
+  ["Chorasmian",0x10FB0,0x10FDF,"Ancient & Historic Scripts"],
+  ["Elymaic",0x10FE0,0x10FFF,"Ancient & Historic Scripts"],
+  ["Brahmi",0x11000,0x1107F,"South Asian Scripts"],
+  ["Kaithi",0x11080,0x110CF,"South Asian Scripts"],
+  ["Sora Sompeng",0x110D0,0x110FF,"Other Scripts & Supplements"],
+  ["Chakma",0x11100,0x1114F,"South Asian Scripts"],
+  ["Mahajani",0x11150,0x1117F,"South Asian Scripts"],
+  ["Sharada",0x11180,0x111DF,"South Asian Scripts"],
+  ["Sinhala Archaic Numbers",0x111E0,0x111FF,"South Asian Scripts"],
+  ["Khojki",0x11200,0x1124F,"South Asian Scripts"],
+  ["Multani",0x11280,0x112AF,"South Asian Scripts"],
+  ["Khudawadi",0x112B0,0x112FF,"South Asian Scripts"],
+  ["Grantha",0x11300,0x1137F,"Other Scripts & Supplements"],
+  ["Newa",0x11400,0x1147F,"South Asian Scripts"],
+  ["Tirhuta",0x11480,0x114DF,"South Asian Scripts"],
+  ["Siddham",0x11580,0x115FF,"South Asian Scripts"],
+  ["Modi",0x11600,0x1165F,"South Asian Scripts"],
+  ["Mongolian Supplement",0x11660,0x1167F,"Southeast Asian Scripts"],
+  ["Takri",0x11680,0x116CF,"Southeast Asian Scripts"],
+  ["Ahom",0x11700,0x1174F,"Southeast Asian Scripts"],
+  ["Dogra",0x11800,0x1184F,"South Asian Scripts"],
+  ["Warang Citi",0x118A0,0x118FF,"South Asian Scripts"],
+  ["Dives Akuru",0x11900,0x1195F,"Other Scripts & Supplements"],
+  ["Nandinagari",0x119A0,0x119FF,"South Asian Scripts"],
+  ["Zanabazar Square",0x11A00,0x11A4F,"Other Scripts & Supplements"],
+  ["Soyombo",0x11A50,0x11AAF,"Other Scripts & Supplements"],
+  ["Unified Canadian Aboriginal Syllabics Extended-A",0x11AB0,0x11ABF,"Other European & Indigenous"],
+  ["Pau Cin Hau",0x11AC0,0x11AFF,"South Asian Scripts"],
+  ["Devanagari Extended-A",0x11B00,0x11B5F,"South Asian Scripts"],
+  ["Bhaiksuki",0x11C00,0x11C6F,"Southeast Asian Scripts"],
+  ["Marchen",0x11C70,0x11CBF,"Southeast Asian Scripts"],
+  ["Masaram Gondi",0x11D00,0x11D5F,"Southeast Asian Scripts"],
+  ["Gunjala Gondi",0x11D60,0x11DAF,"Southeast Asian Scripts"],
+  ["Makasar",0x11EE0,0x11EFF,"Southeast Asian Scripts"],
+  ["Kawi",0x11F00,0x11F5F,"Southeast Asian Scripts"],
+  ["Lisu Supplement",0x11FB0,0x11FBF,"Other Scripts & Supplements"],
+  ["Tamil Supplement",0x11FC0,0x11FFF,"South Asian Scripts"],
+  ["Cuneiform",0x12000,0x123FF,"Ancient & Historic Scripts"],
+  ["Cuneiform Numbers and Punctuation",0x12400,0x1247F,"Ancient & Historic Scripts"],
+  ["Early Dynastic Cuneiform",0x12480,0x1254F,"Other Scripts & Supplements"],
+  ["Cypro-Minoan",0x12F90,0x12FFF,"Ancient & Historic Scripts"],
+  ["Egyptian Hieroglyphs",0x13000,0x1342F,"Ancient & Historic Scripts"],
+  ["Egyptian Hieroglyph Format Controls",0x13430,0x1345F,"Ancient & Historic Scripts"],
+  ["Anatolian Hieroglyphs",0x14400,0x1467F,"Ancient & Historic Scripts"],
+  ["Bamum Supplement",0x16800,0x16A3F,"Other Scripts & Supplements"],
+  ["Mro",0x16A40,0x16A6F,"Other Scripts & Supplements"],
+  ["Tangsa",0x16A70,0x16ACF,"Southeast Asian Scripts"],
+  ["Bassa Vah",0x16AD0,0x16AFF,"Other Scripts & Supplements"],
+  ["Pahawh Hmong",0x16B00,0x16B8F,"Other Scripts & Supplements"],
+  ["Medefaidrin",0x16E40,0x16E9F,"Other Scripts & Supplements"],
+  ["Miao",0x16F00,0x16F9F,"Other Scripts & Supplements"],
+  ["Ideographic Symbols and Punctuation",0x16FE0,0x16FFF,"East Asian"],
+  ["Tangut",0x17000,0x187FF,"East Asian"],
+  ["Tangut Components",0x18800,0x18AFF,"East Asian"],
+  ["Khitan Small Script",0x18B00,0x18CFF,"East Asian"],
+  ["Tangut Supplement",0x18D00,0x18D7F,"East Asian"],
+  ["Kana Extended-B",0x1AFF0,0x1AFFF,"East Asian"],
+  ["Kana Supplement",0x1B000,0x1B0FF,"East Asian"],
+  ["Kana Extended-A",0x1B100,0x1B12F,"East Asian"],
+  ["Small Kana Extension",0x1B130,0x1B16F,"Other Scripts & Supplements"],
+  ["Nushu",0x1B170,0x1B2FF,"East Asian"],
+  ["Duployan",0x1BC00,0x1BC9F,"Other Scripts & Supplements"],
+  ["Shorthand Format Controls",0x1BCA0,0x1BCAF,"Other Scripts & Supplements"],
+  ["Znamenny Musical Notation",0x1CF00,0x1CFCF,"Musical & Numeric Symbols"],
+  ["Byzantine Musical Symbols",0x1D000,0x1D0FF,"Musical & Numeric Symbols"],
+  ["Musical Symbols",0x1D100,0x1D1FF,"Musical & Numeric Symbols"],
+  ["Ancient Greek Musical Notation",0x1D200,0x1D24F,"Ancient & Historic Scripts"],
+  ["Kaktovik Numerals",0x1D2C0,0x1D2DF,"Musical & Numeric Symbols"],
+  ["Mayan Numerals",0x1D2E0,0x1D2FF,"Musical & Numeric Symbols"],
+  ["Tai Xuan Jing Symbols",0x1D300,0x1D35F,"Musical & Numeric Symbols"],
+  ["Counting Rod Numerals",0x1D360,0x1D37F,"Musical & Numeric Symbols"],
   ["Mathematical Alphanumeric Symbols",0x1D400,0x1D7FF,"Symbols & Punctuation"],
-  ["Geometric Shapes Extended",0x1F780,0x1F7FF,"Symbols & Punctuation"],
-  ["Supplemental Arrows-C",0x1F800,0x1F8FF,"Symbols & Punctuation"],
-  ["Additional Arrows",0x1F900,0x1F90F,"Symbols & Punctuation"],
-  ["Symbols for Legacy Computing",0x1FB00,0x1FBFF,"Symbols & Punctuation"],
-  // ── Emoji & Pictographs ──────────────────────────────────────
-  ["Emoticons",0x1F600,0x1F64F,"Emoji & Pictographs"],
-  ["Miscellaneous Symbols and Pictographs",0x1F300,0x1F5FF,"Emoji & Pictographs"],
-  ["Transport and Map Symbols",0x1F680,0x1F6FF,"Emoji & Pictographs"],
-  ["Supplemental Symbols and Pictographs",0x1F900,0x1F9FF,"Emoji & Pictographs"],
-  ["Symbols and Pictographs Extended-A",0x1FA00,0x1FA6F,"Emoji & Pictographs"],
-  ["Symbols and Pictographs Extended-B",0x1FA70,0x1FAFF,"Emoji & Pictographs"],
+  ["Sutton SignWriting",0x1D800,0x1DAAF,"Other Scripts & Supplements"],
+  ["Latin Extended-G",0x1DF00,0x1DFFF,"Latin & Extensions"],
+  ["Glagolitic Supplement",0x1E000,0x1E02F,"Other Scripts & Supplements"],
+  ["Cyrillic Extended-D",0x1E030,0x1E08F,"Cyrillic"],
+  ["Nyiakeng Puachue Hmong",0x1E100,0x1E14F,"South Asian Scripts"],
+  ["Toto",0x1E290,0x1E2BF,"Other Scripts & Supplements"],
+  ["Wancho",0x1E2C0,0x1E2FF,"Other Scripts & Supplements"],
+  ["Nag Mundari",0x1E4D0,0x1E4FF,"South Asian Scripts"],
+  ["Ethiopic Extended-B",0x1E7E0,0x1E7FF,"Other European & Indigenous"],
+  ["Mende Kikakui",0x1E800,0x1E8DF,"Other Scripts & Supplements"],
+  ["Adlam",0x1E900,0x1E95F,"Other Scripts & Supplements"],
+  ["Indic Siyaq Numbers",0x1EC70,0x1ECBF,"Other Scripts & Supplements"],
+  ["Ottoman Siyaq Numbers",0x1ED00,0x1ED4F,"Other Scripts & Supplements"],
+  ["Arabic Mathematical Alphabetic Symbols",0x1EE00,0x1EEFF,"Middle Eastern Scripts"],
   ["Mahjong Tiles",0x1F000,0x1F02F,"Emoji & Pictographs"],
   ["Domino Tiles",0x1F030,0x1F09F,"Emoji & Pictographs"],
   ["Playing Cards",0x1F0A0,0x1F0FF,"Emoji & Pictographs"],
-  // ── Musical & Game Symbols ───────────────────────────────────
-  ["Musical Symbols",0x1D100,0x1D1FF,"Musical & Game Symbols"],
-  ["Ancient Greek Musical Notation",0x1D200,0x1D24F,"Musical & Game Symbols"],
-  ["Byzantine Musical Symbols",0x1D000,0x1D0FF,"Musical & Game Symbols"],
-  ["Chess Symbols",0x1FA00,0x1FA6F,"Musical & Game Symbols"],
-  ["Xiangqi Symbols",0x1FA60,0x1FA6F,"Musical & Game Symbols"],
-  // ── Presentation Forms & Compatibility ──────────────────────
-  ["Alphabetic Presentation Forms",0xFB00,0xFB4F,"Presentation Forms"],
-  ["Halfwidth and Fullwidth Forms",0xFF00,0xFFEF,"Presentation Forms"],
-  ["Small Form Variants",0xFE50,0xFE6F,"Presentation Forms"],
-  ["Vertical Forms",0xFE10,0xFE1F,"Presentation Forms"],
-  ["Combining Half Marks",0xFE20,0xFE2F,"Presentation Forms"],
-  // ── Specials ────────────────────────────────────────────────
-  ["Specials",0xFFF0,0xFFFF,"Specials"],
+  ["Enclosed Alphanumeric Supplement",0x1F100,0x1F1FF,"East Asian"],
+  ["Enclosed Ideographic Supplement",0x1F200,0x1F2FF,"East Asian"],
+  ["Miscellaneous Symbols and Pictographs",0x1F300,0x1F5FF,"Emoji & Pictographs"],
+  ["Emoticons",0x1F600,0x1F64F,"Emoji & Pictographs"],
+  ["Ornamental Dingbats",0x1F650,0x1F67F,"Emoji & Pictographs"],
+  ["Transport and Map Symbols",0x1F680,0x1F6FF,"Emoji & Pictographs"],
+  ["Alchemical Symbols",0x1F700,0x1F77F,"Emoji & Pictographs"],
+  ["Geometric Shapes Extended",0x1F780,0x1F7FF,"Symbols & Punctuation"],
+  ["Supplemental Arrows-C",0x1F800,0x1F8FF,"Symbols & Punctuation"],
+  ["Supplemental Symbols and Pictographs",0x1F900,0x1F9FF,"Emoji & Pictographs"],
+  ["Chess Symbols",0x1FA00,0x1FA6F,"Emoji & Pictographs"],
+  ["Symbols and Pictographs Extended-A",0x1FA70,0x1FAFF,"Emoji & Pictographs"],
+  ["Symbols for Legacy Computing",0x1FB00,0x1FBFF,"Symbols & Punctuation"],
+  ["CJK Unified Ideographs Extension B",0x20000,0x2A6DF,"East Asian"],
+  ["CJK Unified Ideographs Extension C",0x2A700,0x2B73F,"East Asian"],
+  ["CJK Unified Ideographs Extension D",0x2B740,0x2B81F,"East Asian"],
+  ["CJK Unified Ideographs Extension E",0x2B820,0x2CEAF,"East Asian"],
+  ["CJK Unified Ideographs Extension F",0x2CEB0,0x2EBEF,"East Asian"],
+  ["CJK Unified Ideographs Extension I",0x2EBF0,0x2EE5F,"East Asian"],
+  ["CJK Compatibility Ideographs Supplement",0x2F800,0x2FA1F,"East Asian"],
+  ["CJK Unified Ideographs Extension G",0x30000,0x3134F,"East Asian"],
+  ["CJK Unified Ideographs Extension H",0x31350,0x323AF,"East Asian"],
   ["Tags",0xE0000,0xE007F,"Specials"],
-  ["Variation Selectors",0xFE00,0xFE0F,"Specials"],
   ["Variation Selectors Supplement",0xE0100,0xE01EF,"Specials"],
   ["Supplementary Private Use Area-A",0xF0000,0xFFFFF,"Specials"],
   ["Supplementary Private Use Area-B",0x100000,0x10FFFF,"Specials"],
 ];
 
-// De-duplicate by [name, start, end] triple
-(function() {
-  var seen = {};
-  BLOCKS = BLOCKS.filter(function(b) {
-    var key = b[0]+"|"+b[1]+"|"+b[2];
-    if (seen[key]) return false;
-    seen[key] = true;
-    return true;
-  });
-})();
-
-/* ═══════════════════════════════════════════════════════════════
-   Character Name Resolution
+/* ================================================================
+   CHARACTER NAME RESOLUTION
    Strategy (in order):
-   1. Named lookup table (Basic Latin, Latin-1, common symbols)
-   2. Algorithmic names (CJK, Hangul, Tangut, Nushu, etc.)
-   3. Category-based label (<control>, <surrogate>, <private use>)
-═══════════════════════════════════════════════════════════════ */
+   1. Named lookup table (CN) — Basic Latin, Latin-1, Punctuation,
+      Currency, Arrows, Box Drawing, Braille, Math Ops, Dingbats…
+   2. Algorithmic names — CJK, CJK Compat, Hangul, Tangut, Nushu,
+      Khitan Small Script (per Unicode §4.8 / NamesList derivation)
+   3. Category labels — <control>, <surrogate>, <private-use>,
+      <noncharacter>
+   4. Fallback: U+XXXX
+================================================================ */
 
-/* Algorithmic name ranges (Unicode 15.1 §4.8) */
 var ALGO_RANGES = [
-  [0x3400,0x4DBF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x4E00,0x9FFF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x20000,0x2A6DF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x2A700,0x2B73F,"CJK UNIFIED IDEOGRAPH-"],
-  [0x2B740,0x2B81F,"CJK UNIFIED IDEOGRAPH-"],
-  [0x2B820,0x2CEAF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x2CEB0,0x2EBEF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x30000,0x3134F,"CJK UNIFIED IDEOGRAPH-"],
-  [0x31350,0x323AF,"CJK UNIFIED IDEOGRAPH-"],
-  [0x2EBF0,0x2EE5F,"CJK UNIFIED IDEOGRAPH-"],
-  [0xF900,0xFAFF,"CJK COMPATIBILITY IDEOGRAPH-"],
-  [0x2F800,0x2FA1F,"CJK COMPATIBILITY IDEOGRAPH-"],
-  [0x17000,0x187FF,"TANGUT IDEOGRAPH-"],
-  [0x18D00,0x18D7F,"TANGUT IDEOGRAPH-"],
-  [0x1B170,0x1B2FF,"NUSHU CHARACTER-"],
-  [0x18B00,0x18CFF,"KHITAN SMALL SCRIPT CHARACTER-"],
+  [0x3400,  0x4DBF,  "CJK UNIFIED IDEOGRAPH-"],
+  [0x4E00,  0x9FFF,  "CJK UNIFIED IDEOGRAPH-"],
+  [0x20000, 0x2A6DF, "CJK UNIFIED IDEOGRAPH-"],
+  [0x2A700, 0x2B73F, "CJK UNIFIED IDEOGRAPH-"],
+  [0x2B740, 0x2B81F, "CJK UNIFIED IDEOGRAPH-"],
+  [0x2B820, 0x2CEAF, "CJK UNIFIED IDEOGRAPH-"],
+  [0x2CEB0, 0x2EBEF, "CJK UNIFIED IDEOGRAPH-"],
+  [0x30000, 0x3134F, "CJK UNIFIED IDEOGRAPH-"],
+  [0x31350, 0x323AF, "CJK UNIFIED IDEOGRAPH-"],
+  [0x2EBF0, 0x2EE5F, "CJK UNIFIED IDEOGRAPH-"],
+  [0xF900,  0xFAFF,  "CJK COMPATIBILITY IDEOGRAPH-"],
+  [0x2F800, 0x2FA1F, "CJK COMPATIBILITY IDEOGRAPH-"],
+  [0x17000, 0x187FF, "TANGUT IDEOGRAPH-"],
+  [0x18D00, 0x18D7F, "TANGUT IDEOGRAPH-"],
+  [0x1B170, 0x1B2FF, "NUSHU CHARACTER-"],
+  [0x18B00, 0x18CFF, "KHITAN SMALL SCRIPT CHARACTER-"]
 ];
 
 function getAlgoName(cp) {
-  for (var i = 0; i < ALGO_RANGES.length; i++) {
-    var r = ALGO_RANGES[i];
+  var i, r, h;
+  for (i = 0; i < ALGO_RANGES.length; i++) {
+    r = ALGO_RANGES[i];
     if (cp >= r[0] && cp <= r[1]) {
-      var hex = cp.toString(16).toUpperCase();
-      // CJK needs at least 4 digits, others 5
-      while (hex.length < 4) hex = "0" + hex;
-      return r[2] + hex;
+      h = cp.toString(16).toUpperCase();
+      while (h.length < 4) h = "0" + h;
+      return r[2] + h;
     }
   }
-  // Hangul syllables
   if (cp >= 0xAC00 && cp <= 0xD7A3) return "HANGUL SYLLABLE " + hangulName(cp);
   return null;
 }
 
-/* Hangul decomposition algorithm (Unicode §3.12) */
 function hangulName(cp) {
   var L = ["G","GG","N","D","DD","R","M","B","BB","S","SS","","J","JJ","C","K","T","P","H"];
   var V = ["A","AE","YA","YAE","EO","E","YEO","YE","O","WA","WAE","OE","YO","U","WEO","WE","WI","YU","EU","YI","I"];
   var T = ["","G","GG","GS","N","NJ","NH","D","L","LG","LM","LB","LS","LT","LP","LH","M","B","BS","S","SS","NG","J","C","K","T","P","H"];
   var si = cp - 0xAC00;
-  return L[Math.floor(si / (21 * 28))] + V[Math.floor((si % (21 * 28)) / 28)] + T[si % 28];
+  return L[Math.floor(si / (21*28))] + V[Math.floor((si % (21*28)) / 28)] + T[si % 28];
 }
 
+function hex4(cp) { var h = cp.toString(16).toUpperCase(); while(h.length < 4) h = "0" + h; return h; }
+
 function getCharName(cp) {
-  // 1. Named lookup
   var n = CN[cp];
   if (n) return n;
-  // 2. Algorithmic
-  var a = getAlgoName(cp);
-  if (a) return a;
-  // 3. Special categories
-  if (cp <= 0x001F) return "<control-" + hex4(cp) + ">";
-  if (cp >= 0x007F && cp <= 0x009F) return "<control-" + hex4(cp) + ">";
-  if (cp >= 0xD800 && cp <= 0xDFFF) return "<surrogate>";
-  if (cp >= 0xE000 && cp <= 0xF8FF) return "<private use>";
-  if (cp >= 0xF0000 && cp <= 0xFFFFF) return "<private use>";
-  if (cp >= 0x100000 && cp <= 0x10FFFF) return "<private use>";
-  if ((cp & 0xFFFF) === 0xFFFE || (cp & 0xFFFF) === 0xFFFF) return "<noncharacter>";
-  if (cp >= 0xFDD0 && cp <= 0xFDEF) return "<noncharacter>";
-  // Combining marks in named blocks get generic label
+  n = getAlgoName(cp);
+  if (n) return n;
+  if (cp <= 0x001F)                         return "<control-" + hex4(cp) + ">";
+  if (cp >= 0x007F && cp <= 0x009F)         return "<control-" + hex4(cp) + ">";
+  if (cp >= 0xD800 && cp <= 0xDFFF)         return "<surrogate-" + hex4(cp) + ">";
+  if (cp >= 0xE000 && cp <= 0xF8FF)         return "<private-use-" + hex4(cp) + ">";
+  if (cp >= 0xF0000 && cp <= 0xFFFFF)       return "<private-use-" + hex4(cp) + ">";
+  if (cp >= 0x100000 && cp <= 0x10FFFF)     return "<private-use-" + hex4(cp) + ">";
+  if (cp >= 0xFDD0 && cp <= 0xFDEF)         return "<noncharacter-" + hex4(cp) + ">";
+  if ((cp & 0xFFFF) === 0xFFFE || (cp & 0xFFFF) === 0xFFFF)
+                                            return "<noncharacter-" + hex4(cp) + ">";
   return "U+" + hex4(cp);
 }
 
-function hex4(cp) { var h = cp.toString(16).toUpperCase(); while(h.length<4) h="0"+h; return h; }
-
-/* Named character lookup table (CN = Character Names)
-   Covers: Basic Latin, Latin-1, General Punctuation, Currency,
-   Mathematical, Arrows, Geometric, Dingbats, Box Drawing,
-   Block Elements, common symbols, and select emoji.
-   For all other named characters, the algorithmic or fallback applies. */
+/* Named character lookup table.
+   Covers all of Basic Latin (U+0000-U+007F), Latin-1 Supplement (U+0080-U+00FF),
+   General Punctuation highlights, Currency Symbols, Letterlike Symbols,
+   all Arrows (U+2190-U+21FF), all Box Drawing (U+2500-U+257F),
+   all Block Elements (U+2580-U+259F), all Braille (U+2800-U+28FF),
+   Geometric Shapes, Misc Symbols, Dingbats, Mathematical Operators. */
 var CN = (function() {
   var T = {};
-  function add(o) { for (var k in o) T[+k] = o[k]; }
+  function a(o) { for (var k in o) T[+k] = o[k]; }
 
-  // Basic Latin (U+0000–U+007F)
-  add({
-    0x0000:"NULL",0x0001:"START OF HEADING",0x0002:"START OF TEXT",0x0003:"END OF TEXT",
-    0x0004:"END OF TRANSMISSION",0x0005:"ENQUIRY",0x0006:"ACKNOWLEDGE",0x0007:"ALERT",
-    0x0008:"BACKSPACE",0x0009:"CHARACTER TABULATION",0x000A:"LINE FEED (LF)",
-    0x000B:"LINE TABULATION",0x000C:"FORM FEED (FF)",0x000D:"CARRIAGE RETURN (CR)",
-    0x000E:"SHIFT OUT",0x000F:"SHIFT IN",0x0010:"DATA LINK ESCAPE",
-    0x0011:"DEVICE CONTROL ONE",0x0012:"DEVICE CONTROL TWO",0x0013:"DEVICE CONTROL THREE",
-    0x0014:"DEVICE CONTROL FOUR",0x0015:"NEGATIVE ACKNOWLEDGE",0x0016:"SYNCHRONOUS IDLE",
-    0x0017:"END OF TRANSMISSION BLOCK",0x0018:"CANCEL",0x0019:"END OF MEDIUM",
-    0x001A:"SUBSTITUTE",0x001B:"ESCAPE",0x001C:"INFORMATION SEPARATOR FOUR",
-    0x001D:"INFORMATION SEPARATOR THREE",0x001E:"INFORMATION SEPARATOR TWO",
-    0x001F:"INFORMATION SEPARATOR ONE",0x0020:"SPACE",0x0021:"EXCLAMATION MARK",
-    0x0022:"QUOTATION MARK",0x0023:"NUMBER SIGN",0x0024:"DOLLAR SIGN",
-    0x0025:"PERCENT SIGN",0x0026:"AMPERSAND",0x0027:"APOSTROPHE",
-    0x0028:"LEFT PARENTHESIS",0x0029:"RIGHT PARENTHESIS",0x002A:"ASTERISK",
-    0x002B:"PLUS SIGN",0x002C:"COMMA",0x002D:"HYPHEN-MINUS",0x002E:"FULL STOP",
-    0x002F:"SOLIDUS",0x0030:"DIGIT ZERO",0x0031:"DIGIT ONE",0x0032:"DIGIT TWO",
-    0x0033:"DIGIT THREE",0x0034:"DIGIT FOUR",0x0035:"DIGIT FIVE",0x0036:"DIGIT SIX",
-    0x0037:"DIGIT SEVEN",0x0038:"DIGIT EIGHT",0x0039:"DIGIT NINE",0x003A:"COLON",
-    0x003B:"SEMICOLON",0x003C:"LESS-THAN SIGN",0x003D:"EQUALS SIGN",
-    0x003E:"GREATER-THAN SIGN",0x003F:"QUESTION MARK",0x0040:"COMMERCIAL AT",
-    0x0041:"LATIN CAPITAL LETTER A",0x0042:"LATIN CAPITAL LETTER B",
-    0x0043:"LATIN CAPITAL LETTER C",0x0044:"LATIN CAPITAL LETTER D",
-    0x0045:"LATIN CAPITAL LETTER E",0x0046:"LATIN CAPITAL LETTER F",
-    0x0047:"LATIN CAPITAL LETTER G",0x0048:"LATIN CAPITAL LETTER H",
-    0x0049:"LATIN CAPITAL LETTER I",0x004A:"LATIN CAPITAL LETTER J",
-    0x004B:"LATIN CAPITAL LETTER K",0x004C:"LATIN CAPITAL LETTER L",
-    0x004D:"LATIN CAPITAL LETTER M",0x004E:"LATIN CAPITAL LETTER N",
-    0x004F:"LATIN CAPITAL LETTER O",0x0050:"LATIN CAPITAL LETTER P",
-    0x0051:"LATIN CAPITAL LETTER Q",0x0052:"LATIN CAPITAL LETTER R",
-    0x0053:"LATIN CAPITAL LETTER S",0x0054:"LATIN CAPITAL LETTER T",
-    0x0055:"LATIN CAPITAL LETTER U",0x0056:"LATIN CAPITAL LETTER V",
-    0x0057:"LATIN CAPITAL LETTER W",0x0058:"LATIN CAPITAL LETTER X",
-    0x0059:"LATIN CAPITAL LETTER Y",0x005A:"LATIN CAPITAL LETTER Z",
-    0x005B:"LEFT SQUARE BRACKET",0x005C:"REVERSE SOLIDUS",0x005D:"RIGHT SQUARE BRACKET",
-    0x005E:"CIRCUMFLEX ACCENT",0x005F:"LOW LINE",0x0060:"GRAVE ACCENT",
-    0x0061:"LATIN SMALL LETTER A",0x0062:"LATIN SMALL LETTER B",0x0063:"LATIN SMALL LETTER C",
-    0x0064:"LATIN SMALL LETTER D",0x0065:"LATIN SMALL LETTER E",0x0066:"LATIN SMALL LETTER F",
-    0x0067:"LATIN SMALL LETTER G",0x0068:"LATIN SMALL LETTER H",0x0069:"LATIN SMALL LETTER I",
-    0x006A:"LATIN SMALL LETTER J",0x006B:"LATIN SMALL LETTER K",0x006C:"LATIN SMALL LETTER L",
-    0x006D:"LATIN SMALL LETTER M",0x006E:"LATIN SMALL LETTER N",0x006F:"LATIN SMALL LETTER O",
-    0x0070:"LATIN SMALL LETTER P",0x0071:"LATIN SMALL LETTER Q",0x0072:"LATIN SMALL LETTER R",
-    0x0073:"LATIN SMALL LETTER S",0x0074:"LATIN SMALL LETTER T",0x0075:"LATIN SMALL LETTER U",
-    0x0076:"LATIN SMALL LETTER V",0x0077:"LATIN SMALL LETTER W",0x0078:"LATIN SMALL LETTER X",
-    0x0079:"LATIN SMALL LETTER Y",0x007A:"LATIN SMALL LETTER Z",
-    0x007B:"LEFT CURLY BRACKET",0x007C:"VERTICAL LINE",0x007D:"RIGHT CURLY BRACKET",
-    0x007E:"TILDE",0x007F:"DELETE"
-  });
+  a({0x0000:"NULL",0x0001:"START OF HEADING",0x0002:"START OF TEXT",0x0003:"END OF TEXT",0x0004:"END OF TRANSMISSION",0x0005:"ENQUIRY",0x0006:"ACKNOWLEDGE",0x0007:"ALERT",0x0008:"BACKSPACE",0x0009:"CHARACTER TABULATION",0x000A:"LINE FEED (LF)",0x000B:"LINE TABULATION",0x000C:"FORM FEED (FF)",0x000D:"CARRIAGE RETURN (CR)",0x000E:"SHIFT OUT",0x000F:"SHIFT IN",0x0010:"DATA LINK ESCAPE",0x0011:"DEVICE CONTROL ONE",0x0012:"DEVICE CONTROL TWO",0x0013:"DEVICE CONTROL THREE",0x0014:"DEVICE CONTROL FOUR",0x0015:"NEGATIVE ACKNOWLEDGE",0x0016:"SYNCHRONOUS IDLE",0x0017:"END OF TRANSMISSION BLOCK",0x0018:"CANCEL",0x0019:"END OF MEDIUM",0x001A:"SUBSTITUTE",0x001B:"ESCAPE",0x001C:"INFORMATION SEPARATOR FOUR",0x001D:"INFORMATION SEPARATOR THREE",0x001E:"INFORMATION SEPARATOR TWO",0x001F:"INFORMATION SEPARATOR ONE",0x0020:"SPACE",0x0021:"EXCLAMATION MARK",0x0022:"QUOTATION MARK",0x0023:"NUMBER SIGN",0x0024:"DOLLAR SIGN",0x0025:"PERCENT SIGN",0x0026:"AMPERSAND",0x0027:"APOSTROPHE",0x0028:"LEFT PARENTHESIS",0x0029:"RIGHT PARENTHESIS",0x002A:"ASTERISK",0x002B:"PLUS SIGN",0x002C:"COMMA",0x002D:"HYPHEN-MINUS",0x002E:"FULL STOP",0x002F:"SOLIDUS",0x0030:"DIGIT ZERO",0x0031:"DIGIT ONE",0x0032:"DIGIT TWO",0x0033:"DIGIT THREE",0x0034:"DIGIT FOUR",0x0035:"DIGIT FIVE",0x0036:"DIGIT SIX",0x0037:"DIGIT SEVEN",0x0038:"DIGIT EIGHT",0x0039:"DIGIT NINE",0x003A:"COLON",0x003B:"SEMICOLON",0x003C:"LESS-THAN SIGN",0x003D:"EQUALS SIGN",0x003E:"GREATER-THAN SIGN",0x003F:"QUESTION MARK",0x0040:"COMMERCIAL AT",0x0041:"LATIN CAPITAL LETTER A",0x0042:"LATIN CAPITAL LETTER B",0x0043:"LATIN CAPITAL LETTER C",0x0044:"LATIN CAPITAL LETTER D",0x0045:"LATIN CAPITAL LETTER E",0x0046:"LATIN CAPITAL LETTER F",0x0047:"LATIN CAPITAL LETTER G",0x0048:"LATIN CAPITAL LETTER H",0x0049:"LATIN CAPITAL LETTER I",0x004A:"LATIN CAPITAL LETTER J",0x004B:"LATIN CAPITAL LETTER K",0x004C:"LATIN CAPITAL LETTER L",0x004D:"LATIN CAPITAL LETTER M",0x004E:"LATIN CAPITAL LETTER N",0x004F:"LATIN CAPITAL LETTER O",0x0050:"LATIN CAPITAL LETTER P",0x0051:"LATIN CAPITAL LETTER Q",0x0052:"LATIN CAPITAL LETTER R",0x0053:"LATIN CAPITAL LETTER S",0x0054:"LATIN CAPITAL LETTER T",0x0055:"LATIN CAPITAL LETTER U",0x0056:"LATIN CAPITAL LETTER V",0x0057:"LATIN CAPITAL LETTER W",0x0058:"LATIN CAPITAL LETTER X",0x0059:"LATIN CAPITAL LETTER Y",0x005A:"LATIN CAPITAL LETTER Z",0x005B:"LEFT SQUARE BRACKET",0x005C:"REVERSE SOLIDUS",0x005D:"RIGHT SQUARE BRACKET",0x005E:"CIRCUMFLEX ACCENT",0x005F:"LOW LINE",0x0060:"GRAVE ACCENT",0x0061:"LATIN SMALL LETTER A",0x0062:"LATIN SMALL LETTER B",0x0063:"LATIN SMALL LETTER C",0x0064:"LATIN SMALL LETTER D",0x0065:"LATIN SMALL LETTER E",0x0066:"LATIN SMALL LETTER F",0x0067:"LATIN SMALL LETTER G",0x0068:"LATIN SMALL LETTER H",0x0069:"LATIN SMALL LETTER I",0x006A:"LATIN SMALL LETTER J",0x006B:"LATIN SMALL LETTER K",0x006C:"LATIN SMALL LETTER L",0x006D:"LATIN SMALL LETTER M",0x006E:"LATIN SMALL LETTER N",0x006F:"LATIN SMALL LETTER O",0x0070:"LATIN SMALL LETTER P",0x0071:"LATIN SMALL LETTER Q",0x0072:"LATIN SMALL LETTER R",0x0073:"LATIN SMALL LETTER S",0x0074:"LATIN SMALL LETTER T",0x0075:"LATIN SMALL LETTER U",0x0076:"LATIN SMALL LETTER V",0x0077:"LATIN SMALL LETTER W",0x0078:"LATIN SMALL LETTER X",0x0079:"LATIN SMALL LETTER Y",0x007A:"LATIN SMALL LETTER Z",0x007B:"LEFT CURLY BRACKET",0x007C:"VERTICAL LINE",0x007D:"RIGHT CURLY BRACKET",0x007E:"TILDE",0x007F:"DELETE"});
 
-  // Latin-1 Supplement (U+0080–U+00FF)
-  add({
-    0x0080:"<PADDING CHARACTER>",0x0081:"<HIGH OCTET PRESET>",
-    0x0082:"BREAK PERMITTED HERE",0x0083:"NO BREAK HERE",0x0084:"<INDEX>",
-    0x0085:"NEXT LINE (NEL)",0x0086:"START OF SELECTED AREA",0x0087:"END OF SELECTED AREA",
-    0x0088:"CHARACTER TABULATION SET",0x0089:"CHARACTER TABULATION WITH JUSTIFICATION",
-    0x008A:"LINE TABULATION SET",0x008B:"PARTIAL LINE FORWARD",
-    0x008C:"PARTIAL LINE BACKWARD",0x008D:"REVERSE LINE FEED",
-    0x008E:"SINGLE SHIFT TWO",0x008F:"SINGLE SHIFT THREE",
-    0x0090:"DEVICE CONTROL STRING",0x0091:"PRIVATE USE ONE",0x0092:"PRIVATE USE TWO",
-    0x0093:"SET TRANSMIT STATE",0x0094:"CANCEL CHARACTER",0x0095:"MESSAGE WAITING",
-    0x0096:"START OF GUARDED AREA",0x0097:"END OF GUARDED AREA",
-    0x0098:"START OF STRING",0x0099:"<SINGLE GRAPHIC CHARACTER INTRODUCER>",
-    0x009A:"SINGLE CHARACTER INTRODUCER",0x009B:"CONTROL SEQUENCE INTRODUCER",
-    0x009C:"STRING TERMINATOR",0x009D:"OPERATING SYSTEM COMMAND",
-    0x009E:"PRIVACY MESSAGE",0x009F:"APPLICATION PROGRAM COMMAND",
-    0x00A0:"NO-BREAK SPACE",0x00A1:"INVERTED EXCLAMATION MARK",
-    0x00A2:"CENT SIGN",0x00A3:"POUND SIGN",0x00A4:"CURRENCY SIGN",0x00A5:"YEN SIGN",
-    0x00A6:"BROKEN BAR",0x00A7:"SECTION SIGN",0x00A8:"DIAERESIS",
-    0x00A9:"COPYRIGHT SIGN",0x00AA:"FEMININE ORDINAL INDICATOR",
-    0x00AB:"LEFT-POINTING DOUBLE ANGLE QUOTATION MARK",0x00AC:"NOT SIGN",
-    0x00AD:"SOFT HYPHEN",0x00AE:"REGISTERED SIGN",0x00AF:"MACRON",
-    0x00B0:"DEGREE SIGN",0x00B1:"PLUS-MINUS SIGN",0x00B2:"SUPERSCRIPT TWO",
-    0x00B3:"SUPERSCRIPT THREE",0x00B4:"ACUTE ACCENT",0x00B5:"MICRO SIGN",
-    0x00B6:"PILCROW SIGN",0x00B7:"MIDDLE DOT",0x00B8:"CEDILLA",
-    0x00B9:"SUPERSCRIPT ONE",0x00BA:"MASCULINE ORDINAL INDICATOR",
-    0x00BB:"RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK",
-    0x00BC:"VULGAR FRACTION ONE QUARTER",0x00BD:"VULGAR FRACTION ONE HALF",
-    0x00BE:"VULGAR FRACTION THREE QUARTERS",0x00BF:"INVERTED QUESTION MARK",
-    0x00C0:"LATIN CAPITAL LETTER A WITH GRAVE",0x00C1:"LATIN CAPITAL LETTER A WITH ACUTE",
-    0x00C2:"LATIN CAPITAL LETTER A WITH CIRCUMFLEX",0x00C3:"LATIN CAPITAL LETTER A WITH TILDE",
-    0x00C4:"LATIN CAPITAL LETTER A WITH DIAERESIS",0x00C5:"LATIN CAPITAL LETTER A WITH RING ABOVE",
-    0x00C6:"LATIN CAPITAL LETTER AE",0x00C7:"LATIN CAPITAL LETTER C WITH CEDILLA",
-    0x00C8:"LATIN CAPITAL LETTER E WITH GRAVE",0x00C9:"LATIN CAPITAL LETTER E WITH ACUTE",
-    0x00CA:"LATIN CAPITAL LETTER E WITH CIRCUMFLEX",0x00CB:"LATIN CAPITAL LETTER E WITH DIAERESIS",
-    0x00CC:"LATIN CAPITAL LETTER I WITH GRAVE",0x00CD:"LATIN CAPITAL LETTER I WITH ACUTE",
-    0x00CE:"LATIN CAPITAL LETTER I WITH CIRCUMFLEX",0x00CF:"LATIN CAPITAL LETTER I WITH DIAERESIS",
-    0x00D0:"LATIN CAPITAL LETTER ETH",0x00D1:"LATIN CAPITAL LETTER N WITH TILDE",
-    0x00D2:"LATIN CAPITAL LETTER O WITH GRAVE",0x00D3:"LATIN CAPITAL LETTER O WITH ACUTE",
-    0x00D4:"LATIN CAPITAL LETTER O WITH CIRCUMFLEX",0x00D5:"LATIN CAPITAL LETTER O WITH TILDE",
-    0x00D6:"LATIN CAPITAL LETTER O WITH DIAERESIS",0x00D7:"MULTIPLICATION SIGN",
-    0x00D8:"LATIN CAPITAL LETTER O WITH STROKE",0x00D9:"LATIN CAPITAL LETTER U WITH GRAVE",
-    0x00DA:"LATIN CAPITAL LETTER U WITH ACUTE",0x00DB:"LATIN CAPITAL LETTER U WITH CIRCUMFLEX",
-    0x00DC:"LATIN CAPITAL LETTER U WITH DIAERESIS",0x00DD:"LATIN CAPITAL LETTER Y WITH ACUTE",
-    0x00DE:"LATIN CAPITAL LETTER THORN",0x00DF:"LATIN SMALL LETTER SHARP S",
-    0x00E0:"LATIN SMALL LETTER A WITH GRAVE",0x00E1:"LATIN SMALL LETTER A WITH ACUTE",
-    0x00E2:"LATIN SMALL LETTER A WITH CIRCUMFLEX",0x00E3:"LATIN SMALL LETTER A WITH TILDE",
-    0x00E4:"LATIN SMALL LETTER A WITH DIAERESIS",0x00E5:"LATIN SMALL LETTER A WITH RING ABOVE",
-    0x00E6:"LATIN SMALL LETTER AE",0x00E7:"LATIN SMALL LETTER C WITH CEDILLA",
-    0x00E8:"LATIN SMALL LETTER E WITH GRAVE",0x00E9:"LATIN SMALL LETTER E WITH ACUTE",
-    0x00EA:"LATIN SMALL LETTER E WITH CIRCUMFLEX",0x00EB:"LATIN SMALL LETTER E WITH DIAERESIS",
-    0x00EC:"LATIN SMALL LETTER I WITH GRAVE",0x00ED:"LATIN SMALL LETTER I WITH ACUTE",
-    0x00EE:"LATIN SMALL LETTER I WITH CIRCUMFLEX",0x00EF:"LATIN SMALL LETTER I WITH DIAERESIS",
-    0x00F0:"LATIN SMALL LETTER ETH",0x00F1:"LATIN SMALL LETTER N WITH TILDE",
-    0x00F2:"LATIN SMALL LETTER O WITH GRAVE",0x00F3:"LATIN SMALL LETTER O WITH ACUTE",
-    0x00F4:"LATIN SMALL LETTER O WITH CIRCUMFLEX",0x00F5:"LATIN SMALL LETTER O WITH TILDE",
-    0x00F6:"LATIN SMALL LETTER O WITH DIAERESIS",0x00F7:"DIVISION SIGN",
-    0x00F8:"LATIN SMALL LETTER O WITH STROKE",0x00F9:"LATIN SMALL LETTER U WITH GRAVE",
-    0x00FA:"LATIN SMALL LETTER U WITH ACUTE",0x00FB:"LATIN SMALL LETTER U WITH CIRCUMFLEX",
-    0x00FC:"LATIN SMALL LETTER U WITH DIAERESIS",0x00FD:"LATIN SMALL LETTER Y WITH ACUTE",
-    0x00FE:"LATIN SMALL LETTER THORN",0x00FF:"LATIN SMALL LETTER Y WITH DIAERESIS"
-  });
+  a({0x0080:"<PADDING CHARACTER>",0x0081:"<HIGH OCTET PRESET>",0x0082:"BREAK PERMITTED HERE",0x0083:"NO BREAK HERE",0x0084:"<INDEX>",0x0085:"NEXT LINE (NEL)",0x0086:"START OF SELECTED AREA",0x0087:"END OF SELECTED AREA",0x0088:"CHARACTER TABULATION SET",0x0089:"CHARACTER TABULATION WITH JUSTIFICATION",0x008A:"LINE TABULATION SET",0x008B:"PARTIAL LINE FORWARD",0x008C:"PARTIAL LINE BACKWARD",0x008D:"REVERSE LINE FEED",0x008E:"SINGLE SHIFT TWO",0x008F:"SINGLE SHIFT THREE",0x0090:"DEVICE CONTROL STRING",0x0091:"PRIVATE USE ONE",0x0092:"PRIVATE USE TWO",0x0093:"SET TRANSMIT STATE",0x0094:"CANCEL CHARACTER",0x0095:"MESSAGE WAITING",0x0096:"START OF GUARDED AREA",0x0097:"END OF GUARDED AREA",0x0098:"START OF STRING",0x0099:"<SINGLE GRAPHIC CHARACTER INTRODUCER>",0x009A:"SINGLE CHARACTER INTRODUCER",0x009B:"CONTROL SEQUENCE INTRODUCER",0x009C:"STRING TERMINATOR",0x009D:"OPERATING SYSTEM COMMAND",0x009E:"PRIVACY MESSAGE",0x009F:"APPLICATION PROGRAM COMMAND",0x00A0:"NO-BREAK SPACE",0x00A1:"INVERTED EXCLAMATION MARK",0x00A2:"CENT SIGN",0x00A3:"POUND SIGN",0x00A4:"CURRENCY SIGN",0x00A5:"YEN SIGN",0x00A6:"BROKEN BAR",0x00A7:"SECTION SIGN",0x00A8:"DIAERESIS",0x00A9:"COPYRIGHT SIGN",0x00AA:"FEMININE ORDINAL INDICATOR",0x00AB:"LEFT-POINTING DOUBLE ANGLE QUOTATION MARK",0x00AC:"NOT SIGN",0x00AD:"SOFT HYPHEN",0x00AE:"REGISTERED SIGN",0x00AF:"MACRON",0x00B0:"DEGREE SIGN",0x00B1:"PLUS-MINUS SIGN",0x00B2:"SUPERSCRIPT TWO",0x00B3:"SUPERSCRIPT THREE",0x00B4:"ACUTE ACCENT",0x00B5:"MICRO SIGN",0x00B6:"PILCROW SIGN",0x00B7:"MIDDLE DOT",0x00B8:"CEDILLA",0x00B9:"SUPERSCRIPT ONE",0x00BA:"MASCULINE ORDINAL INDICATOR",0x00BB:"RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK",0x00BC:"VULGAR FRACTION ONE QUARTER",0x00BD:"VULGAR FRACTION ONE HALF",0x00BE:"VULGAR FRACTION THREE QUARTERS",0x00BF:"INVERTED QUESTION MARK",0x00C0:"LATIN CAPITAL LETTER A WITH GRAVE",0x00C1:"LATIN CAPITAL LETTER A WITH ACUTE",0x00C2:"LATIN CAPITAL LETTER A WITH CIRCUMFLEX",0x00C3:"LATIN CAPITAL LETTER A WITH TILDE",0x00C4:"LATIN CAPITAL LETTER A WITH DIAERESIS",0x00C5:"LATIN CAPITAL LETTER A WITH RING ABOVE",0x00C6:"LATIN CAPITAL LETTER AE",0x00C7:"LATIN CAPITAL LETTER C WITH CEDILLA",0x00C8:"LATIN CAPITAL LETTER E WITH GRAVE",0x00C9:"LATIN CAPITAL LETTER E WITH ACUTE",0x00CA:"LATIN CAPITAL LETTER E WITH CIRCUMFLEX",0x00CB:"LATIN CAPITAL LETTER E WITH DIAERESIS",0x00CC:"LATIN CAPITAL LETTER I WITH GRAVE",0x00CD:"LATIN CAPITAL LETTER I WITH ACUTE",0x00CE:"LATIN CAPITAL LETTER I WITH CIRCUMFLEX",0x00CF:"LATIN CAPITAL LETTER I WITH DIAERESIS",0x00D0:"LATIN CAPITAL LETTER ETH",0x00D1:"LATIN CAPITAL LETTER N WITH TILDE",0x00D2:"LATIN CAPITAL LETTER O WITH GRAVE",0x00D3:"LATIN CAPITAL LETTER O WITH ACUTE",0x00D4:"LATIN CAPITAL LETTER O WITH CIRCUMFLEX",0x00D5:"LATIN CAPITAL LETTER O WITH TILDE",0x00D6:"LATIN CAPITAL LETTER O WITH DIAERESIS",0x00D7:"MULTIPLICATION SIGN",0x00D8:"LATIN CAPITAL LETTER O WITH STROKE",0x00D9:"LATIN CAPITAL LETTER U WITH GRAVE",0x00DA:"LATIN CAPITAL LETTER U WITH ACUTE",0x00DB:"LATIN CAPITAL LETTER U WITH CIRCUMFLEX",0x00DC:"LATIN CAPITAL LETTER U WITH DIAERESIS",0x00DD:"LATIN CAPITAL LETTER Y WITH ACUTE",0x00DE:"LATIN CAPITAL LETTER THORN",0x00DF:"LATIN SMALL LETTER SHARP S",0x00E0:"LATIN SMALL LETTER A WITH GRAVE",0x00E1:"LATIN SMALL LETTER A WITH ACUTE",0x00E2:"LATIN SMALL LETTER A WITH CIRCUMFLEX",0x00E3:"LATIN SMALL LETTER A WITH TILDE",0x00E4:"LATIN SMALL LETTER A WITH DIAERESIS",0x00E5:"LATIN SMALL LETTER A WITH RING ABOVE",0x00E6:"LATIN SMALL LETTER AE",0x00E7:"LATIN SMALL LETTER C WITH CEDILLA",0x00E8:"LATIN SMALL LETTER E WITH GRAVE",0x00E9:"LATIN SMALL LETTER E WITH ACUTE",0x00EA:"LATIN SMALL LETTER E WITH CIRCUMFLEX",0x00EB:"LATIN SMALL LETTER E WITH DIAERESIS",0x00EC:"LATIN SMALL LETTER I WITH GRAVE",0x00ED:"LATIN SMALL LETTER I WITH ACUTE",0x00EE:"LATIN SMALL LETTER I WITH CIRCUMFLEX",0x00EF:"LATIN SMALL LETTER I WITH DIAERESIS",0x00F0:"LATIN SMALL LETTER ETH",0x00F1:"LATIN SMALL LETTER N WITH TILDE",0x00F2:"LATIN SMALL LETTER O WITH GRAVE",0x00F3:"LATIN SMALL LETTER O WITH ACUTE",0x00F4:"LATIN SMALL LETTER O WITH CIRCUMFLEX",0x00F5:"LATIN SMALL LETTER O WITH TILDE",0x00F6:"LATIN SMALL LETTER O WITH DIAERESIS",0x00F7:"DIVISION SIGN",0x00F8:"LATIN SMALL LETTER O WITH STROKE",0x00F9:"LATIN SMALL LETTER U WITH GRAVE",0x00FA:"LATIN SMALL LETTER U WITH ACUTE",0x00FB:"LATIN SMALL LETTER U WITH CIRCUMFLEX",0x00FC:"LATIN SMALL LETTER U WITH DIAERESIS",0x00FD:"LATIN SMALL LETTER Y WITH ACUTE",0x00FE:"LATIN SMALL LETTER THORN",0x00FF:"LATIN SMALL LETTER Y WITH DIAERESIS"});
 
-  // General Punctuation (U+2000–U+206F) — selected
-  add({
-    0x2000:"EN QUAD",0x2001:"EM QUAD",0x2002:"EN SPACE",0x2003:"EM SPACE",
-    0x2004:"THREE-PER-EM SPACE",0x2005:"FOUR-PER-EM SPACE",0x2006:"SIX-PER-EM SPACE",
-    0x2007:"FIGURE SPACE",0x2008:"PUNCTUATION SPACE",0x2009:"THIN SPACE",
-    0x200A:"HAIR SPACE",0x200B:"ZERO WIDTH SPACE",0x200C:"ZERO WIDTH NON-JOINER",
-    0x200D:"ZERO WIDTH JOINER",0x200E:"LEFT-TO-RIGHT MARK",0x200F:"RIGHT-TO-LEFT MARK",
-    0x2010:"HYPHEN",0x2011:"NON-BREAKING HYPHEN",0x2012:"FIGURE DASH",
-    0x2013:"EN DASH",0x2014:"EM DASH",0x2015:"HORIZONTAL BAR",
-    0x2016:"DOUBLE VERTICAL LINE",0x2017:"DOUBLE LOW LINE",
-    0x2018:"LEFT SINGLE QUOTATION MARK",0x2019:"RIGHT SINGLE QUOTATION MARK",
-    0x201A:"SINGLE LOW-9 QUOTATION MARK",0x201B:"SINGLE HIGH-REVERSED-9 QUOTATION MARK",
-    0x201C:"LEFT DOUBLE QUOTATION MARK",0x201D:"RIGHT DOUBLE QUOTATION MARK",
-    0x201E:"DOUBLE LOW-9 QUOTATION MARK",0x201F:"DOUBLE HIGH-REVERSED-9 QUOTATION MARK",
-    0x2020:"DAGGER",0x2021:"DOUBLE DAGGER",0x2022:"BULLET",
-    0x2023:"TRIANGULAR BULLET",0x2024:"ONE DOT LEADER",0x2025:"TWO DOT LEADER",
-    0x2026:"HORIZONTAL ELLIPSIS",0x2027:"HYPHENATION POINT",0x2028:"LINE SEPARATOR",
-    0x2029:"PARAGRAPH SEPARATOR",0x202A:"LEFT-TO-RIGHT EMBEDDING",
-    0x202B:"RIGHT-TO-LEFT EMBEDDING",0x202C:"POP DIRECTIONAL FORMATTING",
-    0x202D:"LEFT-TO-RIGHT OVERRIDE",0x202E:"RIGHT-TO-LEFT OVERRIDE",
-    0x202F:"NARROW NO-BREAK SPACE",0x2030:"PER MILLE SIGN",0x2031:"PER TEN THOUSAND SIGN",
-    0x2032:"PRIME",0x2033:"DOUBLE PRIME",0x2034:"TRIPLE PRIME",
-    0x2035:"REVERSED PRIME",0x2039:"SINGLE LEFT-POINTING ANGLE QUOTATION MARK",
-    0x203A:"SINGLE RIGHT-POINTING ANGLE QUOTATION MARK",0x203B:"REFERENCE MARK",
-    0x203C:"DOUBLE EXCLAMATION MARK",0x203D:"INTERROBANG",0x2044:"FRACTION SLASH",
-    0x2047:"DOUBLE QUESTION MARK",0x2048:"QUESTION EXCLAMATION MARK",
-    0x2049:"EXCLAMATION QUESTION MARK",0x204B:"REVERSED PILCROW SIGN",
-    0x2050:"CLOSE UP",0x2051:"TWO ASTERISKS ALIGNED VERTICALLY",
-    0x2060:"WORD JOINER",0x2061:"FUNCTION APPLICATION",
-    0x2062:"INVISIBLE TIMES",0x2063:"INVISIBLE SEPARATOR",0x2064:"INVISIBLE PLUS"
-  });
+  a({0x2000:"EN QUAD",0x2001:"EM QUAD",0x2002:"EN SPACE",0x2003:"EM SPACE",0x2004:"THREE-PER-EM SPACE",0x2005:"FOUR-PER-EM SPACE",0x2006:"SIX-PER-EM SPACE",0x2007:"FIGURE SPACE",0x2008:"PUNCTUATION SPACE",0x2009:"THIN SPACE",0x200A:"HAIR SPACE",0x200B:"ZERO WIDTH SPACE",0x200C:"ZERO WIDTH NON-JOINER",0x200D:"ZERO WIDTH JOINER",0x200E:"LEFT-TO-RIGHT MARK",0x200F:"RIGHT-TO-LEFT MARK",0x2010:"HYPHEN",0x2011:"NON-BREAKING HYPHEN",0x2012:"FIGURE DASH",0x2013:"EN DASH",0x2014:"EM DASH",0x2015:"HORIZONTAL BAR",0x2016:"DOUBLE VERTICAL LINE",0x2017:"DOUBLE LOW LINE",0x2018:"LEFT SINGLE QUOTATION MARK",0x2019:"RIGHT SINGLE QUOTATION MARK",0x201A:"SINGLE LOW-9 QUOTATION MARK",0x201B:"SINGLE HIGH-REVERSED-9 QUOTATION MARK",0x201C:"LEFT DOUBLE QUOTATION MARK",0x201D:"RIGHT DOUBLE QUOTATION MARK",0x201E:"DOUBLE LOW-9 QUOTATION MARK",0x201F:"DOUBLE HIGH-REVERSED-9 QUOTATION MARK",0x2020:"DAGGER",0x2021:"DOUBLE DAGGER",0x2022:"BULLET",0x2023:"TRIANGULAR BULLET",0x2024:"ONE DOT LEADER",0x2025:"TWO DOT LEADER",0x2026:"HORIZONTAL ELLIPSIS",0x2027:"HYPHENATION POINT",0x2028:"LINE SEPARATOR",0x2029:"PARAGRAPH SEPARATOR",0x202A:"LEFT-TO-RIGHT EMBEDDING",0x202B:"RIGHT-TO-LEFT EMBEDDING",0x202C:"POP DIRECTIONAL FORMATTING",0x202D:"LEFT-TO-RIGHT OVERRIDE",0x202E:"RIGHT-TO-LEFT OVERRIDE",0x202F:"NARROW NO-BREAK SPACE",0x2030:"PER MILLE SIGN",0x2031:"PER TEN THOUSAND SIGN",0x2032:"PRIME",0x2033:"DOUBLE PRIME",0x2034:"TRIPLE PRIME",0x2035:"REVERSED PRIME",0x2039:"SINGLE LEFT-POINTING ANGLE QUOTATION MARK",0x203A:"SINGLE RIGHT-POINTING ANGLE QUOTATION MARK",0x203B:"REFERENCE MARK",0x203C:"DOUBLE EXCLAMATION MARK",0x203D:"INTERROBANG",0x2044:"FRACTION SLASH",0x2047:"DOUBLE QUESTION MARK",0x2048:"QUESTION EXCLAMATION MARK",0x2049:"EXCLAMATION QUESTION MARK",0x2060:"WORD JOINER",0x2061:"FUNCTION APPLICATION",0x2062:"INVISIBLE TIMES",0x2063:"INVISIBLE SEPARATOR",0x2064:"INVISIBLE PLUS"});
 
-  // Currency Symbols (U+20A0–U+20CF)
-  add({
-    0x20A0:"EURO-CURRENCY SIGN",0x20A1:"COLON SIGN",0x20A2:"CRUZEIRO SIGN",
-    0x20A3:"FRENCH FRANC SIGN",0x20A4:"LIRA SIGN",0x20A5:"MILL SIGN",
-    0x20A6:"NAIRA SIGN",0x20A7:"PESETA SIGN",0x20A8:"RUPEE SIGN",
-    0x20A9:"WON SIGN",0x20AA:"NEW SHEQEL SIGN",0x20AB:"DONG SIGN",
-    0x20AC:"EURO SIGN",0x20AD:"KIP SIGN",0x20AE:"TUGRIK SIGN",
-    0x20AF:"DRACHMA SIGN",0x20B0:"GERMAN PENNY SIGN",0x20B1:"PESO SIGN",
-    0x20B2:"GUARANI SIGN",0x20B3:"AUSTRAL SIGN",0x20B4:"HRYVNIA SIGN",
-    0x20B5:"CEDI SIGN",0x20B6:"LIVRE TOURNOIS SIGN",0x20B7:"SPESMILO SIGN",
-    0x20B8:"TENGE SIGN",0x20B9:"INDIAN RUPEE SIGN",0x20BA:"TURKISH LIRA SIGN",
-    0x20BB:"NORDIC MARK SIGN",0x20BC:"MANAT SIGN",0x20BD:"RUBLE SIGN",
-    0x20BE:"LARI SIGN",0x20BF:"BITCOIN SIGN",0x20C0:"SOM SIGN"
-  });
+  a({0x20A0:"EURO-CURRENCY SIGN",0x20A1:"COLON SIGN",0x20A2:"CRUZEIRO SIGN",0x20A3:"FRENCH FRANC SIGN",0x20A4:"LIRA SIGN",0x20A5:"MILL SIGN",0x20A6:"NAIRA SIGN",0x20A7:"PESETA SIGN",0x20A8:"RUPEE SIGN",0x20A9:"WON SIGN",0x20AA:"NEW SHEQEL SIGN",0x20AB:"DONG SIGN",0x20AC:"EURO SIGN",0x20AD:"KIP SIGN",0x20AE:"TUGRIK SIGN",0x20AF:"DRACHMA SIGN",0x20B0:"GERMAN PENNY SIGN",0x20B1:"PESO SIGN",0x20B2:"GUARANI SIGN",0x20B3:"AUSTRAL SIGN",0x20B4:"HRYVNIA SIGN",0x20B5:"CEDI SIGN",0x20B6:"LIVRE TOURNOIS SIGN",0x20B7:"SPESMILO SIGN",0x20B8:"TENGE SIGN",0x20B9:"INDIAN RUPEE SIGN",0x20BA:"TURKISH LIRA SIGN",0x20BB:"NORDIC MARK SIGN",0x20BC:"MANAT SIGN",0x20BD:"RUBLE SIGN",0x20BE:"LARI SIGN",0x20BF:"BITCOIN SIGN",0x20C0:"SOM SIGN"});
 
-  // Letterlike Symbols (U+2100–U+214F) — selected
-  add({
-    0x2100:"ACCOUNT OF",0x2101:"ADDRESSED TO THE SUBJECT",0x2102:"DOUBLE-STRUCK CAPITAL C",
-    0x2103:"DEGREE CELSIUS",0x2104:"CENTRE LINE SYMBOL",0x2105:"CARE OF",
-    0x2106:"CADA UNA",0x2107:"EULER CONSTANT",0x2108:"SCRUPLE",
-    0x2109:"DEGREE FAHRENHEIT",0x210A:"SCRIPT SMALL G",0x210B:"SCRIPT CAPITAL H",
-    0x210C:"BLACK-LETTER CAPITAL H",0x210D:"DOUBLE-STRUCK CAPITAL H",
-    0x210E:"PLANCK CONSTANT",0x210F:"PLANCK CONSTANT OVER TWO PI",
-    0x2110:"SCRIPT CAPITAL I",0x2111:"BLACK-LETTER CAPITAL I",
-    0x2112:"SCRIPT CAPITAL L",0x2113:"SCRIPT SMALL L",0x2114:"L B BAR SYMBOL",
-    0x2115:"DOUBLE-STRUCK CAPITAL N",0x2116:"NUMERO SIGN",0x2117:"SOUND RECORDING COPYRIGHT",
-    0x2118:"SCRIPT CAPITAL P",0x2119:"DOUBLE-STRUCK CAPITAL P",
-    0x211A:"DOUBLE-STRUCK CAPITAL Q",0x211B:"SCRIPT CAPITAL R",
-    0x211C:"BLACK-LETTER CAPITAL R",0x211D:"DOUBLE-STRUCK CAPITAL R",
-    0x211E:"PRESCRIPTION TAKE",0x211F:"RESPONSE",0x2120:"SERVICE MARK",
-    0x2121:"TELEPHONE SIGN",0x2122:"TRADE MARK SIGN",0x2123:"VERSICLE",
-    0x2124:"DOUBLE-STRUCK CAPITAL Z",0x2125:"OUNCE SIGN",0x2126:"OHM SIGN",
-    0x2127:"INVERTED OHM SIGN",0x2128:"BLACK-LETTER CAPITAL Z",
-    0x2129:"TURNED GREEK SMALL LETTER IOTA",0x212A:"KELVIN SIGN",
-    0x212B:"ANGSTROM SIGN",0x212C:"SCRIPT CAPITAL B",0x212D:"BLACK-LETTER CAPITAL C",
-    0x212E:"ESTIMATED SIGN",0x212F:"SCRIPT SMALL E",0x2130:"SCRIPT CAPITAL E",
-    0x2131:"SCRIPT CAPITAL F",0x2132:"TURNED CAPITAL F",0x2133:"SCRIPT CAPITAL M",
-    0x2134:"SCRIPT SMALL O",0x2135:"ALEF SYMBOL",0x2136:"BET SYMBOL",
-    0x2137:"GIMEL SYMBOL",0x2138:"DALET SYMBOL",0x2139:"INFORMATION SOURCE",
-    0x213A:"ROTATED CAPITAL Q",0x213B:"FACSIMILE SIGN",0x213C:"DOUBLE-STRUCK SMALL PI",
-    0x213D:"DOUBLE-STRUCK SMALL GAMMA",0x213E:"DOUBLE-STRUCK CAPITAL GAMMA",
-    0x213F:"DOUBLE-STRUCK CAPITAL PI",0x2140:"DOUBLE-STRUCK N-ARY SUMMATION",
-    0x2141:"TURNED SANS-SERIF CAPITAL G",0x2142:"TURNED SANS-SERIF CAPITAL L",
-    0x2143:"REVERSED SANS-SERIF CAPITAL L",0x2144:"TURNED SANS-SERIF CAPITAL Y",
-    0x2145:"DOUBLE-STRUCK ITALIC CAPITAL D",0x2146:"DOUBLE-STRUCK ITALIC SMALL D",
-    0x2147:"DOUBLE-STRUCK ITALIC SMALL E",0x2148:"DOUBLE-STRUCK ITALIC SMALL I",
-    0x2149:"DOUBLE-STRUCK ITALIC SMALL J",0x214A:"PROPERTY LINE",
-    0x214B:"TURNED AMPERSAND",0x214C:"PER SIGN",0x214D:"AKTIESELSKAB",
-    0x214E:"TURNED SMALL F",0x214F:"SYMBOL FOR SAMARITAN SOURCE"
-  });
+  a({0x2190:"LEFTWARDS ARROW",0x2191:"UPWARDS ARROW",0x2192:"RIGHTWARDS ARROW",0x2193:"DOWNWARDS ARROW",0x2194:"LEFT RIGHT ARROW",0x2195:"UP DOWN ARROW",0x2196:"NORTH WEST ARROW",0x2197:"NORTH EAST ARROW",0x2198:"SOUTH EAST ARROW",0x2199:"SOUTH WEST ARROW",0x219A:"LEFTWARDS ARROW WITH STROKE",0x219B:"RIGHTWARDS ARROW WITH STROKE",0x219C:"LEFTWARDS WAVE ARROW",0x219D:"RIGHTWARDS WAVE ARROW",0x219E:"LEFTWARDS TWO HEADED ARROW",0x219F:"UPWARDS TWO HEADED ARROW",0x21A0:"RIGHTWARDS TWO HEADED ARROW",0x21A1:"DOWNWARDS TWO HEADED ARROW",0x21A2:"LEFTWARDS ARROW WITH TAIL",0x21A3:"RIGHTWARDS ARROW WITH TAIL",0x21A4:"LEFTWARDS ARROW FROM BAR",0x21A5:"UPWARDS ARROW FROM BAR",0x21A6:"RIGHTWARDS ARROW FROM BAR",0x21A7:"DOWNWARDS ARROW FROM BAR",0x21A8:"UP DOWN ARROW WITH BASE",0x21A9:"LEFTWARDS ARROW WITH HOOK",0x21AA:"RIGHTWARDS ARROW WITH HOOK",0x21AB:"LEFTWARDS ARROW WITH LOOP",0x21AC:"RIGHTWARDS ARROW WITH LOOP",0x21AD:"LEFT RIGHT WAVE ARROW",0x21AE:"LEFT RIGHT ARROW WITH STROKE",0x21AF:"DOWNWARDS ZIGZAG ARROW",0x21B0:"UPWARDS ARROW WITH TIP LEFTWARDS",0x21B1:"UPWARDS ARROW WITH TIP RIGHTWARDS",0x21B2:"DOWNWARDS ARROW WITH TIP LEFTWARDS",0x21B3:"DOWNWARDS ARROW WITH TIP RIGHTWARDS",0x21B4:"RIGHTWARDS ARROW WITH CORNER DOWNWARDS",0x21B5:"DOWNWARDS ARROW WITH CORNER LEFTWARDS",0x21B6:"ANTICLOCKWISE TOP SEMICIRCLE ARROW",0x21B7:"CLOCKWISE TOP SEMICIRCLE ARROW",0x21B8:"NORTH WEST ARROW TO LONG BAR",0x21B9:"LEFTWARDS ARROW TO BAR OVER RIGHTWARDS ARROW TO BAR",0x21BA:"ANTICLOCKWISE OPEN CIRCLE ARROW",0x21BB:"CLOCKWISE OPEN CIRCLE ARROW",0x21BC:"LEFTWARDS HARPOON WITH BARB UPWARDS",0x21BD:"LEFTWARDS HARPOON WITH BARB DOWNWARDS",0x21BE:"UPWARDS HARPOON WITH BARB RIGHTWARDS",0x21BF:"UPWARDS HARPOON WITH BARB LEFTWARDS",0x21C0:"RIGHTWARDS HARPOON WITH BARB UPWARDS",0x21C1:"RIGHTWARDS HARPOON WITH BARB DOWNWARDS",0x21C2:"DOWNWARDS HARPOON WITH BARB RIGHTWARDS",0x21C3:"DOWNWARDS HARPOON WITH BARB LEFTWARDS",0x21C4:"RIGHTWARDS ARROW OVER LEFTWARDS ARROW",0x21C5:"UPWARDS ARROW LEFTWARDS OF DOWNWARDS ARROW",0x21C6:"LEFTWARDS ARROW OVER RIGHTWARDS ARROW",0x21C7:"LEFTWARDS PAIRED ARROWS",0x21C8:"UPWARDS PAIRED ARROWS",0x21C9:"RIGHTWARDS PAIRED ARROWS",0x21CA:"DOWNWARDS PAIRED ARROWS",0x21CB:"LEFTWARDS HARPOON OVER RIGHTWARDS HARPOON",0x21CC:"RIGHTWARDS HARPOON OVER LEFTWARDS HARPOON",0x21CD:"LEFTWARDS DOUBLE ARROW WITH STROKE",0x21CE:"LEFT RIGHT DOUBLE ARROW WITH STROKE",0x21CF:"RIGHTWARDS DOUBLE ARROW WITH STROKE",0x21D0:"LEFTWARDS DOUBLE ARROW",0x21D1:"UPWARDS DOUBLE ARROW",0x21D2:"RIGHTWARDS DOUBLE ARROW",0x21D3:"DOWNWARDS DOUBLE ARROW",0x21D4:"LEFT RIGHT DOUBLE ARROW",0x21D5:"UP DOWN DOUBLE ARROW",0x21D6:"NORTH WEST DOUBLE ARROW",0x21D7:"NORTH EAST DOUBLE ARROW",0x21D8:"SOUTH EAST DOUBLE ARROW",0x21D9:"SOUTH WEST DOUBLE ARROW",0x21DA:"LEFTWARDS TRIPLE ARROW",0x21DB:"RIGHTWARDS TRIPLE ARROW",0x21DC:"LEFTWARDS SQUIGGLE ARROW",0x21DD:"RIGHTWARDS SQUIGGLE ARROW",0x21DE:"UPWARDS ARROW WITH DOUBLE STROKE",0x21DF:"DOWNWARDS ARROW WITH DOUBLE STROKE",0x21E0:"LEFTWARDS DASHED ARROW",0x21E1:"UPWARDS DASHED ARROW",0x21E2:"RIGHTWARDS DASHED ARROW",0x21E3:"DOWNWARDS DASHED ARROW",0x21E4:"LEFTWARDS ARROW TO BAR",0x21E5:"RIGHTWARDS ARROW TO BAR",0x21E6:"LEFTWARDS WHITE ARROW",0x21E7:"UPWARDS WHITE ARROW",0x21E8:"RIGHTWARDS WHITE ARROW",0x21E9:"DOWNWARDS WHITE ARROW",0x21EA:"UPWARDS WHITE ARROW FROM BAR",0x21EB:"UPWARDS WHITE ARROW ON PEDESTAL",0x21EC:"UPWARDS WHITE ARROW ON PEDESTAL WITH HORIZONTAL BAR",0x21ED:"UPWARDS WHITE ARROW ON PEDESTAL WITH VERTICAL BAR",0x21EE:"UPWARDS WHITE DOUBLE ARROW",0x21EF:"UPWARDS WHITE DOUBLE ARROW ON PEDESTAL",0x21F0:"RIGHTWARDS WHITE ARROW FROM WALL",0x21F1:"NORTH WEST ARROW TO CORNER",0x21F2:"SOUTH EAST ARROW TO CORNER",0x21F3:"UP DOWN WHITE ARROW",0x21F4:"RIGHT ARROW WITH SMALL CIRCLE",0x21F5:"DOWNWARDS ARROW LEFTWARDS OF UPWARDS ARROW",0x21F6:"THREE RIGHTWARDS ARROWS",0x21F7:"LEFTWARDS ARROW WITH VERTICAL STROKE",0x21F8:"RIGHTWARDS ARROW WITH VERTICAL STROKE",0x21F9:"LEFT RIGHT ARROW WITH VERTICAL STROKE",0x21FA:"LEFTWARDS ARROW WITH DOUBLE VERTICAL STROKE",0x21FB:"RIGHTWARDS ARROW WITH DOUBLE VERTICAL STROKE",0x21FC:"LEFT RIGHT ARROW WITH DOUBLE VERTICAL STROKE",0x21FD:"LEFTWARDS OPEN-HEADED ARROW",0x21FE:"RIGHTWARDS OPEN-HEADED ARROW",0x21FF:"LEFT RIGHT OPEN-HEADED ARROW"});
 
-  // Arrows (U+2190–U+21FF) — all 112
-  add({
-    0x2190:"LEFTWARDS ARROW",0x2191:"UPWARDS ARROW",0x2192:"RIGHTWARDS ARROW",
-    0x2193:"DOWNWARDS ARROW",0x2194:"LEFT RIGHT ARROW",0x2195:"UP DOWN ARROW",
-    0x2196:"NORTH WEST ARROW",0x2197:"NORTH EAST ARROW",0x2198:"SOUTH EAST ARROW",
-    0x2199:"SOUTH WEST ARROW",0x219A:"LEFTWARDS ARROW WITH STROKE",
-    0x219B:"RIGHTWARDS ARROW WITH STROKE",0x219C:"LEFTWARDS WAVE ARROW",
-    0x219D:"RIGHTWARDS WAVE ARROW",0x219E:"LEFTWARDS TWO HEADED ARROW",
-    0x219F:"UPWARDS TWO HEADED ARROW",0x21A0:"RIGHTWARDS TWO HEADED ARROW",
-    0x21A1:"DOWNWARDS TWO HEADED ARROW",0x21A2:"LEFTWARDS ARROW WITH TAIL",
-    0x21A3:"RIGHTWARDS ARROW WITH TAIL",0x21A4:"LEFTWARDS ARROW FROM BAR",
-    0x21A5:"UPWARDS ARROW FROM BAR",0x21A6:"RIGHTWARDS ARROW FROM BAR",
-    0x21A7:"DOWNWARDS ARROW FROM BAR",0x21A8:"UP DOWN ARROW WITH BASE",
-    0x21A9:"LEFTWARDS ARROW WITH HOOK",0x21AA:"RIGHTWARDS ARROW WITH HOOK",
-    0x21AB:"LEFTWARDS ARROW WITH LOOP",0x21AC:"RIGHTWARDS ARROW WITH LOOP",
-    0x21AD:"LEFT RIGHT WAVE ARROW",0x21AE:"LEFT RIGHT ARROW WITH STROKE",
-    0x21AF:"DOWNWARDS ZIGZAG ARROW",0x21B0:"UPWARDS ARROW WITH TIP LEFTWARDS",
-    0x21B1:"UPWARDS ARROW WITH TIP RIGHTWARDS",0x21B2:"DOWNWARDS ARROW WITH TIP LEFTWARDS",
-    0x21B3:"DOWNWARDS ARROW WITH TIP RIGHTWARDS",0x21B4:"RIGHTWARDS ARROW WITH CORNER DOWNWARDS",
-    0x21B5:"DOWNWARDS ARROW WITH CORNER LEFTWARDS",0x21B6:"ANTICLOCKWISE TOP SEMICIRCLE ARROW",
-    0x21B7:"CLOCKWISE TOP SEMICIRCLE ARROW",0x21B8:"NORTH WEST ARROW TO LONG BAR",
-    0x21B9:"LEFTWARDS ARROW TO BAR OVER RIGHTWARDS ARROW TO BAR",
-    0x21BA:"ANTICLOCKWISE OPEN CIRCLE ARROW",0x21BB:"CLOCKWISE OPEN CIRCLE ARROW",
-    0x21BC:"LEFTWARDS HARPOON WITH BARB UPWARDS",0x21BD:"LEFTWARDS HARPOON WITH BARB DOWNWARDS",
-    0x21BE:"UPWARDS HARPOON WITH BARB RIGHTWARDS",0x21BF:"UPWARDS HARPOON WITH BARB LEFTWARDS",
-    0x21C0:"RIGHTWARDS HARPOON WITH BARB UPWARDS",0x21C1:"RIGHTWARDS HARPOON WITH BARB DOWNWARDS",
-    0x21C2:"DOWNWARDS HARPOON WITH BARB RIGHTWARDS",0x21C3:"DOWNWARDS HARPOON WITH BARB LEFTWARDS",
-    0x21C4:"RIGHTWARDS ARROW OVER LEFTWARDS ARROW",0x21C5:"UPWARDS ARROW LEFTWARDS OF DOWNWARDS ARROW",
-    0x21C6:"LEFTWARDS ARROW OVER RIGHTWARDS ARROW",0x21C7:"LEFTWARDS PAIRED ARROWS",
-    0x21C8:"UPWARDS PAIRED ARROWS",0x21C9:"RIGHTWARDS PAIRED ARROWS",
-    0x21CA:"DOWNWARDS PAIRED ARROWS",0x21CB:"LEFTWARDS HARPOON OVER RIGHTWARDS HARPOON",
-    0x21CC:"RIGHTWARDS HARPOON OVER LEFTWARDS HARPOON",
-    0x21CD:"LEFTWARDS DOUBLE ARROW WITH STROKE",0x21CE:"LEFT RIGHT DOUBLE ARROW WITH STROKE",
-    0x21CF:"RIGHTWARDS DOUBLE ARROW WITH STROKE",0x21D0:"LEFTWARDS DOUBLE ARROW",
-    0x21D1:"UPWARDS DOUBLE ARROW",0x21D2:"RIGHTWARDS DOUBLE ARROW",
-    0x21D3:"DOWNWARDS DOUBLE ARROW",0x21D4:"LEFT RIGHT DOUBLE ARROW",
-    0x21D5:"UP DOWN DOUBLE ARROW",0x21D6:"NORTH WEST DOUBLE ARROW",
-    0x21D7:"NORTH EAST DOUBLE ARROW",0x21D8:"SOUTH EAST DOUBLE ARROW",
-    0x21D9:"SOUTH WEST DOUBLE ARROW",0x21DA:"LEFTWARDS TRIPLE ARROW",
-    0x21DB:"RIGHTWARDS TRIPLE ARROW",0x21DC:"LEFTWARDS SQUIGGLE ARROW",
-    0x21DD:"RIGHTWARDS SQUIGGLE ARROW",0x21DE:"UPWARDS ARROW WITH DOUBLE STROKE",
-    0x21DF:"DOWNWARDS ARROW WITH DOUBLE STROKE",0x21E0:"LEFTWARDS DASHED ARROW",
-    0x21E1:"UPWARDS DASHED ARROW",0x21E2:"RIGHTWARDS DASHED ARROW",
-    0x21E3:"DOWNWARDS DASHED ARROW",0x21E4:"LEFTWARDS ARROW TO BAR",
-    0x21E5:"RIGHTWARDS ARROW TO BAR",0x21E6:"LEFTWARDS WHITE ARROW",
-    0x21E7:"UPWARDS WHITE ARROW",0x21E8:"RIGHTWARDS WHITE ARROW",
-    0x21E9:"DOWNWARDS WHITE ARROW",0x21EA:"UPWARDS WHITE ARROW FROM BAR",
-    0x21EB:"UPWARDS WHITE ARROW ON PEDESTAL",
-    0x21EC:"UPWARDS WHITE ARROW ON PEDESTAL WITH HORIZONTAL BAR",
-    0x21ED:"UPWARDS WHITE ARROW ON PEDESTAL WITH VERTICAL BAR",
-    0x21EE:"UPWARDS WHITE DOUBLE ARROW",0x21EF:"UPWARDS WHITE DOUBLE ARROW ON PEDESTAL",
-    0x21F0:"RIGHTWARDS WHITE ARROW FROM WALL",0x21F1:"NORTH WEST ARROW TO CORNER",
-    0x21F2:"SOUTH EAST ARROW TO CORNER",0x21F3:"UP DOWN WHITE ARROW",
-    0x21F4:"RIGHT ARROW WITH SMALL CIRCLE",0x21F5:"DOWNWARDS ARROW LEFTWARDS OF UPWARDS ARROW",
-    0x21F6:"THREE RIGHTWARDS ARROWS",0x21F7:"LEFTWARDS ARROW WITH VERTICAL STROKE",
-    0x21F8:"RIGHTWARDS ARROW WITH VERTICAL STROKE",0x21F9:"LEFT RIGHT ARROW WITH VERTICAL STROKE",
-    0x21FA:"LEFTWARDS ARROW WITH DOUBLE VERTICAL STROKE",
-    0x21FB:"RIGHTWARDS ARROW WITH DOUBLE VERTICAL STROKE",
-    0x21FC:"LEFT RIGHT ARROW WITH DOUBLE VERTICAL STROKE",
-    0x21FD:"LEFTWARDS OPEN-HEADED ARROW",0x21FE:"RIGHTWARDS OPEN-HEADED ARROW",
-    0x21FF:"LEFT RIGHT OPEN-HEADED ARROW"
-  });
+  a({0x2500:"BOX DRAWINGS LIGHT HORIZONTAL",0x2501:"BOX DRAWINGS HEAVY HORIZONTAL",0x2502:"BOX DRAWINGS LIGHT VERTICAL",0x2503:"BOX DRAWINGS HEAVY VERTICAL",0x2504:"BOX DRAWINGS LIGHT TRIPLE DASH HORIZONTAL",0x2505:"BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL",0x2506:"BOX DRAWINGS LIGHT TRIPLE DASH VERTICAL",0x2507:"BOX DRAWINGS HEAVY TRIPLE DASH VERTICAL",0x2508:"BOX DRAWINGS LIGHT QUADRUPLE DASH HORIZONTAL",0x2509:"BOX DRAWINGS HEAVY QUADRUPLE DASH HORIZONTAL",0x250A:"BOX DRAWINGS LIGHT QUADRUPLE DASH VERTICAL",0x250B:"BOX DRAWINGS HEAVY QUADRUPLE DASH VERTICAL",0x250C:"BOX DRAWINGS LIGHT DOWN AND RIGHT",0x250D:"BOX DRAWINGS DOWN LIGHT AND RIGHT HEAVY",0x250E:"BOX DRAWINGS DOWN HEAVY AND RIGHT LIGHT",0x250F:"BOX DRAWINGS HEAVY DOWN AND RIGHT",0x2510:"BOX DRAWINGS LIGHT DOWN AND LEFT",0x2511:"BOX DRAWINGS DOWN LIGHT AND LEFT HEAVY",0x2512:"BOX DRAWINGS DOWN HEAVY AND LEFT LIGHT",0x2513:"BOX DRAWINGS HEAVY DOWN AND LEFT",0x2514:"BOX DRAWINGS LIGHT UP AND RIGHT",0x2515:"BOX DRAWINGS UP LIGHT AND RIGHT HEAVY",0x2516:"BOX DRAWINGS UP HEAVY AND RIGHT LIGHT",0x2517:"BOX DRAWINGS HEAVY UP AND RIGHT",0x2518:"BOX DRAWINGS LIGHT UP AND LEFT",0x2519:"BOX DRAWINGS UP LIGHT AND LEFT HEAVY",0x251A:"BOX DRAWINGS UP HEAVY AND LEFT LIGHT",0x251B:"BOX DRAWINGS HEAVY UP AND LEFT",0x251C:"BOX DRAWINGS LIGHT VERTICAL AND RIGHT",0x251D:"BOX DRAWINGS VERTICAL LIGHT AND RIGHT HEAVY",0x251E:"BOX DRAWINGS UP HEAVY AND RIGHT DOWN LIGHT",0x251F:"BOX DRAWINGS DOWN HEAVY AND RIGHT UP LIGHT",0x2520:"BOX DRAWINGS VERTICAL HEAVY AND RIGHT LIGHT",0x2521:"BOX DRAWINGS DOWN LIGHT AND RIGHT UP HEAVY",0x2522:"BOX DRAWINGS UP LIGHT AND RIGHT DOWN HEAVY",0x2523:"BOX DRAWINGS HEAVY VERTICAL AND RIGHT",0x2524:"BOX DRAWINGS LIGHT VERTICAL AND LEFT",0x2525:"BOX DRAWINGS VERTICAL LIGHT AND LEFT HEAVY",0x2526:"BOX DRAWINGS UP HEAVY AND LEFT DOWN LIGHT",0x2527:"BOX DRAWINGS DOWN HEAVY AND LEFT UP LIGHT",0x2528:"BOX DRAWINGS VERTICAL HEAVY AND LEFT LIGHT",0x2529:"BOX DRAWINGS DOWN LIGHT AND LEFT UP HEAVY",0x252A:"BOX DRAWINGS UP LIGHT AND LEFT DOWN HEAVY",0x252B:"BOX DRAWINGS HEAVY VERTICAL AND LEFT",0x252C:"BOX DRAWINGS LIGHT DOWN AND HORIZONTAL",0x252D:"BOX DRAWINGS LEFT HEAVY AND RIGHT DOWN LIGHT",0x252E:"BOX DRAWINGS RIGHT HEAVY AND LEFT DOWN LIGHT",0x252F:"BOX DRAWINGS DOWN LIGHT AND HORIZONTAL HEAVY",0x2530:"BOX DRAWINGS DOWN HEAVY AND HORIZONTAL LIGHT",0x2531:"BOX DRAWINGS RIGHT LIGHT AND LEFT DOWN HEAVY",0x2532:"BOX DRAWINGS LEFT LIGHT AND RIGHT DOWN HEAVY",0x2533:"BOX DRAWINGS HEAVY DOWN AND HORIZONTAL",0x2534:"BOX DRAWINGS LIGHT UP AND HORIZONTAL",0x2535:"BOX DRAWINGS LEFT HEAVY AND RIGHT UP LIGHT",0x2536:"BOX DRAWINGS RIGHT HEAVY AND LEFT UP LIGHT",0x2537:"BOX DRAWINGS UP LIGHT AND HORIZONTAL HEAVY",0x2538:"BOX DRAWINGS UP HEAVY AND HORIZONTAL LIGHT",0x2539:"BOX DRAWINGS RIGHT LIGHT AND LEFT UP HEAVY",0x253A:"BOX DRAWINGS LEFT LIGHT AND RIGHT UP HEAVY",0x253B:"BOX DRAWINGS HEAVY UP AND HORIZONTAL",0x253C:"BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL",0x253D:"BOX DRAWINGS LEFT HEAVY AND RIGHT VERTICAL LIGHT",0x253E:"BOX DRAWINGS RIGHT HEAVY AND LEFT VERTICAL LIGHT",0x253F:"BOX DRAWINGS VERTICAL LIGHT AND HORIZONTAL HEAVY",0x2540:"BOX DRAWINGS UP HEAVY AND DOWN HORIZONTAL LIGHT",0x2541:"BOX DRAWINGS DOWN HEAVY AND UP HORIZONTAL LIGHT",0x2542:"BOX DRAWINGS VERTICAL HEAVY AND HORIZONTAL LIGHT",0x2543:"BOX DRAWINGS LEFT UP HEAVY AND RIGHT DOWN LIGHT",0x2544:"BOX DRAWINGS RIGHT UP HEAVY AND LEFT DOWN LIGHT",0x2545:"BOX DRAWINGS LEFT DOWN HEAVY AND RIGHT UP LIGHT",0x2546:"BOX DRAWINGS RIGHT DOWN HEAVY AND LEFT UP LIGHT",0x2547:"BOX DRAWINGS DOWN LIGHT AND UP HORIZONTAL HEAVY",0x2548:"BOX DRAWINGS UP LIGHT AND DOWN HORIZONTAL HEAVY",0x2549:"BOX DRAWINGS RIGHT LIGHT AND LEFT VERTICAL HEAVY",0x254A:"BOX DRAWINGS LEFT LIGHT AND RIGHT VERTICAL HEAVY",0x254B:"BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL",0x254C:"BOX DRAWINGS LIGHT DOUBLE DASH HORIZONTAL",0x254D:"BOX DRAWINGS HEAVY DOUBLE DASH HORIZONTAL",0x254E:"BOX DRAWINGS LIGHT DOUBLE DASH VERTICAL",0x254F:"BOX DRAWINGS HEAVY DOUBLE DASH VERTICAL",0x2550:"BOX DRAWINGS DOUBLE HORIZONTAL",0x2551:"BOX DRAWINGS DOUBLE VERTICAL",0x2552:"BOX DRAWINGS DOWN SINGLE AND RIGHT DOUBLE",0x2553:"BOX DRAWINGS DOWN DOUBLE AND RIGHT SINGLE",0x2554:"BOX DRAWINGS DOUBLE DOWN AND RIGHT",0x2555:"BOX DRAWINGS DOWN SINGLE AND LEFT DOUBLE",0x2556:"BOX DRAWINGS DOWN DOUBLE AND LEFT SINGLE",0x2557:"BOX DRAWINGS DOUBLE DOWN AND LEFT",0x2558:"BOX DRAWINGS UP SINGLE AND RIGHT DOUBLE",0x2559:"BOX DRAWINGS UP DOUBLE AND RIGHT SINGLE",0x255A:"BOX DRAWINGS DOUBLE UP AND RIGHT",0x255B:"BOX DRAWINGS UP SINGLE AND LEFT DOUBLE",0x255C:"BOX DRAWINGS UP DOUBLE AND LEFT SINGLE",0x255D:"BOX DRAWINGS DOUBLE UP AND LEFT",0x255E:"BOX DRAWINGS VERTICAL SINGLE AND RIGHT DOUBLE",0x255F:"BOX DRAWINGS VERTICAL DOUBLE AND RIGHT SINGLE",0x2560:"BOX DRAWINGS DOUBLE VERTICAL AND RIGHT",0x2561:"BOX DRAWINGS VERTICAL SINGLE AND LEFT DOUBLE",0x2562:"BOX DRAWINGS VERTICAL DOUBLE AND LEFT SINGLE",0x2563:"BOX DRAWINGS DOUBLE VERTICAL AND LEFT",0x2564:"BOX DRAWINGS DOWN SINGLE AND HORIZONTAL DOUBLE",0x2565:"BOX DRAWINGS DOWN DOUBLE AND HORIZONTAL SINGLE",0x2566:"BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL",0x2567:"BOX DRAWINGS UP SINGLE AND HORIZONTAL DOUBLE",0x2568:"BOX DRAWINGS UP DOUBLE AND HORIZONTAL SINGLE",0x2569:"BOX DRAWINGS DOUBLE UP AND HORIZONTAL",0x256A:"BOX DRAWINGS VERTICAL SINGLE AND HORIZONTAL DOUBLE",0x256B:"BOX DRAWINGS VERTICAL DOUBLE AND HORIZONTAL SINGLE",0x256C:"BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL",0x256D:"BOX DRAWINGS LIGHT ARC DOWN AND RIGHT",0x256E:"BOX DRAWINGS LIGHT ARC DOWN AND LEFT",0x256F:"BOX DRAWINGS LIGHT ARC UP AND LEFT",0x2570:"BOX DRAWINGS LIGHT ARC UP AND RIGHT",0x2571:"BOX DRAWINGS LIGHT DIAGONAL UPPER RIGHT TO LOWER LEFT",0x2572:"BOX DRAWINGS LIGHT DIAGONAL UPPER LEFT TO LOWER RIGHT",0x2573:"BOX DRAWINGS LIGHT DIAGONAL CROSS",0x2574:"BOX DRAWINGS LIGHT LEFT",0x2575:"BOX DRAWINGS LIGHT UP",0x2576:"BOX DRAWINGS LIGHT RIGHT",0x2577:"BOX DRAWINGS LIGHT DOWN",0x2578:"BOX DRAWINGS HEAVY LEFT",0x2579:"BOX DRAWINGS HEAVY UP",0x257A:"BOX DRAWINGS HEAVY RIGHT",0x257B:"BOX DRAWINGS HEAVY DOWN",0x257C:"BOX DRAWINGS LIGHT LEFT AND HEAVY RIGHT",0x257D:"BOX DRAWINGS LIGHT UP AND HEAVY DOWN",0x257E:"BOX DRAWINGS HEAVY LEFT AND LIGHT RIGHT",0x257F:"BOX DRAWINGS HEAVY UP AND LIGHT DOWN"});
 
-  // Box Drawing (U+2500–U+257F) — all
-  add({
-    0x2500:"BOX DRAWINGS LIGHT HORIZONTAL",0x2501:"BOX DRAWINGS HEAVY HORIZONTAL",
-    0x2502:"BOX DRAWINGS LIGHT VERTICAL",0x2503:"BOX DRAWINGS HEAVY VERTICAL",
-    0x2504:"BOX DRAWINGS LIGHT TRIPLE DASH HORIZONTAL",0x2505:"BOX DRAWINGS HEAVY TRIPLE DASH HORIZONTAL",
-    0x2506:"BOX DRAWINGS LIGHT TRIPLE DASH VERTICAL",0x2507:"BOX DRAWINGS HEAVY TRIPLE DASH VERTICAL",
-    0x2508:"BOX DRAWINGS LIGHT QUADRUPLE DASH HORIZONTAL",0x2509:"BOX DRAWINGS HEAVY QUADRUPLE DASH HORIZONTAL",
-    0x250A:"BOX DRAWINGS LIGHT QUADRUPLE DASH VERTICAL",0x250B:"BOX DRAWINGS HEAVY QUADRUPLE DASH VERTICAL",
-    0x250C:"BOX DRAWINGS LIGHT DOWN AND RIGHT",0x250D:"BOX DRAWINGS DOWN LIGHT AND RIGHT HEAVY",
-    0x250E:"BOX DRAWINGS DOWN HEAVY AND RIGHT LIGHT",0x250F:"BOX DRAWINGS HEAVY DOWN AND RIGHT",
-    0x2510:"BOX DRAWINGS LIGHT DOWN AND LEFT",0x2511:"BOX DRAWINGS DOWN LIGHT AND LEFT HEAVY",
-    0x2512:"BOX DRAWINGS DOWN HEAVY AND LEFT LIGHT",0x2513:"BOX DRAWINGS HEAVY DOWN AND LEFT",
-    0x2514:"BOX DRAWINGS LIGHT UP AND RIGHT",0x2515:"BOX DRAWINGS UP LIGHT AND RIGHT HEAVY",
-    0x2516:"BOX DRAWINGS UP HEAVY AND RIGHT LIGHT",0x2517:"BOX DRAWINGS HEAVY UP AND RIGHT",
-    0x2518:"BOX DRAWINGS LIGHT UP AND LEFT",0x2519:"BOX DRAWINGS UP LIGHT AND LEFT HEAVY",
-    0x251A:"BOX DRAWINGS UP HEAVY AND LEFT LIGHT",0x251B:"BOX DRAWINGS HEAVY UP AND LEFT",
-    0x251C:"BOX DRAWINGS LIGHT VERTICAL AND RIGHT",0x251D:"BOX DRAWINGS VERTICAL LIGHT AND RIGHT HEAVY",
-    0x251E:"BOX DRAWINGS UP HEAVY AND RIGHT DOWN LIGHT",0x251F:"BOX DRAWINGS DOWN HEAVY AND RIGHT UP LIGHT",
-    0x2520:"BOX DRAWINGS VERTICAL HEAVY AND RIGHT LIGHT",0x2521:"BOX DRAWINGS DOWN LIGHT AND RIGHT UP HEAVY",
-    0x2522:"BOX DRAWINGS UP LIGHT AND RIGHT DOWN HEAVY",0x2523:"BOX DRAWINGS HEAVY VERTICAL AND RIGHT",
-    0x2524:"BOX DRAWINGS LIGHT VERTICAL AND LEFT",0x2525:"BOX DRAWINGS VERTICAL LIGHT AND LEFT HEAVY",
-    0x2526:"BOX DRAWINGS UP HEAVY AND LEFT DOWN LIGHT",0x2527:"BOX DRAWINGS DOWN HEAVY AND LEFT UP LIGHT",
-    0x2528:"BOX DRAWINGS VERTICAL HEAVY AND LEFT LIGHT",0x2529:"BOX DRAWINGS DOWN LIGHT AND LEFT UP HEAVY",
-    0x252A:"BOX DRAWINGS UP LIGHT AND LEFT DOWN HEAVY",0x252B:"BOX DRAWINGS HEAVY VERTICAL AND LEFT",
-    0x252C:"BOX DRAWINGS LIGHT DOWN AND HORIZONTAL",0x252D:"BOX DRAWINGS LEFT HEAVY AND RIGHT DOWN LIGHT",
-    0x252E:"BOX DRAWINGS RIGHT HEAVY AND LEFT DOWN LIGHT",0x252F:"BOX DRAWINGS DOWN LIGHT AND HORIZONTAL HEAVY",
-    0x2530:"BOX DRAWINGS DOWN HEAVY AND HORIZONTAL LIGHT",0x2531:"BOX DRAWINGS RIGHT LIGHT AND LEFT DOWN HEAVY",
-    0x2532:"BOX DRAWINGS LEFT LIGHT AND RIGHT DOWN HEAVY",0x2533:"BOX DRAWINGS HEAVY DOWN AND HORIZONTAL",
-    0x2534:"BOX DRAWINGS LIGHT UP AND HORIZONTAL",0x2535:"BOX DRAWINGS LEFT HEAVY AND RIGHT UP LIGHT",
-    0x2536:"BOX DRAWINGS RIGHT HEAVY AND LEFT UP LIGHT",0x2537:"BOX DRAWINGS UP LIGHT AND HORIZONTAL HEAVY",
-    0x2538:"BOX DRAWINGS UP HEAVY AND HORIZONTAL LIGHT",0x2539:"BOX DRAWINGS RIGHT LIGHT AND LEFT UP HEAVY",
-    0x253A:"BOX DRAWINGS LEFT LIGHT AND RIGHT UP HEAVY",0x253B:"BOX DRAWINGS HEAVY UP AND HORIZONTAL",
-    0x253C:"BOX DRAWINGS LIGHT VERTICAL AND HORIZONTAL",0x253D:"BOX DRAWINGS LEFT HEAVY AND RIGHT VERTICAL LIGHT",
-    0x253E:"BOX DRAWINGS RIGHT HEAVY AND LEFT VERTICAL LIGHT",0x253F:"BOX DRAWINGS VERTICAL LIGHT AND HORIZONTAL HEAVY",
-    0x2540:"BOX DRAWINGS UP HEAVY AND DOWN HORIZONTAL LIGHT",0x2541:"BOX DRAWINGS DOWN HEAVY AND UP HORIZONTAL LIGHT",
-    0x2542:"BOX DRAWINGS VERTICAL HEAVY AND HORIZONTAL LIGHT",0x2543:"BOX DRAWINGS LEFT UP HEAVY AND RIGHT DOWN LIGHT",
-    0x2544:"BOX DRAWINGS RIGHT UP HEAVY AND LEFT DOWN LIGHT",0x2545:"BOX DRAWINGS LEFT DOWN HEAVY AND RIGHT UP LIGHT",
-    0x2546:"BOX DRAWINGS RIGHT DOWN HEAVY AND LEFT UP LIGHT",0x2547:"BOX DRAWINGS DOWN LIGHT AND UP HORIZONTAL HEAVY",
-    0x2548:"BOX DRAWINGS UP LIGHT AND DOWN HORIZONTAL HEAVY",0x2549:"BOX DRAWINGS RIGHT LIGHT AND LEFT VERTICAL HEAVY",
-    0x254A:"BOX DRAWINGS LEFT LIGHT AND RIGHT VERTICAL HEAVY",0x254B:"BOX DRAWINGS HEAVY VERTICAL AND HORIZONTAL",
-    0x254C:"BOX DRAWINGS LIGHT DOUBLE DASH HORIZONTAL",0x254D:"BOX DRAWINGS HEAVY DOUBLE DASH HORIZONTAL",
-    0x254E:"BOX DRAWINGS LIGHT DOUBLE DASH VERTICAL",0x254F:"BOX DRAWINGS HEAVY DOUBLE DASH VERTICAL",
-    0x2550:"BOX DRAWINGS DOUBLE HORIZONTAL",0x2551:"BOX DRAWINGS DOUBLE VERTICAL",
-    0x2552:"BOX DRAWINGS DOWN SINGLE AND RIGHT DOUBLE",0x2553:"BOX DRAWINGS DOWN DOUBLE AND RIGHT SINGLE",
-    0x2554:"BOX DRAWINGS DOUBLE DOWN AND RIGHT",0x2555:"BOX DRAWINGS DOWN SINGLE AND LEFT DOUBLE",
-    0x2556:"BOX DRAWINGS DOWN DOUBLE AND LEFT SINGLE",0x2557:"BOX DRAWINGS DOUBLE DOWN AND LEFT",
-    0x2558:"BOX DRAWINGS UP SINGLE AND RIGHT DOUBLE",0x2559:"BOX DRAWINGS UP DOUBLE AND RIGHT SINGLE",
-    0x255A:"BOX DRAWINGS DOUBLE UP AND RIGHT",0x255B:"BOX DRAWINGS UP SINGLE AND LEFT DOUBLE",
-    0x255C:"BOX DRAWINGS UP DOUBLE AND LEFT SINGLE",0x255D:"BOX DRAWINGS DOUBLE UP AND LEFT",
-    0x255E:"BOX DRAWINGS VERTICAL SINGLE AND RIGHT DOUBLE",0x255F:"BOX DRAWINGS VERTICAL DOUBLE AND RIGHT SINGLE",
-    0x2560:"BOX DRAWINGS DOUBLE VERTICAL AND RIGHT",0x2561:"BOX DRAWINGS VERTICAL SINGLE AND LEFT DOUBLE",
-    0x2562:"BOX DRAWINGS VERTICAL DOUBLE AND LEFT SINGLE",0x2563:"BOX DRAWINGS DOUBLE VERTICAL AND LEFT",
-    0x2564:"BOX DRAWINGS DOWN SINGLE AND HORIZONTAL DOUBLE",0x2565:"BOX DRAWINGS DOWN DOUBLE AND HORIZONTAL SINGLE",
-    0x2566:"BOX DRAWINGS DOUBLE DOWN AND HORIZONTAL",0x2567:"BOX DRAWINGS UP SINGLE AND HORIZONTAL DOUBLE",
-    0x2568:"BOX DRAWINGS UP DOUBLE AND HORIZONTAL SINGLE",0x2569:"BOX DRAWINGS DOUBLE UP AND HORIZONTAL",
-    0x256A:"BOX DRAWINGS VERTICAL SINGLE AND HORIZONTAL DOUBLE",0x256B:"BOX DRAWINGS VERTICAL DOUBLE AND HORIZONTAL SINGLE",
-    0x256C:"BOX DRAWINGS DOUBLE VERTICAL AND HORIZONTAL",0x256D:"BOX DRAWINGS LIGHT ARC DOWN AND RIGHT",
-    0x256E:"BOX DRAWINGS LIGHT ARC DOWN AND LEFT",0x256F:"BOX DRAWINGS LIGHT ARC UP AND LEFT",
-    0x2570:"BOX DRAWINGS LIGHT ARC UP AND RIGHT",0x2571:"BOX DRAWINGS LIGHT DIAGONAL UPPER RIGHT TO LOWER LEFT",
-    0x2572:"BOX DRAWINGS LIGHT DIAGONAL UPPER LEFT TO LOWER RIGHT",0x2573:"BOX DRAWINGS LIGHT DIAGONAL CROSS",
-    0x2574:"BOX DRAWINGS LIGHT LEFT",0x2575:"BOX DRAWINGS LIGHT UP",
-    0x2576:"BOX DRAWINGS LIGHT RIGHT",0x2577:"BOX DRAWINGS LIGHT DOWN",
-    0x2578:"BOX DRAWINGS HEAVY LEFT",0x2579:"BOX DRAWINGS HEAVY UP",
-    0x257A:"BOX DRAWINGS HEAVY RIGHT",0x257B:"BOX DRAWINGS HEAVY DOWN",
-    0x257C:"BOX DRAWINGS LIGHT LEFT AND HEAVY RIGHT",0x257D:"BOX DRAWINGS LIGHT UP AND HEAVY DOWN",
-    0x257E:"BOX DRAWINGS HEAVY LEFT AND LIGHT RIGHT",0x257F:"BOX DRAWINGS HEAVY UP AND LIGHT DOWN"
-  });
+  a({0x2580:"UPPER HALF BLOCK",0x2581:"LOWER ONE EIGHTH BLOCK",0x2582:"LOWER ONE QUARTER BLOCK",0x2583:"LOWER THREE EIGHTHS BLOCK",0x2584:"LOWER HALF BLOCK",0x2585:"LOWER FIVE EIGHTHS BLOCK",0x2586:"LOWER THREE QUARTERS BLOCK",0x2587:"LOWER SEVEN EIGHTHS BLOCK",0x2588:"FULL BLOCK",0x2589:"LEFT SEVEN EIGHTHS BLOCK",0x258A:"LEFT THREE QUARTERS BLOCK",0x258B:"LEFT FIVE EIGHTHS BLOCK",0x258C:"LEFT HALF BLOCK",0x258D:"LEFT THREE EIGHTHS BLOCK",0x258E:"LEFT ONE QUARTER BLOCK",0x258F:"LEFT ONE EIGHTH BLOCK",0x2590:"RIGHT HALF BLOCK",0x2591:"LIGHT SHADE",0x2592:"MEDIUM SHADE",0x2593:"DARK SHADE",0x2594:"UPPER ONE EIGHTH BLOCK",0x2595:"RIGHT ONE EIGHTH BLOCK",0x2596:"QUADRANT LOWER LEFT",0x2597:"QUADRANT LOWER RIGHT",0x2598:"QUADRANT UPPER LEFT",0x2599:"QUADRANT UPPER LEFT AND LOWER LEFT AND LOWER RIGHT",0x259A:"QUADRANT UPPER LEFT AND LOWER RIGHT",0x259B:"QUADRANT UPPER LEFT AND UPPER RIGHT AND LOWER LEFT",0x259C:"QUADRANT UPPER LEFT AND UPPER RIGHT AND LOWER RIGHT",0x259D:"QUADRANT UPPER RIGHT",0x259E:"QUADRANT UPPER RIGHT AND LOWER LEFT",0x259F:"QUADRANT UPPER RIGHT AND LOWER LEFT AND LOWER RIGHT"});
 
-  // Block Elements (U+2580–U+259F) — all
-  add({
-    0x2580:"UPPER HALF BLOCK",0x2581:"LOWER ONE EIGHTH BLOCK",0x2582:"LOWER ONE QUARTER BLOCK",
-    0x2583:"LOWER THREE EIGHTHS BLOCK",0x2584:"LOWER HALF BLOCK",0x2585:"LOWER FIVE EIGHTHS BLOCK",
-    0x2586:"LOWER THREE QUARTERS BLOCK",0x2587:"LOWER SEVEN EIGHTHS BLOCK",0x2588:"FULL BLOCK",
-    0x2589:"LEFT SEVEN EIGHTHS BLOCK",0x258A:"LEFT THREE QUARTERS BLOCK",
-    0x258B:"LEFT FIVE EIGHTHS BLOCK",0x258C:"LEFT HALF BLOCK",0x258D:"LEFT THREE EIGHTHS BLOCK",
-    0x258E:"LEFT ONE QUARTER BLOCK",0x258F:"LEFT ONE EIGHTH BLOCK",0x2590:"RIGHT HALF BLOCK",
-    0x2591:"LIGHT SHADE",0x2592:"MEDIUM SHADE",0x2593:"DARK SHADE",0x2594:"UPPER ONE EIGHTH BLOCK",
-    0x2595:"RIGHT ONE EIGHTH BLOCK",0x2596:"QUADRANT LOWER LEFT",0x2597:"QUADRANT LOWER RIGHT",
-    0x2598:"QUADRANT UPPER LEFT",0x2599:"QUADRANT UPPER LEFT AND LOWER LEFT AND LOWER RIGHT",
-    0x259A:"QUADRANT UPPER LEFT AND LOWER RIGHT",0x259B:"QUADRANT UPPER LEFT AND UPPER RIGHT AND LOWER LEFT",
-    0x259C:"QUADRANT UPPER LEFT AND UPPER RIGHT AND LOWER RIGHT",0x259D:"QUADRANT UPPER RIGHT",
-    0x259E:"QUADRANT UPPER RIGHT AND LOWER LEFT",0x259F:"QUADRANT UPPER RIGHT AND LOWER LEFT AND LOWER RIGHT"
-  });
-
-  // Geometric Shapes (U+25A0–U+25FF) — selected
-  add({
-    0x25A0:"BLACK SQUARE",0x25A1:"WHITE SQUARE",0x25A2:"WHITE SQUARE WITH ROUNDED CORNERS",
-    0x25A3:"WHITE SQUARE CONTAINING BLACK SMALL SQUARE",0x25A4:"SQUARE WITH HORIZONTAL FILL",
-    0x25A5:"SQUARE WITH VERTICAL FILL",0x25A6:"SQUARE WITH ORTHOGONAL CROSSHATCH FILL",
-    0x25A7:"SQUARE WITH UPPER LEFT TO LOWER RIGHT FILL",0x25A8:"SQUARE WITH UPPER RIGHT TO LOWER LEFT FILL",
-    0x25A9:"SQUARE WITH DIAGONAL CROSSHATCH FILL",0x25AA:"BLACK SMALL SQUARE",
-    0x25AB:"WHITE SMALL SQUARE",0x25AC:"BLACK RECTANGLE",0x25AD:"WHITE RECTANGLE",
-    0x25AE:"BLACK VERTICAL RECTANGLE",0x25AF:"WHITE VERTICAL RECTANGLE",
-    0x25B0:"BLACK PARALLELOGRAM",0x25B1:"WHITE PARALLELOGRAM",
-    0x25B2:"BLACK UP-POINTING TRIANGLE",0x25B3:"WHITE UP-POINTING TRIANGLE",
-    0x25B4:"BLACK UP-POINTING SMALL TRIANGLE",0x25B5:"WHITE UP-POINTING SMALL TRIANGLE",
-    0x25B6:"BLACK RIGHT-POINTING TRIANGLE",0x25B7:"WHITE RIGHT-POINTING TRIANGLE",
-    0x25B8:"BLACK RIGHT-POINTING SMALL TRIANGLE",0x25B9:"WHITE RIGHT-POINTING SMALL TRIANGLE",
-    0x25BA:"BLACK RIGHT-POINTING POINTER",0x25BB:"WHITE RIGHT-POINTING POINTER",
-    0x25BC:"BLACK DOWN-POINTING TRIANGLE",0x25BD:"WHITE DOWN-POINTING TRIANGLE",
-    0x25BE:"BLACK DOWN-POINTING SMALL TRIANGLE",0x25BF:"WHITE DOWN-POINTING SMALL TRIANGLE",
-    0x25C0:"BLACK LEFT-POINTING TRIANGLE",0x25C1:"WHITE LEFT-POINTING TRIANGLE",
-    0x25C2:"BLACK LEFT-POINTING SMALL TRIANGLE",0x25C3:"WHITE LEFT-POINTING SMALL TRIANGLE",
-    0x25C4:"BLACK LEFT-POINTING POINTER",0x25C5:"WHITE LEFT-POINTING POINTER",
-    0x25C6:"BLACK DIAMOND",0x25C7:"WHITE DIAMOND",0x25C8:"WHITE DIAMOND CONTAINING BLACK SMALL DIAMOND",
-    0x25C9:"FISHEYE",0x25CA:"LOZENGE",0x25CB:"WHITE CIRCLE",0x25CC:"DOTTED CIRCLE",
-    0x25CD:"CIRCLE WITH VERTICAL FILL",0x25CE:"BULLSEYE",0x25CF:"BLACK CIRCLE",
-    0x25D0:"CIRCLE WITH LEFT HALF BLACK",0x25D1:"CIRCLE WITH RIGHT HALF BLACK",
-    0x25D2:"CIRCLE WITH LOWER HALF BLACK",0x25D3:"CIRCLE WITH UPPER HALF BLACK",
-    0x25D4:"CIRCLE WITH UPPER RIGHT QUADRANT BLACK",0x25D5:"CIRCLE WITH ALL BUT UPPER LEFT QUADRANT BLACK",
-    0x25D6:"LEFT HALF BLACK CIRCLE",0x25D7:"RIGHT HALF BLACK CIRCLE",
-    0x25D8:"INVERSE BULLET",0x25D9:"INVERSE WHITE CIRCLE",
-    0x25DA:"UPPER HALF INVERSE WHITE CIRCLE",0x25DB:"LOWER HALF INVERSE WHITE CIRCLE",
-    0x25DC:"UPPER LEFT QUADRANT CIRCULAR ARC",0x25DD:"UPPER RIGHT QUADRANT CIRCULAR ARC",
-    0x25DE:"LOWER RIGHT QUADRANT CIRCULAR ARC",0x25DF:"LOWER LEFT QUADRANT CIRCULAR ARC",
-    0x25E0:"UPPER HALF CIRCLE",0x25E1:"LOWER HALF CIRCLE",
-    0x25E2:"BLACK LOWER RIGHT TRIANGLE",0x25E3:"BLACK LOWER LEFT TRIANGLE",
-    0x25E4:"BLACK UPPER LEFT TRIANGLE",0x25E5:"BLACK UPPER RIGHT TRIANGLE",
-    0x25E6:"WHITE BULLET",0x25E7:"SQUARE WITH LEFT HALF BLACK",
-    0x25E8:"SQUARE WITH RIGHT HALF BLACK",0x25E9:"SQUARE WITH UPPER LEFT DIAGONAL HALF BLACK",
-    0x25EA:"SQUARE WITH LOWER RIGHT DIAGONAL HALF BLACK",0x25EB:"WHITE SQUARE WITH VERTICAL BISECTING LINE",
-    0x25EC:"WHITE UP-POINTING TRIANGLE WITH DOT",0x25ED:"UP-POINTING TRIANGLE WITH LEFT HALF BLACK",
-    0x25EE:"UP-POINTING TRIANGLE WITH RIGHT HALF BLACK",0x25EF:"LARGE CIRCLE",
-    0x25F0:"WHITE SQUARE WITH UPPER LEFT QUADRANT",0x25F1:"WHITE SQUARE WITH LOWER LEFT QUADRANT",
-    0x25F2:"WHITE SQUARE WITH LOWER RIGHT QUADRANT",0x25F3:"WHITE SQUARE WITH UPPER RIGHT QUADRANT",
-    0x25F4:"WHITE CIRCLE WITH UPPER LEFT QUADRANT",0x25F5:"WHITE CIRCLE WITH LOWER LEFT QUADRANT",
-    0x25F6:"WHITE CIRCLE WITH LOWER RIGHT QUADRANT",0x25F7:"WHITE CIRCLE WITH UPPER RIGHT QUADRANT",
-    0x25F8:"UPPER LEFT TRIANGLE",0x25F9:"UPPER RIGHT TRIANGLE",
-    0x25FA:"LOWER LEFT TRIANGLE",0x25FB:"WHITE MEDIUM SQUARE",
-    0x25FC:"BLACK MEDIUM SQUARE",0x25FD:"WHITE MEDIUM SMALL SQUARE",
-    0x25FE:"BLACK MEDIUM SMALL SQUARE",0x25FF:"LOWER RIGHT TRIANGLE"
-  });
-
-  // Miscellaneous Symbols (U+2600–U+26FF) — selected
-  add({
-    0x2600:"BLACK SUN WITH RAYS",0x2601:"CLOUD",0x2602:"UMBRELLA",0x2603:"SNOWMAN",
-    0x2604:"COMET",0x2605:"BLACK STAR",0x2606:"WHITE STAR",0x2607:"LIGHTNING",
-    0x2608:"THUNDERSTORM",0x2609:"SUN",0x260A:"ASCENDING NODE",0x260B:"DESCENDING NODE",
-    0x260C:"CONJUNCTION",0x260D:"OPPOSITION",0x260E:"BLACK TELEPHONE",0x260F:"WHITE TELEPHONE",
-    0x2610:"BALLOT BOX",0x2611:"BALLOT BOX WITH CHECK",0x2612:"BALLOT BOX WITH X",
-    0x2613:"SALTIRE",0x2614:"UMBRELLA WITH RAIN DROPS",0x2615:"HOT BEVERAGE",
-    0x2616:"WHITE SHOGI PIECE",0x2617:"BLACK SHOGI PIECE",0x2618:"SHAMROCK",
-    0x2619:"REVERSED ROTATED FLORAL HEART BULLET",0x261A:"BLACK LEFT POINTING INDEX",
-    0x261B:"BLACK RIGHT POINTING INDEX",0x261C:"WHITE LEFT POINTING INDEX",
-    0x261D:"WHITE UP POINTING INDEX",0x261E:"WHITE RIGHT POINTING INDEX",
-    0x261F:"WHITE DOWN POINTING INDEX",0x2620:"SKULL AND CROSSBONES",
-    0x2621:"CAUTION SIGN",0x2622:"RADIOACTIVE SIGN",0x2623:"BIOHAZARD SIGN",
-    0x2624:"CADUCEUS",0x2625:"ANKH",0x2626:"ORTHODOX CROSS",0x2627:"CHI RHO",
-    0x2628:"CROSS OF LORRAINE",0x2629:"CROSS OF JERUSALEM",0x262A:"STAR AND CRESCENT",
-    0x262B:"FARSI SYMBOL",0x262C:"ADI SHAKTI",0x262D:"HAMMER AND SICKLE",
-    0x262E:"PEACE SYMBOL",0x262F:"YIN YANG",0x2630:"TRIGRAM FOR HEAVEN",
-    0x2631:"TRIGRAM FOR LAKE",0x2632:"TRIGRAM FOR FIRE",0x2633:"TRIGRAM FOR THUNDER",
-    0x2634:"TRIGRAM FOR WIND",0x2635:"TRIGRAM FOR WATER",0x2636:"TRIGRAM FOR MOUNTAIN",
-    0x2637:"TRIGRAM FOR EARTH",0x2638:"WHEEL OF DHARMA",0x2639:"WHITE FROWNING FACE",
-    0x263A:"WHITE SMILING FACE",0x263B:"BLACK SMILING FACE",0x263C:"WHITE SUN WITH RAYS",
-    0x263D:"FIRST QUARTER MOON",0x263E:"LAST QUARTER MOON",0x263F:"MERCURY",
-    0x2640:"FEMALE SIGN",0x2641:"EARTH",0x2642:"MALE SIGN",0x2643:"JUPITER",
-    0x2644:"SATURN",0x2645:"URANUS",0x2646:"NEPTUNE",0x2647:"PLUTO",
-    0x2648:"ARIES",0x2649:"TAURUS",0x264A:"GEMINI",0x264B:"CANCER",
-    0x264C:"LEO",0x264D:"VIRGO",0x264E:"LIBRA",0x264F:"SCORPIUS",
-    0x2650:"SAGITTARIUS",0x2651:"CAPRICORN",0x2652:"AQUARIUS",0x2653:"PISCES",
-    0x2654:"WHITE CHESS KING",0x2655:"WHITE CHESS QUEEN",0x2656:"WHITE CHESS ROOK",
-    0x2657:"WHITE CHESS BISHOP",0x2658:"WHITE CHESS KNIGHT",0x2659:"WHITE CHESS PAWN",
-    0x265A:"BLACK CHESS KING",0x265B:"BLACK CHESS QUEEN",0x265C:"BLACK CHESS ROOK",
-    0x265D:"BLACK CHESS BISHOP",0x265E:"BLACK CHESS KNIGHT",0x265F:"BLACK CHESS PAWN",
-    0x2660:"BLACK SPADE SUIT",0x2661:"WHITE HEART SUIT",0x2662:"WHITE DIAMOND SUIT",
-    0x2663:"BLACK CLUB SUIT",0x2664:"WHITE SPADE SUIT",0x2665:"BLACK HEART SUIT",
-    0x2666:"BLACK DIAMOND SUIT",0x2667:"WHITE CLUB SUIT",0x2668:"HOT SPRINGS",
-    0x2669:"QUARTER NOTE",0x266A:"EIGHTH NOTE",0x266B:"BEAMED EIGHTH NOTES",
-    0x266C:"BEAMED SIXTEENTH NOTES",0x266D:"MUSIC FLAT SIGN",0x266E:"MUSIC NATURAL SIGN",
-    0x266F:"MUSIC SHARP SIGN",0x2670:"WEST SYRIAC CROSS",0x2671:"EAST SYRIAC CROSS",
-    0x2672:"UNIVERSAL RECYCLING SYMBOL",0x2673:"RECYCLING SYMBOL FOR TYPE-1 PLASTICS",
-    0x2674:"RECYCLING SYMBOL FOR TYPE-2 PLASTICS",0x2675:"RECYCLING SYMBOL FOR TYPE-3 PLASTICS",
-    0x2676:"RECYCLING SYMBOL FOR TYPE-4 PLASTICS",0x2677:"RECYCLING SYMBOL FOR TYPE-5 PLASTICS",
-    0x2678:"RECYCLING SYMBOL FOR TYPE-6 PLASTICS",0x2679:"RECYCLING SYMBOL FOR TYPE-7 PLASTICS",
-    0x267A:"RECYCLING SYMBOL FOR GENERIC MATERIALS",0x267B:"BLACK UNIVERSAL RECYCLING SYMBOL",
-    0x267C:"RECYCLED PAPER SYMBOL",0x267D:"PARTIALLY-RECYCLED PAPER SYMBOL",
-    0x267E:"PERMANENT PAPER SIGN",0x267F:"WHEELCHAIR SYMBOL",
-    0x2680:"DIE FACE-1",0x2681:"DIE FACE-2",0x2682:"DIE FACE-3",
-    0x2683:"DIE FACE-4",0x2684:"DIE FACE-5",0x2685:"DIE FACE-6",
-    0x2686:"WHITE CIRCLE WITH DOT RIGHT",0x2687:"WHITE CIRCLE WITH TWO DOTS",
-    0x2688:"BLACK CIRCLE WITH WHITE DOT RIGHT",0x2689:"BLACK CIRCLE WITH TWO WHITE DOTS",
-    0x268A:"MONOGRAM FOR YANG",0x268B:"MONOGRAM FOR YIN",
-    0x268C:"DIGRAM FOR GREATER YANG",0x268D:"DIGRAM FOR LESSER YIN",
-    0x268E:"DIGRAM FOR LESSER YANG",0x268F:"DIGRAM FOR GREATER YIN",
-    0x2690:"WHITE FLAG",0x2691:"BLACK FLAG",0x2692:"HAMMER AND PICK",
-    0x2693:"ANCHOR",0x2694:"CROSSED SWORDS",0x2695:"STAFF OF AESCULAPIUS",
-    0x2696:"SCALES",0x2697:"ALEMBIC",0x2698:"FLOWER",0x2699:"GEAR",
-    0x269A:"STAFF OF HERMES",0x269B:"ATOM SYMBOL",0x269C:"FLEUR-DE-LIS",
-    0x269D:"OUTLINED WHITE STAR",0x269E:"THREE LINES CONVERGING RIGHT",
-    0x269F:"THREE LINES CONVERGING LEFT",0x26A0:"WARNING SIGN",
-    0x26A1:"HIGH VOLTAGE SIGN",0x26A2:"DOUBLED FEMALE SIGN",
-    0x26A3:"DOUBLED MALE SIGN",0x26A4:"INTERLOCKED FEMALE AND MALE SIGN",
-    0x26A5:"MALE AND FEMALE SIGN",0x26A6:"MALE WITH STROKE SIGN",
-    0x26A7:"MALE WITH STROKE AND MALE AND FEMALE SIGN",0x26A8:"VERTICAL MALE WITH STROKE SIGN",
-    0x26A9:"HORIZONTAL MALE WITH STROKE SIGN",0x26AA:"MEDIUM WHITE CIRCLE",
-    0x26AB:"MEDIUM BLACK CIRCLE",0x26AC:"MEDIUM SMALL WHITE CIRCLE",
-    0x26AD:"MARRIAGE SYMBOL",0x26AE:"DIVORCE SYMBOL",0x26AF:"UNMARRIED PARTNERSHIP SYMBOL",
-    0x26B0:"COFFIN",0x26B1:"FUNERAL URN",0x26B2:"NEUTER",0x26B3:"CERES",
-    0x26B4:"PALLAS",0x26B5:"JUNO",0x26B6:"VESTA",0x26B7:"CHIRON",
-    0x26B8:"BLACK MOON LILITH",0x26B9:"SEXTILE",0x26BA:"SEMISEXTILE",
-    0x26BB:"QUINCUNX",0x26BC:"SESQUIQUADRATE",0x26BD:"SOCCER BALL",
-    0x26BE:"BASEBALL",0x26BF:"SQUARED KEY",0x26C0:"WHITE DRAUGHTS MAN",
-    0x26C1:"WHITE DRAUGHTS KING",0x26C2:"BLACK DRAUGHTS MAN",0x26C3:"BLACK DRAUGHTS KING",
-    0x26C4:"SNOWMAN WITHOUT SNOW",0x26C5:"SUN BEHIND CLOUD",
-    0x26C6:"RAIN",0x26C7:"BLACK SNOWMAN",0x26C8:"THUNDER CLOUD AND RAIN",
-    0x26C9:"TURNED WHITE SHOGI PIECE",0x26CA:"TURNED BLACK SHOGI PIECE",
-    0x26CB:"WHITE DIAMOND IN SQUARE",0x26CC:"CROSSING LANES",0x26CD:"DISABLED CAR",
-    0x26CE:"OPHIUCHUS",0x26CF:"PICK",0x26D0:"CAR SLIDING",0x26D1:"HELMET WITH WHITE CROSS",
-    0x26D2:"CIRCLED CROSSING LANES",0x26D3:"CHAINS",0x26D4:"NO ENTRY",
-    0x26E2:"ASTRONOMICAL SYMBOL FOR URANUS",0x26E3:"HEAVY CIRCLE WITH STROKE AND TWO DOTS ABOVE",
-    0x26E4:"PENTAGRAM",0x26E5:"RIGHT-HANDED INTERLACED PENTAGRAM",
-    0x26E6:"LEFT-HANDED INTERLACED PENTAGRAM",0x26E7:"INVERTED PENTAGRAM",
-    0x26E8:"BLACK CROSS ON SHIELD",0x26E9:"SHINTO SHRINE",0x26EA:"CHURCH",
-    0x26EB:"CASTLE",0x26EC:"HISTORIC SITE",0x26ED:"GEAR WITHOUT HUB",
-    0x26EE:"GEAR WITH HANDLES",0x26EF:"MAP SYMBOL FOR LIGHTHOUSE",
-    0x26F0:"MOUNTAIN",0x26F1:"UMBRELLA ON GROUND",0x26F2:"FOUNTAIN",
-    0x26F3:"FLAG IN HOLE",0x26F4:"FERRY",0x26F5:"SAILBOAT",
-    0x26F6:"SQUARE FOUR CORNERS",0x26F7:"SKIER",0x26F8:"ICE SKATE",
-    0x26F9:"PERSON WITH BALL",0x26FA:"TENT",0x26FB:"JAPANESE BANK SYMBOL",
-    0x26FC:"HEADSTONE GRAVEYARD SYMBOL",0x26FD:"FUEL PUMP",0x26FE:"CUP ON BLACK SQUARE",
-    0x26FF:"WHITE FLAG WITH HORIZONTAL MIDDLE BLACK STRIPE"
-  });
-
-  // Dingbats (U+2700–U+27BF) — selected
-  add({
-    0x2700:"BLACK SAFETY SCISSORS",0x2701:"UPPER BLADE SCISSORS",
-    0x2702:"BLACK SCISSORS",0x2703:"LOWER BLADE SCISSORS",0x2704:"WHITE SCISSORS",
-    0x2705:"WHITE HEAVY CHECK MARK",0x2706:"TELEPHONE LOCATION SIGN",0x2707:"TAPE DRIVE",
-    0x2708:"AIRPLANE",0x2709:"ENVELOPE",0x270A:"RAISED FIST",0x270B:"RAISED HAND",
-    0x270C:"VICTORY HAND",0x270D:"WRITING HAND",0x270E:"LOWER RIGHT PENCIL",
-    0x270F:"PENCIL",0x2710:"UPPER RIGHT PENCIL",0x2711:"WHITE NIB",0x2712:"BLACK NIB",
-    0x2713:"CHECK MARK",0x2714:"HEAVY CHECK MARK",0x2715:"MULTIPLICATION X",
-    0x2716:"HEAVY MULTIPLICATION X",0x2717:"BALLOT X",0x2718:"HEAVY BALLOT X",
-    0x2719:"OUTLINED GREEK CROSS",0x271A:"HEAVY GREEK CROSS",0x271B:"OPEN CENTRE CROSS",
-    0x271C:"HEAVY OPEN CENTRE CROSS",0x271D:"LATIN CROSS",0x271E:"SHADOWED WHITE LATIN CROSS",
-    0x271F:"OUTLINED LATIN CROSS",0x2720:"MALTESE CROSS",0x2721:"STAR OF DAVID",
-    0x2722:"FOUR TEARDROP-SPOKED ASTERISK",0x2723:"FOUR BALLOON-SPOKED ASTERISK",
-    0x2724:"HEAVY FOUR BALLOON-SPOKED ASTERISK",0x2725:"FOUR CLUB-SPOKED ASTERISK",
-    0x2726:"BLACK FOUR POINTED STAR",0x2727:"WHITE FOUR POINTED STAR",
-    0x2728:"SPARKLES",0x2729:"STRESS OUTLINED WHITE STAR",0x272A:"CIRCLED WHITE STAR",
-    0x272B:"OPEN CENTRE BLACK STAR",0x272C:"BLACK CENTRE WHITE STAR",
-    0x272D:"OUTLINED BLACK STAR",0x272E:"HEAVY OUTLINED BLACK STAR",0x272F:"PINWHEEL STAR",
-    0x2730:"SHADOWED WHITE STAR",0x2731:"HEAVY ASTERISK",0x2732:"OPEN CENTRE ASTERISK",
-    0x2733:"EIGHT SPOKED ASTERISK",0x2734:"EIGHT POINTED BLACK STAR",
-    0x2735:"EIGHT POINTED PINWHEEL STAR",0x2736:"SIX POINTED BLACK STAR",
-    0x2737:"EIGHT POINTED RECTILINEAR BLACK STAR",0x2738:"HEAVY EIGHT POINTED RECTILINEAR BLACK STAR",
-    0x2739:"TWELVE POINTED BLACK STAR",0x273A:"SIXTEEN POINTED ASTERISK",
-    0x273B:"TEARDROP-SPOKED ASTERISK",0x273C:"OPEN CENTRE TEARDROP-SPOKED ASTERISK",
-    0x273D:"HEAVY TEARDROP-SPOKED ASTERISK",0x273E:"SIX PETALLED BLACK AND WHITE FLORETTE",
-    0x273F:"BLACK FLORETTE",0x2740:"WHITE FLORETTE",0x2741:"EIGHT PETALLED OUTLINED BLACK FLORETTE",
-    0x2742:"CIRCLED OPEN CENTRE EIGHT POINTED STAR",0x2743:"HEAVY TEARDROP-SPOKED PINWHEEL ASTERISK",
-    0x2744:"SNOWFLAKE",0x2745:"TIGHT TRIFOLIATE SNOWFLAKE",0x2746:"HEAVY CHEVRON SNOWFLAKE",
-    0x2747:"SPARKLE",0x2748:"HEAVY SPARKLE",0x2749:"BALLOON-SPOKED ASTERISK",
-    0x274A:"EIGHT TEARDROP-SPOKED PROPELLER ASTERISK",0x274B:"HEAVY EIGHT TEARDROP-SPOKED PROPELLER ASTERISK",
-    0x274C:"CROSS MARK",0x274D:"SHADOWED WHITE CIRCLE",0x274E:"CROSS MARK",
-    0x274F:"LOWER RIGHT DROP-SHADOWED WHITE SQUARE",0x2750:"UPPER RIGHT DROP-SHADOWED WHITE SQUARE",
-    0x2751:"LOWER RIGHT SHADOWED WHITE SQUARE",0x2752:"UPPER RIGHT SHADOWED WHITE SQUARE",
-    0x2753:"BLACK QUESTION MARK ORNAMENT",0x2754:"WHITE QUESTION MARK ORNAMENT",
-    0x2755:"WHITE EXCLAMATION MARK ORNAMENT",0x2756:"BLACK DIAMOND MINUS WHITE X",
-    0x2757:"HEAVY EXCLAMATION MARK ORNAMENT",0x2758:"LIGHT VERTICAL BAR",
-    0x2759:"MEDIUM VERTICAL BAR",0x275A:"HEAVY VERTICAL BAR",
-    0x275B:"HEAVY SINGLE TURNED COMMA QUOTATION MARK ORNAMENT",
-    0x275C:"HEAVY SINGLE COMMA QUOTATION MARK ORNAMENT",
-    0x275D:"HEAVY DOUBLE TURNED COMMA QUOTATION MARK ORNAMENT",
-    0x275E:"HEAVY DOUBLE COMMA QUOTATION MARK ORNAMENT",
-    0x275F:"MEDIUM LEFT CURLY BRACKET ORNAMENT",0x2760:"MEDIUM RIGHT CURLY BRACKET ORNAMENT",
-    0x2761:"CURVED STEM PARAGRAPH SIGN ORNAMENT",0x2762:"HEAVY EXCLAMATION MARK ORNAMENT",
-    0x2763:"HEAVY HEART EXCLAMATION MARK ORNAMENT",0x2764:"HEAVY BLACK HEART",
-    0x2765:"ROTATED HEAVY BLACK HEART BULLET",0x2766:"FLORAL HEART",
-    0x2767:"ROTATED FLORAL HEART BULLET",0x2768:"MEDIUM LEFT PARENTHESIS ORNAMENT",
-    0x2769:"MEDIUM RIGHT PARENTHESIS ORNAMENT",0x276A:"MEDIUM FLATTENED LEFT PARENTHESIS ORNAMENT",
-    0x276B:"MEDIUM FLATTENED RIGHT PARENTHESIS ORNAMENT",0x276C:"MEDIUM LEFT-POINTING ANGLE BRACKET ORNAMENT",
-    0x276D:"MEDIUM RIGHT-POINTING ANGLE BRACKET ORNAMENT",
-    0x276E:"HEAVY LEFT-POINTING ANGLE QUOTATION MARK ORNAMENT",
-    0x276F:"HEAVY RIGHT-POINTING ANGLE QUOTATION MARK ORNAMENT",
-    0x2770:"HEAVY LEFT-POINTING ANGLE BRACKET ORNAMENT",
-    0x2771:"HEAVY RIGHT-POINTING ANGLE BRACKET ORNAMENT",
-    0x2772:"LIGHT LEFT TORTOISE SHELL BRACKET ORNAMENT",
-    0x2773:"LIGHT RIGHT TORTOISE SHELL BRACKET ORNAMENT",
-    0x2774:"MEDIUM LEFT CURLY BRACKET ORNAMENT",0x2775:"MEDIUM RIGHT CURLY BRACKET ORNAMENT",
-    0x2776:"DINGBAT NEGATIVE CIRCLED DIGIT ONE",0x2777:"DINGBAT NEGATIVE CIRCLED DIGIT TWO",
-    0x2778:"DINGBAT NEGATIVE CIRCLED DIGIT THREE",0x2779:"DINGBAT NEGATIVE CIRCLED DIGIT FOUR",
-    0x277A:"DINGBAT NEGATIVE CIRCLED DIGIT FIVE",0x277B:"DINGBAT NEGATIVE CIRCLED DIGIT SIX",
-    0x277C:"DINGBAT NEGATIVE CIRCLED DIGIT SEVEN",0x277D:"DINGBAT NEGATIVE CIRCLED DIGIT EIGHT",
-    0x277E:"DINGBAT NEGATIVE CIRCLED DIGIT NINE",0x277F:"DINGBAT NEGATIVE CIRCLED NUMBER TEN",
-    0x2780:"DINGBAT CIRCLED SANS-SERIF DIGIT ONE",0x2781:"DINGBAT CIRCLED SANS-SERIF DIGIT TWO",
-    0x2782:"DINGBAT CIRCLED SANS-SERIF DIGIT THREE",0x2783:"DINGBAT CIRCLED SANS-SERIF DIGIT FOUR",
-    0x2784:"DINGBAT CIRCLED SANS-SERIF DIGIT FIVE",0x2785:"DINGBAT CIRCLED SANS-SERIF DIGIT SIX",
-    0x2786:"DINGBAT CIRCLED SANS-SERIF DIGIT SEVEN",0x2787:"DINGBAT CIRCLED SANS-SERIF DIGIT EIGHT",
-    0x2788:"DINGBAT CIRCLED SANS-SERIF DIGIT NINE",0x2789:"DINGBAT CIRCLED SANS-SERIF NUMBER TEN",
-    0x278A:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT ONE",0x278B:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT TWO",
-    0x278C:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT THREE",0x278D:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT FOUR",
-    0x278E:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT FIVE",0x278F:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT SIX",
-    0x2790:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT SEVEN",0x2791:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT EIGHT",
-    0x2792:"DINGBAT NEGATIVE CIRCLED SANS-SERIF DIGIT NINE",0x2793:"DINGBAT NEGATIVE CIRCLED SANS-SERIF NUMBER TEN",
-    0x2794:"HEAVY WIDE-HEADED RIGHTWARDS ARROW",0x2795:"HEAVY PLUS SIGN",
-    0x2796:"HEAVY MINUS SIGN",0x2797:"HEAVY DIVISION SIGN",0x2798:"HEAVY SOUTH EAST ARROW",
-    0x2799:"HEAVY RIGHTWARDS ARROW",0x279A:"HEAVY NORTH EAST ARROW",
-    0x279B:"DRAFTING POINT RIGHTWARDS ARROW",0x279C:"HEAVY ROUND-TIPPED RIGHTWARDS ARROW",
-    0x279D:"TRIANGLE-HEADED RIGHTWARDS ARROW",0x279E:"HEAVY TRIANGLE-HEADED RIGHTWARDS ARROW",
-    0x279F:"DASHED TRIANGLE-HEADED RIGHTWARDS ARROW",0x27A0:"HEAVY DASHED TRIANGLE-HEADED RIGHTWARDS ARROW",
-    0x27A1:"BLACK RIGHTWARDS ARROW",0x27A2:"THREE-D TOP-LIGHTED RIGHTWARDS ARROWHEAD",
-    0x27A3:"THREE-D BOTTOM-LIGHTED RIGHTWARDS ARROWHEAD",0x27A4:"BLACK RIGHTWARDS ARROWHEAD",
-    0x27A5:"HEAVY BLACK CURVED DOWNWARDS AND RIGHTWARDS ARROW",
-    0x27A6:"HEAVY BLACK CURVED UPWARDS AND RIGHTWARDS ARROW",
-    0x27A7:"SQUAT BLACK RIGHTWARDS ARROW",0x27A8:"HEAVY CONCAVE-POINTED BLACK RIGHTWARDS ARROW",
-    0x27A9:"RIGHT-SHADED WHITE RIGHTWARDS ARROW",0x27AA:"LEFT-SHADED WHITE RIGHTWARDS ARROW",
-    0x27AB:"BACK-TILTED SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27AC:"FRONT-TILTED SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27AD:"HEAVY LOWER RIGHT-SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27AE:"HEAVY UPPER RIGHT-SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27AF:"NOTCHED LOWER RIGHT-SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27B0:"CURLY LOOP",0x27B1:"NOTCHED UPPER RIGHT-SHADOWED WHITE RIGHTWARDS ARROW",
-    0x27B2:"CIRCLED HEAVY WHITE RIGHTWARDS ARROW",0x27B3:"WHITE-FEATHERED RIGHTWARDS ARROW",
-    0x27B4:"BLACK-FEATHERED SOUTH EAST ARROW",0x27B5:"BLACK-FEATHERED RIGHTWARDS ARROW",
-    0x27B6:"BLACK-FEATHERED NORTH EAST ARROW",0x27B7:"HEAVY BLACK-FEATHERED SOUTH EAST ARROW",
-    0x27B8:"HEAVY BLACK-FEATHERED RIGHTWARDS ARROW",0x27B9:"HEAVY BLACK-FEATHERED NORTH EAST ARROW",
-    0x27BA:"TEARDROP-BARBED RIGHTWARDS ARROW",0x27BB:"HEAVY TEARDROP-SHANKED RIGHTWARDS ARROW",
-    0x27BC:"WEDGE-TAILED RIGHTWARDS ARROW",0x27BD:"HEAVY WEDGE-TAILED RIGHTWARDS ARROW",
-    0x27BE:"OPEN-OUTLINED RIGHTWARDS ARROW"
-  });
-
-  // Selected math / technical / misc
-  add({
-    0x2200:"FOR ALL",0x2201:"COMPLEMENT",0x2202:"PARTIAL DIFFERENTIAL",
-    0x2203:"THERE EXISTS",0x2204:"THERE DOES NOT EXIST",0x2205:"EMPTY SET",
-    0x2206:"INCREMENT",0x2207:"NABLA",0x2208:"ELEMENT OF",
-    0x2209:"NOT AN ELEMENT OF",0x220A:"SMALL ELEMENT OF",
-    0x220B:"CONTAINS AS MEMBER",0x220C:"DOES NOT CONTAIN AS MEMBER",
-    0x220D:"SMALL CONTAINS AS MEMBER",0x220E:"END OF PROOF",
-    0x220F:"N-ARY PRODUCT",0x2210:"N-ARY COPRODUCT",
-    0x2211:"N-ARY SUMMATION",0x2212:"MINUS SIGN",0x2213:"MINUS-OR-PLUS SIGN",
-    0x2214:"DOT PLUS",0x2215:"DIVISION SLASH",0x2216:"SET MINUS",
-    0x2217:"ASTERISK OPERATOR",0x2218:"RING OPERATOR",0x2219:"BULLET OPERATOR",
-    0x221A:"SQUARE ROOT",0x221B:"CUBE ROOT",0x221C:"FOURTH ROOT",
-    0x221D:"PROPORTIONAL TO",0x221E:"INFINITY",0x221F:"RIGHT ANGLE",
-    0x2220:"ANGLE",0x2221:"MEASURED ANGLE",0x2222:"SPHERICAL ANGLE",
-    0x2223:"DIVIDES",0x2224:"DOES NOT DIVIDE",0x2225:"PARALLEL TO",
-    0x2226:"NOT PARALLEL TO",0x2227:"LOGICAL AND",0x2228:"LOGICAL OR",
-    0x2229:"INTERSECTION",0x222A:"UNION",0x222B:"INTEGRAL",
-    0x222C:"DOUBLE INTEGRAL",0x222D:"TRIPLE INTEGRAL",0x222E:"CONTOUR INTEGRAL",
-    0x222F:"SURFACE INTEGRAL",0x2230:"VOLUME INTEGRAL",
-    0x2231:"CLOCKWISE INTEGRAL",0x2232:"CLOCKWISE CONTOUR INTEGRAL",
-    0x2233:"ANTICLOCKWISE CONTOUR INTEGRAL",0x2234:"THEREFORE",0x2235:"BECAUSE",
-    0x2236:"RATIO",0x2237:"PROPORTION",0x2238:"DOT MINUS",0x2239:"EXCESS",
-    0x223A:"GEOMETRIC PROPORTION",0x223B:"HOMOTHETIC",0x223C:"TILDE OPERATOR",
-    0x223D:"REVERSED TILDE",0x223E:"INVERTED LAZY S",0x223F:"SINE WAVE",
-    0x2240:"WREATH PRODUCT",0x2241:"NOT TILDE",0x2242:"MINUS TILDE",
-    0x2243:"ASYMPTOTICALLY EQUAL TO",0x2244:"NOT ASYMPTOTICALLY EQUAL TO",
-    0x2245:"APPROXIMATELY EQUAL TO",0x2246:"APPROXIMATELY BUT NOT ACTUALLY EQUAL TO",
-    0x2247:"NEITHER APPROXIMATELY NOR ACTUALLY EQUAL TO",0x2248:"ALMOST EQUAL TO",
-    0x2249:"NOT ALMOST EQUAL TO",0x224A:"ALMOST EQUAL OR EQUAL TO",
-    0x224B:"TRIPLE TILDE",0x224C:"ALL EQUAL TO",0x224D:"EQUIVALENT TO",
-    0x224E:"GEOMETRICALLY EQUIVALENT TO",0x224F:"DIFFERENCE BETWEEN",
-    0x2250:"APPROACHES THE LIMIT",0x2251:"GEOMETRICALLY EQUAL TO",
-    0x2252:"APPROXIMATELY EQUAL TO OR THE IMAGE OF",0x2253:"IMAGE OF OR APPROXIMATELY EQUAL TO",
-    0x2254:"COLON EQUALS",0x2255:"EQUALS COLON",0x2256:"RING IN EQUAL TO",
-    0x2257:"RING EQUAL TO",0x2258:"CORRESPONDS TO",0x2259:"ESTIMATES",
-    0x225A:"EQUIANGULAR TO",0x225B:"STAR EQUALS",0x225C:"DELTA EQUAL TO",
-    0x225D:"EQUAL TO BY DEFINITION",0x225E:"MEASURED BY",0x225F:"QUESTIONED EQUAL TO",
-    0x2260:"NOT EQUAL TO",0x2261:"IDENTICAL TO",0x2262:"NOT IDENTICAL TO",
-    0x2263:"STRICTLY EQUIVALENT TO",0x2264:"LESS-THAN OR EQUAL TO",
-    0x2265:"GREATER-THAN OR EQUAL TO",0x2266:"LESS-THAN OVER EQUAL TO",
-    0x2267:"GREATER-THAN OVER EQUAL TO",0x2268:"LESS-THAN BUT NOT EQUAL TO",
-    0x2269:"GREATER-THAN BUT NOT EQUAL TO",0x226A:"MUCH LESS-THAN",
-    0x226B:"MUCH GREATER-THAN",0x226C:"BETWEEN",0x226D:"NOT EQUIVALENT TO",
-    0x226E:"NOT LESS-THAN",0x226F:"NOT GREATER-THAN",
-    0x2270:"NEITHER LESS-THAN NOR EQUAL TO",0x2271:"NEITHER GREATER-THAN NOR EQUAL TO",
-    0x2272:"LESS-THAN OR EQUIVALENT TO",0x2273:"GREATER-THAN OR EQUIVALENT TO",
-    0x2274:"NEITHER LESS-THAN NOR EQUIVALENT TO",0x2275:"NEITHER GREATER-THAN NOR EQUIVALENT TO",
-    0x2276:"LESS-THAN OR GREATER-THAN",0x2277:"GREATER-THAN OR LESS-THAN",
-    0x2278:"NEITHER LESS-THAN NOR GREATER-THAN",0x2279:"NEITHER GREATER-THAN NOR LESS-THAN",
-    0x227A:"PRECEDES",0x227B:"SUCCEEDS",0x227C:"PRECEDES OR EQUAL TO",
-    0x227D:"SUCCEEDS OR EQUAL TO",0x227E:"PRECEDES OR EQUIVALENT TO",
-    0x227F:"SUCCEEDS OR EQUIVALENT TO",0x2280:"DOES NOT PRECEDE",0x2281:"DOES NOT SUCCEED",
-    0x2282:"SUBSET OF",0x2283:"SUPERSET OF",0x2284:"NOT A SUBSET OF",
-    0x2285:"NOT A SUPERSET OF",0x2286:"SUBSET OF OR EQUAL TO",
-    0x2287:"SUPERSET OF OR EQUAL TO",0x2288:"NEITHER A SUBSET OF NOR EQUAL TO",
-    0x2289:"NEITHER A SUPERSET OF NOR EQUAL TO",0x228A:"SUBSET OF WITH NOT EQUAL TO",
-    0x228B:"SUPERSET OF WITH NOT EQUAL TO",0x228C:"MULTISET",
-    0x228D:"MULTISET MULTIPLICATION",0x228E:"MULTISET UNION",
-    0x228F:"SQUARE IMAGE OF",0x2290:"SQUARE ORIGINAL OF",
-    0x2291:"SQUARE IMAGE OF OR EQUAL TO",0x2292:"SQUARE ORIGINAL OF OR EQUAL TO",
-    0x2293:"SQUARE CAP",0x2294:"SQUARE CUP",0x2295:"CIRCLED PLUS",
-    0x2296:"CIRCLED MINUS",0x2297:"CIRCLED TIMES",0x2298:"CIRCLED DIVISION SLASH",
-    0x2299:"CIRCLED DOT OPERATOR",0x229A:"CIRCLED RING OPERATOR",
-    0x229B:"CIRCLED ASTERISK OPERATOR",0x229C:"CIRCLED EQUALS",
-    0x229D:"CIRCLED DASH",0x229E:"SQUARED PLUS",0x229F:"SQUARED MINUS",
-    0x22A0:"SQUARED TIMES",0x22A1:"SQUARED DOT OPERATOR",0x22A2:"RIGHT TACK",
-    0x22A3:"LEFT TACK",0x22A4:"DOWN TACK",0x22A5:"UP TACK",
-    0x22A6:"ASSERTION",0x22A7:"MODELS",0x22A8:"TRUE",0x22A9:"FORCES",
-    0x22AA:"TRIPLE VERTICAL BAR RIGHT TURNSTILE",0x22AB:"DOUBLE VERTICAL BAR DOUBLE RIGHT TURNSTILE",
-    0x22AC:"DOES NOT PROVE",0x22AD:"NOT TRUE",0x22AE:"DOES NOT FORCE",
-    0x22AF:"NEGATED DOUBLE VERTICAL BAR DOUBLE RIGHT TURNSTILE",
-    0x22B0:"PRECEDES UNDER RELATION",0x22B1:"SUCCEEDS UNDER RELATION",
-    0x22B2:"NORMAL SUBGROUP OF",0x22B3:"CONTAINS AS NORMAL SUBGROUP",
-    0x22B4:"NORMAL SUBGROUP OF OR EQUAL TO",0x22B5:"CONTAINS AS NORMAL SUBGROUP OR EQUAL TO",
-    0x22B6:"ORIGINAL OF",0x22B7:"IMAGE OF",0x22B8:"MULTIMAP",
-    0x22B9:"HERMITIAN CONJUGATE MATRIX",0x22BA:"INTERCALATE",
-    0x22BB:"XOR",0x22BC:"NAND",0x22BD:"NOR",
-    0x22BE:"RIGHT ANGLE WITH ARC",0x22BF:"RIGHT TRIANGLE",
-    0x22C0:"N-ARY LOGICAL AND",0x22C1:"N-ARY LOGICAL OR",
-    0x22C2:"N-ARY INTERSECTION",0x22C3:"N-ARY UNION",
-    0x22C4:"DIAMOND OPERATOR",0x22C5:"DOT OPERATOR",
-    0x22C6:"STAR OPERATOR",0x22C7:"DIVISION TIMES",
-    0x22C8:"BOWTIE",0x22C9:"LEFT NORMAL FACTOR SEMIDIRECT PRODUCT",
-    0x22CA:"RIGHT NORMAL FACTOR SEMIDIRECT PRODUCT",0x22CB:"LEFT SEMIDIRECT PRODUCT",
-    0x22CC:"RIGHT SEMIDIRECT PRODUCT",0x22CD:"REVERSED TILDE EQUALS",
-    0x22CE:"CURLY LOGICAL OR",0x22CF:"CURLY LOGICAL AND",
-    0x22D0:"DOUBLE SUBSET",0x22D1:"DOUBLE SUPERSET",0x22D2:"DOUBLE INTERSECTION",
-    0x22D3:"DOUBLE UNION",0x22D4:"PITCHFORK",0x22D5:"EQUAL AND PARALLEL TO",
-    0x22D6:"LESS-THAN WITH DOT",0x22D7:"GREATER-THAN WITH DOT",
-    0x22D8:"VERY MUCH LESS-THAN",0x22D9:"VERY MUCH GREATER-THAN",
-    0x22DA:"LESS-THAN EQUAL TO OR GREATER-THAN",0x22DB:"GREATER-THAN EQUAL TO OR LESS-THAN",
-    0x22DC:"EQUAL TO OR LESS-THAN",0x22DD:"EQUAL TO OR GREATER-THAN",
-    0x22DE:"EQUAL TO OR PRECEDES",0x22DF:"EQUAL TO OR SUCCEEDS",
-    0x22E0:"DOES NOT PRECEDE OR EQUAL",0x22E1:"DOES NOT SUCCEED OR EQUAL",
-    0x22E2:"NOT SQUARE IMAGE OF OR EQUAL TO",0x22E3:"NOT SQUARE ORIGINAL OF OR EQUAL TO",
-    0x22E4:"SQUARE IMAGE OF OR NOT EQUAL TO",0x22E5:"SQUARE ORIGINAL OF OR NOT EQUAL TO",
-    0x22E6:"LESS-THAN BUT NOT EQUIVALENT TO",0x22E7:"GREATER-THAN BUT NOT EQUIVALENT TO",
-    0x22E8:"PRECEDES BUT NOT EQUIVALENT TO",0x22E9:"SUCCEEDS BUT NOT EQUIVALENT TO",
-    0x22EA:"NOT NORMAL SUBGROUP OF",0x22EB:"DOES NOT CONTAIN AS NORMAL SUBGROUP",
-    0x22EC:"NOT NORMAL SUBGROUP OF OR EQUAL TO",0x22ED:"DOES NOT CONTAIN AS NORMAL SUBGROUP OR EQUAL",
-    0x22EE:"VERTICAL ELLIPSIS",0x22EF:"MIDLINE HORIZONTAL ELLIPSIS",
-    0x22F0:"UP RIGHT DIAGONAL ELLIPSIS",0x22F1:"DOWN RIGHT DIAGONAL ELLIPSIS",
-    0x22F2:"ELEMENT OF WITH LONG HORIZONTAL STROKE",0x22F3:"ELEMENT OF WITH VERTICAL BAR AT END OF HORIZONTAL STROKE",
-    0x22F4:"SMALL ELEMENT OF WITH VERTICAL BAR AT END OF HORIZONTAL STROKE",
-    0x22F5:"ELEMENT OF WITH DOT ABOVE",0x22F6:"ELEMENT OF WITH OVERBAR",
-    0x22F7:"SMALL ELEMENT OF WITH OVERBAR",0x22F8:"ELEMENT OF WITH UNDERBAR",
-    0x22F9:"ELEMENT OF WITH TWO HORIZONTAL STROKES",0x22FA:"CONTAINS WITH LONG HORIZONTAL STROKE",
-    0x22FB:"CONTAINS WITH VERTICAL BAR AT END OF HORIZONTAL STROKE",
-    0x22FC:"SMALL CONTAINS WITH VERTICAL BAR AT END OF HORIZONTAL STROKE",
-    0x22FD:"CONTAINS WITH OVERBAR",0x22FE:"SMALL CONTAINS WITH OVERBAR",0x22FF:"Z NOTATION BAG MEMBERSHIP"
-  });
-
-  // Braille (U+2800-U+28FF) — all 256
   (function() {
-    var DOTS = ["","1","2","12","3","13","23","123","4","14","24","124","34","134","234","1234",
-      "5","15","25","125","35","135","235","1235","45","145","245","1245","345","1345","2345","12345",
-      "6","16","26","126","36","136","236","1236","46","146","246","1246","346","1346","2346","12346",
-      "56","156","256","1256","356","1356","2356","12356","456","1456","2456","12456","3456","13456","23456","123456",
-      "7","17","27","127","37","137","237","1237","47","147","247","1247","347","1347","2347","12347",
-      "57","157","257","1257","357","1357","2357","12357","457","1457","2457","12457","3457","13457","23457","123457",
-      "67","167","267","1267","367","1367","2367","12367","467","1467","2467","12467","3467","13467","23467","123467",
-      "567","1567","2567","12567","3567","13567","23567","123567","4567","14567","24567","124567","34567","134567","234567","1234567",
-      "8","18","28","128","38","138","238","1238","48","148","248","1248","348","1348","2348","12348",
-      "58","158","258","1258","358","1358","2358","12358","458","1458","2458","12458","3458","13458","23458","123458",
-      "68","168","268","1268","368","1368","2368","12368","468","1468","2468","12468","3468","13468","23468","123468",
-      "568","1568","2568","12568","3568","13568","23568","123568","4568","14568","24568","124568","34568","134568","234568","1234568",
-      "78","178","278","1278","378","1378","2378","12378","478","1478","2478","12478","3478","13478","23478","123478",
-      "578","1578","2578","12578","3578","13578","23578","123578","4578","14578","24578","124578","34578","134578","234578","1234578",
-      "678","1678","2678","12678","3678","13678","23678","123678","4678","14678","24678","124678","34678","134678","234678","1234678",
-      "5678","15678","25678","125678","35678","135678","235678","1235678","45678","145678","245678","1245678","345678","1345678","2345678","12345678"];
-    for (var i = 0; i < 256; i++) {
-      var name = i === 0 ? "BRAILLE PATTERN BLANK" : "BRAILLE PATTERN DOTS-" + DOTS[i];
-      T[0x2800 + i] = name;
-    }
+    var DOTS = ["","1","2","12","3","13","23","123","4","14","24","124","34","134","234","1234","5","15","25","125","35","135","235","1235","45","145","245","1245","345","1345","2345","12345","6","16","26","126","36","136","236","1236","46","146","246","1246","346","1346","2346","12346","56","156","256","1256","356","1356","2356","12356","456","1456","2456","12456","3456","13456","23456","123456","7","17","27","127","37","137","237","1237","47","147","247","1247","347","1347","2347","12347","57","157","257","1257","357","1357","2357","12357","457","1457","2457","12457","3457","13457","23457","123457","67","167","267","1267","367","1367","2367","12367","467","1467","2467","12467","3467","13467","23467","123467","567","1567","2567","12567","3567","13567","23567","123567","4567","14567","24567","124567","34567","134567","234567","1234567","8","18","28","128","38","138","238","1238","48","148","248","1248","348","1348","2348","12348","58","158","258","1258","358","1358","2358","12358","458","1458","2458","12458","3458","13458","23458","123458","68","168","268","1268","368","1368","2368","12368","468","1468","2468","12468","3468","13468","23468","123468","568","1568","2568","12568","3568","13568","23568","123568","4568","14568","24568","124568","34568","134568","234568","1234568","78","178","278","1278","378","1378","2378","12378","478","1478","2478","12478","3478","13478","23478","123478","578","1578","2578","12578","3578","13578","23578","123578","4578","14578","24578","124578","34578","134578","234578","1234578","678","1678","2678","12678","3678","13678","23678","123678","4678","14678","24678","124678","34678","134678","234678","1234678","5678","15678","25678","125678","35678","135678","235678","1235678","45678","145678","245678","1245678","345678","1345678","2345678","12345678"];
+    for (var i = 0; i < 256; i++) T[0x2800+i] = i === 0 ? "BRAILLE PATTERN BLANK" : "BRAILLE PATTERN DOTS-"+DOTS[i];
   })();
 
-  // Specials / format
-  add({
-    0xFEFF:"ZERO WIDTH NO-BREAK SPACE",0xFFFD:"REPLACEMENT CHARACTER",
-    0xFFFE:"<noncharacter-FFFE>",0xFFFF:"<noncharacter-FFFF>",
-    0xFFF9:"INTERLINEAR ANNOTATION ANCHOR",0xFFFA:"INTERLINEAR ANNOTATION SEPARATOR",
-    0xFFFB:"INTERLINEAR ANNOTATION TERMINATOR",0xFFFC:"OBJECT REPLACEMENT CHARACTER"
-  });
+  a({0x2600:"BLACK SUN WITH RAYS",0x2601:"CLOUD",0x2602:"UMBRELLA",0x2603:"SNOWMAN",0x2604:"COMET",0x2605:"BLACK STAR",0x2606:"WHITE STAR",0x2620:"SKULL AND CROSSBONES",0x2622:"RADIOACTIVE SIGN",0x2623:"BIOHAZARD SIGN",0x2625:"ANKH",0x262E:"PEACE SYMBOL",0x262F:"YIN YANG",0x2630:"TRIGRAM FOR HEAVEN",0x2631:"TRIGRAM FOR LAKE",0x2632:"TRIGRAM FOR FIRE",0x2633:"TRIGRAM FOR THUNDER",0x2634:"TRIGRAM FOR WIND",0x2635:"TRIGRAM FOR WATER",0x2636:"TRIGRAM FOR MOUNTAIN",0x2637:"TRIGRAM FOR EARTH",0x2638:"WHEEL OF DHARMA",0x2639:"WHITE FROWNING FACE",0x263A:"WHITE SMILING FACE",0x263B:"BLACK SMILING FACE",0x2640:"FEMALE SIGN",0x2642:"MALE SIGN",0x2648:"ARIES",0x2649:"TAURUS",0x264A:"GEMINI",0x264B:"CANCER",0x264C:"LEO",0x264D:"VIRGO",0x264E:"LIBRA",0x264F:"SCORPIUS",0x2650:"SAGITTARIUS",0x2651:"CAPRICORN",0x2652:"AQUARIUS",0x2653:"PISCES",0x2654:"WHITE CHESS KING",0x2655:"WHITE CHESS QUEEN",0x2656:"WHITE CHESS ROOK",0x2657:"WHITE CHESS BISHOP",0x2658:"WHITE CHESS KNIGHT",0x2659:"WHITE CHESS PAWN",0x265A:"BLACK CHESS KING",0x265B:"BLACK CHESS QUEEN",0x265C:"BLACK CHESS ROOK",0x265D:"BLACK CHESS BISHOP",0x265E:"BLACK CHESS KNIGHT",0x265F:"BLACK CHESS PAWN",0x2660:"BLACK SPADE SUIT",0x2661:"WHITE HEART SUIT",0x2662:"WHITE DIAMOND SUIT",0x2663:"BLACK CLUB SUIT",0x2664:"WHITE SPADE SUIT",0x2665:"BLACK HEART SUIT",0x2666:"BLACK DIAMOND SUIT",0x2667:"WHITE CLUB SUIT",0x2668:"HOT SPRINGS",0x2669:"QUARTER NOTE",0x266A:"EIGHTH NOTE",0x266B:"BEAMED EIGHTH NOTES",0x266C:"BEAMED SIXTEENTH NOTES",0x266D:"MUSIC FLAT SIGN",0x266E:"MUSIC NATURAL SIGN",0x266F:"MUSIC SHARP SIGN",0x267B:"BLACK UNIVERSAL RECYCLING SYMBOL",0x267E:"PERMANENT PAPER SIGN",0x267F:"WHEELCHAIR SYMBOL",0x2680:"DIE FACE-1",0x2681:"DIE FACE-2",0x2682:"DIE FACE-3",0x2683:"DIE FACE-4",0x2684:"DIE FACE-5",0x2685:"DIE FACE-6",0x2690:"WHITE FLAG",0x2691:"BLACK FLAG",0x2692:"HAMMER AND PICK",0x2693:"ANCHOR",0x2694:"CROSSED SWORDS",0x2695:"STAFF OF AESCULAPIUS",0x2696:"SCALES",0x2697:"ALEMBIC",0x2699:"GEAR",0x269B:"ATOM SYMBOL",0x269C:"FLEUR-DE-LIS",0x26A0:"WARNING SIGN",0x26A1:"HIGH VOLTAGE SIGN",0x26AA:"MEDIUM WHITE CIRCLE",0x26AB:"MEDIUM BLACK CIRCLE",0x26BD:"SOCCER BALL",0x26BE:"BASEBALL",0x26C4:"SNOWMAN WITHOUT SNOW",0x26C5:"SUN BEHIND CLOUD",0x26CE:"OPHIUCHUS",0x26CF:"PICK",0x26D4:"NO ENTRY",0x26EA:"CHURCH",0x26F0:"MOUNTAIN",0x26F2:"FOUNTAIN",0x26F3:"FLAG IN HOLE",0x26F5:"SAILBOAT",0x26FA:"TENT",0x26FD:"FUEL PUMP"});
+
+  a({0x2700:"BLACK SAFETY SCISSORS",0x2702:"BLACK SCISSORS",0x2704:"WHITE SCISSORS",0x2705:"WHITE HEAVY CHECK MARK",0x2708:"AIRPLANE",0x2709:"ENVELOPE",0x270A:"RAISED FIST",0x270B:"RAISED HAND",0x270C:"VICTORY HAND",0x270D:"WRITING HAND",0x270F:"PENCIL",0x2712:"BLACK NIB",0x2713:"CHECK MARK",0x2714:"HEAVY CHECK MARK",0x2715:"MULTIPLICATION X",0x2716:"HEAVY MULTIPLICATION X",0x2717:"BALLOT X",0x2718:"HEAVY BALLOT X",0x271D:"LATIN CROSS",0x2720:"MALTESE CROSS",0x2721:"STAR OF DAVID",0x2728:"SPARKLES",0x272A:"CIRCLED WHITE STAR",0x2744:"SNOWFLAKE",0x2747:"SPARKLE",0x274C:"CROSS MARK",0x274E:"CROSS MARK",0x2753:"BLACK QUESTION MARK ORNAMENT",0x2754:"WHITE QUESTION MARK ORNAMENT",0x2755:"WHITE EXCLAMATION MARK ORNAMENT",0x2757:"HEAVY EXCLAMATION MARK ORNAMENT",0x2764:"HEAVY BLACK HEART",0x2794:"HEAVY WIDE-HEADED RIGHTWARDS ARROW",0x2795:"HEAVY PLUS SIGN",0x2796:"HEAVY MINUS SIGN",0x2797:"HEAVY DIVISION SIGN",0x27A1:"BLACK RIGHTWARDS ARROW",0x27B0:"CURLY LOOP"});
+
+  a({0x2200:"FOR ALL",0x2201:"COMPLEMENT",0x2202:"PARTIAL DIFFERENTIAL",0x2203:"THERE EXISTS",0x2204:"THERE DOES NOT EXIST",0x2205:"EMPTY SET",0x2206:"INCREMENT",0x2207:"NABLA",0x2208:"ELEMENT OF",0x2209:"NOT AN ELEMENT OF",0x220A:"SMALL ELEMENT OF",0x220B:"CONTAINS AS MEMBER",0x220C:"DOES NOT CONTAIN AS MEMBER",0x220E:"END OF PROOF",0x220F:"N-ARY PRODUCT",0x2210:"N-ARY COPRODUCT",0x2211:"N-ARY SUMMATION",0x2212:"MINUS SIGN",0x2213:"MINUS-OR-PLUS SIGN",0x2215:"DIVISION SLASH",0x2216:"SET MINUS",0x2217:"ASTERISK OPERATOR",0x2218:"RING OPERATOR",0x2219:"BULLET OPERATOR",0x221A:"SQUARE ROOT",0x221B:"CUBE ROOT",0x221C:"FOURTH ROOT",0x221D:"PROPORTIONAL TO",0x221E:"INFINITY",0x221F:"RIGHT ANGLE",0x2220:"ANGLE",0x2221:"MEASURED ANGLE",0x2222:"SPHERICAL ANGLE",0x2223:"DIVIDES",0x2225:"PARALLEL TO",0x2227:"LOGICAL AND",0x2228:"LOGICAL OR",0x2229:"INTERSECTION",0x222A:"UNION",0x222B:"INTEGRAL",0x222C:"DOUBLE INTEGRAL",0x222D:"TRIPLE INTEGRAL",0x222E:"CONTOUR INTEGRAL",0x2234:"THEREFORE",0x2235:"BECAUSE",0x2236:"RATIO",0x2237:"PROPORTION",0x223C:"TILDE OPERATOR",0x2243:"ASYMPTOTICALLY EQUAL TO",0x2245:"APPROXIMATELY EQUAL TO",0x2248:"ALMOST EQUAL TO",0x2260:"NOT EQUAL TO",0x2261:"IDENTICAL TO",0x2264:"LESS-THAN OR EQUAL TO",0x2265:"GREATER-THAN OR EQUAL TO",0x226A:"MUCH LESS-THAN",0x226B:"MUCH GREATER-THAN",0x2282:"SUBSET OF",0x2283:"SUPERSET OF",0x2286:"SUBSET OF OR EQUAL TO",0x2287:"SUPERSET OF OR EQUAL TO",0x2295:"CIRCLED PLUS",0x2296:"CIRCLED MINUS",0x2297:"CIRCLED TIMES",0x2299:"CIRCLED DOT OPERATOR",0x22A2:"RIGHT TACK",0x22A3:"LEFT TACK",0x22A4:"DOWN TACK",0x22A5:"UP TACK",0x22A8:"TRUE",0x22A9:"FORCES",0x22B2:"NORMAL SUBGROUP OF",0x22B3:"CONTAINS AS NORMAL SUBGROUP",0x22BB:"XOR",0x22BC:"NAND",0x22BD:"NOR",0x22C0:"N-ARY LOGICAL AND",0x22C1:"N-ARY LOGICAL OR",0x22C2:"N-ARY INTERSECTION",0x22C3:"N-ARY UNION",0x22C4:"DIAMOND OPERATOR",0x22C5:"DOT OPERATOR",0x22C6:"STAR OPERATOR",0x22C8:"BOWTIE",0x22EE:"VERTICAL ELLIPSIS",0x22EF:"MIDLINE HORIZONTAL ELLIPSIS",0x22F0:"UP RIGHT DIAGONAL ELLIPSIS",0x22F1:"DOWN RIGHT DIAGONAL ELLIPSIS"});
+
+  a({0x2100:"ACCOUNT OF",0x2101:"ADDRESSED TO THE SUBJECT",0x2102:"DOUBLE-STRUCK CAPITAL C",0x2103:"DEGREE CELSIUS",0x2105:"CARE OF",0x2107:"EULER CONSTANT",0x2109:"DEGREE FAHRENHEIT",0x210A:"SCRIPT SMALL G",0x210B:"SCRIPT CAPITAL H",0x210C:"BLACK-LETTER CAPITAL H",0x210D:"DOUBLE-STRUCK CAPITAL H",0x210E:"PLANCK CONSTANT",0x210F:"PLANCK CONSTANT OVER TWO PI",0x2110:"SCRIPT CAPITAL I",0x2111:"BLACK-LETTER CAPITAL I",0x2112:"SCRIPT CAPITAL L",0x2113:"SCRIPT SMALL L",0x2115:"DOUBLE-STRUCK CAPITAL N",0x2116:"NUMERO SIGN",0x2117:"SOUND RECORDING COPYRIGHT",0x2118:"SCRIPT CAPITAL P",0x2119:"DOUBLE-STRUCK CAPITAL P",0x211A:"DOUBLE-STRUCK CAPITAL Q",0x211B:"SCRIPT CAPITAL R",0x211C:"BLACK-LETTER CAPITAL R",0x211D:"DOUBLE-STRUCK CAPITAL R",0x211E:"PRESCRIPTION TAKE",0x2120:"SERVICE MARK",0x2121:"TELEPHONE SIGN",0x2122:"TRADE MARK SIGN",0x2124:"DOUBLE-STRUCK CAPITAL Z",0x2126:"OHM SIGN",0x212A:"KELVIN SIGN",0x212B:"ANGSTROM SIGN",0x212E:"ESTIMATED SIGN",0x2135:"ALEF SYMBOL",0x2136:"BET SYMBOL",0x2137:"GIMEL SYMBOL",0x2138:"DALET SYMBOL",0x2139:"INFORMATION SOURCE",0x213B:"FACSIMILE SIGN"});
+
+  a({0xFEFF:"ZERO WIDTH NO-BREAK SPACE",0xFFFD:"REPLACEMENT CHARACTER",0xFFF9:"INTERLINEAR ANNOTATION ANCHOR",0xFFFA:"INTERLINEAR ANNOTATION SEPARATOR",0xFFFB:"INTERLINEAR ANNOTATION TERMINATOR",0xFFFC:"OBJECT REPLACEMENT CHARACTER"});
 
   return T;
 })();
 
-/* ═══════════════════════════════════════════════════════════════
-   Non-visible character classification
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   NON-VISIBLE CHARACTER CLASSIFICATION
+================================================================ */
 function isNonVisible(cp) {
-  if (cp <= 0x001F) return true;                        // C0 controls
-  if (cp >= 0x007F && cp <= 0x009F) return true;        // DEL + C1 controls
-  if (cp >= 0xD800 && cp <= 0xDFFF) return true;        // Surrogates
-  if (cp === 0xFEFF) return true;                       // BOM
-  if (cp >= 0xFFF9 && cp <= 0xFFFB) return true;        // Interlinear annotation
-  if (cp === 0xFFFE || cp === 0xFFFF) return true;      // Noncharacters
+  if (cp <= 0x001F)                              return true; // C0 controls
+  if (cp >= 0x007F && cp <= 0x009F)             return true; // DEL + C1
+  if (cp >= 0xD800 && cp <= 0xDFFF)             return true; // Surrogates
+  if (cp === 0xFEFF)                             return true; // BOM
+  if (cp >= 0xFFF9 && cp <= 0xFFFB)             return true; // Interlinear
+  if (cp === 0xFFFE || cp === 0xFFFF)            return true; // Noncharacters
   if ((cp & 0xFFFF) === 0xFFFE || (cp & 0xFFFF) === 0xFFFF) return true;
-  if (cp >= 0xFDD0 && cp <= 0xFDEF) return true;        // Noncharacters
-  if (cp >= 0x200B && cp <= 0x200F) return true;        // ZW space, marks
-  if (cp >= 0x202A && cp <= 0x202E) return true;        // Bidi overrides
-  if (cp >= 0x2060 && cp <= 0x206F) return true;        // Format chars
-  if (cp >= 0xFE00 && cp <= 0xFE0F) return true;        // VS 1-16
-  if (cp >= 0xE0000 && cp <= 0xE01EF) return true;      // Tags + VS supplement
-  if (cp >= 0xE000 && cp <= 0xF8FF) return true;        // Private Use Area
-  if (cp >= 0xF0000 && cp <= 0x10FFFF) return true;     // Planes 15-16 (PUA)
+  if (cp >= 0xFDD0 && cp <= 0xFDEF)             return true; // Noncharacters
+  if (cp >= 0x200B && cp <= 0x200F)             return true; // ZW space/marks
+  if (cp >= 0x202A && cp <= 0x202E)             return true; // Bidi overrides
+  if (cp >= 0x2060 && cp <= 0x206F)             return true; // Format chars
+  if (cp >= 0xFE00 && cp <= 0xFE0F)             return true; // VS 1-16
+  if (cp >= 0xE0000 && cp <= 0xE01EF)           return true; // Tags+VS supp.
+  if (cp >= 0xE000 && cp <= 0xF8FF)             return true; // PUA
+  if (cp >= 0xDB80 && cp <= 0xDBFF)             return true; // High PU surr.
+  if (cp >= 0xF0000)                            return true; // Planes 15-16
   return false;
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   Utilities
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   UTILITIES
+================================================================ */
 function cpToStr(cp) {
   if (cp > 0xFFFF) {
     var c = cp - 0x10000;
@@ -1384,16 +653,12 @@ function cpToStr(cp) {
   }
   return String.fromCharCode(cp);
 }
+function cpHex(cp) { return "U+" + hex4(cp); }
 
-function cpHex(cp) {
-  return "U+" + hex4(cp);
-}
-
-/* ═══════════════════════════════════════════════════════════════
-   Build the sidebar block list
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   SIDEBAR BLOCK LIST BUILDER
+================================================================ */
 var blockList = document.getElementById("block-list");
-
 (function buildSidebar() {
   var cats = [], catMap = {};
   BLOCKS.forEach(function(b, idx) {
@@ -1401,25 +666,23 @@ var blockList = document.getElementById("block-list");
     if (!catMap[cat]) { catMap[cat] = []; cats.push(cat); }
     catMap[cat].push(idx);
   });
-
   cats.forEach(function(cat) {
     var hdr = document.createElement("li");
     hdr.className = "cat-header";
     hdr.textContent = cat;
     hdr.setAttribute("aria-hidden","true");
     blockList.appendChild(hdr);
-
     catMap[cat].forEach(function(idx) {
       var b = BLOCKS[idx];
       var li = document.createElement("li");
       li.setAttribute("role","option");
       li.setAttribute("aria-selected","false");
-      li.dataset.idx = idx;
+      li.dataset.idx = String(idx);
 
       var cb = document.createElement("input");
       cb.type = "checkbox";
       cb.id = "blk-" + idx;
-      cb.dataset.idx = idx;
+      cb.dataset.idx = String(idx);
 
       var nm = document.createElement("span");
       nm.className = "block-name";
@@ -1427,14 +690,14 @@ var blockList = document.getElementById("block-list");
 
       var rng = document.createElement("span");
       rng.className = "block-range";
-      rng.textContent = hex4(b[1]).toUpperCase() + "\u2013" + hex4(b[2]).toUpperCase();
+      var s = hex4(b[1]).toUpperCase(), e = hex4(b[2]).toUpperCase();
+      rng.textContent = s + "–" + e;
 
       li.appendChild(cb);
       li.appendChild(nm);
       li.appendChild(rng);
-
-      li.addEventListener("click", function(e) {
-        if (e.target !== cb) cb.checked = !cb.checked;
+      li.addEventListener("click", function(ev) {
+        if (ev.target !== cb) cb.checked = !cb.checked;
         updateStatus();
       });
       blockList.appendChild(li);
@@ -1442,9 +705,9 @@ var blockList = document.getElementById("block-list");
   });
 })();
 
-/* ═══════════════════════════════════════════════════════════════
-   Sidebar controls
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   SIDEBAR CONTROLS
+================================================================ */
 function getAllChecks() { return blockList.querySelectorAll("input[type=checkbox]"); }
 
 document.getElementById("btn-all").addEventListener("click", function() {
@@ -1456,20 +719,15 @@ document.getElementById("btn-all").addEventListener("click", function() {
 });
 
 document.getElementById("btn-none").addEventListener("click", function() {
-  var cks = getAllChecks();
-  for (var i = 0; i < cks.length; i++) cks[i].checked = false;
+  var cks = getAllChecks(); for (var i = 0; i < cks.length; i++) cks[i].checked = false;
   updateStatus();
 });
 
 document.getElementById("btn-vis").addEventListener("click", function() {
-  var cks = getAllChecks();
-  for (var i = 0; i < cks.length; i++) cks[i].checked = false;
+  var cks = getAllChecks(); for (var i = 0; i < cks.length; i++) cks[i].checked = false;
   BLOCKS.forEach(function(b, idx) {
     var cat = b[3];
-    if (cat !== "Specials") {
-      var cb = document.getElementById("blk-" + idx);
-      if (cb) cb.checked = true;
-    }
+    if (cat !== "Specials") { var cb = document.getElementById("blk-"+idx); if (cb) cb.checked = true; }
   });
   updateStatus();
 });
@@ -1484,8 +742,7 @@ document.getElementById("block-search").addEventListener("input", function() {
   });
   var headers = blockList.querySelectorAll("li.cat-header");
   headers.forEach(function(hdr) {
-    var next = hdr.nextElementSibling;
-    var vis = false;
+    var next = hdr.nextElementSibling, vis = false;
     while (next && !next.classList.contains("cat-header")) {
       if (!next.classList.contains("hidden")) { vis = true; break; }
       next = next.nextElementSibling;
@@ -1494,20 +751,20 @@ document.getElementById("block-search").addEventListener("input", function() {
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   Status bar
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   STATUS BAR
+================================================================ */
 function updateStatus() {
   var sel = 0, cks = getAllChecks();
   for (var i = 0; i < cks.length; i++) if (cks[i].checked) sel++;
-  document.getElementById("stat-blocks").textContent = sel + " block" + (sel === 1 ? "" : "s") + " selected";
+  document.getElementById("stat-blocks").textContent = sel + " block" + (sel===1?"":"s") + " selected";
   document.getElementById("stat-chars").textContent = "";
 }
 updateStatus();
 
-/* ═══════════════════════════════════════════════════════════════
-   Font size slider
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   FONT SIZE SLIDER
+================================================================ */
 var currentFontSize = 18;
 var slider = document.getElementById("font-size-slider");
 var sizeVal = document.getElementById("font-size-val");
@@ -1517,18 +774,16 @@ slider.addEventListener("input", function() {
   document.getElementById("output").style.fontSize = currentFontSize + "px";
 });
 
-/* ═══════════════════════════════════════════════════════════════
-   Main render
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   RENDER
+================================================================ */
 document.getElementById("btn-show").addEventListener("click", renderOutput);
 document.addEventListener("keydown", function(e) { if (e.ctrlKey && e.key === "Enter") renderOutput(); });
 
 function getSelectedBlocks() {
-  var r = [];
-  var cks = getAllChecks();
-  for (var i = 0; i < cks.length; i++) {
+  var r = [], cks = getAllChecks();
+  for (var i = 0; i < cks.length; i++)
     if (cks[i].checked) r.push(BLOCKS[parseInt(cks[i].dataset.idx, 10)]);
-  }
   return r;
 }
 
@@ -1546,39 +801,36 @@ function renderOutput() {
 
   if (blocks.length === 0) {
     output.innerHTML = "";
-    var ph = document.createElement("div");
-    ph.id = "placeholder";
-    ph.innerHTML = "<span class=\"big\">\u26A0</span><p>No blocks selected.</p>";
+    var ph = document.createElement("div"); ph.id = "placeholder";
+    ph.innerHTML = "<span class=\"big\">&#x26A0;</span><p>No blocks selected.</p>";
     output.appendChild(ph);
     document.getElementById("stat-chars").textContent = "";
     return;
   }
 
-  /* Collect code points */
   var allCP = [];
   blocks.forEach(function(b) {
     for (var cp = b[1]; cp <= b[2]; cp++) {
-      if (cp >= 0xD800 && cp <= 0xDFFF) continue; // always skip surrogates
+      if (cp >= 0xD800 && cp <= 0xDFFF) continue;
       if (!includeNV && isNonVisible(cp)) continue;
-      allCP.push({ cp: cp, block: b[0] });
+      allCP.push({cp: cp, block: b[0]});
     }
   });
 
   var total = allCP.length;
-  document.getElementById("stat-chars").textContent = total.toLocaleString() + " character" + (total === 1 ? "" : "s");
+  document.getElementById("stat-chars").textContent = total.toLocaleString() + " character" + (total===1?"":"s");
 
   output.innerHTML = "";
   output.style.fontSize = currentFontSize + "px";
 
   if (total === 0) {
-    var ph2 = document.createElement("div");
-    ph2.id = "placeholder";
-    ph2.innerHTML = "<span class=\"big\">\u2205</span><p>No characters with current settings.</p>";
+    var ph2 = document.createElement("div"); ph2.id = "placeholder";
+    ph2.innerHTML = "<span class=\"big\">&#x2205;</span><p>No characters with current settings.</p>";
     output.appendChild(ph2);
     return;
   }
 
-  if (mode === "grid")      renderGrid(output, blocks, allCP, false);
+  if      (mode === "grid")    renderGrid(output, blocks, allCP, false);
   else if (mode === "grid-cp") renderGrid(output, blocks, allCP, true);
   else if (mode === "table")   renderTable(output, blocks, allCP);
   else                         renderPlain(output, allCP);
@@ -1593,38 +845,32 @@ function groupByBlock(allCP) {
   return m;
 }
 
-/* ── Grid ─────────────────────────────────────────────────── */
+function makeSepHeading(b) {
+  var sep = document.createElement("span");
+  sep.className = "block-sep-heading";
+  sep.textContent = b[0] + "  (" + cpHex(b[1]) + " \u2013 " + cpHex(b[2]) + ")";
+  return sep;
+}
+
 function renderGrid(output, blocks, allCP, showCP) {
   var byBlock = groupByBlock(allCP);
   blocks.forEach(function(b) {
-    var items = byBlock[b[0]];
-    if (!items || items.length === 0) return;
-
-    var sep = document.createElement("span");
-    sep.className = "block-sep-heading";
-    sep.textContent = b[0] + "  (" + cpHex(b[1]) + " \u2013 " + cpHex(b[2]) + ")";
-    output.appendChild(sep);
-
+    var items = byBlock[b[0]]; if (!items || !items.length) return;
+    output.appendChild(makeSepHeading(b));
     var grid = document.createElement("div");
     grid.className = showCP ? "char-grid-cp" : "char-grid";
-
     items.forEach(function(item) {
       var ch = cpToStr(item.cp);
       var el = document.createElement("div");
       el.className = showCP ? "gcc" : "gc";
       el.title = cpHex(item.cp) + "  " + getCharName(item.cp);
-
       if (!showCP) {
         el.textContent = ch;
       } else {
-        var g = document.createElement("span");
-        g.className = "glyph";
-        g.textContent = ch;
-        var c = document.createElement("span");
-        c.className = "cp";
+        var g = document.createElement("span"); g.className = "glyph"; g.textContent = ch;
+        var c = document.createElement("span"); c.className = "cp";
         c.textContent = item.cp.toString(16).toUpperCase().padStart(4,"0");
-        el.appendChild(g);
-        el.appendChild(c);
+        el.appendChild(g); el.appendChild(c);
       }
       grid.appendChild(el);
     });
@@ -1632,7 +878,6 @@ function renderGrid(output, blocks, allCP, showCP) {
   });
 }
 
-/* ── Table ────────────────────────────────────────────────── */
 function renderTable(output, blocks, allCP) {
   var tbl = document.createElement("table");
   tbl.className = "char-table";
@@ -1643,19 +888,12 @@ function renderTable(output, blocks, allCP) {
   tbl.appendChild(thead);
   var tbody = document.createElement("tbody");
   var byBlock = groupByBlock(allCP);
-
   blocks.forEach(function(b) {
-    var items = byBlock[b[0]];
-    if (!items || items.length === 0) return;
-
-    var sr = document.createElement("tr");
-    sr.className = "block-sep";
-    var sd = document.createElement("td");
-    sd.setAttribute("colspan","4");
+    var items = byBlock[b[0]]; if (!items || !items.length) return;
+    var sr = document.createElement("tr"); sr.className = "block-sep";
+    var sd = document.createElement("td"); sd.setAttribute("colspan","4");
     sd.textContent = b[0] + "  (" + cpHex(b[1]) + " \u2013 " + cpHex(b[2]) + ")";
-    sr.appendChild(sd);
-    tbody.appendChild(sr);
-
+    sr.appendChild(sd); tbody.appendChild(sr);
     items.forEach(function(item) {
       var row = document.createElement("tr");
       var tdCp = document.createElement("td"); tdCp.className = "td-cp"; tdCp.textContent = cpHex(item.cp);
@@ -1666,12 +904,10 @@ function renderTable(output, blocks, allCP) {
       tbody.appendChild(row);
     });
   });
-
   tbl.appendChild(tbody);
   output.appendChild(tbl);
 }
 
-/* ── Plain text ───────────────────────────────────────────── */
 function renderPlain(output, allCP) {
   var div = document.createElement("div");
   div.id = "plain-text-out";
@@ -1681,9 +917,9 @@ function renderPlain(output, allCP) {
   output.appendChild(div);
 }
 
-/* ═══════════════════════════════════════════════════════════════
-   Copy
-═══════════════════════════════════════════════════════════════ */
+/* ================================================================
+   COPY
+================================================================ */
 document.getElementById("btn-copy").addEventListener("click", function() {
   var text = (document.getElementById("output").innerText || "").trim();
   if (!text) { alert("Nothing to copy \u2014 click Show first."); return; }
@@ -1700,10 +936,8 @@ document.getElementById("btn-copy").addEventListener("click", function() {
 
 function fallback(text) {
   var ta = document.createElement("textarea");
-  ta.value = text;
-  ta.style.cssText = "position:fixed;left:-9999px;top:0";
-  document.body.appendChild(ta);
-  ta.select();
+  ta.value = text; ta.style.cssText = "position:fixed;left:-9999px;top:0";
+  document.body.appendChild(ta); ta.select();
   try { document.execCommand("copy"); } catch(e) {}
   document.body.removeChild(ta);
 }
