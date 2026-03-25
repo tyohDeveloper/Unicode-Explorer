@@ -105,7 +105,7 @@ button:active { opacity: 0.7; }
   display: inline-flex; align-items: center; justify-content: center;
   width: 2em; height: 2em; border-radius: 3px;
   background: var(--panel); border: 1px solid var(--border);
-  font-family: var(--glyph-font); cursor: default;
+  font-family: var(--glyph-font); cursor: pointer;
 }
 .char-grid .gc:hover { background: var(--surface); border-color: var(--accent); }
 .char-grid .gc.reserved {
@@ -120,7 +120,7 @@ button:active { opacity: 0.7; }
 .char-grid-cp .gcc {
   display: flex; flex-direction: column; align-items: center;
   width: 3.8em; padding: 4px 2px 3px; border-radius: 4px;
-  background: var(--panel); border: 1px solid var(--border); cursor: default;
+  background: var(--panel); border: 1px solid var(--border); cursor: pointer;
 }
 .char-grid-cp .gcc:hover { background: var(--surface); border-color: var(--accent); }
 .char-grid-cp .gcc .glyph { font-family: var(--glyph-font); line-height: 1.3; }
@@ -164,6 +164,42 @@ button:active { opacity: 0.7; }
 #placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); gap: 10px; text-align: center; }
 #placeholder .big { font-size: 3rem; }
 #placeholder p { max-width: 300px; font-size: 0.85rem; }
+
+/* Composition pad */
+#compose-section {
+  background: var(--panel);
+  border-top: 2px solid var(--border);
+  flex-shrink: 0;
+}
+#compose-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px; cursor: pointer;
+  font-size: 0.78rem; color: var(--text-dim);
+  user-select: none; border: none;
+}
+#compose-header:hover { background: rgba(255,255,255,0.04); }
+#compose-toggle-icon {
+  font-size: 0.65em; color: var(--accent);
+  display: inline-block; transition: transform 0.18s;
+  flex-shrink: 0;
+}
+#compose-section.open #compose-toggle-icon { transform: rotate(90deg); }
+#compose-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+#compose-actions { margin-left: auto; display: flex; gap: 6px; }
+#compose-body { display: none; padding: 0 16px 12px; }
+#compose-section.open #compose-body { display: block; }
+#compose-pad {
+  width: 100%; height: 90px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-family: var(--glyph-font); font-size: 1.1em;
+  line-height: 1.7; padding: 8px 10px;
+  outline: none; display: block;
+}
+#compose-pad:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(233,69,96,0.15); }
+#compose-hint { font-size: 0.72rem; color: var(--text-dim); margin-top: 6px; }
+.td-ch.clickable { cursor: pointer; }
+.td-ch.clickable:hover { background: var(--surface); color: var(--accent); }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
@@ -244,6 +280,21 @@ button:active { opacity: 0.7; }
           <span class="big">&#x2B1B;</span>
           <p>Select one or more Unicode blocks from the sidebar.</p>
         </div>
+      </div>
+    </div>
+
+    <div id="compose-section">
+      <div id="compose-header">
+        <span id="compose-toggle-icon">&#x25B6;</span>
+        <span id="compose-title">Composition Pad</span>
+        <div id="compose-actions">
+          <button type="button" class="btn-sm" id="btn-compose-clear">Clear</button>
+          <button type="button" class="btn-sm" id="btn-compose-copy">Copy</button>
+        </div>
+      </div>
+      <div id="compose-body">
+        <textarea id="compose-pad" rows="4"></textarea>
+        <div id="compose-hint">Click any character in Grid or Table view to insert it here. You can also type directly.</div>
       </div>
     </div>
   </div>
@@ -1036,6 +1087,26 @@ function renderOutput() {
 }
 
 /* ================================================================
+   COMPOSITION PAD INSERT HELPER
+================================================================ */
+function insertToComposePad(ch) {
+  var ta = document.getElementById("compose-pad");
+  if (!ta) return;
+  /* Open the pad automatically if it is collapsed */
+  var section = document.getElementById("compose-section");
+  if (section && !section.className.match(/\bopen\b/)) {
+    section.className += " open";
+  }
+  var start = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
+  var end   = ta.selectionEnd   != null ? ta.selectionEnd   : ta.value.length;
+  ta.value = ta.value.slice(0, start) + ch + ta.value.slice(end);
+  var newPos = start + ch.length;
+  ta.selectionStart = newPos;
+  ta.selectionEnd   = newPos;
+  ta.focus();
+}
+
+/* ================================================================
    HELPERS
 ================================================================ */
 function groupByBlock(allCP) {
@@ -1079,7 +1150,7 @@ function renderGrid(output, blocks, allCP, showCP) {
       } else {
         var ch = cpToStr(item.cp);
         el.className = showCP ? "gcc" : "gc";
-        el.title = cpHex(item.cp) + "  " + getCharName(item.cp);
+        el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
         if (!showCP) {
           el.textContent = ch;
         } else {
@@ -1088,6 +1159,10 @@ function renderGrid(output, blocks, allCP, showCP) {
           c2.textContent = hex4(item.cp);
           el.appendChild(g); el.appendChild(c2);
         }
+        /* Click inserts into composition pad */
+        (function(ch2) {
+          el.addEventListener("click", function() { insertToComposePad(ch2); });
+        }(ch));
       }
       grid.appendChild(el);
     });
@@ -1121,10 +1196,16 @@ function renderTable(output, blocks, allCP) {
 
     items.forEach(function(item) {
       var row = document.createElement("tr");
+      var ch = cpToStr(item.cp);
       var tdCp = document.createElement("td"); tdCp.className = "td-cp"; tdCp.textContent = cpHex(item.cp);
-      var tdCh = document.createElement("td"); tdCh.className = "td-ch"; tdCh.textContent = cpToStr(item.cp);
+      var tdCh = document.createElement("td"); tdCh.className = "td-ch clickable"; tdCh.textContent = ch;
+      tdCh.title = "Click to insert into Composition Pad";
       var tdNm = document.createElement("td"); tdNm.className = "td-name"; tdNm.textContent = getCharName(item.cp);
       var tdBl = document.createElement("td"); tdBl.className = "td-block"; tdBl.textContent = item.block;
+      /* Click on Ch cell inserts into composition pad */
+      (function(ch2) {
+        tdCh.addEventListener("click", function() { insertToComposePad(ch2); });
+      }(ch));
       row.appendChild(tdCp); row.appendChild(tdCh); row.appendChild(tdNm); row.appendChild(tdBl);
       tbody.appendChild(row);
     });
@@ -1204,6 +1285,55 @@ function fallback(text) {
   try { document.execCommand("copy"); } catch(e) {}
   document.body.removeChild(ta);
 }
+
+/* ================================================================
+   COMPOSITION PAD CONTROLS
+================================================================ */
+(function() {
+  var section = document.getElementById("compose-section");
+  var header  = document.getElementById("compose-header");
+  var pad     = document.getElementById("compose-pad");
+  var btnClr  = document.getElementById("btn-compose-clear");
+  var btnCpy  = document.getElementById("btn-compose-copy");
+
+  /* Toggle collapse on header click (but not on button clicks) */
+  header.addEventListener("click", function(ev) {
+    var t = ev.target;
+    /* Walk up to see if a button was clicked */
+    while (t && t !== header) {
+      if (t.tagName && t.tagName.toLowerCase() === "button") return;
+      t = t.parentNode;
+    }
+    if (section.className.match(/\bopen\b/)) {
+      section.className = section.className.replace(/\s*\bopen\b/g, "");
+    } else {
+      section.className += " open";
+    }
+  });
+
+  /* Clear */
+  btnClr.addEventListener("click", function(ev) {
+    ev.stopPropagation();
+    pad.value = "";
+    pad.focus();
+  });
+
+  /* Copy */
+  btnCpy.addEventListener("click", function(ev) {
+    ev.stopPropagation();
+    var text = pad.value;
+    var btn = btnCpy;
+    function flash() {
+      var orig = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+    if (!text) { pad.focus(); return; }
+    try {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallback(text); flash(); });
+    } catch(e) { fallback(text); flash(); }
+  });
+})();
 
 ]]></script>
 </body>

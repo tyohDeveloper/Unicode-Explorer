@@ -92,6 +92,26 @@ function renderOutput() {
 }
 
 /* ================================================================
+   COMPOSITION PAD INSERT HELPER
+================================================================ */
+function insertToComposePad(ch) {
+  var ta = document.getElementById("compose-pad");
+  if (!ta) return;
+  /* Open the pad automatically if it is collapsed */
+  var section = document.getElementById("compose-section");
+  if (section && !section.className.match(/\bopen\b/)) {
+    section.className += " open";
+  }
+  var start = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
+  var end   = ta.selectionEnd   != null ? ta.selectionEnd   : ta.value.length;
+  ta.value = ta.value.slice(0, start) + ch + ta.value.slice(end);
+  var newPos = start + ch.length;
+  ta.selectionStart = newPos;
+  ta.selectionEnd   = newPos;
+  ta.focus();
+}
+
+/* ================================================================
    HELPERS
 ================================================================ */
 function groupByBlock(allCP) {
@@ -135,7 +155,7 @@ function renderGrid(output, blocks, allCP, showCP) {
       } else {
         var ch = cpToStr(item.cp);
         el.className = showCP ? "gcc" : "gc";
-        el.title = cpHex(item.cp) + "  " + getCharName(item.cp);
+        el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
         if (!showCP) {
           el.textContent = ch;
         } else {
@@ -144,6 +164,10 @@ function renderGrid(output, blocks, allCP, showCP) {
           c2.textContent = hex4(item.cp);
           el.appendChild(g); el.appendChild(c2);
         }
+        /* Click inserts into composition pad */
+        (function(ch2) {
+          el.addEventListener("click", function() { insertToComposePad(ch2); });
+        }(ch));
       }
       grid.appendChild(el);
     });
@@ -177,10 +201,16 @@ function renderTable(output, blocks, allCP) {
 
     items.forEach(function(item) {
       var row = document.createElement("tr");
+      var ch = cpToStr(item.cp);
       var tdCp = document.createElement("td"); tdCp.className = "td-cp"; tdCp.textContent = cpHex(item.cp);
-      var tdCh = document.createElement("td"); tdCh.className = "td-ch"; tdCh.textContent = cpToStr(item.cp);
+      var tdCh = document.createElement("td"); tdCh.className = "td-ch clickable"; tdCh.textContent = ch;
+      tdCh.title = "Click to insert into Composition Pad";
       var tdNm = document.createElement("td"); tdNm.className = "td-name"; tdNm.textContent = getCharName(item.cp);
       var tdBl = document.createElement("td"); tdBl.className = "td-block"; tdBl.textContent = item.block;
+      /* Click on Ch cell inserts into composition pad */
+      (function(ch2) {
+        tdCh.addEventListener("click", function() { insertToComposePad(ch2); });
+      }(ch));
       row.appendChild(tdCp); row.appendChild(tdCh); row.appendChild(tdNm); row.appendChild(tdBl);
       tbody.appendChild(row);
     });

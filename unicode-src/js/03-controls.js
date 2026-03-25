@@ -52,3 +52,52 @@ function fallback(text) {
   try { document.execCommand("copy"); } catch(e) {}
   document.body.removeChild(ta);
 }
+
+/* ================================================================
+   COMPOSITION PAD CONTROLS
+================================================================ */
+(function() {
+  var section = document.getElementById("compose-section");
+  var header  = document.getElementById("compose-header");
+  var pad     = document.getElementById("compose-pad");
+  var btnClr  = document.getElementById("btn-compose-clear");
+  var btnCpy  = document.getElementById("btn-compose-copy");
+
+  /* Toggle collapse on header click (but not on button clicks) */
+  header.addEventListener("click", function(ev) {
+    var t = ev.target;
+    /* Walk up to see if a button was clicked */
+    while (t && t !== header) {
+      if (t.tagName && t.tagName.toLowerCase() === "button") return;
+      t = t.parentNode;
+    }
+    if (section.className.match(/\bopen\b/)) {
+      section.className = section.className.replace(/\s*\bopen\b/g, "");
+    } else {
+      section.className += " open";
+    }
+  });
+
+  /* Clear */
+  btnClr.addEventListener("click", function(ev) {
+    ev.stopPropagation();
+    pad.value = "";
+    pad.focus();
+  });
+
+  /* Copy */
+  btnCpy.addEventListener("click", function(ev) {
+    ev.stopPropagation();
+    var text = pad.value;
+    var btn = btnCpy;
+    function flash() {
+      var orig = btn.textContent;
+      btn.textContent = "Copied!";
+      setTimeout(function() { btn.textContent = orig; }, 1500);
+    }
+    if (!text) { pad.focus(); return; }
+    try {
+      navigator.clipboard.writeText(text).then(flash).catch(function() { fallback(text); flash(); });
+    } catch(e) { fallback(text); flash(); }
+  });
+})();

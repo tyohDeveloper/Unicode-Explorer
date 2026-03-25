@@ -91,7 +91,7 @@ button:active { opacity: 0.7; }
   display: inline-flex; align-items: center; justify-content: center;
   width: 2em; height: 2em; border-radius: 3px;
   background: var(--panel); border: 1px solid var(--border);
-  font-family: var(--glyph-font); cursor: default;
+  font-family: var(--glyph-font); cursor: pointer;
 }
 .char-grid .gc:hover { background: var(--surface); border-color: var(--accent); }
 .char-grid .gc.reserved {
@@ -106,7 +106,7 @@ button:active { opacity: 0.7; }
 .char-grid-cp .gcc {
   display: flex; flex-direction: column; align-items: center;
   width: 3.8em; padding: 4px 2px 3px; border-radius: 4px;
-  background: var(--panel); border: 1px solid var(--border); cursor: default;
+  background: var(--panel); border: 1px solid var(--border); cursor: pointer;
 }
 .char-grid-cp .gcc:hover { background: var(--surface); border-color: var(--accent); }
 .char-grid-cp .gcc .glyph { font-family: var(--glyph-font); line-height: 1.3; }
@@ -150,6 +150,42 @@ button:active { opacity: 0.7; }
 #placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); gap: 10px; text-align: center; }
 #placeholder .big { font-size: 3rem; }
 #placeholder p { max-width: 300px; font-size: 0.85rem; }
+
+/* Composition pad */
+#compose-section {
+  background: var(--panel);
+  border-top: 2px solid var(--border);
+  flex-shrink: 0;
+}
+#compose-header {
+  display: flex; align-items: center; gap: 8px;
+  padding: 7px 16px; cursor: pointer;
+  font-size: 0.78rem; color: var(--text-dim);
+  user-select: none; border: none;
+}
+#compose-header:hover { background: rgba(255,255,255,0.04); }
+#compose-toggle-icon {
+  font-size: 0.65em; color: var(--accent);
+  display: inline-block; transition: transform 0.18s;
+  flex-shrink: 0;
+}
+#compose-section.open #compose-toggle-icon { transform: rotate(90deg); }
+#compose-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
+#compose-actions { margin-left: auto; display: flex; gap: 6px; }
+#compose-body { display: none; padding: 0 16px 12px; }
+#compose-section.open #compose-body { display: block; }
+#compose-pad {
+  width: 100%; height: 90px; resize: vertical;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius); color: var(--text);
+  font-family: var(--glyph-font); font-size: 1.1em;
+  line-height: 1.7; padding: 8px 10px;
+  outline: none; display: block;
+}
+#compose-pad:focus { border-color: var(--accent); box-shadow: 0 0 0 2px rgba(233,69,96,0.15); }
+#compose-hint { font-size: 0.72rem; color: var(--text-dim); margin-top: 6px; }
+.td-ch.clickable { cursor: pointer; }
+.td-ch.clickable:hover { background: var(--surface); color: var(--accent); }
 
 /* Scrollbars */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
