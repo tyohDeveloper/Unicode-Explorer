@@ -6,14 +6,15 @@
  * Watch:     pnpm --filter @workspace/scripts watch:unicode
  *
  * Source layout:
- *   unicode-src/template.html      HTML skeleton ({{CSS}} / {{JS}} markers)
- *   unicode-src/style.css          All CSS
- *   unicode-src/data/blocks.js     BLOCKS array (346 Unicode 17.0 blocks)
- *   unicode-src/data/charnames.js  CN lookup table + algorithmic name helpers
- *   unicode-src/js/00-classify.js  isNonVisible, isReserved, utility fns
- *   unicode-src/js/01-sidebar.js   Collapsible sidebar + search + controls
- *   unicode-src/js/02-render.js    Auto-updating render engine
- *   unicode-src/js/03-controls.js  Font/size slider + copy button
+ *   unicode-src/template.html        HTML skeleton ({{CSS}} / {{JS}} / {{FONT_BTNS}} markers)
+ *   unicode-src/style.css            All CSS
+ *   unicode-src/config/fonts.json    Font selector definitions — edit here to change stacks
+ *   unicode-src/data/blocks.js       BLOCKS array (346 Unicode 17.0 blocks)
+ *   unicode-src/data/charnames.js    CN lookup table + algorithmic name helpers
+ *   unicode-src/js/00-classify.js    isNonVisible, isReserved, utility fns
+ *   unicode-src/js/01-sidebar.js     Collapsible sidebar + search + controls
+ *   unicode-src/js/02-render.js      Auto-updating render engine
+ *   unicode-src/js/03-controls.js    Font/size slider + copy button
  *
  * The build fetches UnicodeData.txt from unicode.org to derive the
  * UNASSIGNED ranges array (truly reserved code points within blocks).
@@ -24,6 +25,7 @@
 import { readFileSync, writeFileSync, watch } from "fs";
 import { resolve, dirname } from "path";
 import { fileURLToPath } from "url";
+import { minify as terserMinify } from "terser";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -46,17 +48,95 @@ function read(rel: string): string {
 }
 
 /* ============================================================
+   FONT CONFIG — unicode-src/config/fonts.json
+   ============================================================ */
+
+interface FontEntry {
+  label:   string;
+  title:   string;
+  stack:   string;
+  checked?: boolean;
+}
+
+function buildFontBtns(): string {
+  const fonts: FontEntry[] = JSON.parse(read("config/fonts.json"));
+  const labels = fonts.map(f => {
+    const checked = f.checked ? ' checked="checked"' : "";
+    return `<label title="${f.title}"><input type="radio" name="gfont" value="${f.stack}"${checked} />${f.label}</label>`;
+  });
+  return `<div class="font-btns">${labels.join("")}</div>`;
+}
+
+/* ============================================================
+   MINIFICATION
+   ============================================================ */
+
+function minifyCss(css: string): string {
+  return css
+    .replace(/\/\*[\s\S]*?\*\//g, "")   // strip block comments
+    .replace(/[ \t]*\n[ \t]*/g, "\n")   // trim line whitespace
+    .replace(/\n{2,}/g, "\n")           // collapse blank lines
+    .replace(/([{};:,>~+])\n/g, "$1")   // pull values onto same line as rule
+    .replace(/\n([{};:,>~+])/g, "$1")   // pull opening braces up
+    .replace(/  +/g, " ")               // collapse multiple spaces
+    .trim();
+}
+
+async function minifyJs(js: string): Promise<string> {
+  const result = await terserMinify(js, {
+    compress: { passes: 2 },
+    mangle: true,
+    format: { comments: false },
+  });
+  return result.code ?? js;
+}
+
+/**
+ * Minify the HTML skeleton without touching CDATA sections.
+ * Strategy: split on CDATA boundaries, minify each non-CDATA segment,
+ * then rejoin.
+ */
+function minifyHtml(html: string): string {
+  const CDATA_START = "<![CDATA[";
+  const CDATA_END   = "]]>";
+  let result = "";
+  let i = 0;
+
+  while (i < html.length) {
+    const cdataStart = html.indexOf(CDATA_START, i);
+    if (cdataStart === -1) {
+      result += minifyHtmlSegment(html.slice(i));
+      break;
+    }
+    result += minifyHtmlSegment(html.slice(i, cdataStart));
+    const cdataEnd = html.indexOf(CDATA_END, cdataStart + CDATA_START.length);
+    if (cdataEnd === -1) {
+      result += html.slice(cdataStart);
+      break;
+    }
+    result += html.slice(cdataStart, cdataEnd + CDATA_END.length);
+    i = cdataEnd + CDATA_END.length;
+  }
+
+  return result;
+}
+
+function minifyHtmlSegment(segment: string): string {
+  return segment
+    .replace(/<!--[\s\S]*?-->/g, "")   // strip HTML comments
+    .split("\n")
+    .map(l => l.trim())
+    .filter(l => l.length > 0)
+    .join("\n");
+}
+
+/* ============================================================
    UNICODE DATA FETCH + UNASSIGNED RANGE GENERATION
    ============================================================ */
 
-/**
- * Parse UnicodeData.txt and return a sorted array of assigned code points.
- * The file only lists assigned characters; absences are unassigned.
- * Contiguous assigned ranges are encoded as <Foo, First> / <Foo, Last> pairs.
- */
 async function fetchAssignedCodePoints(): Promise<Set<number>> {
   const url = "https://unicode.org/Public/17.0.0/ucd/UnicodeData.txt";
-  console.log("  Fetching UnicodeData.txt from unicode.org…");
+  console.log("  Fetching UnicodeData.txt from unicode.org\u2026");
   const resp = await fetch(url);
   if (!resp.ok) throw new Error(`HTTP ${resp.status} fetching ${url}`);
   const text = await resp.text();
@@ -87,13 +167,8 @@ async function fetchAssignedCodePoints(): Promise<Set<number>> {
   return assigned;
 }
 
-/**
- * Extract block ranges [start, end] from blocks.js source text.
- * Looks for numeric pairs like [0x0250, 0x02AF] in array literals.
- */
 function extractBlockRanges(blocksJs: string): [number, number][] {
   const ranges: [number, number][] = [];
-  // Match each block entry: ["Name", start, end, "Cat"]
   const re = /\[\s*"[^"]*"\s*,\s*(0x[0-9A-Fa-f]+|\d+)\s*,\s*(0x[0-9A-Fa-f]+|\d+)/g;
   let m: RegExpExecArray | null;
   while ((m = re.exec(blocksJs)) !== null) {
@@ -106,15 +181,6 @@ function extractBlockRanges(blocksJs: string): [number, number][] {
   return ranges;
 }
 
-/**
- * Given a set of assigned code points and block ranges, generate compact
- * [start, end] ranges covering every UNASSIGNED (reserved) code point
- * that falls within some block range.
- *
- * Surrogates (D800-DFFF), PUA (E000-F8FF, F0000-10FFFF), and noncharacters
- * (FDD0-FDEF, xFFFE, xFFFF) are excluded — they're handled separately in
- * getCharName() and should never be marked "reserved" by isReserved().
- */
 function buildUnassignedRanges(
   blockRanges: [number, number][],
   assigned: Set<number>
@@ -125,11 +191,10 @@ function buildUnassignedRanges(
     let runStart = -1;
 
     for (let cp = bStart; cp <= bEnd; cp++) {
-      /* Skip code points that getCharName handles via category labels */
-      if (cp >= 0xD800 && cp <= 0xDFFF) { endRun(cp - 1); continue; } // surrogates
-      if (cp >= 0xE000 && cp <= 0xF8FF) { endRun(cp - 1); continue; } // PUA BMP
-      if (cp >= 0xF0000)                { endRun(cp - 1); continue; } // PUA planes 15-16
-      if (cp >= 0xFDD0 && cp <= 0xFDEF) { endRun(cp - 1); continue; } // noncharacters
+      if (cp >= 0xD800 && cp <= 0xDFFF) { endRun(cp - 1); continue; }
+      if (cp >= 0xE000 && cp <= 0xF8FF) { endRun(cp - 1); continue; }
+      if (cp >= 0xF0000)                { endRun(cp - 1); continue; }
+      if (cp >= 0xFDD0 && cp <= 0xFDEF) { endRun(cp - 1); continue; }
       if ((cp & 0xFFFF) === 0xFFFE || (cp & 0xFFFF) === 0xFFFF) { endRun(cp - 1); continue; }
 
       const unassigned = !assigned.has(cp);
@@ -153,17 +218,10 @@ function buildUnassignedRanges(
   return result;
 }
 
-/**
- * Serialise the unassigned ranges as a compact JS variable declaration.
- * Uses decimal integers (shorter than hex for most code points).
- */
 function serializeUnassigned(ranges: [number, number][]): string {
-  if (ranges.length === 0) return "var UNASSIGNED = []; /* all code points are assigned */";
+  if (ranges.length === 0) return "var UNASSIGNED=[];";
 
-  /* Compact: if start === end write [n] else [start, end] */
   const entries = ranges.map(([s, e]) => s === e ? `[${s}]` : `[${s},${e}]`);
-
-  /* Wrap at ~120 chars per line for readability */
   const lines: string[] = [];
   let line = "";
   for (const entry of entries) {
@@ -178,11 +236,8 @@ function serializeUnassigned(ranges: [number, number][]): string {
   if (line) lines.push(line);
 
   return (
-    `/* Auto-generated at build time from Unicode 17.0 UnicodeData.txt.\n` +
-    ` * ${ranges.length} unassigned ranges within the 346 Unicode 17.0 blocks.\n` +
-    ` * isReserved() binary-searches this sorted array. */\n` +
-    `var UNASSIGNED = [\n` +
-    lines.map(l => "  " + l).join("\n") +
+    `var UNASSIGNED=[\n` +
+    lines.map(l => l).join("\n") +
     `\n];`
   );
 }
@@ -193,7 +248,7 @@ function serializeUnassigned(ranges: [number, number][]): string {
 
 async function build(): Promise<void> {
   /* -- Generate UNASSIGNED ranges -- */
-  let unassignedJs = "var UNASSIGNED = []; /* fetch skipped or failed */";
+  let unassignedJs = "var UNASSIGNED=[];";
   try {
     const assigned    = await fetchAssignedCodePoints();
     const blocksJs    = read("data/blocks.js");
@@ -202,23 +257,35 @@ async function build(): Promise<void> {
     unassignedJs      = serializeUnassigned(ranges);
     console.log(`  Generated ${ranges.length} unassigned ranges across ${blockRanges.length} blocks.`);
   } catch (err) {
-    console.warn("  Warning: could not fetch Unicode data — isReserved() disabled.", err);
+    console.warn("  Warning: could not fetch Unicode data \u2014 isReserved() disabled.", err);
   }
 
-  const template = read("template.html");
-  const css      = read("style.css");
+  /* -- Font config -- */
+  const fontBtns = buildFontBtns();
 
-  const js = [
-    "/* === data/unassigned.js (generated) === */\n" + unassignedJs,
-    ...JS_FILES.map(f => `/* === ${f} === */\n` + read(f)),
+  /* -- Assemble JS -- */
+  const rawJs = [
+    unassignedJs,
+    ...JS_FILES.map(f => read(f)),
   ].join("\n\n");
 
-  /* Inline CSS and JS into the XHTML template */
-  const html = template
-    .replace("{{CSS}}", css)
-    .replace("{{JS}}",  js);
+  /* -- Minify CSS -- */
+  const css = minifyCss(read("style.css"));
 
-  /* Safety check: CSS/JS content must not contain ]]> (would break CDATA) */
+  /* -- Minify JS -- */
+  const js = await minifyJs(rawJs);
+
+  /* -- Assemble HTML -- */
+  const template = read("template.html");
+  const assembled = template
+    .replace("{{CSS}}",       css)
+    .replace("{{JS}}",        js)
+    .replace("{{FONT_BTNS}}", fontBtns);
+
+  /* -- Minify HTML -- */
+  const html = minifyHtml(assembled);
+
+  /* Safety check */
   if (css.includes("]]>") || js.includes("]]>")) {
     console.warn("Warning: source files contain ']]>' which will break CDATA sections!");
   }
@@ -230,8 +297,8 @@ async function build(): Promise<void> {
 
 /* ---- Single build or watch mode ---- */
 if (process.argv.includes("--watch")) {
-  build(); // initial build
-  console.log("Watching unicode-src/ for changes…  (Ctrl+C to stop)");
+  build();
+  console.log("Watching unicode-src/ for changes\u2026  (Ctrl+C to stop)");
   watch(srcDir, { recursive: true }, (_event, filename) => {
     if (!filename) return;
     build().catch(err => console.error("Build error:", err));

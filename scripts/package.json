@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@types/node": "catalog:",
+    "terser": "^5.46.1",
     "tsx": "catalog:"
   }
 }
