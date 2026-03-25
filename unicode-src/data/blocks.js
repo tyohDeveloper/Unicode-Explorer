@@ -135,7 +135,7 @@ var BLOCKS = [
   ["Vai",0xA500,0xA63F,"Other Scripts & Supplements"],
   ["Cyrillic Extended-B",0xA640,0xA69F,"Cyrillic"],
   ["Bamum",0xA6A0,0xA6FF,"Other Scripts & Supplements"],
-  ["Modifier Tone Letters",0xA700,0xA71F,"Latin & Extensions"],
+  ["Modifier Tone Letters",0xA700,0xA71F,"East Asian"],
   ["Latin Extended-D",0xA720,0xA7FF,"Latin & Extensions"],
   ["Syloti Nagri",0xA800,0xA82F,"South Asian Scripts"],
   ["Common Indic Number Forms",0xA830,0xA83F,"South Asian Scripts"],
