@@ -63,7 +63,7 @@ var catCheckboxes = {};    // category name -> category checkbox element
 
       var cb = document.createElement("input");
       cb.type = "checkbox";
-      cb.className = "blk-check";      /* IMPORTANT: keeps cat-checks out of getAllChecks() */
+      cb.className = "blk-check"; // scoped selector keeps cat-checks out of getAllChecks()
       cb.id = "blk-" + idx;
       cb.dataset.idx = String(idx);
 
