@@ -51,27 +51,20 @@ function renderOutput() {
     return;
   }
 
-  /* Build the character list.
-     For grid modes: include reserved placeholders (cp, block, reserved flag).
-     For table/plain: skip reserved and (optionally) non-visible. */
+  /* Build the character list for all renderers.
+     Surrogates are always excluded. Non-visible characters are excluded
+     unless the user has checked "Include non-visible". */
   var allCP = [];
-  var isGridMode = (mode === "grid" || mode === "grid-cp");
 
   blocks.forEach(function(b) {
     for (var cp = b[1]; cp <= b[2]; cp++) {
       if (cp >= 0xD800 && cp <= 0xDFFF) continue; // never include raw surrogates
-      var res = isReserved(cp);
-      if (res) {
-        if (isGridMode) allCP.push({ cp: cp, block: b[0], reserved: true });
-        /* else: skip reserved in table / plain */
-        continue;
-      }
       if (!includeNV && isNonVisible(cp)) continue;
-      allCP.push({ cp: cp, block: b[0], reserved: false });
+      allCP.push({ cp: cp, block: b[0] });
     }
   });
 
-  var total = allCP.filter(function(x) { return !x.reserved; }).length;
+  var total = allCP.length;
   document.getElementById("stat-chars").textContent =
     total.toLocaleString() + " character" + (total === 1 ? "" : "s");
 
@@ -134,7 +127,6 @@ function makeSepHeading(b) {
 
 /* ================================================================
    GRID RENDERER
-   Reserved code points appear as dashed-outline empty cells.
 ================================================================ */
 function renderGrid(output, blocks, allCP, showCP) {
   var byBlock = groupByBlock(allCP);
@@ -146,31 +138,21 @@ function renderGrid(output, blocks, allCP, showCP) {
 
     items.forEach(function(item) {
       var el = document.createElement("div");
-      if (item.reserved) {
-        /* Reserved slot: dashed outline, no glyph, no tooltip */
-        el.className = (showCP ? "gcc" : "gc") + " reserved";
-        if (showCP) {
-          var c = document.createElement("span"); c.className = "cp";
-          c.textContent = hex4(item.cp);
-          el.appendChild(c);
-        }
+      var ch = cpToStr(item.cp);
+      el.className = showCP ? "gcc" : "gc";
+      el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
+      if (!showCP) {
+        el.textContent = ch;
       } else {
-        var ch = cpToStr(item.cp);
-        el.className = showCP ? "gcc" : "gc";
-        el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
-        if (!showCP) {
-          el.textContent = ch;
-        } else {
-          var g = document.createElement("span"); g.className = "glyph"; g.textContent = ch;
-          var c2 = document.createElement("span"); c2.className = "cp";
-          c2.textContent = hex4(item.cp);
-          el.appendChild(g); el.appendChild(c2);
-        }
-        /* Click inserts into composition pad */
-        (function(ch2) {
-          el.addEventListener("click", function() { insertToComposePad(ch2); });
-        }(ch));
+        var g = document.createElement("span"); g.className = "glyph"; g.textContent = ch;
+        var c2 = document.createElement("span"); c2.className = "cp";
+        c2.textContent = hex4(item.cp);
+        el.appendChild(g); el.appendChild(c2);
       }
+      /* Click inserts into composition pad */
+      (function(ch2) {
+        el.addEventListener("click", function() { insertToComposePad(ch2); });
+      }(ch));
       grid.appendChild(el);
     });
     output.appendChild(grid);
@@ -179,7 +161,6 @@ function renderGrid(output, blocks, allCP, showCP) {
 
 /* ================================================================
    TABLE RENDERER
-   Reserved code points are omitted entirely.
    Name column shows the full Unicode English name from CN/ALGO.
 ================================================================ */
 function renderTable(output, blocks, allCP) {
@@ -195,7 +176,6 @@ function renderTable(output, blocks, allCP) {
 
   blocks.forEach(function(b) {
     var items = byBlock[b[0]]; if (!items || !items.length) return;
-    /* All items here already have reserved=false (filtered in renderOutput) */
     var sr = document.createElement("tr"); sr.className = "block-sep";
     var sd = document.createElement("td"); sd.setAttribute("colspan", "4");
     sd.textContent = b[0] + "  (" + cpHex(b[1]) + " \u2013 " + cpHex(b[2]) + ")";
@@ -223,14 +203,13 @@ function renderTable(output, blocks, allCP) {
 
 /* ================================================================
    PLAIN TEXT RENDERER
-   Reserved code points are omitted entirely.
 ================================================================ */
 function renderPlain(output, allCP) {
   var div = document.createElement("div");
   div.id = "plain-text-out";
   var parts = [];
   allCP.forEach(function(item) {
-    if (!item.reserved) parts.push(cpToStr(item.cp));
+    parts.push(cpToStr(item.cp));
   });
   div.textContent = parts.join(" ");
   output.appendChild(div);

@@ -36,24 +36,18 @@ function isNonVisible(cp) {
 
 /* ================================================================
    RESERVED / UNASSIGNED CODE POINT DETECTION
-   A code point is "reserved" when it falls within a Unicode block
-   range but has no assigned character — no name in CN, no
-   algorithmic name, and is not a control/surrogate/PUA/noncharacter.
+   Disabled: the previous heuristic (getCharName returning "U+XXXX"
+   implies unassigned) incorrectly flagged hundreds of valid characters
+   whose names are simply not in our CN lookup table — IPA Extensions,
+   Arabic, Devanagari, and many others.
 
-   Heuristic: getCharName falls back to "U+XXXX" only for these.
-   NOTE: Script blocks not fully covered in CN (Arabic, Devanagari…)
-   will also match this test. In Grid views they render as outlined
-   placeholder cells; in Table and Plain they are omitted.
+   A correct implementation requires an explicit list of unassigned
+   code-point ranges from the Unicode Character Database. Until that
+   dataset is embedded, all code points within a block are treated as
+   potentially assigned; truly unassigned ones render as blank/tofu
+   cells through the font, which is accurate and harmless.
 ================================================================ */
 function isReserved(cp) {
-  // These categories have assigned purposes — not "reserved"
-  if (cp <= 0x001F || (cp >= 0x007F && cp <= 0x009F)) return false; // controls
-  if (cp >= 0xD800 && cp <= 0xDFFF)                   return false; // surrogates
-  if (cp >= 0xE000 && cp <= 0xF8FF)                   return false; // PUA BMP
-  if (cp >= 0xF0000)                                   return false; // PUA planes 15-16
-  if (cp >= 0xFDD0 && cp <= 0xFDEF)                   return false; // noncharacters
-  if ((cp & 0xFFFF) === 0xFFFE || (cp & 0xFFFF) === 0xFFFF) return false; // nonchars
-  // Fallback "U+XXXX" from getCharName => unassigned/reserved
-  var n = getCharName(cp);
-  return n.length >= 2 && n.charAt(0) === "U" && n.charAt(1) === "+";
+  void cp; // unused — kept for future reinstatement
+  return false;
 }
