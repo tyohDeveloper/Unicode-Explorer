@@ -88,6 +88,7 @@ function renderOutput() {
     assigned.toLocaleString() + " character" + (assigned === 1 ? "" : "s");
 
   output.innerHTML = "";
+  output.className = (mode === "grid" || mode === "grid-cp") ? "grid-mode" : "";
   output.style.fontSize = currentFontSize + "px";
 
   if (allCP.length === 0) {
