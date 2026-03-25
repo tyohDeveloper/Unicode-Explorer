@@ -51,6 +51,10 @@ button:active { opacity: 0.7; }
   background: none; border: none;
 }
 #block-list li.cat-header:hover { background: rgba(233,69,96,0.06); }
+.cat-check {
+  accent-color: var(--accent); width: 13px; height: 13px;
+  flex-shrink: 0; cursor: pointer; margin: 0;
+}
 .cat-toggle {
   display: inline-block; width: 0.9em; text-align: center;
   font-size: 0.65em; color: var(--accent2);

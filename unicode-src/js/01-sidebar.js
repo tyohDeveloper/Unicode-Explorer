@@ -7,6 +7,7 @@
 ================================================================ */
 var blockList = document.getElementById("block-list");
 var catCollapseState = {}; // category name -> bool (true = collapsed)
+var catCheckboxes = {};    // category name -> category checkbox element
 
 (function buildSidebar() {
   var cats = [], catMap = {};
@@ -22,10 +23,32 @@ var catCollapseState = {}; // category name -> bool (true = collapsed)
     hdr.className = "cat-header";
     hdr.dataset.cat = cat;
 
+    /* Category select-all checkbox (must stop propagation to avoid
+       triggering the collapse handler on the parent <li>) */
+    var catCb = document.createElement("input");
+    catCb.type = "checkbox";
+    catCb.className = "cat-check";
+    catCb.title = "Select / deselect all blocks in " + cat;
+    catCheckboxes[cat] = catCb;
+
+    catCb.addEventListener("click", function(ev) {
+      ev.stopPropagation();
+      catCb.indeterminate = false;
+      var checkAll = catCb.checked;
+      var items = blockList.querySelectorAll("li.block-item[data-cat=\"" + cat + "\"]");
+      for (var i = 0; i < items.length; i++) {
+        var blkCb = items[i].querySelector("input.blk-check");
+        if (blkCb) blkCb.checked = checkAll;
+      }
+      scheduleRender();
+      updateStatus();
+    });
+
     var toggle = document.createElement("span");
     toggle.className = "cat-toggle";
     toggle.textContent = "\u25BC"; // ▼
 
+    hdr.appendChild(catCb);
     hdr.appendChild(toggle);
     hdr.appendChild(document.createTextNode(cat));
     blockList.appendChild(hdr);
@@ -40,6 +63,7 @@ var catCollapseState = {}; // category name -> bool (true = collapsed)
 
       var cb = document.createElement("input");
       cb.type = "checkbox";
+      cb.className = "blk-check";      /* IMPORTANT: keeps cat-checks out of getAllChecks() */
       cb.id = "blk-" + idx;
       cb.dataset.idx = String(idx);
 
@@ -59,6 +83,7 @@ var catCollapseState = {}; // category name -> bool (true = collapsed)
       /* Clicking the row (not the checkbox itself) toggles the checkbox */
       li.addEventListener("click", function(ev) {
         if (ev.target !== cb) { cb.checked = !cb.checked; }
+        syncCatCheck(cat);
         scheduleRender();
         updateStatus();
       });
@@ -67,7 +92,9 @@ var catCollapseState = {}; // category name -> bool (true = collapsed)
     });
 
     /* ---- Collapse / expand on header click ---- */
-    hdr.addEventListener("click", function() {
+    hdr.addEventListener("click", function(ev) {
+      /* Ignore clicks on the cat-check checkbox (already handled above) */
+      if (ev.target === catCb) return;
       var collapsed = !catCollapseState[cat];
       catCollapseState[cat] = collapsed;
       hdr.classList.toggle("collapsed", collapsed);
@@ -80,10 +107,41 @@ var catCollapseState = {}; // category name -> bool (true = collapsed)
 })();
 
 /* ================================================================
+   CATEGORY CHECKBOX SYNC
+   Sets a category checkbox to checked / unchecked / indeterminate
+   based on the current state of its block checkboxes.
+================================================================ */
+function syncCatCheck(cat) {
+  var catCb = catCheckboxes[cat];
+  if (!catCb) return;
+  var items = blockList.querySelectorAll("li.block-item[data-cat=\"" + cat + "\"]");
+  var total = 0, chk = 0;
+  for (var i = 0; i < items.length; i++) {
+    var cb = items[i].querySelector("input.blk-check");
+    if (!cb) continue;
+    total++;
+    if (cb.checked) chk++;
+  }
+  catCb.indeterminate = false;
+  if (total === 0 || chk === 0) {
+    catCb.checked = false;
+  } else if (chk === total) {
+    catCb.checked = true;
+  } else {
+    catCb.checked = false;
+    catCb.indeterminate = true;
+  }
+}
+
+function syncAllCatChecks() {
+  for (var cat in catCheckboxes) { syncCatCheck(cat); }
+}
+
+/* ================================================================
    SIDEBAR CONTROLS — All / None / Search
 ================================================================ */
 function getAllChecks() {
-  return blockList.querySelectorAll("input[type=checkbox]");
+  return blockList.querySelectorAll("input.blk-check");
 }
 
 document.getElementById("btn-all").addEventListener("click", function() {
@@ -93,6 +151,7 @@ document.getElementById("btn-all").addEventListener("click", function() {
     var li = cks[i].parentElement;
     if (!li.classList.contains("search-hidden")) cks[i].checked = true;
   }
+  syncAllCatChecks();
   scheduleRender();
   updateStatus();
 });
@@ -100,6 +159,7 @@ document.getElementById("btn-all").addEventListener("click", function() {
 document.getElementById("btn-none").addEventListener("click", function() {
   var cks = getAllChecks();
   for (var i = 0; i < cks.length; i++) cks[i].checked = false;
+  syncAllCatChecks();
   scheduleRender();
   updateStatus();
 });
@@ -133,6 +193,8 @@ document.getElementById("block-search").addEventListener("input", function() {
       }
     }
   });
+
+  syncAllCatChecks();
 });
 
 /* ================================================================
