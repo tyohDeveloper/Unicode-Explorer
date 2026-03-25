@@ -4,8 +4,8 @@
 <!--
   Unicode Character Explorer
   Standalone, offline-capable XHTML 1.1 document.
-  No external resources. All 328 Unicode 15.1 blocks embedded verbatim from
-  https://www.unicode.org/Public/15.1.0/ucd/Blocks.txt
+  No external resources. All 346 Unicode 17.0 blocks embedded verbatim from
+  https://www.unicode.org/Public/17.0.0/ucd/Blocks.txt
 -->
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
@@ -14,17 +14,18 @@
   <style type="text/css"><![CDATA[
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     :root {
-      --bg:       #1a1a2e;
-      --panel:    #16213e;
-      --surface:  #0f3460;
-      --accent:   #e94560;
-      --accent2:  #533483;
-      --text:     #e0e0e0;
-      --text-dim: #8a8a9a;
-      --border:   #2a2a4a;
-      --mono:     "Cascadia Code","Fira Code","Consolas","DejaVu Sans Mono",monospace;
-      --sans:     system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
-      --radius:   6px;
+      --bg:         #1a1a2e;
+      --panel:      #16213e;
+      --surface:    #0f3460;
+      --accent:     #e94560;
+      --accent2:    #533483;
+      --text:       #e0e0e0;
+      --text-dim:   #8a8a9a;
+      --border:     #2a2a4a;
+      --mono:       "Cascadia Code","Fira Code","Consolas","DejaVu Sans Mono",monospace;
+      --sans:       system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+      --radius:     6px;
+      --glyph-font: system-ui,serif;
     }
     html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 14px; line-height: 1.5; }
     body { display: flex; flex-direction: column; min-height: 100vh; }
@@ -72,12 +73,12 @@
     #output-wrap { flex: 1; overflow: auto; padding: 16px 20px; background: var(--bg); }
     #output { outline: none; min-height: 100%; }
     .char-grid { display: flex; flex-wrap: wrap; gap: 2px; }
-    .char-grid .gc { display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; border-radius: 3px; background: var(--panel); border: 1px solid var(--border); font-family: var(--mono); cursor: default; }
+    .char-grid .gc { display: inline-flex; align-items: center; justify-content: center; width: 2em; height: 2em; border-radius: 3px; background: var(--panel); border: 1px solid var(--border); font-family: var(--glyph-font); cursor: default; }
     .char-grid .gc:hover { background: var(--surface); border-color: var(--accent); }
     .char-grid-cp { display: flex; flex-wrap: wrap; gap: 4px; }
     .char-grid-cp .gcc { display: flex; flex-direction: column; align-items: center; width: 3.8em; padding: 4px 2px 3px; border-radius: 4px; background: var(--panel); border: 1px solid var(--border); cursor: default; }
     .char-grid-cp .gcc:hover { background: var(--surface); border-color: var(--accent); }
-    .char-grid-cp .gcc .glyph { font-family: var(--mono); line-height: 1.3; }
+    .char-grid-cp .gcc .glyph { font-family: var(--glyph-font); line-height: 1.3; }
     .char-grid-cp .gcc .cp { font-size: 0.55em; color: var(--text-dim); font-family: var(--mono); margin-top: 2px; }
     .char-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.85em; }
     .char-table thead th { text-align: left; padding: 6px 12px; background: var(--panel); border-bottom: 2px solid var(--border); color: var(--text-dim); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; position: sticky; top: 0; z-index: 1; }
@@ -85,15 +86,20 @@
     .char-table tbody tr:hover { background: rgba(255,255,255,0.04); }
     .char-table td { padding: 4px 12px; vertical-align: middle; }
     .char-table td.td-cp { color: var(--accent); white-space: nowrap; width: 7em; }
-    .char-table td.td-ch { font-size: 1.3em; line-height: 1.2; width: 2.5em; text-align: center; }
+    .char-table td.td-ch { font-size: 1.3em; line-height: 1.2; width: 2.5em; text-align: center; font-family: var(--glyph-font); }
     .char-table td.td-name { color: var(--text-dim); font-size: 0.82em; font-family: var(--sans); }
     .char-table td.td-block { color: var(--text-dim); font-size: 0.78em; font-family: var(--sans); }
     .char-table tr.block-sep td { background: var(--panel); color: var(--accent); font-family: var(--sans); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.1em; padding: 8px 12px 4px; border-bottom: 1px solid var(--border); }
     .block-sep-heading { display: block; width: 100%; font-size: 0.72em; text-transform: uppercase; letter-spacing: 0.1em; color: var(--accent); margin: 12px 0 4px; padding-bottom: 3px; border-bottom: 1px solid var(--border); font-family: var(--sans); }
-    #plain-text-out { font-family: var(--mono); white-space: pre-wrap; word-break: break-all; line-height: 1.8; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 200px; color: var(--text); user-select: text; }
+    #plain-text-out { font-family: var(--glyph-font); white-space: pre-wrap; word-break: break-all; line-height: 1.8; background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px; min-height: 200px; color: var(--text); user-select: text; }
     #placeholder { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; color: var(--text-dim); gap: 10px; text-align: center; }
     #placeholder .big { font-size: 3rem; }
     #placeholder p { max-width: 300px; font-size: 0.85rem; }
+    .font-btns { display: flex; gap: 4px; flex-wrap: wrap; }
+    .font-btns label { display: flex; align-items: center; gap: 4px; padding: 4px 9px; border-radius: var(--radius); border: 1px solid var(--border); cursor: pointer; font-size: 0.78rem; transition: background 0.15s, border-color 0.15s; user-select: none; }
+    .font-btns input[type="radio"] { display: none; }
+    .font-btns label:has(input:checked) { background: var(--surface); border-color: var(--accent); color: #fff; }
+    .font-btns label:hover { background: rgba(255,255,255,0.06); }
     ::-webkit-scrollbar { width: 7px; height: 7px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
@@ -104,7 +110,7 @@
 
 <header>
   <h1>Unicode Character Explorer</h1>
-  <span>Offline &#xB7; Standalone &#xB7; XHTML 1.1 &#xB7; Unicode 15.1 &#xB7; 328 blocks</span>
+  <span>Offline &#xB7; Standalone &#xB7; XHTML 1.1 &#xB7; <strong>Unicode 17.0</strong> &#xB7; 346 blocks</span>
 </header>
 
 <div id="app">
@@ -145,6 +151,17 @@
         <input type="range" id="font-size-slider" min="10" max="48" value="18" step="1" />
         <span id="font-size-val">18px</span>
       </div>
+      <div class="control-group">
+        <span class="control-label">Font:</span>
+        <div class="font-btns">
+          <label title="System default font (falls back to serif if unsupported)"><input type="radio" name="gfont" value="system-ui,serif" checked="checked" />System</label>
+          <label title="Serif (Georgia, Times)"><input type="radio" name="gfont" value="Georgia,'Times New Roman','Noto Serif',serif" />Serif</label>
+          <label title="Sans-serif (Arial, Noto Sans)"><input type="radio" name="gfont" value="'Noto Sans',Arial,Helvetica,sans-serif" />Sans</label>
+          <label title="Fangsong — traditional Chinese calligraphic style"><input type="radio" name="gfont" value="FangSong,STFangsong,'FZFangSong-Z02',fangsong,serif" />&#x4EFF;&#x5B8B;</label>
+          <label title="Math font — best for Mathematical Alphanumeric Symbols block"><input type="radio" name="gfont" value="'STIX Two Math','Latin Modern Math','Cambria Math',math,serif" />Math</label>
+          <label title="Emoji font — best for Emoticons and Pictograph blocks"><input type="radio" name="gfont" value="'Noto Color Emoji','Segoe UI Emoji','Apple Color Emoji','Noto Emoji',emoji" />Emoji</label>
+        </div>
+      </div>
       <div id="action-btns">
         <button type="button" class="btn-secondary" id="btn-copy">Copy output</button>
         <button type="button" class="btn-accent" id="btn-show">Show &#x25B6;</button>
@@ -170,9 +187,9 @@
 
 <script type="text/javascript"><![CDATA[
 /* ================================================================
-   UNICODE 15.1 BLOCK LIST  (verbatim from Blocks-15.1.0.txt)
+   UNICODE 17.0 BLOCK LIST  (verbatim from Blocks-17.0.0.txt)
    Format: ["Block Name", startCP, endCP, "Category"]
-   Source: https://www.unicode.org/Public/15.1.0/ucd/Blocks.txt
+   Source: https://www.unicode.org/Public/17.0.0/ucd/Blocks.txt
 ================================================================ */
 var BLOCKS = [
   ["Basic Latin",0x0000,0x007F,"Latin & Extensions"],
@@ -360,6 +377,7 @@ var BLOCKS = [
   ["Elbasan",0x10500,0x1052F,"Ancient & Historic Scripts"],
   ["Caucasian Albanian",0x10530,0x1056F,"Ancient & Historic Scripts"],
   ["Vithkuqi",0x10570,0x105BF,"Ancient & Historic Scripts"],
+  ["Todhri",0x105C0,0x105FF,"Ancient & Historic Scripts"],
   ["Linear A",0x10600,0x1077F,"Ancient & Historic Scripts"],
   ["Latin Extended-F",0x10780,0x107BF,"Latin & Extensions"],
   ["Cypriot Syllabary",0x10800,0x1083F,"Ancient & Historic Scripts"],
@@ -369,6 +387,7 @@ var BLOCKS = [
   ["Hatran",0x108E0,0x108FF,"Ancient & Historic Scripts"],
   ["Phoenician",0x10900,0x1091F,"Ancient & Historic Scripts"],
   ["Lydian",0x10920,0x1093F,"Ancient & Historic Scripts"],
+  ["Sidetic",0x10940,0x1095F,"Ancient & Historic Scripts"],
   ["Meroitic Hieroglyphs",0x10980,0x1099F,"Ancient & Historic Scripts"],
   ["Meroitic Cursive",0x109A0,0x109FF,"Ancient & Historic Scripts"],
   ["Kharoshthi",0x10A00,0x10A5F,"Ancient & Historic Scripts"],
@@ -382,6 +401,7 @@ var BLOCKS = [
   ["Old Turkic",0x10C00,0x10C4F,"Ancient & Historic Scripts"],
   ["Old Hungarian",0x10C80,0x10CFF,"Ancient & Historic Scripts"],
   ["Hanifi Rohingya",0x10D00,0x10D3F,"Ancient & Historic Scripts"],
+  ["Garay",0x10D40,0x10D8F,"Other Scripts & Supplements"],
   ["Rumi Numeral Symbols",0x10E60,0x10E7F,"Other Scripts & Supplements"],
   ["Yezidi",0x10E80,0x10EBF,"Other Scripts & Supplements"],
   ["Arabic Extended-C",0x10EC0,0x10EFF,"Middle Eastern Scripts"],
@@ -401,12 +421,14 @@ var BLOCKS = [
   ["Multani",0x11280,0x112AF,"South Asian Scripts"],
   ["Khudawadi",0x112B0,0x112FF,"South Asian Scripts"],
   ["Grantha",0x11300,0x1137F,"Other Scripts & Supplements"],
+  ["Tulu-Tigalari",0x11380,0x113FF,"South Asian Scripts"],
   ["Newa",0x11400,0x1147F,"South Asian Scripts"],
   ["Tirhuta",0x11480,0x114DF,"South Asian Scripts"],
   ["Siddham",0x11580,0x115FF,"South Asian Scripts"],
   ["Modi",0x11600,0x1165F,"South Asian Scripts"],
   ["Mongolian Supplement",0x11660,0x1167F,"Southeast Asian Scripts"],
   ["Takri",0x11680,0x116CF,"Southeast Asian Scripts"],
+  ["Myanmar Extended-C",0x116D0,0x116FF,"Southeast Asian Scripts"],
   ["Ahom",0x11700,0x1174F,"Southeast Asian Scripts"],
   ["Dogra",0x11800,0x1184F,"South Asian Scripts"],
   ["Warang Citi",0x118A0,0x118FF,"South Asian Scripts"],
@@ -417,10 +439,13 @@ var BLOCKS = [
   ["Unified Canadian Aboriginal Syllabics Extended-A",0x11AB0,0x11ABF,"Other European & Indigenous"],
   ["Pau Cin Hau",0x11AC0,0x11AFF,"South Asian Scripts"],
   ["Devanagari Extended-A",0x11B00,0x11B5F,"South Asian Scripts"],
+  ["Sharada Supplement",0x11B60,0x11B7F,"South Asian Scripts"],
+  ["Sunuwar",0x11BC0,0x11BFF,"Other Scripts & Supplements"],
   ["Bhaiksuki",0x11C00,0x11C6F,"Southeast Asian Scripts"],
   ["Marchen",0x11C70,0x11CBF,"Southeast Asian Scripts"],
   ["Masaram Gondi",0x11D00,0x11D5F,"Southeast Asian Scripts"],
   ["Gunjala Gondi",0x11D60,0x11DAF,"Southeast Asian Scripts"],
+  ["Tolong Siki",0x11DB0,0x11DEF,"Other Scripts & Supplements"],
   ["Makasar",0x11EE0,0x11EFF,"Southeast Asian Scripts"],
   ["Kawi",0x11F00,0x11F5F,"Southeast Asian Scripts"],
   ["Lisu Supplement",0x11FB0,0x11FBF,"Other Scripts & Supplements"],
@@ -431,19 +456,24 @@ var BLOCKS = [
   ["Cypro-Minoan",0x12F90,0x12FFF,"Ancient & Historic Scripts"],
   ["Egyptian Hieroglyphs",0x13000,0x1342F,"Ancient & Historic Scripts"],
   ["Egyptian Hieroglyph Format Controls",0x13430,0x1345F,"Ancient & Historic Scripts"],
+  ["Egyptian Hieroglyphs Extended-A",0x13460,0x143FF,"Ancient & Historic Scripts"],
   ["Anatolian Hieroglyphs",0x14400,0x1467F,"Ancient & Historic Scripts"],
+  ["Gurung Khema",0x16100,0x1613F,"South Asian Scripts"],
   ["Bamum Supplement",0x16800,0x16A3F,"Other Scripts & Supplements"],
   ["Mro",0x16A40,0x16A6F,"Other Scripts & Supplements"],
   ["Tangsa",0x16A70,0x16ACF,"Southeast Asian Scripts"],
   ["Bassa Vah",0x16AD0,0x16AFF,"Other Scripts & Supplements"],
   ["Pahawh Hmong",0x16B00,0x16B8F,"Other Scripts & Supplements"],
+  ["Kirat Rai",0x16D40,0x16D7F,"Other Scripts & Supplements"],
   ["Medefaidrin",0x16E40,0x16E9F,"Other Scripts & Supplements"],
+  ["Beria Erfe",0x16EA0,0x16EDF,"Other Scripts & Supplements"],
   ["Miao",0x16F00,0x16F9F,"Other Scripts & Supplements"],
   ["Ideographic Symbols and Punctuation",0x16FE0,0x16FFF,"East Asian"],
   ["Tangut",0x17000,0x187FF,"East Asian"],
   ["Tangut Components",0x18800,0x18AFF,"East Asian"],
   ["Khitan Small Script",0x18B00,0x18CFF,"East Asian"],
   ["Tangut Supplement",0x18D00,0x18D7F,"East Asian"],
+  ["Tangut Components Supplement",0x18D80,0x18DFF,"East Asian"],
   ["Kana Extended-B",0x1AFF0,0x1AFFF,"East Asian"],
   ["Kana Supplement",0x1B000,0x1B0FF,"East Asian"],
   ["Kana Extended-A",0x1B100,0x1B12F,"East Asian"],
@@ -451,6 +481,8 @@ var BLOCKS = [
   ["Nushu",0x1B170,0x1B2FF,"East Asian"],
   ["Duployan",0x1BC00,0x1BC9F,"Other Scripts & Supplements"],
   ["Shorthand Format Controls",0x1BCA0,0x1BCAF,"Other Scripts & Supplements"],
+  ["Symbols for Legacy Computing Supplement",0x1CC00,0x1CEBF,"Symbols & Punctuation"],
+  ["Miscellaneous Symbols Supplement",0x1CEC0,0x1CEFF,"Symbols & Punctuation"],
   ["Znamenny Musical Notation",0x1CF00,0x1CFCF,"Musical & Numeric Symbols"],
   ["Byzantine Musical Symbols",0x1D000,0x1D0FF,"Musical & Numeric Symbols"],
   ["Musical Symbols",0x1D100,0x1D1FF,"Musical & Numeric Symbols"],
@@ -468,6 +500,8 @@ var BLOCKS = [
   ["Toto",0x1E290,0x1E2BF,"Other Scripts & Supplements"],
   ["Wancho",0x1E2C0,0x1E2FF,"Other Scripts & Supplements"],
   ["Nag Mundari",0x1E4D0,0x1E4FF,"South Asian Scripts"],
+  ["Ol Onal",0x1E5D0,0x1E5FF,"Other Scripts & Supplements"],
+  ["Tai Yo",0x1E6C0,0x1E6FF,"Southeast Asian Scripts"],
   ["Ethiopic Extended-B",0x1E7E0,0x1E7FF,"Other European & Indigenous"],
   ["Mende Kikakui",0x1E800,0x1E8DF,"Other Scripts & Supplements"],
   ["Adlam",0x1E900,0x1E95F,"Other Scripts & Supplements"],
@@ -499,6 +533,7 @@ var BLOCKS = [
   ["CJK Compatibility Ideographs Supplement",0x2F800,0x2FA1F,"East Asian"],
   ["CJK Unified Ideographs Extension G",0x30000,0x3134F,"East Asian"],
   ["CJK Unified Ideographs Extension H",0x31350,0x323AF,"East Asian"],
+  ["CJK Unified Ideographs Extension J",0x323B0,0x3347F,"East Asian"],
   ["Tags",0xE0000,0xE007F,"Specials"],
   ["Variation Selectors Supplement",0xE0100,0xE01EF,"Specials"],
   ["Supplementary Private Use Area-A",0xF0000,0xFFFFF,"Specials"],
@@ -527,6 +562,7 @@ var ALGO_RANGES = [
   [0x2CEB0, 0x2EBEF, "CJK UNIFIED IDEOGRAPH-"],
   [0x30000, 0x3134F, "CJK UNIFIED IDEOGRAPH-"],
   [0x31350, 0x323AF, "CJK UNIFIED IDEOGRAPH-"],
+  [0x323B0, 0x3347F, "CJK UNIFIED IDEOGRAPH-"],
   [0x2EBF0, 0x2EE5F, "CJK UNIFIED IDEOGRAPH-"],
   [0xF900,  0xFAFF,  "CJK COMPATIBILITY IDEOGRAPH-"],
   [0x2F800, 0x2FA1F, "CJK COMPATIBILITY IDEOGRAPH-"],
@@ -769,6 +805,19 @@ slider.addEventListener("input", function() {
   sizeVal.textContent = currentFontSize + "px";
   document.getElementById("output").style.fontSize = currentFontSize + "px";
 });
+
+/* ================================================================
+   FONT SELECTOR
+================================================================ */
+(function() {
+  var radios = document.querySelectorAll("input[name=gfont]");
+  function applyFont(val) {
+    document.documentElement.style.setProperty("--glyph-font", val);
+  }
+  for (var i = 0; i < radios.length; i++) {
+    radios[i].addEventListener("change", function() { if (this.checked) applyFont(this.value); });
+  }
+})();
 
 /* ================================================================
    RENDER
