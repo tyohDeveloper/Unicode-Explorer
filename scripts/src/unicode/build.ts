@@ -73,12 +73,9 @@ function buildFontBtns(): string {
 
 function minifyCss(css: string): string {
   return css
-    .replace(/\/\*[\s\S]*?\*\//g, "")   // strip block comments
-    .replace(/[ \t]*\n[ \t]*/g, "\n")   // trim line whitespace
-    .replace(/\n{2,}/g, "\n")           // collapse blank lines
-    .replace(/([{};:,>~+])\n/g, "$1")   // pull values onto same line as rule
-    .replace(/\n([{};:,>~+])/g, "$1")   // pull opening braces up
-    .replace(/  +/g, " ")               // collapse multiple spaces
+    .replace(/\/\*[\s\S]*?\*\//g, "")        // strip block comments
+    .replace(/\s+/g, " ")                     // collapse all whitespace to single space
+    .replace(/\s*([{}:;,>~+])\s*/g, "$1")    // remove spaces around punctuation
     .trim();
 }
 
@@ -124,10 +121,9 @@ function minifyHtml(html: string): string {
 function minifyHtmlSegment(segment: string): string {
   return segment
     .replace(/<!--[\s\S]*?-->/g, "")   // strip HTML comments
-    .split("\n")
-    .map(l => l.trim())
-    .filter(l => l.length > 0)
-    .join("\n");
+    .replace(/\s+/g, " ")              // collapse all whitespace to single space
+    .replace(/>\s+</g, "><")           // remove whitespace between tags
+    .trim();
 }
 
 /* ============================================================
