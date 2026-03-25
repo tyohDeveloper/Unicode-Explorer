@@ -118,6 +118,10 @@ button:active { opacity: 0.7; }
 /* Table display */
 .char-table { width: 100%; border-collapse: collapse; font-family: var(--mono); font-size: 0.85em; }
 .char-table thead th { text-align: left; padding: 6px 12px; background: var(--panel); border-bottom: 2px solid var(--border); color: var(--text-dim); font-size: 0.75em; text-transform: uppercase; letter-spacing: 0.08em; position: sticky; top: 0; z-index: 1; }
+.char-table thead th.sortable { cursor: pointer; user-select: none; }
+.char-table thead th.sortable:hover { color: var(--text); }
+.char-table thead th.sort-active { color: var(--accent); border-bottom-color: var(--accent); }
+.sort-indicator { font-size: 0.9em; margin-left: 3px; }
 .char-table tbody tr { border-bottom: 1px solid rgba(255,255,255,0.03); }
 .char-table tbody tr:hover { background: rgba(255,255,255,0.04); }
 .char-table td { padding: 4px 12px; vertical-align: middle; }
