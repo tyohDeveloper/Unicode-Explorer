@@ -93,15 +93,47 @@ Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHea
 
 ### `Unicode.html` (Standalone Unicode Explorer)
 
-A fully self-contained, offline-capable XHTML 1.1 document at the project root.
+**AUTO-GENERATED** — do not edit directly. Edit source files in `unicode-src/` then rebuild.
+
+A fully self-contained, offline-capable XHTML 1.1 document served by the API server at `/`.
 
 - **No dependencies** — no external scripts, fonts, or stylesheets
-- **346 Unicode block entries** — complete set from Blocks-17.0.0.txt (verbatim, zero duplicates)
-- **4 display modes**: Grid (compact glyphs), Grid+CP (glyph + code point), Table (CP + char + name + block), Plain text flow
-- **Features**: block search/filter, select-all/deselect-all, "Visible only" preset, non-visible character toggle, font size slider, copy-to-clipboard, font style selector (System/Serif/Sans/Fangsong/Math/Emoji)
-- **1,498+ named chars** in lookup table (Basic Latin, Latin-1, Arrows, Box Drawing, Braille, Math, Dingbats, etc.) + algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script
-- **XHTML 1.1 compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements, `xmlns` attribute
+- **346 Unicode 17.0 block entries** — complete set from Blocks-17.0.0.txt
+- **4 display modes**: Grid (compact glyphs), Grid+CP (glyph + code point), Table (CP + name, reserved omitted), Plain text flow (reserved omitted)
+- **Auto-update** — output renders immediately when any selection or mode changes (no "Show" button)
+- **Collapsible sidebar categories** — click-to-expand/collapse by script family
+- **Reserved character handling** — unassigned code points shown as dashed outline boxes in Grid modes; hidden from Table/Plain
+- **13 sidebar categories** including dedicated **Mathematics** group (math operators, alphanumeric symbols)
+- **Named chars** in CN table (Basic Latin, Latin-1, Arrows, Box Drawing, Braille, Math, Dingbats, etc.) + algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script
+- **XHTML 1.1 compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements
+
+#### Build System
+
+Source files live in `unicode-src/`, assembled by `scripts/src/unicode/build.ts`:
+
+```
+unicode-src/
+  template.html          HTML skeleton ({{CSS}} / {{JS}} markers)
+  style.css              All CSS
+  data/
+    blocks.js            BLOCKS array (346 Unicode 17.0 blocks with categories)
+    charnames.js         CN lookup table + algorithmic name helpers
+  js/
+    00-classify.js       isNonVisible, isReserved, cpToStr, cpHex
+    01-sidebar.js        Collapsible sidebar + search + All/None buttons
+    02-render.js         Auto-updating render engine (Grid/Table/Plain)
+    03-controls.js       Font/size slider + Copy button
+```
+
+**Rebuild commands:**
+```
+pnpm --filter @workspace/scripts build:unicode   # one-shot
+pnpm --filter @workspace/scripts watch:unicode   # watch mode (auto-rebuild on source changes)
+```
 
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
+
+**Available scripts:**
+- `build:unicode` / `watch:unicode` — assemble `Unicode.html` from `unicode-src/` source files
