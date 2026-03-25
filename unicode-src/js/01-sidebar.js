@@ -107,6 +107,24 @@ var catCheckboxes = {};    // category name -> category checkbox element
 })();
 
 /* ================================================================
+   INITIAL COLLAPSE STATE
+   All categories except "Latin & Extensions" start collapsed.
+================================================================ */
+(function initCollapse() {
+  var headers = blockList.querySelectorAll("li.cat-header");
+  headers.forEach(function(hdr) {
+    var cat = hdr.dataset.cat;
+    if (cat === "Latin & Extensions") return; // keep expanded
+    catCollapseState[cat] = true;
+    hdr.classList.add("collapsed");
+    var items = blockList.querySelectorAll("li.block-item[data-cat=\"" + cat + "\"]");
+    for (var i = 0; i < items.length; i++) {
+      items[i].classList.add("cat-hidden");
+    }
+  });
+})();
+
+/* ================================================================
    CATEGORY CHECKBOX SYNC
    Sets a category checkbox to checked / unchecked / indeterminate
    based on the current state of its block checkboxes.
