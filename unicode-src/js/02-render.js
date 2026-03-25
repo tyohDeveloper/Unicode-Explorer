@@ -290,11 +290,12 @@ function makeTableRow(item) {
     row.appendChild(tdCp); row.appendChild(tdCh); row.appendChild(tdNm); row.appendChild(tdBl);
   } else {
     var ch = cpToStr(item.cp);
+    row.className = "tr-clickable";
+    row.title = "Click to insert into Composition Pad";
     var tdCh2 = document.createElement("td"); tdCh2.className = "td-ch clickable"; tdCh2.textContent = ch;
-    tdCh2.title = "Click to insert into Composition Pad";
     var tdNm2 = document.createElement("td"); tdNm2.className = "td-name"; tdNm2.textContent = getCharName(item.cp);
     (function(ch2) {
-      tdCh2.addEventListener("click", function() { insertToComposePad(ch2); });
+      row.addEventListener("click", function() { insertToComposePad(ch2); });
     }(ch));
     row.appendChild(tdCp); row.appendChild(tdCh2); row.appendChild(tdNm2); row.appendChild(tdBl);
   }
