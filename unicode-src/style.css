@@ -79,8 +79,8 @@ button:active { opacity: 0.7; }
 #font-size-val { font-size: 0.78rem; color: var(--text-dim); font-family: var(--mono); min-width: 2.5em; }
 #action-btns { margin-left: auto; display: flex; gap: 8px; align-items: center; }
 #status-bar { font-size: 0.75rem; color: var(--text-dim); padding: 0 20px; height: 28px; display: flex; align-items: center; border-bottom: 1px solid var(--border); flex-shrink: 0; gap: 16px; }
-#output-wrap { flex: 1; overflow: auto; padding: 0 0 16px; background: var(--bg); }
-#output { outline: none; min-height: 100%; padding-top: 16px; }
+#output-wrap { flex: 1; overflow: auto; padding: 0 20px 16px; background: var(--bg); }
+#output { outline: none; min-height: 100%; }
 
 /* Font selector */
 .font-btns { display: flex; gap: 4px; flex-wrap: wrap; }
@@ -90,7 +90,7 @@ button:active { opacity: 0.7; }
 .font-btns label:hover { background: rgba(255,255,255,0.06); }
 
 /* Grid display */
-.char-grid { display: flex; flex-wrap: wrap; gap: 2px; padding: 0 20px; }
+.char-grid { display: flex; flex-wrap: wrap; gap: 2px; padding-top: 16px; }
 .char-grid .gc {
   display: inline-flex; align-items: center; justify-content: center;
   width: 2em; height: 2em; border-radius: 3px;
@@ -100,7 +100,7 @@ button:active { opacity: 0.7; }
 .char-grid .gc:hover { background: var(--surface); border-color: var(--accent); }
 
 /* Grid+CP display */
-.char-grid-cp { display: flex; flex-wrap: wrap; gap: 4px; padding: 0 20px; }
+.char-grid-cp { display: flex; flex-wrap: wrap; gap: 4px; padding-top: 16px; }
 .char-grid-cp .gcc {
   display: flex; flex-direction: column; align-items: center;
   width: 3.8em; padding: 4px 2px 3px; border-radius: 4px;
@@ -144,7 +144,7 @@ button:active { opacity: 0.7; }
   font-family: var(--glyph-font); white-space: pre-wrap; word-break: break-all;
   line-height: 1.8; background: var(--panel); border: 1px solid var(--border);
   border-radius: var(--radius); padding: 16px; min-height: 200px;
-  margin: 0 20px; color: var(--text); user-select: text;
+  margin-top: 16px; color: var(--text); user-select: text;
 }
 
 /* Placeholder */
