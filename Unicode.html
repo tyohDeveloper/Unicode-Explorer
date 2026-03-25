@@ -10,7 +10,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
 <head>
   <meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Unicode Character Explorer</title>
   <style type="text/css"><![CDATA[
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -112,7 +111,7 @@
   <nav id="sidebar">
     <div id="sidebar-controls">
       <span class="sc-label">Unicode Blocks</span>
-      <input type="text" id="block-search" placeholder="Filter blocks&#x2026;" autocomplete="off" />
+      <input type="text" id="block-search" title="Filter blocks by name" />
       <div class="btn-row">
         <button type="button" class="btn-sm" id="btn-all">All</button>
         <button type="button" class="btn-sm" id="btn-none">None</button>
@@ -120,7 +119,7 @@
       </div>
     </div>
     <div id="block-list-wrap">
-      <ul id="block-list" role="listbox" aria-multiselectable="true"></ul>
+      <ul id="block-list"></ul>
     </div>
   </nav>
 
@@ -128,7 +127,7 @@
     <div id="controls-bar">
       <div class="control-group">
         <span class="control-label">Display:</span>
-        <div class="mode-btns" role="radiogroup" aria-label="Display mode">
+        <div class="mode-btns">
           <label title="Large glyphs in a compact grid"><input type="radio" name="mode" value="grid" checked="checked" />Grid</label>
           <label title="Grid with code point below each character"><input type="radio" name="mode" value="grid-cp" />Grid+CP</label>
           <label title="Table with code point, character and name"><input type="radio" name="mode" value="table" />Table</label>
@@ -670,13 +669,10 @@ var blockList = document.getElementById("block-list");
     var hdr = document.createElement("li");
     hdr.className = "cat-header";
     hdr.textContent = cat;
-    hdr.setAttribute("aria-hidden","true");
     blockList.appendChild(hdr);
     catMap[cat].forEach(function(idx) {
       var b = BLOCKS[idx];
       var li = document.createElement("li");
-      li.setAttribute("role","option");
-      li.setAttribute("aria-selected","false");
       li.dataset.idx = String(idx);
 
       var cb = document.createElement("input");
