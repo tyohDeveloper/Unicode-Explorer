@@ -1546,7 +1546,23 @@ slider.addEventListener("input", function() {
    COPY OUTPUT
 ================================================================ */
 document.getElementById("btn-copy").addEventListener("click", function() {
-  var text = (document.getElementById("output").innerText || "").trim();
+  var mode = getMode();
+  var text = "", elems, chars, i, t;
+  if (mode === "plain") {
+    var plain = document.querySelector("#plain-text-out");
+    text = plain ? plain.textContent.trim() : "";
+  } else {
+    var sel = mode === "grid"   ? "#output .gc:not(.cell-reserved)"
+            : mode === "gridcp" ? "#output .glyph"
+            :                     "#output td.td-ch.clickable";
+    elems = document.querySelectorAll(sel);
+    chars = [];
+    for (i = 0; i < elems.length; i++) {
+      t = elems[i].textContent.trim();
+      if (t) chars.push(t);
+    }
+    text = chars.join(" ");
+  }
   if (!text) { alert("Nothing to copy \u2014 select some blocks first."); return; }
   function done() {
     var btn = document.getElementById("btn-copy");
