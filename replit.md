@@ -91,6 +91,16 @@ Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used b
 
 Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
 
+### `Unicode.html` (Standalone Unicode Explorer)
+
+A fully self-contained, offline-capable XHTML 1.1 document at the project root.
+
+- **No dependencies** — no external scripts, fonts, or stylesheets
+- **167 Unicode block entries** covering Unicode 15 (Basic Latin through supplementary planes)
+- **4 display modes**: Grid (compact glyphs), Grid+CP (glyph + code point), Table (CP + char + name + block), Plain text flow
+- **Features**: block search/filter, select-all/deselect-all, "Visible only" preset, non-visible character toggle, font size slider, copy-to-clipboard
+- **XHTML compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements, `xmlns` attribute
+
 ### `scripts` (`@workspace/scripts`)
 
 Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
