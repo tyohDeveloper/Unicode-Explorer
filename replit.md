@@ -96,10 +96,11 @@ Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHea
 A fully self-contained, offline-capable XHTML 1.1 document at the project root.
 
 - **No dependencies** — no external scripts, fonts, or stylesheets
-- **167 Unicode block entries** covering Unicode 15 (Basic Latin through supplementary planes)
+- **293 unique Unicode block entries** covering Unicode 15.1 (all official blocks from Blocks.txt)
 - **4 display modes**: Grid (compact glyphs), Grid+CP (glyph + code point), Table (CP + char + name + block), Plain text flow
 - **Features**: block search/filter, select-all/deselect-all, "Visible only" preset, non-visible character toggle, font size slider, copy-to-clipboard
-- **XHTML compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements, `xmlns` attribute
+- **1,498+ named chars** in lookup table (Basic Latin, Latin-1, Arrows, Box Drawing, Braille, Math, Dingbats, etc.) + algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script
+- **XHTML 1.1 compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements, `xmlns` attribute
 
 ### `scripts` (`@workspace/scripts`)
 
