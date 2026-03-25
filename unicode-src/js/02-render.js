@@ -101,6 +101,8 @@ function insertToComposePad(ch) {
   var section = document.getElementById("compose-section");
   if (section && !section.className.match(/\bopen\b/)) {
     section.className += " open";
+    var icon = document.getElementById("compose-toggle-icon");
+    if (icon) icon.textContent = "\u25BC"; /* ▼ */
   }
   var start = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
   var end   = ta.selectionEnd   != null ? ta.selectionEnd   : ta.value.length;

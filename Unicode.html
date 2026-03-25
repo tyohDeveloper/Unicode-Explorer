@@ -180,10 +180,9 @@ button:active { opacity: 0.7; }
 #compose-header:hover { background: rgba(255,255,255,0.04); }
 #compose-toggle-icon {
   font-size: 0.65em; color: var(--accent);
-  display: inline-block; transition: transform 0.18s;
+  display: inline-block;
   flex-shrink: 0;
 }
-#compose-section.open #compose-toggle-icon { transform: rotate(90deg); }
 #compose-title { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent); }
 #compose-actions { margin-left: auto; display: flex; gap: 6px; }
 #compose-body { display: none; padding: 0 16px 12px; }
@@ -283,9 +282,9 @@ button:active { opacity: 0.7; }
       </div>
     </div>
 
-    <div id="compose-section">
+    <div id="compose-section" class="open">
       <div id="compose-header">
-        <span id="compose-toggle-icon">&#x25B6;</span>
+        <span id="compose-toggle-icon">&#x25BC;</span>
         <span id="compose-title">Composition Pad</span>
         <div id="compose-actions">
           <button type="button" class="btn-sm" id="btn-compose-clear">Clear</button>
@@ -1096,6 +1095,8 @@ function insertToComposePad(ch) {
   var section = document.getElementById("compose-section");
   if (section && !section.className.match(/\bopen\b/)) {
     section.className += " open";
+    var icon = document.getElementById("compose-toggle-icon");
+    if (icon) icon.textContent = "\u25BC"; /* ▼ */
   }
   var start = ta.selectionStart != null ? ta.selectionStart : ta.value.length;
   var end   = ta.selectionEnd   != null ? ta.selectionEnd   : ta.value.length;
@@ -1296,6 +1297,18 @@ function fallback(text) {
   var btnClr  = document.getElementById("btn-compose-clear");
   var btnCpy  = document.getElementById("btn-compose-copy");
 
+  var toggleIcon = document.getElementById("compose-toggle-icon");
+
+  function setOpen(open) {
+    if (open) {
+      section.className = section.className.match(/\bopen\b/) ? section.className : section.className + " open";
+      toggleIcon.textContent = "\u25BC"; /* ▼ */
+    } else {
+      section.className = section.className.replace(/\s*\bopen\b/g, "");
+      toggleIcon.textContent = "\u25B6"; /* ▶ */
+    }
+  }
+
   /* Toggle collapse on header click (but not on button clicks) */
   header.addEventListener("click", function(ev) {
     var t = ev.target;
@@ -1304,11 +1317,7 @@ function fallback(text) {
       if (t.tagName && t.tagName.toLowerCase() === "button") return;
       t = t.parentNode;
     }
-    if (section.className.match(/\bopen\b/)) {
-      section.className = section.className.replace(/\s*\bopen\b/g, "");
-    } else {
-      section.className += " open";
-    }
+    setOpen(!section.className.match(/\bopen\b/));
   });
 
   /* Clear */

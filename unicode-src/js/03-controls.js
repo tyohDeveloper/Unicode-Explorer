@@ -63,6 +63,18 @@ function fallback(text) {
   var btnClr  = document.getElementById("btn-compose-clear");
   var btnCpy  = document.getElementById("btn-compose-copy");
 
+  var toggleIcon = document.getElementById("compose-toggle-icon");
+
+  function setOpen(open) {
+    if (open) {
+      section.className = section.className.match(/\bopen\b/) ? section.className : section.className + " open";
+      toggleIcon.textContent = "\u25BC"; /* ▼ */
+    } else {
+      section.className = section.className.replace(/\s*\bopen\b/g, "");
+      toggleIcon.textContent = "\u25B6"; /* ▶ */
+    }
+  }
+
   /* Toggle collapse on header click (but not on button clicks) */
   header.addEventListener("click", function(ev) {
     var t = ev.target;
@@ -71,11 +83,7 @@ function fallback(text) {
       if (t.tagName && t.tagName.toLowerCase() === "button") return;
       t = t.parentNode;
     }
-    if (section.className.match(/\bopen\b/)) {
-      section.className = section.className.replace(/\s*\bopen\b/g, "");
-    } else {
-      section.className += " open";
-    }
+    setOpen(!section.className.match(/\bopen\b/));
   });
 
   /* Clear */
