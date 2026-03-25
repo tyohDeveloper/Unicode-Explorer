@@ -1362,10 +1362,9 @@ function sortedTableItems(items) {
     if (col === "cp" || col === "ch") {
       cmp = a.item.cp - b.item.cp;
     } else if (col === "name") {
-      var na = getCharName(a.item.cp), nb = getCharName(b.item.cp);
-      cmp = na < nb ? -1 : na > nb ? 1 : 0;
+      cmp = getCharName(a.item.cp).localeCompare(getCharName(b.item.cp));
     } else if (col === "block") {
-      cmp = a.item.block < b.item.block ? -1 : a.item.block > b.item.block ? 1 : 0;
+      cmp = a.item.block.localeCompare(b.item.block);
       if (cmp === 0) cmp = a.item.cp - b.item.cp;
     }
     if (cmp === 0) cmp = a.i - b.i; // preserve original order as final tiebreaker
