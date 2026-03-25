@@ -254,11 +254,6 @@ button:active { opacity: 0.7; }
         </label>
       </div>
       <div class="control-group">
-        <span class="control-label">Size:</span>
-        <input type="range" id="font-size-slider" min="10" max="48" value="18" step="1" />
-        <span id="font-size-val">18px</span>
-      </div>
-      <div class="control-group">
         <span class="control-label">Font:</span>
         <div class="font-btns">
           <label title="System UI font (system-ui)"><input type="radio" name="gfont" value="system-ui,ui-sans-serif,serif" checked="checked" />System</label>
@@ -270,6 +265,11 @@ button:active { opacity: 0.7; }
           <label title="Fangsong — traditional Chinese calligraphic style"><input type="radio" name="gfont" value="FangSong,STFangsong,'FZFangSong-Z02',fangsong,serif" />&#x4EFF;&#x5B8B;</label>
           <label title="Math font — best for Mathematical Alphanumeric Symbols"><input type="radio" name="gfont" value="'STIX Two Math','Latin Modern Math','Cambria Math',math,serif" />Math</label>
         </div>
+      </div>
+      <div class="control-group">
+        <span class="control-label">Size:</span>
+        <input type="range" id="font-size-slider" min="10" max="48" value="18" step="1" />
+        <span id="font-size-val">18px</span>
       </div>
       <div id="action-btns">
         <button type="button" class="btn-secondary" id="btn-copy">Copy output</button>
