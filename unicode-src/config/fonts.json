@@ -8,12 +8,12 @@
   {
     "label": "Serif",
     "title": "Serif",
-    "stack": "'Source Han Serif','Adobe Song Std','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK JP','Noto Serif CJK KR','Source Han Serif SC','Source Han Serif TC','Source Han Serif JP','Source Han Serif KR',Georgia,'Times New Roman','Noto Serif',serif"
+    "stack": "'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Georgia,'Times New Roman',serif"
   },
   {
     "label": "Sans",
     "title": "Sans-serif",
-    "stack": "'Source Han Sans','Heisei Kaku Gothic','Noto Sans','Noto Sans CJK SC','Noto Sans CJK TC','Noto Sans CJK JP','Noto Sans CJK KR','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro',Meiryo,'Malgun Gothic',Arial,Helvetica,sans-serif"
+    "stack": "'Source Han Sans SC', 'Source Han Sans TC', 'Source Han Sans HC', 'Source Han Sans JP', 'Source Han Sans K','Source Han Sans','Heisei Kaku Gothic','Noto Sans JP', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans HK', 'Noto Sans KR', 'Noto Sans','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro',Meiryo,'Malgun Gothic',Arial,Helvetica,sans-serif"
   },
   {
     "label": "Mono",
@@ -23,17 +23,17 @@
   {
     "label": "Cursive",
     "title": "Cursive",
-    "stack": "'Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Noto Serif CJK SC','Segoe Script','Brush Script MT','Comic Sans MS',cursive"
+    "stack": "'Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK','Segoe Script','Brush Script MT','Comic Sans MS',cursive"
   },
   {
     "label": "Fantasy",
     "title": "Fantasy",
-    "stack": "'Adobe Kaiti Std','Noto Sans CJK SC','Source Han Sans SC',Papyrus,Impact,fantasy"
+    "stack": "'Adobe Kaiti Std','Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Papyrus,Impact,fantasy"
   },
   {
     "label": "\u4EFF\u5B8B",
     "title": "\u4EFF\u5B8B (FangSong)",
-    "stack": "FangSong,SimFang,'Adobe Fangsong Std',cwTeXFangSong,fangsong,'Noto Serif CJK SC',serif"
+    "stack": "'Adobe Fangsong Std',FangSong,SimFang,cwTeXFangSong,fangsong,'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',serif"
   },
   {
     "label": "Math",
