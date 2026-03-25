@@ -53,20 +53,24 @@ function renderOutput() {
 
   /* Build the character list for all renderers.
      Surrogates are always excluded. Non-visible characters are excluded
-     unless the user has checked "Include non-visible". */
+     unless the user has checked "Include non-visible".
+     Reserved (unassigned) code points are included with reserved:true so
+     the grid can show their placeholder cell. */
   var allCP = [];
 
   blocks.forEach(function(b) {
     for (var cp = b[1]; cp <= b[2]; cp++) {
       if (cp >= 0xD800 && cp <= 0xDFFF) continue; // never include raw surrogates
-      if (!includeNV && isNonVisible(cp)) continue;
-      allCP.push({ cp: cp, block: b[0] });
+      var reserved = isReserved(cp);
+      if (!reserved && !includeNV && isNonVisible(cp)) continue;
+      allCP.push({ cp: cp, block: b[0], reserved: reserved });
     }
   });
 
-  var total = allCP.length;
+  var assigned = 0;
+  for (var i = 0; i < allCP.length; i++) { if (!allCP[i].reserved) assigned++; }
   document.getElementById("stat-chars").textContent =
-    total.toLocaleString() + " character" + (total === 1 ? "" : "s");
+    assigned.toLocaleString() + " character" + (assigned === 1 ? "" : "s");
 
   output.innerHTML = "";
   output.style.fontSize = currentFontSize + "px";
@@ -138,21 +142,26 @@ function renderGrid(output, blocks, allCP, showCP) {
 
     items.forEach(function(item) {
       var el = document.createElement("div");
-      var ch = cpToStr(item.cp);
-      el.className = showCP ? "gcc" : "gc";
-      el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
-      if (!showCP) {
-        el.textContent = ch;
+      var base = showCP ? "gcc" : "gc";
+      el.className = item.reserved ? base + " cell-reserved" : base;
+      if (item.reserved) {
+        el.title = cpHex(item.cp) + "  (reserved / unassigned)";
       } else {
-        var g = document.createElement("span"); g.className = "glyph"; g.textContent = ch;
-        var c2 = document.createElement("span"); c2.className = "cp";
-        c2.textContent = hex4(item.cp);
-        el.appendChild(g); el.appendChild(c2);
+        var ch = cpToStr(item.cp);
+        el.title = cpHex(item.cp) + "  " + getCharName(item.cp) + " \u2014 click to insert";
+        if (!showCP) {
+          el.textContent = ch;
+        } else {
+          var g = document.createElement("span"); g.className = "glyph"; g.textContent = ch;
+          var c2 = document.createElement("span"); c2.className = "cp";
+          c2.textContent = hex4(item.cp);
+          el.appendChild(g); el.appendChild(c2);
+        }
+        /* Click inserts into composition pad */
+        (function(ch2) {
+          el.addEventListener("click", function() { insertToComposePad(ch2); });
+        }(ch));
       }
-      /* Click inserts into composition pad */
-      (function(ch2) {
-        el.addEventListener("click", function() { insertToComposePad(ch2); });
-      }(ch));
       grid.appendChild(el);
     });
     output.appendChild(grid);
@@ -183,17 +192,25 @@ function renderTable(output, blocks, allCP) {
 
     items.forEach(function(item) {
       var row = document.createElement("tr");
-      var ch = cpToStr(item.cp);
       var tdCp = document.createElement("td"); tdCp.className = "td-cp"; tdCp.textContent = cpHex(item.cp);
-      var tdCh = document.createElement("td"); tdCh.className = "td-ch clickable"; tdCh.textContent = ch;
-      tdCh.title = "Click to insert into Composition Pad";
-      var tdNm = document.createElement("td"); tdNm.className = "td-name"; tdNm.textContent = getCharName(item.cp);
       var tdBl = document.createElement("td"); tdBl.className = "td-block"; tdBl.textContent = item.block;
-      /* Click on Ch cell inserts into composition pad */
-      (function(ch2) {
-        tdCh.addEventListener("click", function() { insertToComposePad(ch2); });
-      }(ch));
-      row.appendChild(tdCp); row.appendChild(tdCh); row.appendChild(tdNm); row.appendChild(tdBl);
+      if (item.reserved) {
+        row.className = "tr-reserved";
+        var tdCh = document.createElement("td"); tdCh.className = "td-ch";
+        var tdNm = document.createElement("td"); tdNm.className = "td-name td-reserved-label";
+        tdNm.textContent = "(reserved / unassigned)";
+        row.appendChild(tdCp); row.appendChild(tdCh); row.appendChild(tdNm); row.appendChild(tdBl);
+      } else {
+        var ch = cpToStr(item.cp);
+        var tdCh2 = document.createElement("td"); tdCh2.className = "td-ch clickable"; tdCh2.textContent = ch;
+        tdCh2.title = "Click to insert into Composition Pad";
+        var tdNm2 = document.createElement("td"); tdNm2.className = "td-name"; tdNm2.textContent = getCharName(item.cp);
+        /* Click on Ch cell inserts into composition pad */
+        (function(ch2) {
+          tdCh2.addEventListener("click", function() { insertToComposePad(ch2); });
+        }(ch));
+        row.appendChild(tdCp); row.appendChild(tdCh2); row.appendChild(tdNm2); row.appendChild(tdBl);
+      }
       tbody.appendChild(row);
     });
   });
@@ -209,7 +226,7 @@ function renderPlain(output, allCP) {
   div.id = "plain-text-out";
   var parts = [];
   allCP.forEach(function(item) {
-    parts.push(cpToStr(item.cp));
+    if (!item.reserved) parts.push(cpToStr(item.cp));
   });
   div.textContent = parts.join(" ");
   output.appendChild(div);

@@ -36,18 +36,24 @@ function isNonVisible(cp) {
 
 /* ================================================================
    RESERVED / UNASSIGNED CODE POINT DETECTION
-   Disabled: the previous heuristic (getCharName returning "U+XXXX"
-   implies unassigned) incorrectly flagged hundreds of valid characters
-   whose names are simply not in our CN lookup table — IPA Extensions,
-   Arabic, Devanagari, and many others.
+   Uses UNASSIGNED — a sorted array of [start, end] ranges generated
+   at build time from UnicodeData.txt (Unicode 17.0). A code point is
+   reserved if and only if it appears in one of these ranges.
 
-   A correct implementation requires an explicit list of unassigned
-   code-point ranges from the Unicode Character Database. Until that
-   dataset is embedded, all code points within a block are treated as
-   potentially assigned; truly unassigned ones render as blank/tofu
-   cells through the font, which is accurate and harmless.
+   Binary search: O(log n) per lookup, negligible cost.
+   UNASSIGNED is declared in data/unassigned.js (injected before this
+   file by the build script).
 ================================================================ */
 function isReserved(cp) {
-  void cp; // unused — kept for future reinstatement
+  var lo = 0, hi = UNASSIGNED.length - 1;
+  while (lo <= hi) {
+    var mid = (lo + hi) >> 1;
+    var r = UNASSIGNED[mid];
+    /* Single-element entry [n] stored as length-1 array */
+    var rStart = r[0], rEnd = r.length > 1 ? r[1] : r[0];
+    if      (cp < rStart) hi = mid - 1;
+    else if (cp > rEnd)   lo = mid + 1;
+    else                  return true;
+  }
   return false;
 }
