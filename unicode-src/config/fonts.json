@@ -1,43 +1,43 @@
 [
   {
     "label": "System",
-    "title": "System UI font (system-ui)",
+    "title": "System UI",
     "stack": "system-ui,serif",
     "checked": true
   },
   {
     "label": "Serif",
-    "title": "Serif \u2014 CJK: Noto Serif CJK, Source Han Serif; Latin: Georgia, Times New Roman, Noto Serif",
+    "title": "Serif",
     "stack": "'Source Han Serif','Adobe Song Std','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK JP','Noto Serif CJK KR','Source Han Serif SC','Source Han Serif TC','Source Han Serif JP','Source Han Serif KR',Georgia,'Times New Roman','Noto Serif',serif"
   },
   {
     "label": "Sans",
-    "title": "Sans-serif \u2014 CJK: Noto Sans CJK, Microsoft YaHei, Hiragino, Meiryo, Malgun Gothic; Latin: Arial, Helvetica",
+    "title": "Sans-serif",
     "stack": "'Source Han Sans','Heisei Kaku Gothic','Noto Sans','Noto Sans CJK SC','Noto Sans CJK TC','Noto Sans CJK JP','Noto Sans CJK KR','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro',Meiryo,'Malgun Gothic',Arial,Helvetica,sans-serif"
   },
   {
     "label": "Mono",
-    "title": "Monospace \u2014 CJK: Sarasa Mono, Noto Sans Mono CJK, MS Gothic; Latin: Cascadia Code, Fira Code, Consolas",
+    "title": "Monospace",
     "stack": "'Source Han Mono','Sarasa Mono SC','Sarasa Mono TC','Sarasa Mono J','Sarasa Mono K','Noto Sans Mono CJK','Maple Mono','MS Gothic',NSimSun,MingLiU,'Cascadia Code','Fira Code',Consolas,'DejaVu Sans Mono',monospace"
   },
   {
     "label": "Cursive",
-    "title": "Cursive \u2014 CJK Kai: KaiTi, STKaiti, DFKai-SB, TW-Kai; Latin: Segoe Script, Brush Script MT",
+    "title": "Cursive",
     "stack": "'Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Noto Serif CJK SC','Segoe Script','Brush Script MT','Comic Sans MS',cursive"
   },
   {
     "label": "Fantasy",
-    "title": "Fantasy \u2014 CJK: Noto Sans CJK SC, Source Han Sans SC; Latin: Papyrus, Impact",
+    "title": "Fantasy",
     "stack": "'Adobe Kaiti Std','Noto Sans CJK SC','Source Han Sans SC',Papyrus,Impact,fantasy"
   },
   {
     "label": "\u4EFF\u5B8B",
-    "title": "\u4EFF\u5B8B \u2014 FangSong, SimFang, Adobe Fangsong Std, cwTeXFangSong; fallback: Noto Serif CJK SC",
+    "title": "\u4EFF\u5B8B (FangSong)",
     "stack": "FangSong,SimFang,'Adobe Fangsong Std',cwTeXFangSong,fangsong,'Noto Serif CJK SC',serif"
   },
   {
     "label": "Math",
-    "title": "Math font \u2014 best for Mathematical Alphanumeric Symbols",
+    "title": "Math",
     "stack": "'STIX Two Math','Latin Modern Math','Cambria Math',math,serif"
   }
 ]
