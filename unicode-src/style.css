@@ -192,6 +192,9 @@ button:active { opacity: 0.7; }
 .tr-reserved { opacity: 0.35; }
 .td-reserved-label { font-style: italic; }
 
+/* Version tag */
+.app-version { margin-left: auto; font-size: 0.72rem; color: var(--text-dim); font-family: var(--mono); flex-shrink: 0; }
+
 /* Scrollbars */
 ::-webkit-scrollbar { width: 7px; height: 7px; }
 ::-webkit-scrollbar-track { background: transparent; }
