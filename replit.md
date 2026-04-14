@@ -104,7 +104,7 @@ A fully self-contained, offline-capable XHTML 1.1 document served by the API ser
 - **Collapsible sidebar categories** — click-to-expand/collapse by script family
 - **Reserved character handling** — unassigned code points shown as dashed outline boxes in Grid modes; hidden from Table/Plain
 - **13 sidebar categories** including dedicated **Mathematics** group (math operators, alphanumeric symbols)
-- **Named chars** in CN table (Basic Latin, Latin-1, Arrows, Box Drawing, Braille, Math, Dingbats, etc.) + algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script
+- **Named chars** — full coverage of ~40,470 individually-named code points from UnicodeData.txt 17.0, injected at build time as a LZString-compressed lookup table (394 KB total HTML). Algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script still handled at runtime.
 - **XHTML 1.1 compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements
 
 #### Build System
@@ -117,7 +117,7 @@ unicode-src/
   style.css              All CSS
   data/
     blocks.js            BLOCKS array (346 Unicode 17.0 blocks with categories)
-    charnames.js         CN lookup table + algorithmic name helpers
+    charnames.js         Algorithmic name helpers (CN injected by build)
   js/
     00-classify.js       isNonVisible, isReserved, cpToStr, cpHex
     01-sidebar.js        Collapsible sidebar + search + All/None buttons
