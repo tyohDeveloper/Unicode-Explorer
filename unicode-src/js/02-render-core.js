@@ -76,7 +76,7 @@ function renderOutput() {
     assigned.toLocaleString() + " character" + (assigned === 1 ? "" : "s");
 
   output.innerHTML = "";
-  output.className = (mode === "grid" || mode === "grid-cp") ? "grid-mode" : "";
+  output.className = (mode === "grid" || mode === "grid-cp" || mode === "grid-name") ? "grid-mode" : "";
   output.style.fontSize = currentFontSize + "px";
 
   if (allCP.length === 0) {
@@ -86,10 +86,11 @@ function renderOutput() {
     return;
   }
 
-  if      (mode === "grid")    renderGrid(output, blocks, allCP, false);
-  else if (mode === "grid-cp") renderGrid(output, blocks, allCP, true);
-  else if (mode === "table")   renderTable(output, blocks, allCP);
-  else                         renderPlain(output, allCP);
+  if      (mode === "grid")      renderGrid(output, blocks, allCP, false);
+  else if (mode === "grid-cp")   renderGrid(output, blocks, allCP, true);
+  else if (mode === "grid-name") renderGridName(output, blocks, allCP);
+  else if (mode === "table")     renderTable(output, blocks, allCP);
+  else                           renderPlain(output, allCP);
 }
 
 /* ================================================================
