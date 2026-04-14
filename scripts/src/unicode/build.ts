@@ -42,6 +42,7 @@ const outputPath = resolve(__dirname, "../../../Unicode.html");
 /* JS source files — order matters for dependency resolution */
 const JS_FILES = [
   "data/blocks.js",
+  "data/algo-ranges.js",
   "data/charnames.js",
   "js/00-classify.js",
   "js/01-sidebar.js",
