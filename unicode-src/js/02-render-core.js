@@ -5,12 +5,24 @@
 ================================================================ */
 var currentFontSize = 18;
 var renderTimer = null;
+var nameFilterQuery = "";
+var nameFilterTimer = null;
 
 /* Debounced render — batches rapid checkbox clicks */
 function scheduleRender() {
   if (renderTimer) clearTimeout(renderTimer);
   renderTimer = setTimeout(renderOutput, 80);
 }
+
+/* Debounced name filter input */
+document.getElementById("name-filter").addEventListener("input", function() {
+  var val = this.value;
+  if (nameFilterTimer) clearTimeout(nameFilterTimer);
+  nameFilterTimer = setTimeout(function() {
+    nameFilterQuery = val.trim().toLowerCase();
+    scheduleRender();
+  }, 150);
+});
 
 function getSelectedBlocks() {
   var r = [], cks = getAllChecks();
@@ -69,6 +81,14 @@ function renderOutput() {
       allCP.push({ cp: cp, block: b[0], reserved: reserved });
     }
   });
+
+  /* Apply name filter if query is set */
+  if (nameFilterQuery !== "") {
+    allCP = allCP.filter(function(item) {
+      if (item.reserved) return false;
+      return getCharName(item.cp).toLowerCase().indexOf(nameFilterQuery) !== -1;
+    });
+  }
 
   var assigned = 0;
   for (var i = 0; i < allCP.length; i++) { if (!allCP[i].reserved) assigned++; }
