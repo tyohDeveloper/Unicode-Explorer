@@ -101,34 +101,8 @@ async function minifyJs(js: string): Promise<string> {
   return result.code ?? js;
 }
 
-/**
- * Minify the HTML skeleton without touching CDATA sections.
- * Strategy: split on CDATA boundaries, minify each non-CDATA segment,
- * then rejoin.
- */
 function minifyHtml(html: string): string {
-  const CDATA_START = "<![CDATA[";
-  const CDATA_END   = "]]>";
-  let result = "";
-  let i = 0;
-
-  while (i < html.length) {
-    const cdataStart = html.indexOf(CDATA_START, i);
-    if (cdataStart === -1) {
-      result += minifyHtmlSegment(html.slice(i));
-      break;
-    }
-    result += minifyHtmlSegment(html.slice(i, cdataStart));
-    const cdataEnd = html.indexOf(CDATA_END, cdataStart + CDATA_START.length);
-    if (cdataEnd === -1) {
-      result += html.slice(cdataStart);
-      break;
-    }
-    result += html.slice(cdataStart, cdataEnd + CDATA_END.length);
-    i = cdataEnd + CDATA_END.length;
-  }
-
-  return result;
+  return minifyHtmlSegment(html);
 }
 
 function minifyHtmlSegment(segment: string): string {
@@ -429,11 +403,6 @@ async function build(): Promise<void> {
 
   /* -- Minify HTML -- */
   const html = minifyHtml(assembled);
-
-  /* Safety check */
-  if (css.includes("]]>") || js.includes("]]>")) {
-    console.warn("Warning: source files contain ']]>' which will break CDATA sections!");
-  }
 
   writeFileSync(outputPath, html, "utf-8");
   const kb = (html.length / 1024).toFixed(1);
