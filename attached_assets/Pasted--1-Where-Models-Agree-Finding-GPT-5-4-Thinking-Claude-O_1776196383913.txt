@@ -1,0 +1,47 @@
+### 1. Where Models Agree
+
+| Finding | GPT-5.4 Thinking | Claude Opus 4.6 Thinking | Gemini 3.1 Pro Thinking | Evidence |
+|---------|-----------|-----------|-----------|----------|
+| Can’t do a repo-specific line-by-line review because repo contents weren’t retrievable (likely private/restricted) | ✓ | ✓ | ✓ | Both report failed access to GitHub contents/API/raw files. |
+| Most likely “wrong answers” come from treating “one visible character” as “one code point” (Unicode model is underspecified) | ✓ | ✓ | ✓ | Multi-codepoint emoji sequences are common; treating them as one code point breaks lookups. |
+| JS/TS UTF-16 pitfalls are a top culprit (surrogate pairs; `length`, `charCodeAt`, `split('')`) | ✓ | ✓ | ✓ | All highlight surrogate pair/code unit issues and recommend `codePointAt` / `fromCodePoint` / `for...of`. |
+| Grapheme clusters/ZWJ/variation selectors require explicit handling; code-point iteration alone isn’t enough | ✓ | ✓ | ✓ | All emphasize grapheme clusters, ZWJ sequences, VS16, flags, skin tones, etc. |
+| Parsing ambiguity (U+ notation / hex / decimal / entities) and normalization (NFC/NFD) are frequent sources of “plausible but wrong” results | ✓ | ✓ | ✓ | All mention input classification/parsing and normalization confusion as causes of incorrect outputs. |
+
+### 2. Where Models Disagree
+
+| Topic | GPT-5.4 Thinking | Claude Opus 4.6 Thinking | Gemini 3.1 Pro Thinking | Why They Differ |
+|-------|-----------|-----------|-----------|-----------------|
+| Primary suspected bug | “One glyph = one code point” + UTF-16 traps are top | UTF-16 traps or hex parsing ambiguity are top | UTF-16 traps + UCD range parsing (`<First>/<Last>`) also likely | Gemini assumes you’re parsing UCD files and might miss range-expanded entries; GPT/Claude prioritize runtime string handling & parsing formats. |
+| Data strategy emphasis | Strong push for versioned “Unicode data bundle” build pipeline | General warning about stale/incomplete data | Strong on pre-processing/chunking + search indexing + virtualization | GPT focuses on correctness boundaries (identity vs rendering + authoritative source), Gemini adds performance architecture details typical of large Unicode datasets. |
+| Recommended segmentation technique | Wants code points + grapheme-cluster view (no specific API) | Conceptual distinction (code point vs grapheme) | Recommends `Intl.Segmenter` explicitly | Different concreteness: Gemini proposes a specific browser API; others stay at design level. |
+
+### 3. Unique Discoveries
+
+| Model | Unique Finding | Why It Matters |
+|-------|----------------|----------------|
+| Gemini 3.1 Pro Thinking | If you parse `UnicodeData.txt`, you must expand `<..., First>` / `<..., Last>` ranges or many code points “won’t exist” in your map. | This creates “wrong answers” that look like missing/unknown characters (especially CJK/Hangul) even when the code point is valid. |
+| GPT-5.4 Thinking | Separate “Unicode identity” from “rendering”; never infer validity from glyph rendering/tofu. | Prevents mislabeling valid characters as invalid due to font/shaping limitations. [perplexity](https://www.perplexity.ai/search/598fb59f-f17d-4c3e-a40a-ca9f8fd5f62b) |
+
+### 4. Comprehensive Analysis
+
+All three models converge on the same core diagnosis: Unicode Explorer apps feel simple because the UI is simple, but the *domain model* is not. The most common architecture mistake is building the whole pipeline around “user entered a character → that equals one code point → look up one record.” GPT-5.4 Thinking, Claude Opus 4.6 Thinking, and Gemini 3.1 Pro Thinking all warn that many user-perceived characters are actually **multiple code points** (combining marks, ZWJ emoji sequences, regional-indicator flags, variation selectors, modifiers). If your app collapses these into a single code point, you’ll get outputs that are confidently wrong—wrong code point numbers, wrong names, or “not found” for things that should resolve.
+
+The next high-confidence culprit is JavaScript/TypeScript’s UTF‑16 string model. If any of your lookup logic uses `str.length`, indexing (`str[0]`), `split('')`, `charCodeAt`, or `fromCharCode`, it will silently break on astral-plane characters (U+10000+), because those require surrogate pairs. Claude Opus 4.6 Thinking and Gemini 3.1 Pro Thinking explicitly call out this trap and recommend `codePointAt`, `fromCodePoint`, and iterating with `for...of` instead of code-unit indexing. GPT-5.4 Thinking agrees and adds that even “code point correct” iteration may still be user-surprising unless you also support grapheme cluster segmentation for “what users think of as one character.”
+
+Where the models diverge is mainly about *which second-order issue is most likely in your repo*. Gemini 3.1 Pro Thinking raises a very specific failure mode: if you generate your database from `UnicodeData.txt`, you must handle the UCD’s `<First>`/`<Last>` range markers; otherwise you’ll miss huge swaths of characters (notably CJK/Hangul ranges) and return “unknown” or no record for perfectly valid code points. GPT-5.4 Thinking instead emphasizes correctness boundaries: even if your Unicode data is perfect, you must not conflate “can my browser render this glyph” with “is this a valid Unicode character,” because missing fonts/shaping can produce tofu or odd rendering that is not a data error. Claude Opus 4.6 Thinking leans toward simpler “gets wrong answers” causes: surrogate pairs plus ambiguous hex/decimal parsing (e.g., interpreting `41` as decimal 41 instead of hex 0x41), and normalization (NFC/NFD) differences that make visually identical input behave differently. [perplexity](https://www.perplexity.ai/search/598fb59f-f17d-4c3e-a40a-ca9f8fd5f62b)
+
+Actionably, the best fix path—supported by the shared recommendations—is to refactor around a strict pipeline:
+
+1) **Parse/classify the query** (U+ notation, hex/decimal, entity, literal text, code-point sequence).  
+2) **Segment input text** into *grapheme clusters* (for “characters”) and into *code points* (for technical inspection). Gemini recommends `Intl.Segmenter` for this.
+3) **Resolve** against a single, version-pinned Unicode dataset (or an explicit rule for what you do when data is missing/out-of-date). GPT-5.4 Thinking recommends a build-time “versioned data bundle” approach.
+4) **Present results** with explicit distinctions: code point facts vs sequence facts vs rendering caveats. [perplexity](https://www.perplexity.ai/search/598fb59f-f17d-4c3e-a40a-ca9f8fd5f62b)
+
+To do an actual repo-specific architecture and code review, I need the code. Since the council couldn’t fetch it, can you do one of these:
+
+- Make the repo public (even briefly), **or**
+- Paste: `package.json`, the main lookup/parser file(s), and any Unicode data build script, **or**
+- Tell me 2–3 concrete “wrong answer” examples (input → your output → expected output).  
+
+If you share just one failing example, include the literal character *and* the code points you believe it should be (e.g., `👩‍👩‍👦` = `1F469 200D 1F469 200D 1F466`). That will let me pinpoint whether the bug is parsing, UTF‑16 handling, grapheme segmentation, normalization, or UCD data generation.
