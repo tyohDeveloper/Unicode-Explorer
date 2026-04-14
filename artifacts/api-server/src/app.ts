@@ -37,7 +37,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app.get(["/", "/unicode"], (_req: Request, res: Response) => {
-  res.setHeader("Content-Type", "application/xhtml+xml; charset=UTF-8");
+  res.setHeader("Content-Type", "text/html; charset=UTF-8");
   createReadStream(UNICODE_HTML).pipe(res);
 });
 
