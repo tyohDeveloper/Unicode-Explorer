@@ -13,8 +13,11 @@
  *   unicode-src/data/charnames.js    Algorithmic name helpers (CN is injected by build)
  *   unicode-src/js/00-classify.js    isNonVisible, isReserved, utility fns
  *   unicode-src/js/01-sidebar.js     Collapsible sidebar + search + controls
- *   unicode-src/js/02-render.js      Auto-updating render engine
- *   unicode-src/js/03-controls.js    Font/size slider + copy button
+ *   unicode-src/js/02-render-core.js  Render orchestrator + shared helpers
+ *   unicode-src/js/03-render-grid.js  Grid renderer
+ *   unicode-src/js/04-render-table.js Table renderer + sort state/helpers
+ *   unicode-src/js/05-render-plain.js Plain text renderer
+ *   unicode-src/js/06-controls.js     Font/size slider + copy button
  *
  * The build fetches UnicodeData.txt from unicode.org to derive:
  *   - UNASSIGNED ranges array (truly reserved code points within blocks)
@@ -42,8 +45,11 @@ const JS_FILES = [
   "data/charnames.js",
   "js/00-classify.js",
   "js/01-sidebar.js",
-  "js/02-render.js",
-  "js/03-controls.js",
+  "js/02-render-core.js",
+  "js/03-render-grid.js",
+  "js/04-render-table.js",
+  "js/05-render-plain.js",
+  "js/06-controls.js",
 ];
 
 /* Path to the LZString minified library included in the runtime bundle */
