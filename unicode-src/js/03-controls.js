@@ -38,9 +38,9 @@ document.getElementById("btn-copy").addEventListener("click", function() {
     var plain = document.querySelector("#plain-text-out");
     text = plain ? plain.textContent.trim() : "";
   } else {
-    var sel = mode === "grid"   ? "#output .gc:not(.cell-reserved)"
-            : mode === "gridcp" ? "#output .glyph"
-            :                     "#output td.td-ch.clickable";
+    var sel = mode === "grid"    ? "#output .gc:not(.cell-reserved)"
+            : mode === "grid-cp" ? "#output .glyph"
+            :                      "#output td.td-ch.clickable";
     elems = document.querySelectorAll(sel);
     chars = [];
     for (i = 0; i < elems.length; i++) {
