@@ -3,6 +3,9 @@
  * PURE selection functions, dispatches to the mode renderer, and updates the
  * status bar. Re-rendering is driven by store subscriptions in main.ts.
  */
+import { codePointToString } from "./codepoint/codePointToString.js";
+import { coverageText } from "./coverage/coverageText.js";
+import { summarizeCoverage } from "./coverage/summarizeCoverage.js";
 import { makeElement } from "./makeElement.js";
 import { collectCodePoints, type CodePointItem } from "./selection/collectCodePoints.js";
 import { countAssigned } from "./selection/countAssigned.js";
@@ -10,6 +13,7 @@ import { filterByName } from "./selection/filterByName.js";
 import type { TableSortColumn } from "./selection/sortTableItems.js";
 import type { Settings } from "./state/settings.js";
 import type { Block } from "./ucd/listBlocks.js";
+import { isNonVisible } from "./ucd/isNonVisible.js";
 import { listBlocks } from "./ucd/listBlocks.js";
 import { renderGrid, type GridContext } from "./renderGrid.js";
 import { renderGridName } from "./renderGridName.js";
@@ -17,7 +21,7 @@ import { renderPlain } from "./renderPlain.js";
 import { renderTable } from "./renderTable.js";
 
 export interface OutputElements { output: HTMLElement; statBlocks: HTMLElement; statChars: HTMLElement }
-export interface OutputContext extends GridContext { onSort(col: TableSortColumn): void }
+export interface OutputContext extends Omit<GridContext, "coverage"> { onSort(col: TableSortColumn): void }
 
 function placeholder(symbol: string, message: string): HTMLDivElement {
   return makeElement("div", { id: "placeholder" }, [makeElement("span", { class: "big", text: symbol }), makeElement("p", { text: message })]);
@@ -32,13 +36,19 @@ function plural(n: number, word: string): string {
   return `${n.toLocaleString("en-US")} ${word}${n === 1 ? "" : "s"}`;
 }
 
-function renderMode(el: OutputElements, settings: Settings, blocks: Block[], items: CodePointItem[], ctx: OutputContext): void {
+function renderMode(el: OutputElements, settings: Settings, blocks: Block[], items: CodePointItem[], ctx: GridContext & OutputContext): void {
   const table = { ...ctx, sort: settings.tableSort };
   if (settings.mode === "grid") renderGrid(el.output, blocks, items, false, ctx);
   else if (settings.mode === "grid-cp") renderGrid(el.output, blocks, items, true, ctx);
   else if (settings.mode === "grid-name") renderGridName(el.output, blocks, items, ctx);
   else if (settings.mode === "table") renderTable(el.output, blocks, items, table);
   else renderPlain(el.output, items);
+}
+
+/** Probe every visible character once (cached per font stack) so headings and the status bar can report coverage. */
+function withCoverage(items: CodePointItem[], ctx: OutputContext): { summary: ReturnType<typeof summarizeCoverage>; grid: GridContext & OutputContext } {
+  const summary = summarizeCoverage(items, (cp) => ctx.verified(cp, codePointToString(cp)), isNonVisible);
+  return { summary, grid: { ...ctx, coverage: summary.byBlock } };
 }
 
 export function renderOutput(el: OutputElements, settings: Settings, ctx: OutputContext): void {
@@ -53,10 +63,12 @@ export function renderOutput(el: OutputElements, settings: Settings, ctx: Output
     return;
   }
   const items = filterByName(collectCodePoints(blocks, settings.nonVisible), settings.nameFilter, ctx.nameOf);
-  el.statChars.textContent = plural(countAssigned(items), "character");
   if (items.length === 0) {
+    el.statChars.textContent = plural(countAssigned(items), "character");
     el.output.append(placeholder("\u2205", "No characters with current settings."));
     return;
   }
-  renderMode(el, settings, blocks, items, ctx);
+  const { summary, grid } = withCoverage(items, ctx);
+  el.statChars.textContent = settings.mode === "plain" ? plural(countAssigned(items), "character") : coverageText(countAssigned(items), summary);
+  renderMode(el, settings, blocks, items, grid);
 }

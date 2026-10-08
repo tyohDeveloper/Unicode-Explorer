@@ -8,10 +8,6 @@ export function fontStackFor(id: string): string {
   return fontStacks.fonts.find((f) => f.id === id)?.stack ?? fontStacks.fonts[0].stack;
 }
 
-export function applyGlyphFont(id: string): void {
-  document.documentElement.style.setProperty("--glyph-font", fontStackFor(id));
-}
-
 export function buildFontButtons(container: HTMLElement, store: SettingsStore): HTMLInputElement[] {
   const radios = fontStacks.fonts.map((f) => {
     const radio = makeElement("input", { type: "radio", name: "gfont", value: f.id, "data-testid": `radio-font-${f.id}` });
@@ -24,5 +20,4 @@ export function buildFontButtons(container: HTMLElement, store: SettingsStore): 
 
 export function reflectFont(radios: HTMLInputElement[], id: string): void {
   for (const r of radios) r.checked = r.value === id;
-  applyGlyphFont(id);
 }

@@ -1,13 +1,21 @@
 /**
- * VIEW entry: wire the store, the sidebar, the controls, the output pane, and
- * the URL-hash effect. Start-up waits for the embedded name table to decode.
+ * VIEW entry: wire the store, the sidebar, the controls, the output pane, the
+ * font stack and glyph probe, the sidecar font packs, the About dialog, and
+ * the URL-hash effect. Start-up waits for the embedded name table to decode,
+ * the embedded fonts to load, and the pack catalogue to load or fail.
  */
+import { wireAbout } from "./about.js";
 import { wireComposePad } from "./composePad.js";
-import { reflectControls, wireControls, type ControlElements } from "./controls.js";
+import { buildLangOptions, reflectControls, wireControls, type ControlElements } from "./controls.js";
 import { wireCopyOutput } from "./copyOutput.js";
 import { buildFontButtons, reflectFont } from "./fontButtons.js";
+import { createFontPackLoader, type FontPackLoader } from "./fonts/fontPacks.js";
+import { createGlyphProbe } from "./fonts/glyphProbe.js";
+import { packStatusText } from "./fonts/packStatusText.js";
+import { standardFonts } from "./fonts/standardFonts.js";
+import { createGlyphFonts } from "./glyphFonts.js";
 import { loadNameTable } from "./names/loadNameTable.js";
-import { renderOutput, type OutputElements } from "./output.js";
+import { renderOutput, type OutputContext, type OutputElements } from "./output.js";
 import { createRenderScheduler } from "./render/scheduleRender.js";
 import { createSettingsStore, type SettingsStore } from "./settings/settingsStore.js";
 import type { TableSortColumn } from "./selection/sortTableItems.js";
@@ -29,6 +37,8 @@ function controlElements(): ControlElements {
   return {
     modes: [...document.querySelectorAll<HTMLInputElement>("input[name=mode]")],
     nonVisible: byId("chk-nonvis"),
+    placeholders: byId("chk-placeholders"),
+    lang: byId("cjk-lang"),
     slider: byId("font-size-slider"),
     sizeValue: byId("font-size-val"),
     nameFilter: byId("name-filter"),
@@ -41,51 +51,70 @@ function syncHash(settings: Settings): void {
   if (location.hash !== (hash ? `#${hash}` : "")) history.replaceState(null, "", url);
 }
 
-function wireHashNavigation(store: SettingsStore): void {
-  window.addEventListener("hashchange", () => store.dispatch(hydrateSettings(decodeHashState(location.hash))));
-}
-
 function needsFullRender(next: Settings, previous: Settings): boolean {
   return next.blocks !== previous.blocks || next.mode !== previous.mode || next.nonVisible !== previous.nonVisible
-    || next.nameFilter !== previous.nameFilter || next.tableSort !== previous.tableSort;
+    || next.nameFilter !== previous.nameFilter || next.tableSort !== previous.tableSort || next.font !== previous.font;
 }
 
-interface Views { sidebar: SidebarHandles; controls: ControlElements; fontRadios: HTMLInputElement[]; outputEl: OutputElements }
+interface Views { sidebar: SidebarHandles; controls: ControlElements; fontRadios: HTMLInputElement[]; outputEl: OutputElements; statFonts: HTMLElement }
 
-function buildViews(store: SettingsStore): Views {
+function buildViews(store: SettingsStore, packs: FontPackLoader): Views {
   const outputEl: OutputElements = { output: byId("output"), statBlocks: byId("stat-blocks"), statChars: byId("stat-chars") };
   const controls = controlElements();
+  buildLangOptions(controls.lang);
   const fontRadios = buildFontButtons(byId("font-btns"), store);
   const sidebar = buildSidebar(byId("block-list"), store);
   wireSidebarSearch(sidebar, store, byId("block-search"), byId("btn-all"), byId("btn-none"));
   wireControls(controls, store);
   wireCopyOutput(byId("btn-copy"), outputEl.output, outputEl.statChars, () => store.get().mode);
-  return { sidebar, controls, fontRadios, outputEl };
+  wireAbout(byId("btn-about"), byId<HTMLDialogElement>("about-dialog"), packs);
+  return { sidebar, controls, fontRadios, outputEl, statFonts: byId("stat-fonts") };
 }
 
 function reflectAll(views: Views, settings: Settings): void {
   reflectSelection(views.sidebar, settings);
   reflectControls(views.controls, settings);
   reflectFont(views.fontRadios, settings.font);
+  views.outputEl.output.classList.toggle("placeholders", settings.placeholders);
+  if (settings.lang) views.outputEl.output.setAttribute("lang", settings.lang); else views.outputEl.output.removeAttribute("lang");
+}
+
+/** A pack finished loading or failed: refresh the stack (new families), the status line, and the view. */
+function onPacksChanged(views: Views, store: SettingsStore, fonts: { apply(id: string): void }, packs: FontPackLoader, render: () => void): void {
+  views.statFonts.textContent = packStatusText(packs.statuses());
+  if (packs.families().length) { fonts.apply(store.get().font); render(); }
+}
+
+function subscribe(store: SettingsStore, views: Views, fonts: { apply(id: string): void }, packs: FontPackLoader, render: () => void): void {
+  store.subscribe((next, previous) => {
+    reflectAll(views, next);
+    syncHash(next);
+    if (next.font !== previous.font) fonts.apply(next.font);
+    if (next.blocks !== previous.blocks) packs.ensureForBlocks(next.blocks);
+    if (needsFullRender(next, previous)) render();
+    else if (next.size !== previous.size) views.outputEl.output.style.fontSize = `${next.size}px`;
+  });
+  window.addEventListener("hashchange", () => store.dispatch(hydrateSettings(decodeHashState(location.hash))));
 }
 
 async function start(): Promise<void> {
   const names = await loadNameTable();
   const store = createSettingsStore();
   const pad = wireComposePad(document);
-  const ctx = { nameOf: (cp: number) => resolveCharName(names, cp), insert: (t: string) => pad.insert(t), onSort: (col: TableSortColumn) => store.dispatch(toggleTableSort(col)) };
-  const views = buildViews(store);
-  const render = createRenderScheduler(() => renderOutput(views.outputEl, store.get(), ctx));
+  const probe = createGlyphProbe(standardFonts().detection);
+  let render = (): void => undefined;
+  const packs = createFontPackLoader(() => onPacksChanged(views, store, fonts, packs, render));
+  const fonts = createGlyphFonts(probe, packs);
+  const ctx: OutputContext = { nameOf: (cp) => resolveCharName(names, cp), insert: (t) => pad.insert(t), verified: (cp, ch) => probe.verified(cp, ch), onSort: (col: TableSortColumn) => store.dispatch(toggleTableSort(col)) };
+  const views = buildViews(store, packs);
+  render = createRenderScheduler(() => renderOutput(views.outputEl, store.get(), ctx));
   store.dispatch(hydrateSettings(decodeHashState(location.hash)));
-  store.subscribe((next, previous) => {
-    reflectAll(views, next);
-    syncHash(next);
-    if (needsFullRender(next, previous)) render();
-    else if (next.size !== previous.size) views.outputEl.output.style.fontSize = `${next.size}px`;
-  });
-  wireHashNavigation(store);
+  subscribe(store, views, fonts, packs, render);
+  await Promise.all([fonts.ready, packs.ready]);
+  fonts.apply(store.get().font);
   reflectAll(views, store.get());
   syncHash(store.get());
+  packs.ensureForBlocks(store.get().blocks);
   renderOutput(views.outputEl, store.get(), ctx);
 }
 

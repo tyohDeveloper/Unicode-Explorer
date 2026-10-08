@@ -3,7 +3,6 @@
  * user sort (Settings.tableSort) flattens the list. Header clicks dispatch
  * tableSort/toggle; the re-render comes back through the store.
  */
-import { codePointToString } from "./codepoint/codePointToString.js";
 import { formatCodePoint } from "./codepoint/formatCodePoint.js";
 import { formatHex } from "./codepoint/formatHex.js";
 import { makeElement } from "./makeElement.js";
@@ -12,8 +11,9 @@ import { groupByBlock } from "./selection/groupByBlock.js";
 import type { TableSort, TableSortColumn } from "./selection/sortTableItems.js";
 import { sortTableItems } from "./selection/sortTableItems.js";
 import type { Block } from "./ucd/listBlocks.js";
-import { blockHeadingText } from "./renderBlockHeading.js";
-import type { GridContext } from "./renderGrid.js";
+import { displayForm } from "./ucd/displayForm.js";
+import { blockHeadingText, coverageNote } from "./renderBlockHeading.js";
+import { glyphClasses, type GridContext } from "./renderGrid.js";
 
 export interface TableContext extends GridContext { sort: TableSort | null; onSort(col: TableSortColumn): void }
 
@@ -29,8 +29,9 @@ function headerCell(col: { key: TableSortColumn; label: string }, ctx: TableCont
   return th;
 }
 
-function separatorRow(block: Block): HTMLTableRowElement {
-  return makeElement("tr", { class: "block-sep" }, [makeElement("td", { colspan: "4", text: blockHeadingText(block) })]);
+function separatorRow(block: Block, ctx: TableContext): HTMLTableRowElement {
+  const note = coverageNote(ctx.coverage.get(block.name));
+  return makeElement("tr", { class: "block-sep" }, [makeElement("td", { colspan: "4", text: note ? `${blockHeadingText(block)} · ${note}` : blockHeadingText(block) })]);
 }
 
 function reservedRow(item: CodePointItem): HTMLTableRowElement {
@@ -43,14 +44,14 @@ function reservedRow(item: CodePointItem): HTMLTableRowElement {
 }
 
 function charRow(item: CodePointItem, ctx: GridContext): HTMLTableRowElement {
-  const ch = codePointToString(item.cp);
+  const form = displayForm(item.cp);
   const row = makeElement("tr", { class: "tr-clickable", title: "Click to insert into Composition Pad", "data-testid": `button-table-row-${formatHex(item.cp)}` }, [
     makeElement("td", { class: "td-cp", text: formatCodePoint(item.cp) }),
-    makeElement("td", { class: "td-ch clickable", text: ch }),
+    makeElement("td", { class: glyphClasses("td-ch clickable", item.cp, ctx) }, [makeElement("span", { class: form.kind === "label" ? "glyph hidden-label" : "glyph", text: form.text })]),
     makeElement("td", { class: "td-name", text: ctx.nameOf(item.cp) }),
     makeElement("td", { class: "td-block", text: item.block }),
   ]);
-  row.addEventListener("click", () => ctx.insert(ch));
+  row.addEventListener("click", () => ctx.insert(form.char));
   return row;
 }
 
@@ -60,7 +61,7 @@ function groupedBody(blocks: readonly Block[], items: readonly CodePointItem[], 
   for (const block of blocks) {
     const list = byBlock.get(block.name);
     if (!list?.length) continue;
-    body.append(separatorRow(block));
+    body.append(separatorRow(block, ctx));
     for (const item of list) body.append(item.reserved ? reservedRow(item) : charRow(item, ctx));
   }
   return body;
