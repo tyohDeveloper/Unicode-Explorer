@@ -1,0 +1,35 @@
+# Working in this repo
+
+Read [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) first. It is short and it is binding.
+[`docs/PLAN.md`](docs/PLAN.md) is the plan of record; check which phase is active before
+proposing work from a later one.
+
+The six rules most likely to be violated by accident:
+
+1. **No `fetch()`, no CDN, no external font URLs at runtime.** Everything inlines. Fonts are
+   `data:` URLs. A runtime request fails from `file://`, is blocked by the CSP, and fails the
+   build check.
+2. **No `localStorage` / `IndexedDB` / cookies.** Session state is in-memory only. Use
+   `location.hash` if state must survive a reload.
+3. **`Unicode.html` is generated.** Edit `unicode-src/`, rebuild with
+   `pnpm --filter @workspace/scripts build:unicode`, commit source and output together.
+   Generated tables (`UNASSIGNED`, `CN`) are never hand-edited.
+4. **The Unicode version is one build input.** Do not add a block, range, or name by hand; it
+   derives from the Unicode Character Database for the pinned version.
+5. **Fonts need provenance.** A font enters `fonts/manifest.json` with source URL, version,
+   SHA-256, license (OFL or CC0 only), and measured coverage, or it does not build. No
+   Egyptian-hieroglyph font ships in Standard or Complete (`PLAN.md` D-4).
+6. **Never put a full-coverage font (Last Resort, Adobe Blank) in the global font stack.** It
+   is applied per cell by detection (`PLAN.md` D-6).
+
+Verify with `pnpm install --frozen-lockfile && pnpm run typecheck && pnpm --filter
+@workspace/scripts build:unicode`. The Phase 2 chain (`npm run build && npm run test:e2e`)
+replaces this when it lands.
+
+## Coding & architecture standards
+
+All code in this repository follows **[`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md)** — the binding rules for layer boundaries, purity, function and file size limits, naming, data externalization, testing, and dependency budgets. Read it before making changes.
+
+Key hard limits: exported function bodies ≤ 20 lines; one export per pure-logic file; pure-core files ≤ 100 lines, other pure/state/controller files ≤ 150, view files ≤ 250 with ≤ 80 lines of markup in the return. §0 of that file maps those layer roles to this repository's actual directories. Known exceptions, with expiry, are in [`.architecture-exceptions.json`](.architecture-exceptions.json).
+
+The canonical source of truth is the `programming` project knowledge wiki page `concepts/coding-architecture-standards`; the in-repo file is a derived copy. Amend the wiki first, then propagate here.
