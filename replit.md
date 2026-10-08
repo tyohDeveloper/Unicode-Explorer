@@ -1,147 +1,32 @@
-# Workspace
+# Unicode Character Explorer
 
-## Overview
+Read [`AGENTS.md`](AGENTS.md) first, then [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md). The
+plan of record is [`docs/PLAN.md`](docs/PLAN.md); work only on the active phase.
 
-pnpm workspace monorepo using TypeScript. Each package manages its own dependencies.
+## Shape
 
-## Stack
+- `unicode-src/` — application source (template, CSS, JS, data, font config). Edit here.
+- `Unicode.html` — **generated** single-file app. Never edit by hand; rebuild and commit with the
+  source change.
+- `scripts/src/unicode/build.ts` — the build. `pnpm --filter @workspace/scripts build:unicode`
+  (one shot) or `watch:unicode`.
+- `artifacts/api-server/` — Express server that serves `Unicode.html` at `/` and `/unicode` for
+  the Replit deployment. Hosting glue only; not part of the app.
+- `fonts/manifest.json` — font provenance and edition definitions. No binaries are committed.
+- `docs/tasks/` — historical task records.
 
-- **Monorepo tool**: pnpm workspaces
-- **Node.js version**: 24
-- **Package manager**: pnpm
-- **TypeScript version**: 5.9
-- **API framework**: Express 5
-- **Database**: PostgreSQL + Drizzle ORM
-- **Validation**: Zod (`zod/v4`), `drizzle-zod`
-- **API codegen**: Orval (from OpenAPI spec)
-- **Build**: esbuild (CJS bundle)
-
-## Structure
-
-```text
-artifacts-monorepo/
-├── artifacts/              # Deployable applications
-│   └── api-server/         # Express API server
-├── lib/                    # Shared libraries
-│   ├── api-spec/           # OpenAPI spec + Orval codegen config
-│   ├── api-client-react/   # Generated React Query hooks
-│   ├── api-zod/            # Generated Zod schemas from OpenAPI
-│   └── db/                 # Drizzle ORM schema + DB connection
-├── scripts/                # Utility scripts (single workspace package)
-│   └── src/                # Individual .ts scripts, run via `pnpm --filter @workspace/scripts run <script>`
-├── pnpm-workspace.yaml     # pnpm workspace (artifacts/*, lib/*, lib/integrations/*, scripts)
-├── tsconfig.base.json      # Shared TS options (composite, bundler resolution, es2022)
-├── tsconfig.json           # Root TS project references
-└── package.json            # Root package with hoisted devDeps
-```
-
-## TypeScript & Composite Projects
-
-Every package extends `tsconfig.base.json` which sets `composite: true`. The root `tsconfig.json` lists all packages as project references. This means:
-
-- **Always typecheck from the root** — run `pnpm run typecheck` (which runs `tsc --build --emitDeclarationOnly`). This builds the full dependency graph so that cross-package imports resolve correctly. Running `tsc` inside a single package will fail if its dependencies haven't been built yet.
-- **`emitDeclarationOnly`** — we only emit `.d.ts` files during typecheck; actual JS bundling is handled by esbuild/tsx/vite...etc, not `tsc`.
-- **Project references** — when package A depends on package B, A's `tsconfig.json` must list B in its `references` array. `tsc --build` uses this to determine build order and skip up-to-date packages.
-
-## Root Scripts
-
-- `pnpm run build` — runs `typecheck` first, then recursively runs `build` in all packages that define it
-- `pnpm run typecheck` — runs `tsc --build --emitDeclarationOnly` using project references
-
-## Packages
-
-### `artifacts/api-server` (`@workspace/api-server`)
-
-Express 5 API server. Routes live in `src/routes/` and use `@workspace/api-zod` for request and response validation and `@workspace/db` for persistence.
-
-- Entry: `src/index.ts` — reads `PORT`, starts Express
-- App setup: `src/app.ts` — mounts CORS, JSON/urlencoded parsing, routes at `/api`
-- Routes: `src/routes/index.ts` mounts sub-routers; `src/routes/health.ts` exposes `GET /health` (full path: `/api/health`)
-- Depends on: `@workspace/db`, `@workspace/api-zod`
-- `pnpm --filter @workspace/api-server run dev` — run the dev server
-- `pnpm --filter @workspace/api-server run build` — production esbuild bundle (`dist/index.cjs`)
-- Build bundles an allowlist of deps (express, cors, pg, drizzle-orm, zod, etc.) and externalizes the rest
-
-### `lib/db` (`@workspace/db`)
-
-Database layer using Drizzle ORM with PostgreSQL. Exports a Drizzle client instance and schema models.
-
-- `src/index.ts` — creates a `Pool` + Drizzle instance, exports schema
-- `src/schema/index.ts` — barrel re-export of all models
-- `src/schema/<modelname>.ts` — table definitions with `drizzle-zod` insert schemas (no models definitions exist right now)
-- `drizzle.config.ts` — Drizzle Kit config (requires `DATABASE_URL`, automatically provided by Replit)
-- Exports: `.` (pool, db, schema), `./schema` (schema only)
-
-Production migrations are handled by Replit when publishing. In development, we just use `pnpm --filter @workspace/db run push`, and we fallback to `pnpm --filter @workspace/db run push-force`.
-
-### `lib/api-spec` (`@workspace/api-spec`)
-
-Owns the OpenAPI 3.1 spec (`openapi.yaml`) and the Orval config (`orval.config.ts`). Running codegen produces output into two sibling packages:
-
-1. `lib/api-client-react/src/generated/` — React Query hooks + fetch client
-2. `lib/api-zod/src/generated/` — Zod schemas
-
-Run codegen: `pnpm --filter @workspace/api-spec run codegen`
-
-### `lib/api-zod` (`@workspace/api-zod`)
-
-Generated Zod schemas from the OpenAPI spec (e.g. `HealthCheckResponse`). Used by `api-server` for response validation.
-
-### `lib/api-client-react` (`@workspace/api-client-react`)
-
-Generated React Query hooks and fetch client from the OpenAPI spec (e.g. `useHealthCheck`, `healthCheck`).
-
-### `Unicode.html` (Standalone Unicode Explorer)
-
-**AUTO-GENERATED** — do not edit directly. Edit source files in `unicode-src/` then rebuild.
-
-A fully self-contained, offline-capable XHTML 1.1 document served by the API server at `/`.
-
-- **No dependencies** — no external scripts, fonts, or stylesheets
-- **346 Unicode 17.0 block entries** — complete set from Blocks-17.0.0.txt
-- **4 display modes**: Grid (compact glyphs), Grid+CP (glyph + code point), Table (CP + name, reserved omitted), Plain text flow (reserved omitted)
-- **Auto-update** — output renders immediately when any selection or mode changes (no "Show" button)
-- **Collapsible sidebar categories** — click-to-expand/collapse by script family
-- **Reserved character handling** — unassigned code points shown as dashed outline boxes in Grid modes; hidden from Table/Plain
-- **13 sidebar categories** including dedicated **Mathematics** group (math operators, alphanumeric symbols)
-- **Named chars** — full coverage of ~40,470 individually-named code points from UnicodeData.txt 17.0, injected at build time as a LZString-compressed lookup table (394 KB total HTML). Algorithmic names for CJK, Hangul (11,172), Tangut, Nushu, Khitan Small Script still handled at runtime.
-- **XHTML 1.1 compliance**: XML declaration, DOCTYPE, CDATA-wrapped JS/CSS, self-closing void elements
-
-#### Build System
-
-Source files live in `unicode-src/`, assembled by `scripts/src/unicode/build.ts`:
+## Checks
 
 ```
-unicode-src/
-  template.html          HTML skeleton ({{CSS}} / {{JS}} markers)
-  style.css              All CSS
-  data/
-    blocks.js            BLOCKS array (346 Unicode 17.0 blocks with categories)
-    charnames.js         Algorithmic name helpers (CN injected by build)
-  js/
-    00-classify.js       isNonVisible, isReserved, cpToStr, cpHex
-    01-sidebar.js        Collapsible sidebar + search + All/None buttons
-    02-render.js         Auto-updating render engine (Grid/Table/Plain)
-    03-controls.js       Font/size slider + Copy button
+pnpm install --frozen-lockfile
+pnpm run typecheck
+pnpm --filter @workspace/scripts build:unicode
 ```
 
-**Rebuild commands:**
-```
-pnpm --filter @workspace/scripts build:unicode   # one-shot
-pnpm --filter @workspace/scripts watch:unicode   # watch mode (auto-rebuild on source changes)
-```
+The build must leave `Unicode.html` unchanged unless the commit intends to change it.
 
-### `scripts` (`@workspace/scripts`)
+## Standards
 
-Utility scripts package. Each script is a `.ts` file in `src/` with a corresponding npm script in `package.json`. Run scripts via `pnpm --filter @workspace/scripts run <script>`. Scripts can import any workspace package (e.g., `@workspace/db`) by adding it as a dependency in `scripts/package.json`.
-
-**Available scripts:**
-- `build:unicode` / `watch:unicode` — assemble `Unicode.html` from `unicode-src/` source files
-
-## Coding & architecture standards
-
-All code in this repository follows **[`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md)** — the binding rules for layer boundaries, purity, function and file size limits, naming, data externalization, testing, and dependency budgets. Read it before making changes.
-
-Key hard limits: exported function bodies ≤ 20 lines; one export per pure-logic file; pure-core files ≤ 100 lines, other pure/state/controller files ≤ 150, view files ≤ 250 with ≤ 80 lines of markup in the return. §0 of that file maps those layer roles to this repository's actual directories.
-
-The canonical source of truth is the `programming` project knowledge wiki page `concepts/coding-architecture-standards`; the in-repo file is a derived copy. Amend the wiki first, then propagate here.
+All code follows [`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md) (v2.2). §0 maps layer
+roles to this repository's paths. The canonical source is the `programming` project knowledge
+wiki page `concepts/coding-architecture-standards`; the in-repo file is a derived copy.
