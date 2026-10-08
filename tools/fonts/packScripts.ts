@@ -4,7 +4,7 @@
  * window.UnicodeExplorerFontPackData[id]; the manifest publishes the catalogue
  * under window.UnicodeExplorerFontPacks. Both are plain data: no code runs.
  */
-export interface PackFontPayload { family: string; format: "woff2" | "woff"; bytes: Uint8Array; weight?: number; style?: string }
+export interface PackFontPayload { family: string; format: "woff2" | "woff"; bytes: Uint8Array; weight?: number; style?: string; range?: string }
 
 export interface PackCatalogueEntry {
   id: string;
@@ -22,7 +22,7 @@ export interface PackCatalogueEntry {
 export interface PackCatalogue { schema: string; app: string; unicode: string; edition: string; packs: PackCatalogueEntry[] }
 
 export function packScript(id: string, fonts: readonly PackFontPayload[]): string {
-  const payload = fonts.map((f) => ({ family: f.family, format: f.format, ...(f.weight ? { weight: f.weight, style: f.style ?? "normal" } : {}), data: Buffer.from(f.bytes).toString("base64") }));
+  const payload = fonts.map((f) => ({ family: f.family, format: f.format, ...(f.weight ? { weight: f.weight, style: f.style ?? "normal" } : {}), ...(f.range ? { range: f.range } : {}), data: Buffer.from(f.bytes).toString("base64") }));
   return `window.UnicodeExplorerFontPackData=window.UnicodeExplorerFontPackData||{};window.UnicodeExplorerFontPackData[${JSON.stringify(id)}]=${JSON.stringify({ id, fonts: payload })};\n`;
 }
 

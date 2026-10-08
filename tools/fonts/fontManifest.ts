@@ -36,6 +36,8 @@ export interface PackEntry {
   blocks?: string[];
   editions: string[];
   bytes?: number;
+  /** D-20: ship only these code-point ranges (hex, inclusive) of the pack's fonts, subset at build time. */
+  subset?: [string, string][];
 }
 
 export interface Edition { id: string; default: boolean; fonts: string[]; packs?: string[]; guaranteed_visible_code_points?: number; of?: number; embedded_font_bytes?: number; delivery: string }

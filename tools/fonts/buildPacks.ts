@@ -18,12 +18,28 @@ import { packScript, packsManifestScript, type PackCatalogueEntry } from "./pack
 import { readCmap } from "./readCmap.js";
 import { visibleAssignedSet } from "./visibleAssignedSet.js";
 import { writeZip } from "./writeZip.js";
+import { sourceSfnt } from "./sourceSfnt.js";
+import { subsetSfnt } from "./subsetSfnt.js";
+import { toUnicodeRange } from "./toUnicodeRange.js";
+import { toWoff2 } from "./toWoff2.js";
+import type { FontEntry } from "./fontManifest.js";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 const outDir = resolve(repoRoot, "unicode-fonts");
 const releaseDir = resolve(repoRoot, "dist/release");
 
-interface Ctx { manifest: FontManifest; visible: Set<number>; blocks: BlockRange[]; app: string; unicode: string; cmaps: Map<string, Set<number>> }
+interface Ctx { manifest: FontManifest; visible: Set<number>; blocks: BlockRange[]; app: string; unicode: string; cmaps: Map<string, Set<number>>; packCmaps: Map<string, Set<number>> }
+
+/** D-20: hosts may refuse or redirect large files (the hosted test build redirects files over ~10 MB cross-origin, which CSP blocks), so no pack may exceed this. */
+const MAX_PACK_BYTES = 8 * 1024 * 1024;
+
+interface PackFont { font: FontEntry; bytes: Uint8Array; cmap: number[] }
+
+async function packFont(ctx: Ctx, pack: PackEntry, font: FontEntry): Promise<PackFont> {
+  if (!pack.subset) return { font, bytes: cachedWoff2(font.id), cmap: [...cmapOf(ctx, font.id)] };
+  const bytes = await toWoff2(subsetSfnt(sourceSfnt(repoRoot, font), pack.subset));
+  return { font, bytes, cmap: readCmap(bytes) };
+}
 
 function cachedWoff2(id: string): Uint8Array {
   const path = resolve(repoRoot, "fonts/cache", `${id}.woff2`);
@@ -43,20 +59,27 @@ function unionCmap(ctx: Ctx, ids: readonly string[]): Set<number> {
   return union;
 }
 
-function buildPack(ctx: Ctx, pack: PackEntry): PackCatalogueEntry {
+async function buildPack(ctx: Ctx, pack: PackEntry): Promise<PackCatalogueEntry> {
   const fonts = pack.fonts.map((id) => fontById(ctx.manifest, id));
-  const script = packScript(pack.id, fonts.map((f) => ({ family: f.css_family, format: "woff2" as const, bytes: cachedWoff2(f.id), weight: f.weight, style: f.style })));
+  const parts = await Promise.all(fonts.map((f) => packFont(ctx, pack, f)));
+  const script = packScript(pack.id, parts.map((p) => ({ family: p.font.css_family, format: "woff2" as const, bytes: p.bytes, weight: p.font.weight, style: p.font.style, range: pack.subset ? toUnicodeRange(p.cmap) : undefined })));
+  if (Buffer.byteLength(script) > MAX_PACK_BYTES) throw new Error(`pack ${pack.id} is ${Buffer.byteLength(script)} bytes, over the ${MAX_PACK_BYTES}-byte limit (D-20); split it with "subset" ranges`);
   writeFileSync(resolve(outDir, `${pack.id}.js`), script);
-  if (pack.kind === "blocks") pack.blocks = packBlocks(ctx.blocks, pack.categories ?? [], unionCmap(ctx, pack.fonts), ctx.visible);
+  const cmap = new Set(parts.flatMap((p) => p.cmap));
+  ctx.packCmaps.set(pack.id, cmap);
+  if (pack.kind === "blocks") pack.blocks = packBlocks(ctx.blocks, pack.categories ?? [], cmap, ctx.visible);
   pack.bytes = Buffer.byteLength(script);
   const families = [...new Set(fonts.map((f) => f.css_family))];
   const meta = pack.kind === "style" ? { kind: "style" as const, styles: pack.styles, faces: pack.faces } : { kind: "blocks" as const };
   return { id: pack.id, label: pack.label, file: `${pack.id}.js`, bytes: pack.bytes, families, blocks: pack.blocks ?? [], ...meta, fonts: fonts.map((f) => ({ family: f.family, version: f.version, license: f.license, license_url: f.license_url })) };
 }
 
+/** Edition coverage from what actually ships: embedded fonts' full cmaps plus each pack's (possibly subset) cmap. */
 function measureEdition(ctx: Ctx, edition: Edition): void {
-  const coverage = edition.fonts.filter((id) => fontById(ctx.manifest, id).role === "coverage");
-  const cmap = unionCmap(ctx, coverage);
+  const packed = new Set(ctx.manifest.packs.flatMap((p) => p.fonts));
+  const embedded = edition.fonts.filter((id) => fontById(ctx.manifest, id).role === "coverage" && !packed.has(id));
+  const cmap = unionCmap(ctx, embedded);
+  for (const id of edition.packs ?? []) for (const cp of ctx.packCmaps.get(id) ?? []) cmap.add(cp);
   edition.guaranteed_visible_code_points = [...ctx.visible].filter((cp) => cmap.has(cp)).length;
   edition.of = ctx.visible.size;
   edition.embedded_font_bytes = edition.fonts.reduce((sum, id) => sum + (fontById(ctx.manifest, id).woff2_bytes ?? 0), 0);
@@ -76,15 +99,16 @@ function zipEdition(ctx: Ctx, edition: Edition, entries: PackCatalogueEntry[]): 
   return path;
 }
 
-export function buildPacks(editionIds: string[]): void {
+export async function buildPacks(editionIds: string[]): Promise<void> {
   const manifest = readFontManifest(repoRoot);
   const { blocks } = JSON.parse(readFileSync(resolve(repoRoot, "src/data/blocks.json"), "utf-8")) as { blocks: [string, number, number, string][] };
   const { version: app } = JSON.parse(readFileSync(resolve(repoRoot, "package.json"), "utf-8")) as { version: string };
   const { unicode } = JSON.parse(readFileSync(resolve(repoRoot, "data/version.json"), "utf-8")) as { unicode: string };
-  const ctx: Ctx = { manifest, visible: visibleAssignedSet(repoRoot), blocks: blocks.map(([name, start, end, category]) => ({ name, start, end, category })), app, unicode, cmaps: new Map() };
+  const ctx: Ctx = { manifest, visible: visibleAssignedSet(repoRoot), blocks: blocks.map(([name, start, end, category]) => ({ name, start, end, category })), app, unicode, cmaps: new Map(), packCmaps: new Map() };
   mkdirSync(outDir, { recursive: true });
   mkdirSync(releaseDir, { recursive: true });
-  const entries = new Map(manifest.packs.map((pack) => [pack.id, buildPack(ctx, pack)]));
+  const entries = new Map<string, PackCatalogueEntry>();
+  for (const pack of manifest.packs) entries.set(pack.id, await buildPack(ctx, pack));
   // Development catalogue beside the packs: every pack, so the repo checkout behaves like the fullest edition.
   writeFileSync(resolve(outDir, "manifest.js"), packsManifestScript({ schema: "unicode-explorer-font-packs/1", app, unicode, edition: "development", packs: [...entries.values()] }));
   for (const edition of manifest.editions) {
@@ -99,5 +123,5 @@ export function buildPacks(editionIds: string[]): void {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   const editions = args.includes("--edition") ? [args[args.indexOf("--edition") + 1]] : ["complete", "complete-hieroglyphs"];
-  buildPacks(editions);
+  buildPacks(editions).catch((e: Error) => { console.error(`build:packs FAILED — ${e.message}`); process.exit(1); });
 }
