@@ -1,0 +1,307 @@
+{
+  "schema": "unicode-explorer-font-manifest/1",
+  "generated": "2026-10-08",
+  "unicode_reference": "17.0.0",
+  "measurement_note": "assigned_visible_cmap_count = code points in the font's cmap that are assigned in Unicode 17.0.0 and visible (General Category not Cc/Cf/Cs/Co/Cn/Zl/Zp, not Default_Ignorable_Code_Point, plus Prepended_Concatenation_Mark). Out of 159,375. A cmap entry is not proof of correct shaping, mark positioning, or style design.",
+  "policy": {
+    "licenses_allowed": [
+      "OFL-1.1",
+      "CC0-1.0"
+    ],
+    "stack_rule": "Device fonts first, embedded coverage fonts second; placeholder and detection fonts are applied per cell by detection and never appear in the global font-family list (PLAN.md D-6).",
+    "egyptian": "No Egyptian-hieroglyph font ships in standard or complete (PLAN.md D-4). Candidates are listed under candidates and are not fetched by default.",
+    "delivery": "WOFF2 embedded as data: URLs with unicode-range descriptors generated from the measured cmap intersected with assigned visible code points."
+  },
+  "editions": [
+    {
+      "id": "standard",
+      "default": true,
+      "fonts": [
+        "unifont",
+        "unifont_upper",
+        "last-resort-he",
+        "adobe-blank-2"
+      ],
+      "guaranteed_visible_code_points": 77874,
+      "of": 159375,
+      "embedded_font_bytes": 1622788
+    },
+    {
+      "id": "complete",
+      "default": false,
+      "fonts": [
+        "unifont",
+        "unifont_upper",
+        "last-resort-he",
+        "adobe-blank-2",
+        "jigmo2",
+        "jigmo3",
+        "NotoSansCuneiform",
+        "NotoSansAnatolianHieroglyphs",
+        "NotoSansBamum",
+        "NotoSerifTangut"
+      ],
+      "guaranteed_visible_code_points": 154164,
+      "of": 159375,
+      "embedded_font_bytes": 19154000
+    },
+    {
+      "id": "complete-hieroglyphs",
+      "default": false,
+      "fonts": [
+        "unifont",
+        "unifont_upper",
+        "last-resort-he",
+        "adobe-blank-2",
+        "jigmo2",
+        "jigmo3",
+        "NotoSansCuneiform",
+        "NotoSansAnatolianHieroglyphs",
+        "NotoSansBamum",
+        "NotoSerifTangut",
+        "unihieroglyphica"
+      ],
+      "guaranteed_visible_code_points": 159230,
+      "of": 159375,
+      "embedded_font_bytes": 25538564
+    }
+  ],
+  "fonts": [
+    {
+      "id": "unifont",
+      "family": "Unifont",
+      "version": "17.0.05",
+      "license": "OFL-1.1",
+      "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
+      "license_url": "https://www.unifoundry.com/LICENSE.txt",
+      "source": {
+        "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont-17.0.05.otf",
+        "format": "otf",
+        "sha256": null,
+        "bytes": null,
+        "note": "SHA-256 of the upstream OTF to be recorded by tools/fetch-fonts.mjs in Phase 4; the WOFF2 hash below is of the Unicode Font Kit conversion."
+      },
+      "woff2_sha256": "9c8c08da9bf9b9cd5947bdf443064eed597ce4081e81e2c3414a5c880ab19bae",
+      "woff2_bytes": 911888,
+      "cmap_code_points": 58910,
+      "assigned_visible_cmap_count": 57432,
+      "role": "coverage"
+    },
+    {
+      "id": "unifont_upper",
+      "family": "Unifont Upper",
+      "version": "17.0.05",
+      "license": "OFL-1.1",
+      "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
+      "license_url": "https://www.unifoundry.com/LICENSE.txt",
+      "source": {
+        "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont_upper-17.0.05.otf",
+        "format": "otf",
+        "sha256": null,
+        "bytes": null,
+        "note": "SHA-256 of the upstream OTF to be recorded by tools/fetch-fonts.mjs in Phase 4; the WOFF2 hash below is of the Unicode Font Kit conversion."
+      },
+      "woff2_sha256": "e02745c10efb2aefd9fe0c1c491aa8631211f4bf8f57bc2d63760ed632a5af73",
+      "woff2_bytes": 572948,
+      "cmap_code_points": 59056,
+      "assigned_visible_cmap_count": 22283,
+      "role": "coverage"
+    },
+    {
+      "id": "last-resort-he",
+      "family": "LastResort HE",
+      "version": "18.000",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/unicode-org/last-resort-font/blob/main/LICENSE.md",
+      "source": {
+        "url": "https://github.com/unicode-org/last-resort-font/releases/download/18.000/LastResortHE-Regular.ttf",
+        "format": "ttf",
+        "sha256": "cb7c2262cb86a33e7bdfabd0a51746e738b0dd10924126c4530c414c5fc7e4b6",
+        "bytes": 587864
+      },
+      "woff2_bytes": 136464,
+      "cmap_code_points": 1114112,
+      "assigned_visible_cmap_count": 159375,
+      "role": "placeholder",
+      "note": "Maps every code point to a glyph naming its block. Applied per cell by detection, never in the global stack (PLAN.md D-6)."
+    },
+    {
+      "id": "jigmo2",
+      "family": "Jigmo2",
+      "version": "2025-09-12",
+      "license": "CC0-1.0",
+      "license_url": "https://kamichikoichi.github.io/jigmo/",
+      "source": {
+        "url": "https://kamichikoichi.github.io/jigmo/Jigmo-20250912.zip",
+        "format": "zip/ttf",
+        "sha256": null,
+        "bytes": null,
+        "note": "Zip containing Jigmo, Jigmo2, Jigmo3 TTF; hash recorded by tools/fetch-fonts.mjs in Phase 4."
+      },
+      "woff2_sha256": "82e86f71e0a057e8f2e815ab303c3e4b6dd429fedfb7916445a6d2421f0f2756",
+      "woff2_bytes": 12976096,
+      "cmap_code_points": 63047,
+      "assigned_visible_cmap_count": 61610,
+      "role": "coverage"
+    },
+    {
+      "id": "jigmo3",
+      "family": "Jigmo3",
+      "version": "2025-09-12",
+      "license": "CC0-1.0",
+      "license_url": "https://kamichikoichi.github.io/jigmo/",
+      "source": {
+        "url": "https://kamichikoichi.github.io/jigmo/Jigmo-20250912.zip",
+        "format": "zip/ttf",
+        "sha256": null,
+        "bytes": null,
+        "note": "Zip containing Jigmo, Jigmo2, Jigmo3 TTF; hash recorded by tools/fetch-fonts.mjs in Phase 4."
+      },
+      "woff2_sha256": "6fa28f6e944e43fe65ef2647e6a0afe9753890d7657b7957faff52451717c2de",
+      "woff2_bytes": 3048844,
+      "cmap_code_points": 13529,
+      "assigned_visible_cmap_count": 13526,
+      "role": "coverage"
+    },
+    {
+      "id": "NotoSansCuneiform",
+      "family": "Noto Sans Cuneiform",
+      "version": "Version 2.001",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/NotoSansCuneiform/unhinted/ttf/NotoSansCuneiform-Regular.ttf",
+        "format": "ttf",
+        "sha256": "e287671738e7f686d4f5ad2166a03d66ee4f6eb6c087aa47778fe2039f84f2cc",
+        "bytes": 819932
+      },
+      "woff2_bytes": 299536,
+      "cmap_code_points": 1238,
+      "assigned_visible_cmap_count": 1236,
+      "role": "coverage"
+    },
+    {
+      "id": "NotoSansAnatolianHieroglyphs",
+      "family": "Noto Sans Anatolian Hieroglyphs",
+      "version": "Version 2.001",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/NotoSansAnatolianHieroglyphs/unhinted/ttf/NotoSansAnatolianHieroglyphs-Regular.ttf",
+        "format": "ttf",
+        "sha256": "42d15a8dbf397f967f23f662a57990c269137002f52ca5087c444c1465da0dd2",
+        "bytes": 228124
+      },
+      "woff2_bytes": 110596,
+      "cmap_code_points": 588,
+      "assigned_visible_cmap_count": 585,
+      "role": "coverage"
+    },
+    {
+      "id": "NotoSansBamum",
+      "family": "Noto Sans Bamum",
+      "version": "Version 2.002",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/NotoSansBamum/unhinted/ttf/NotoSansBamum-Regular.ttf",
+        "format": "ttf",
+        "sha256": "cdcda48acdf2bf3d39accd6b3ba8d4a61a34df5e80c58e10366a346c97388ec6",
+        "bytes": 149152
+      },
+      "woff2_bytes": 76476,
+      "cmap_code_points": 662,
+      "assigned_visible_cmap_count": 660,
+      "role": "coverage"
+    },
+    {
+      "id": "NotoSerifTangut",
+      "family": "Noto Serif Tangut",
+      "version": "Version 2.170",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/NotoSerifTangut/unhinted/ttf/NotoSerifTangut-Regular.ttf",
+        "format": "ttf",
+        "sha256": "edcc5b7727fa4d1345d2fca93305c8b90ad88d4975152d4aed79564c9117db91",
+        "bytes": 3065476
+      },
+      "woff2_bytes": 1019664,
+      "cmap_code_points": 6920,
+      "assigned_visible_cmap_count": 6918,
+      "role": "coverage"
+    },
+    {
+      "id": "unihieroglyphica",
+      "family": "UniHieroglyphica",
+      "version": "19.000",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/thesaurus-linguae-aegyptiae/UniHieroglyphica/blob/9375eba4e2b626658e57e3a526118b8225c0581e/OFL.txt",
+      "source": {
+        "url": "https://raw.githubusercontent.com/thesaurus-linguae-aegyptiae/UniHieroglyphica/9375eba4e2b626658e57e3a526118b8225c0581e/font_files/UniHieroglyphica.ttf",
+        "format": "ttf",
+        "sha256": "ad60bb2f469697837b556388d47b500a21d866370a49a8be770b206108aaf664",
+        "bytes": 17455560
+      },
+      "woff2_bytes": 6384564,
+      "cmap_code_points": 14906,
+      "assigned_visible_cmap_count": 5268,
+      "role": "coverage",
+      "script": "Egyptian Hieroglyphs (basic block and Extended-A, 5,066 characters)"
+    },
+    {
+      "id": "adobe-blank-2",
+      "family": "Adobe Blank 2",
+      "version": "1.045",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/adobe-fonts/adobe-blank-2/blob/master/LICENSE.txt",
+      "source": {
+        "url": "https://raw.githubusercontent.com/adobe-fonts/adobe-blank-2/master/AdobeBlank2.ttf.woff",
+        "format": "woff",
+        "sha256": "97556d8236dd74f8a715d95401fbca9496c9bb226221b1dc34bf404534537e16",
+        "bytes": 1488
+      },
+      "cmap_code_points": 1114112,
+      "role": "detection",
+      "note": "Zero-width, no-ink glyph for every code point. Terminal font in the detection stack only; never visible."
+    }
+  ],
+  "candidates": [
+    {
+      "id": "newgardiner",
+      "family": "NewGardiner",
+      "version": "3.09",
+      "license": "OFL-1.1",
+      "status": "candidate",
+      "license_url": "https://github.com/nederhof/newgardiner/blob/227ed70becd40bf33e4c63339de7e9d528de2a92/fonts/OFL.txt",
+      "source": {
+        "url": "https://raw.githubusercontent.com/nederhof/newgardiner/227ed70becd40bf33e4c63339de7e9d528de2a92/fonts/NewGardiner.ttf",
+        "format": "ttf",
+        "sha256": "cc52cb0858dcee6e826f999b116aa9058def9bf22e1eaa13b01f72c95121d21d",
+        "bytes": 2849296
+      },
+      "woff2_bytes": 1108104,
+      "cmap_code_points": 4661,
+      "assigned_visible_cmap_count": 4533,
+      "note": "Lighter Egyptian option: 4,498 of the 5,066 Egyptian characters at 1.1 MiB WOFF2 (non-core Extended-A signs are placeholders; a companion NewGardinerNonCore font exists). Kept aside per PLAN.md D-4."
+    },
+    {
+      "id": "NotoSansEgyptianHieroglyphs",
+      "family": "Noto Sans Egyptian Hieroglyphs",
+      "version": "Version 2.002",
+      "license": "OFL-1.1",
+      "status": "candidate",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io/fonts/NotoSansEgyptianHieroglyphs/unhinted/ttf/NotoSansEgyptianHieroglyphs-Regular.ttf",
+        "format": "ttf",
+        "sha256": "38a33a230624671eebedce95bd4237f7b3b2bb1fa25688ff959bed4070a1ea95",
+        "bytes": 585872,
+        "note": "Unpinned URL; the file at commit 47acfd3806a2b2c7f2b8a7cc95030ead55d03c21 differs. Pin before any use."
+      },
+      "woff2_bytes": 270060,
+      "cmap_code_points": 1085,
+      "assigned_visible_cmap_count": 1081,
+      "note": "Basic Egyptian block only (1,071). Kept aside per PLAN.md D-4."
+    }
+  ]
+}
