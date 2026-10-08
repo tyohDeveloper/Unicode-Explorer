@@ -346,6 +346,13 @@
     "Tags": "Specials",
     "Variation Selectors Supplement": "Specials",
     "Supplementary Private Use Area-A": "Specials",
-    "Supplementary Private Use Area-B": "Specials"
+    "Supplementary Private Use Area-B": "Specials",
+    "Bengali Supplement": "South Asian Scripts",
+    "Archaic Cuneiform Numerals": "Ancient & Historic Scripts",
+    "Jurchen": "East Asian",
+    "Jurchen Radicals": "East Asian",
+    "Musical Symbols Supplement": "Musical & Numeric Symbols",
+    "Miscellaneous Symbols and Arrows Extended": "Symbols & Punctuation",
+    "Seal": "East Asian"
   }
 }

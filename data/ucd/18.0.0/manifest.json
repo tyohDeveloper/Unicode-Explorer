@@ -1,0 +1,52 @@
+{
+  "unicode_version": "18.0.0",
+  "retrieved": "2026-10-08",
+  "license": "Unicode License v3 (https://www.unicode.org/license.txt)",
+  "files": {
+    "Blocks.txt": {
+      "sha256": "a58f8d322f3c5e254f9f97b1cbf76a454a7e02de6ac35619a5e4f27aaabfd553",
+      "bytes": 11906,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/Blocks.txt"
+    },
+    "DerivedAge.txt": {
+      "sha256": "58b04334e3a31f9612694bbc3f6bff4a302b7d424565bca9c47e30aa74f8dbac",
+      "bytes": 142568,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/DerivedAge.txt"
+    },
+    "DerivedCoreProperties.txt": {
+      "sha256": "09c928886a178fcafd93c29e4bd59073a058e5a100b716d425cb563ab50f68c9",
+      "bytes": 1159889,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/DerivedCoreProperties.txt"
+    },
+    "DerivedName.txt": {
+      "sha256": "ac6cf808ea4ee29323031d5ba9449de13da51398a3f5ce401546d8fceb976df7",
+      "bytes": 1931286,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/extracted/DerivedName.txt"
+    },
+    "NameAliases.txt": {
+      "sha256": "3d5cf5e468901b080cd99adf2230061b748083705fe633db43ac8b73ec7a13da",
+      "bytes": 16714,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/NameAliases.txt"
+    },
+    "PropList.txt": {
+      "sha256": "f438f532e8737bb8a2702126cdf9c4af5e357c58c7acf9d9eb2fc7c1a1d955d6",
+      "bytes": 149040,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/PropList.txt"
+    },
+    "PropertyValueAliases.txt": {
+      "sha256": "06c4c8eaf7b0bf34abe73b113da1215bd784ac254d4c223600b90267caa4bbbd",
+      "bytes": 83536,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/PropertyValueAliases.txt"
+    },
+    "Scripts.txt": {
+      "sha256": "0071fd81b6aeae25f6e8bce8efec3066a6476a91b49bdb2f52dc76e817862a6a",
+      "bytes": 196089,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/Scripts.txt"
+    },
+    "UnicodeData.txt": {
+      "sha256": "0736451de439ae7baf1425136617da495e09ee5afbe6e394374db7009ea08950",
+      "bytes": 2243593,
+      "source": "https://www.unicode.org/Public/18.0.0/ucd/UnicodeData.txt"
+    }
+  }
+}
