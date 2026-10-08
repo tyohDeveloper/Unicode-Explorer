@@ -22,6 +22,11 @@ jobs:
           node-version: "22"
           cache: npm
       - run: npm ci
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.14"
+      - name: fontTools for pack subsetting (PLAN.md D-20)
+        run: pip install -r tools/fonts/requirements.txt
       - name: Composed build
         run: npm run build
       - name: Committed artifact matches its sources
