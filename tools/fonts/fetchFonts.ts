@@ -32,6 +32,7 @@ function checkVendored(font: FontEntry, woff2: Uint8Array, update: boolean): str
 
 export async function fetchFonts(only: string[], updateVendored: boolean): Promise<void> {
   const manifest = readFontManifest(repoRoot);
+  const before = JSON.stringify(manifest);
   const visible = visibleAssignedSet(repoRoot);
   for (const font of manifest.fonts) {
     if (only.length && !only.includes(font.id)) continue;
@@ -39,6 +40,7 @@ export async function fetchFonts(only: string[], updateVendored: boolean): Promi
     const note = checkVendored(font, woff2, updateVendored);
     console.log(`${font.id}: ${woff2.length} bytes, ${font.cmap_code_points} cmap, ${font.assigned_visible_cmap_count} visible assigned${note}`);
   }
+  if (JSON.stringify(manifest) === before) return; // nothing pinned or re-measured: leave the manifest byte-identical
   manifest.generated = new Date().toISOString().slice(0, 10);
   writeFontManifest(repoRoot, manifest);
 }

@@ -83,6 +83,8 @@ export function buildPacks(editionIds: string[]): void {
   mkdirSync(outDir, { recursive: true });
   mkdirSync(releaseDir, { recursive: true });
   const entries = new Map(manifest.packs.map((pack) => [pack.id, buildPack(ctx, pack)]));
+  // Development catalogue beside the packs: every pack, so the repo checkout behaves like the fullest edition.
+  writeFileSync(resolve(outDir, "manifest.js"), packsManifestScript({ schema: "unicode-explorer-font-packs/1", app, unicode, edition: "development", packs: [...entries.values()] }));
   for (const edition of manifest.editions) {
     measureEdition(ctx, edition);
     if (!edition.packs?.length || !editionIds.includes(edition.id)) continue;

@@ -19,12 +19,12 @@
       "fonts": [
         "unifont",
         "unifont_upper",
-        "last-resort-he",
+        "last-resort",
         "adobe-blank-2"
       ],
       "guaranteed_visible_code_points": 77874,
       "of": 159375,
-      "embedded_font_bytes": 1659420,
+      "embedded_font_bytes": 1765228,
       "delivery": "embedded in Unicode.html",
       "packs": []
     },
@@ -34,7 +34,7 @@
       "fonts": [
         "unifont",
         "unifont_upper",
-        "last-resort-he",
+        "last-resort",
         "adobe-blank-2",
         "jigmo2",
         "jigmo3",
@@ -45,7 +45,7 @@
       ],
       "guaranteed_visible_code_points": 154164,
       "of": 159375,
-      "embedded_font_bytes": 19191092,
+      "embedded_font_bytes": 19296900,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-f",
@@ -62,7 +62,7 @@
       "fonts": [
         "unifont",
         "unifont_upper",
-        "last-resort-he",
+        "last-resort",
         "adobe-blank-2",
         "jigmo2",
         "jigmo3",
@@ -74,7 +74,7 @@
       ],
       "guaranteed_visible_code_points": 159230,
       "of": 159375,
-      "embedded_font_bytes": 25577428,
+      "embedded_font_bytes": 25683236,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-f",
@@ -296,25 +296,25 @@
       "vendored": "fonts/standard/unifont_upper-17.0.05.woff2"
     },
     {
-      "id": "last-resort-he",
-      "family": "LastResort HE",
+      "id": "last-resort",
+      "family": "LastResort",
       "css_family": "UE LastResort",
       "version": "18.000",
       "license": "OFL-1.1",
       "license_url": "https://github.com/unicode-org/last-resort-font/blob/main/LICENSE.md",
       "source": {
-        "url": "https://github.com/unicode-org/last-resort-font/releases/download/18.000/LastResortHE-Regular.ttf",
+        "url": "https://github.com/unicode-org/last-resort-font/releases/download/18.000/LastResort-Regular.ttf",
         "format": "ttf",
-        "sha256": "cb7c2262cb86a33e7bdfabd0a51746e738b0dd10924126c4530c414c5fc7e4b6",
-        "bytes": 587864
+        "sha256": "ca7df8948cec84240f19508a17a74de037c98ba3a54e1aaa50ea6edbbdc37f64",
+        "bytes": 9592228
       },
-      "woff2_bytes": 136416,
-      "cmap_code_points": 1114112,
-      "assigned_visible_cmap_count": 159375,
       "role": "placeholder",
-      "note": "Maps every code point to a glyph naming its block. Applied per cell by detection, never in the global stack (PLAN.md D-6).",
-      "vendored": "fonts/standard/LastResortHE-Regular.woff2",
-      "woff2_sha256": "17557d7ef20890cba999ee94af027089cccc405351c73fec8bab01749e6ea96d"
+      "note": "Maps every code point to a glyph naming its block. Applied per cell by detection, never in the global stack (PLAN.md D-6). The 'HE' (high-efficiency) build was rejected on 2026-10-08: its cmap format 13 subtable is not usable as a web font in Chromium (measured: zero glyphs even for BMP characters), so the full build with a format 12 cmap ships instead (PLAN.md D-11).",
+      "vendored": "fonts/standard/LastResort-Regular.woff2",
+      "woff2_sha256": "aca5b106bf5a85dc2436d4d3f8c89f314c7769bf488043c177cf9b8c041f8ba3",
+      "woff2_bytes": 242224,
+      "cmap_code_points": 1114112,
+      "assigned_visible_cmap_count": 159375
     },
     {
       "id": "jigmo2",
@@ -510,6 +510,21 @@
       "cmap_code_points": 1085,
       "assigned_visible_cmap_count": 1081,
       "note": "Basic Egyptian block only (1,071). Kept aside per PLAN.md D-4."
+    },
+    {
+      "id": "last-resort-he",
+      "family": "LastResort HE",
+      "version": "18.000",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/unicode-org/last-resort-font/blob/main/LICENSE",
+      "source": {
+        "url": "https://github.com/unicode-org/last-resort-font/releases/download/18.000/LastResortHE-Regular.ttf",
+        "format": "ttf",
+        "sha256": "cb7c2262cb86a33e7bdfabd0a51746e738b0dd10924126c4530c414c5fc7e4b6",
+        "bytes": 587864
+      },
+      "role": "placeholder",
+      "note": "136 KB as WOFF2 but its cmap format 13 subtable yields no glyphs in Chromium (measured 2026-10-08); revisit if browsers gain support."
     }
   ],
   "pack_rule": "A pack is attached to the blocks in its declared categories (data/block-categories.json) whose visible assigned code points its fonts map at least a quarter of; tools/fonts/buildPacks.ts computes and records 'blocks'. Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies, and the category scope keeps stray ASCII glyphs from attaching a CJK pack to Basic Latin. The app loads a pack only when one of its blocks is selected (ADR-0001)."
