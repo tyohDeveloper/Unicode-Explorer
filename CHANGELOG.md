@@ -9,6 +9,33 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.0.0] — 2026-10-08
+
+Unicode 18.0 (Phase 6 of `docs/PLAN.md`); data 2.0.0.0. `Unicode.html` is 2,940,287 bytes
+(gzip 2,054,019).
+
+### Added
+
+- **Unicode 18.0.0**: 353 blocks and 172,808 characters, including Seal (11,328), Jurchen and
+  Jurchen Radicals, Archaic Cuneiform Numerals, Bengali Supplement, Musical Symbols Supplement and
+  Miscellaneous Symbols and Arrows Extended (DAT-01).
+- **Character details** strip (D-19, DAT-05): name, aliases, block, General Category, Script,
+  Age, decomposition and the detection result for the character under the pointer or keyboard
+  focus. Announced politely for keyboard focus only.
+
+### Changed
+
+- Character names for prefix ranges (`SMALL SEAL CHARACTER-3D000`, `JURCHEN CHARACTER-18E00`,
+  CJK, Tangut, Khitan, Nushu, Egyptian Extended-A, CJK compatibility) are derived from
+  `DerivedName.txt` instead of an authored table (D-18, DAT-03).
+- GNU Unifont and Unifont Upper 18.0.01. Coverage of the 172,382 visible characters: Standard
+  78,224 (45.4%), Complete 154,514 (89.6%), Complete + Hieroglyphs 159,580 (92.6%); the new Seal
+  and Jurchen scripts have no free font yet and show Last Resort placeholders.
+
+### Fixed
+
+- `fetch:fonts` no longer pins a cached old file to a new, unpinned source URL.
+
 ## [2.1.0.0] — 2026-10-08
 
 Scale and accessibility (Phase 5 of `docs/PLAN.md`), plus style packs and the CSS dialog.

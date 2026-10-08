@@ -7,7 +7,7 @@ following third-party material. Fonts keep their own licenses; MIT does not reli
 
 | Component | Version | License | Use | License text |
 |---|---|---|---|---|
-| [GNU Unifont](https://unifoundry.com/unifont/) and Unifont Upper | 17.0.05 | SIL Open Font License 1.1 (Unifont is dual-licensed GPL-2.0-or-later with font embedding exception / OFL-1.1; OFL elected) | Embedded glyph coverage for the Basic Multilingual Plane and parts of the supplementary planes | [`fonts/standard/licenses/Unifont-OFL-1.1.txt`](fonts/standard/licenses/Unifont-OFL-1.1.txt) (GPL text kept in `Unifont-LICENSE.txt` for reference) |
+| [GNU Unifont](https://unifoundry.com/unifont/) and Unifont Upper | 18.0.01 | SIL Open Font License 1.1 (Unifont is dual-licensed GPL-2.0-or-later with font embedding exception / OFL-1.1; OFL elected) | Embedded glyph coverage for the Basic Multilingual Plane and parts of the supplementary planes | [`fonts/standard/licenses/Unifont-OFL-1.1.txt`](fonts/standard/licenses/Unifont-OFL-1.1.txt) (GPL text kept in `Unifont-LICENSE.txt` for reference) |
 | [Last Resort](https://github.com/unicode-org/last-resort-font) (Unicode, Inc.) | 18.000, full build | SIL Open Font License 1.1 | Per-cell placeholder naming the block of an unverified character (Placeholders toggle) | [`fonts/standard/licenses/LastResort-LICENSE.txt`](fonts/standard/licenses/LastResort-LICENSE.txt) |
 | [Adobe Blank 2](https://github.com/adobe-fonts/adobe-blank-2) | 1.045 | SIL Open Font License 1.1 | Terminal font of the glyph-detection stack; never displayed | [`fonts/standard/licenses/AdobeBlank2-LICENSE.txt`](fonts/standard/licenses/AdobeBlank2-LICENSE.txt) |
 

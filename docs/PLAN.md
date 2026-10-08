@@ -258,6 +258,26 @@ Fonts:
 Acceptance: 353 blocks; 172,808 characters counted from the UCD; every derived name matches
 `DerivedName.txt`; regeneration check green; edition coverage remeasured and reported.
 
+Status 2026-10-08: delivered as app 2.2.0.0 / data 2.0.0.0. 353 blocks; 172,808 characters
+(312,389 assigned less 137,468 private use, 2,048 surrogates and 65 controls); all 172,808
+names match `DerivedName.txt`; the name table shrank from 298.5 KB to 279.6 KB because prefix-range
+names are no longer stored. Properties table 42 KB. Coverage of the 172,382 visible characters:
+Standard 78,224 (45.4%), Complete 154,514 (89.6%), Complete + Hieroglyphs 159,580 (92.6%).
+All blocks: first cells 206 ms, scan 4.5 s, longest task 61 ms.
+
+Findings during the build:
+- Unifont Upper 18.0.01 maps 1,329 fewer code points than 17.0.05: the 17.0.05 drafts for
+  Jurchen (965) and Archaic Cuneiform Numerals (311) were withdrawn, and 51 Latin Extended-G and
+  2 Tangut Supplement glyphs are gone. The drafts predate the final repertoire and are not
+  restored.
+- `tools/fonts/cacheFont.ts` trusted a cached file when a source was unpinned, which pinned the
+  17.0.05 hash to the 18.0.01 URL on the first try. Fixed: an unpinned source always downloads.
+- LXGW Seal alpha maps 511 of 11,328 Seal characters (4.5%), below the D-13 pack rule: recorded
+  as a candidate in `fonts/manifest.json`, not shipped. No standard-code-point font was found for
+  Jurchen or Archaic Cuneiform Numerals.
+- Unicode 18 added U+05C8 and U+05C9 to Hebrew; no public web font in `data/web-fonts.json` has
+  them yet, so the CSS dialog reports 183 of 185 for Basic Latin + Hebrew.
+
 ## Out of scope
 
 - Hieroglyph-specific features (format controls, quadrat layout). See D-4.

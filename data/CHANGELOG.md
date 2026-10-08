@@ -4,6 +4,27 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.0.0] — 2026-10-08
+
+Unicode 18.0.0 (MAJOR: new Unicode version).
+
+### Changed
+
+- `data/ucd/18.0.0/` replaces `data/ucd/17.0.0/`, adding `DerivedName.txt`, `Scripts.txt`,
+  `DerivedAge.txt` and `PropertyValueAliases.txt` to the vendored files (SHA-256 manifest).
+- `data/block-categories.json`: the 7 new blocks.
+- `src/data/names.json` stores only names outside the `DerivedName.txt` prefix ranges
+  (35,351 names, 279.6 KB).
+- `fonts/manifest.json`: Unifont 18.0.01, all fonts re-measured against Unicode 18; LXGW Seal
+  (alpha) recorded as a candidate. `data/web-fonts.json` re-measured.
+
+### Added
+
+- `src/data/algorithmic-names.json` generated from `DerivedName.txt` (D-18); the authored
+  `data/algorithmic-names.json` is removed.
+- `src/data/properties.json`: General Category, Script, Age and decompositions for the details
+  strip (D-19), 42 KB compressed.
+
 ## [1.2.0.0] — 2026-10-08
 
 ### Added

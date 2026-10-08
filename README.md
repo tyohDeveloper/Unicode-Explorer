@@ -4,12 +4,12 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.1.0.0** ([changelog](CHANGELOG.md)), data **1.2.0.0** (Unicode 17.0.0,
-> [data changelog](data/CHANGELOG.md)), 346 blocks, 2.9 MB. The Standard edition embeds GNU
+> **Status:** app **2.2.0.0** ([changelog](CHANGELOG.md)), data **2.0.0.0** (Unicode 18.0.0,
+> [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
-> historic scripts and CJK extensions. Unicode 18.0 (September 2026) is scheduled for Phase 6 of
-> [`docs/PLAN.md`](docs/PLAN.md).
+> historic scripts and CJK extensions. No free font yet covers more than a sliver of the new Seal
+> and Jurchen scripts, so they show Last Resort placeholders ([`docs/PLAN.md`](docs/PLAN.md) Phase 6).
 
 ## Use
 
@@ -42,7 +42,9 @@ With the Complete packs present, **Serif** and **Sans** use the Unicode Font Kit
 (Charis or Andika first, then Noto). **B** and **I** switch to genuine bold and italic faces where
 those fonts have them; elsewhere the browser synthesises them, and **No synthesis** shows where.
 **Search** takes a name or alias fragment (`snowman`, `zwj`), a code point (`U+2603`, `2603`) or
-the character itself. **Emoji** chooses text or colour presentation.
+the character itself. **Emoji** chooses text or colour presentation. Pointing at a character, or
+moving to it with the arrow keys, shows its **details**: name, aliases, block, General Category,
+Script, Age (the Unicode version that added it), decomposition and whether a font drew it.
 
 Keyboard: the first Tab stop is **Skip to characters**; in the output, arrow keys move, Home and
 End jump to the ends of a block, Enter or Space inserts into the composition pad and focus stays
@@ -86,16 +88,16 @@ pattern (`vite dev`/`vite preview` bound to `0.0.0.0:5000`), not a server (`docs
 
 | Edition | Download | Fonts | Guaranteed glyphs |
 |---|---|---|---:|
-| Standard | `Unicode.html` (2.8 MB) | Unifont 17.0.05, Unifont Upper, Last Resort 18.000, Adobe Blank 2 embedded | 77,874 (48.9%) + placeholders |
-| Complete | `unicode-explorer-complete-<version>.zip` (18 MB) | Standard + packs: Jigmo2/3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut | 154,164 (96.7%) |
-| Complete + Hieroglyphs | `unicode-explorer-complete-hieroglyphs-<version>.zip` (25 MB) | Complete + UniHieroglyphica 19.000 pack | 159,230 (99.9%) |
+| Standard | `Unicode.html` (2.9 MB) | Unifont 18.0.01, Unifont Upper, Last Resort 18.000, Adobe Blank 2 embedded | 78,224 (45.4%) + placeholders |
+| Complete | `unicode-explorer-complete-<version>.zip` (26 MB) | Standard + packs: Jigmo2/3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut; Serif/Sans style packs | 154,514 (89.6%) |
+| Complete + Hieroglyphs | `unicode-explorer-complete-hieroglyphs-<version>.zip` (33 MB) | Complete + UniHieroglyphica 19.000 pack | 159,580 (92.6%) |
 
 The zips are attached to each [release](https://github.com/tyohDeveloper/Unicode-Explorer/releases).
 Unzip one and open its `Unicode.html`: the packs live in the sibling `unicode-fonts/` directory
 and load only when you select a block they cover (the CJK Extension B–F pack is 17 MB; the
 status bar shows progress). Without the directory the same file runs as Standard
-([ADR-0001](docs/adr/0001-sidecar-font-packs.md)). Measured against the 159,375 visible assigned
-Unicode 17 characters. Coverage is a character-map measurement, not a guarantee of shaping or
+([ADR-0001](docs/adr/0001-sidecar-font-packs.md)). Measured against the 172,382 visible assigned
+Unicode 18 characters; most of the gap is the 11,328 Seal and 965 Jurchen characters. Coverage is a character-map measurement, not a guarantee of shaping or
 style. See [`fonts/manifest.json`](fonts/manifest.json) for provenance, hashes and licenses; every
 font is under the SIL Open Font License or CC0, and the application code is MIT.
 

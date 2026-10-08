@@ -120,6 +120,16 @@ each block into 512-character chunks that `src/render/lazyMaterializer.ts` (Inte
 status bar. One delegated handler (`src/outputEvents.ts`) serves clicks and the keyboard; moving
 into a pending chunk builds it first. "Copy output" reads the item list, not the DOM.
 
+### Character details (D-19)
+
+`src/detailsStrip.ts` listens for `focusin` and `pointerover` in the output and describes the cell
+with `src/properties/describeCharacter.ts`. The table it reads, `src/data/properties.json`
+(General Category, Script and Age as run-length tables, plus decompositions; 42 KB compressed),
+is generated from the UCD by `tools/ucd/buildProperties.ts` and decoded on first use. Character
+names for the prefix ranges (CJK, Tangut, Khitan, Jurchen, Nushu, Seal, Egyptian Extended-A,
+CJK compatibility) are not stored: `src/data/algorithmic-names.json` is generated from
+`DerivedName.txt` (D-18), and a test checks all 172,808 names against that file.
+
 ### CSS for this selection (D-16)
 
 `src/cssDialog.ts` builds CSS for other programmers from `data/web-fonts.json`: pinned public URLs
