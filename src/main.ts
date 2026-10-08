@@ -15,7 +15,9 @@ import { packStatusText } from "./fonts/packStatusText.js";
 import { standardFonts } from "./fonts/standardFonts.js";
 import { createGlyphFonts } from "./glyphFonts.js";
 import { loadNameTable } from "./names/loadNameTable.js";
-import { renderOutput, type OutputContext, type OutputElements } from "./output.js";
+import { renderOutput, type OutputContext, type OutputElements, type RenderHandle } from "./output.js";
+import { wireOutputEvents, wireSkipButton } from "./outputEvents.js";
+import { plainText } from "./renderPlain.js";
 import { createRenderScheduler } from "./render/scheduleRender.js";
 import { createSettingsStore, type SettingsStore } from "./settings/settingsStore.js";
 import type { TableSortColumn } from "./selection/sortTableItems.js";
@@ -25,6 +27,7 @@ import { decodeHashState } from "./state/decodeHashState.js";
 import { encodeHashState } from "./state/encodeHashState.js";
 import type { Settings } from "./state/settings.js";
 import { hydrateSettings, toggleTableSort } from "./state/settingsActions.js";
+import { aliasesOf } from "./ucd/aliasesOf.js";
 import { resolveCharName } from "./ucd/resolveCharName.js";
 
 function byId<T extends HTMLElement>(id: string): T {
@@ -39,6 +42,7 @@ function controlElements(): ControlElements {
     nonVisible: byId("chk-nonvis"),
     placeholders: byId("chk-placeholders"),
     lang: byId("cjk-lang"),
+    presentation: byId("presentation"),
     slider: byId("font-size-slider"),
     sizeValue: byId("font-size-val"),
     nameFilter: byId("name-filter"),
@@ -58,7 +62,7 @@ function needsFullRender(next: Settings, previous: Settings): boolean {
 
 interface Views { sidebar: SidebarHandles; controls: ControlElements; fontRadios: HTMLInputElement[]; outputEl: OutputElements; statFonts: HTMLElement }
 
-function buildViews(store: SettingsStore, packs: FontPackLoader): Views {
+function buildViews(store: SettingsStore, packs: FontPackLoader, currentText: () => string): Views {
   const outputEl: OutputElements = { output: byId("output"), statBlocks: byId("stat-blocks"), statChars: byId("stat-chars") };
   const controls = controlElements();
   buildLangOptions(controls.lang);
@@ -66,7 +70,7 @@ function buildViews(store: SettingsStore, packs: FontPackLoader): Views {
   const sidebar = buildSidebar(byId("block-list"), store);
   wireSidebarSearch(sidebar, store, byId("block-search"), byId("btn-all"), byId("btn-none"));
   wireControls(controls, store);
-  wireCopyOutput(byId("btn-copy"), outputEl.output, outputEl.statChars, () => store.get().mode);
+  wireCopyOutput(byId("btn-copy"), outputEl.statChars, currentText);
   wireAbout(byId("btn-about"), byId<HTMLDialogElement>("about-dialog"), packs);
   return { sidebar, controls, fontRadios, outputEl, statFonts: byId("stat-fonts") };
 }
@@ -76,6 +80,8 @@ function reflectAll(views: Views, settings: Settings): void {
   reflectControls(views.controls, settings);
   reflectFont(views.fontRadios, settings.font);
   views.outputEl.output.classList.toggle("placeholders", settings.placeholders);
+  views.outputEl.output.classList.toggle("emoji-text", settings.presentation === "text");
+  views.outputEl.output.classList.toggle("emoji-color", settings.presentation === "emoji");
   if (settings.lang) views.outputEl.output.setAttribute("lang", settings.lang); else views.outputEl.output.removeAttribute("lang");
 }
 
@@ -97,6 +103,23 @@ function subscribe(store: SettingsStore, views: Views, fonts: { apply(id: string
   window.addEventListener("hashchange", () => store.dispatch(hydrateSettings(decodeHashState(location.hash))));
 }
 
+function wireOutput(output: HTMLElement, pad: { insert(t: string): void }, current: () => RenderHandle | null): void {
+  wireOutputEvents(output, (t) => pad.insert(t), () => current()?.lazy ?? null);
+  wireSkipButton(byId("btn-skip"), output);
+}
+
+function outputContext(names: ReadonlyMap<number, string>, probe: { verified(cp: number, ch: string): boolean }, store: SettingsStore): OutputContext {
+  return { nameOf: (cp) => resolveCharName(names, cp), aliasesOf, verified: (cp, ch) => probe.verified(cp, ch), onSort: (col: TableSortColumn) => store.dispatch(toggleTableSort(col)) };
+}
+
+function firstPaint(settings: Settings, views: Views, fonts: { apply(id: string): void }, packs: FontPackLoader, draw: () => void): void {
+  fonts.apply(settings.font);
+  reflectAll(views, settings);
+  syncHash(settings);
+  packs.ensureForBlocks(settings.blocks);
+  draw();
+}
+
 async function start(): Promise<void> {
   const names = await loadNameTable();
   const store = createSettingsStore();
@@ -105,17 +128,16 @@ async function start(): Promise<void> {
   let render = (): void => undefined;
   const packs = createFontPackLoader(() => onPacksChanged(views, store, fonts, packs, render));
   const fonts = createGlyphFonts(probe, packs);
-  const ctx: OutputContext = { nameOf: (cp) => resolveCharName(names, cp), insert: (t) => pad.insert(t), verified: (cp, ch) => probe.verified(cp, ch), onSort: (col: TableSortColumn) => store.dispatch(toggleTableSort(col)) };
-  const views = buildViews(store, packs);
-  render = createRenderScheduler(() => renderOutput(views.outputEl, store.get(), ctx));
+  const ctx = outputContext(names, probe, store);
+  let handle: RenderHandle | null = null;
+  const views = buildViews(store, packs, () => plainText(handle?.items ?? []));
+  const draw = () => { handle = renderOutput(views.outputEl, store.get(), ctx, handle); };
+  wireOutput(views.outputEl.output, pad, () => handle);
+  render = createRenderScheduler(draw);
   store.dispatch(hydrateSettings(decodeHashState(location.hash)));
   subscribe(store, views, fonts, packs, render);
   await Promise.all([fonts.ready, packs.ready]);
-  fonts.apply(store.get().font);
-  reflectAll(views, store.get());
-  syncHash(store.get());
-  packs.ensureForBlocks(store.get().blocks);
-  renderOutput(views.outputEl, store.get(), ctx);
+  firstPaint(store.get(), views, fonts, packs, draw);
 }
 
 start().catch((err: unknown) => {

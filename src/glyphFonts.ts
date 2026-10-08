@@ -1,18 +1,21 @@
 /**
- * VIEW: the output pane's font stack. Composes style stack + device fonts +
- * loaded packs + embedded coverage fonts (PLAN.md D-6), writes it to the
- * --glyph-font custom property, and hands the same stack to the glyph probe
- * so detection and display always agree. Waits for the embedded fonts before
- * the first probe, otherwise the canvas would measure a fallback.
+ * VIEW: the output pane's font stack. Composes style packs + device style
+ * stack + device script fonts + block packs + embedded coverage fonts (PLAN.md
+ * D-6, D-14), keeping only families present on this device (CP2-01: every
+ * absent name made each probe measurement slower), writes it to --glyph-font,
+ * and hands the same stack to the glyph probe so detection and display agree.
+ * Waits for the embedded fonts before the first probe.
  */
 import deviceFonts from "../data/device-fonts.json";
 import { composeFontStack } from "./fonts/composeFontStack.js";
 import type { FontPackLoader } from "./fonts/fontPacks.js";
 import type { GlyphProbe } from "./fonts/glyphProbe.js";
+import { isGenericFamily } from "./fonts/isGenericFamily.js";
+import { splitFontFamilies } from "./fonts/splitFontFamilies.js";
 import { standardFonts } from "./fonts/standardFonts.js";
 import { fontStackFor } from "./fontButtons.js";
 
-export interface GlyphFonts { apply(fontId: string): void; ready: Promise<void> }
+export interface GlyphFonts { apply(fontId: string): void; ready: Promise<void>; stack(): string; presentDevice(): string[] }
 
 const device = Object.values(deviceFonts.families).flat();
 
@@ -20,13 +23,17 @@ export function createGlyphFonts(probe: GlyphProbe, packs: FontPackLoader): Glyp
   const standard = standardFonts();
   const toLoad = [...standard.coverage, standard.placeholder, standard.detection].filter(Boolean);
   const ready = Promise.all(toLoad.map((family) => document.fonts.load(`16px "${family}"`))).then(() => undefined, () => undefined);
+  const present = (names: readonly string[]) => names.filter((n) => isGenericFamily(n) || probe.familyPresent(n));
+  let current = "";
   return {
     ready,
+    stack: () => current,
+    presentDevice: () => present(device),
     apply(fontId: string): void {
-      const stack = composeFontStack(fontStackFor(fontId), device, packs.families(), standard.coverage);
-      document.documentElement.style.setProperty("--glyph-font", stack);
+      current = composeFontStack({ stylePacks: packs.styleFamilies(fontId), style: present(splitFontFamilies(fontStackFor(fontId))), device: present(device), blockPacks: packs.families(), embedded: standard.coverage });
+      document.documentElement.style.setProperty("--glyph-font", current);
       document.documentElement.style.setProperty("--placeholder-font", `"${standard.placeholder}"`);
-      probe.setStack(stack);
+      probe.setStack(splitFontFamilies(current), standard.coverage);
     },
   };
 }

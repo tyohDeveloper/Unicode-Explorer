@@ -15,9 +15,19 @@ export function coverageNote(coverage: BlockCoverage | undefined): string {
   return coverage.unverified === 0 ? `${total} verified` : `${coverage.verified}/${total} verified`;
 }
 
-export function makeBlockHeading(block: Block, coverage?: BlockCoverage): HTMLSpanElement {
+/** Update a heading's coverage span; the background scan calls this as it progresses. */
+export function setCoverageNote(span: HTMLElement, coverage: BlockCoverage | undefined): void {
   const note = coverageNote(coverage);
-  const heading = makeElement("span", { class: "block-sep-heading", text: blockHeadingText(block) });
-  if (note) heading.append(makeElement("span", { class: coverage!.unverified ? "block-coverage has-unverified" : "block-coverage", text: ` \u00B7 ${note}`, title: "Characters a listed font renders on this device; unverified ones may still appear through system fallback" }));
-  return heading;
+  span.textContent = note ? ` \u00B7 ${note}` : "";
+  span.classList.toggle("has-unverified", !!coverage && coverage.unverified > 0);
+}
+
+export function coverageSpan(): HTMLSpanElement {
+  return makeElement("span", { class: "block-coverage", title: "Characters a listed font renders on this device; unverified ones may still appear through system fallback" });
+}
+
+export function makeBlockHeading(block: Block, spans: Map<string, HTMLElement>): HTMLElement {
+  const span = coverageSpan();
+  spans.set(block.name, span);
+  return makeElement("h2", { class: "block-sep-heading", text: blockHeadingText(block) }, [span]);
 }

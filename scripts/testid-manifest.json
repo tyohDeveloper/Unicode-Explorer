@@ -27,7 +27,9 @@
     "text-status-fonts",
     "button-header-about",
     "dialog-about-main",
-    "button-about-close"
+    "button-about-close",
+    "select-controls-presentation",
+    "button-skip-output"
   ],
   "dynamic": [
     "radio-font-<id>",

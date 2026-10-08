@@ -17,7 +17,6 @@ function insertAtCursor(pad: HTMLTextAreaElement, text: string): void {
   const end = pad.selectionEnd ?? pad.value.length;
   pad.value = pad.value.slice(0, start) + text + pad.value.slice(end);
   pad.selectionStart = pad.selectionEnd = start + text.length;
-  pad.focus();
 }
 
 interface PadElements { section: HTMLElement; header: HTMLElement; icon: HTMLElement; pad: HTMLTextAreaElement; clear: HTMLButtonElement; copy: HTMLButtonElement }

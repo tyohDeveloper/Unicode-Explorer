@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="/src/style.css" />
 </head>
 <body>
+<button type="button" id="btn-skip" class="skip-link" data-testid="button-skip-output">Skip to characters</button>
 
 <header>
   <h1>Unicode Character Explorer</h1>
@@ -59,6 +60,12 @@
       <div class="control-group">
         <label class="control-label" for="cjk-lang" title="Locale for unified ideograph glyph forms">CJK:</label>
         <select id="cjk-lang" data-testid="select-controls-lang"></select>
+        <label class="control-label" for="presentation" title="Text or colour presentation for characters that have both (emoji)">Emoji:</label>
+        <select id="presentation" data-testid="select-controls-presentation">
+          <option value="">Default</option>
+          <option value="text">Text</option>
+          <option value="emoji">Colour</option>
+        </select>
       </div>
       <div class="control-group">
         <label class="control-label" for="font-size-slider">Size:</label>
@@ -66,8 +73,8 @@
         <span id="font-size-val">18px</span>
       </div>
       <div class="control-group">
-        <label class="control-label" for="name-filter">Filter by name:</label>
-        <input type="text" id="name-filter" data-testid="input-controls-namefilter" placeholder="e.g. snowflake" title="Filter characters by Unicode name (case-insensitive substring)" />
+        <label class="control-label" for="name-filter">Search:</label>
+        <input type="search" id="name-filter" data-testid="input-controls-namefilter" placeholder="name, alias, U+2603 or &#x2603;" title="Search the selected blocks by character name or alias (substring), code point (U+2603, 2603), or the character itself" />
       </div>
       <div id="action-btns">
         <button type="button" class="btn-secondary" id="btn-copy" data-testid="button-controls-copy">Copy output</button>
@@ -81,7 +88,7 @@
     </div>
 
     <div id="output-wrap">
-      <div id="output" tabindex="-1" data-testid="region-output-main">
+      <div id="output" tabindex="0" role="region" aria-label="Characters (arrow keys move, Enter inserts)" data-testid="region-output-main">
         <div id="placeholder">
           <span class="big">&#x2B1B;</span>
           <p>Select one or more Unicode blocks from the sidebar.</p>
