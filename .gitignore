@@ -7,7 +7,7 @@ tmp/
 *.tsbuildinfo
 test-results/
 playwright-report/
-coverage/
+/coverage/
 
 # font cache (binaries are fetched by manifest, never committed)
 fonts/cache/
