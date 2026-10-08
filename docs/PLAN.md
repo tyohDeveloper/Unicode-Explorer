@@ -279,6 +279,23 @@ Findings during the build:
 - Unicode 18 added U+05C8 and U+05C9 to Hebrew; no public web font in `data/web-fonts.json` has
   them yet, so the CSS dialog reports 183 of 185 for Basic Latin + Hebrew.
 
+### Phase 7: Polish and upstream
+
+From [Audit Checkpoint 3](audit/checkpoint-3/report.md). Findings: GLY-03, CP3-02, CP3-04,
+CP3-08, CP3-01, CP2-04, CP3-07.
+
+- Standard edition stacks (GLY-03): Latin, Greek and Cyrillic families before the CJK ones in
+  `data/font-stacks.json`, and region-suffixed CJK names; e2e on a Latin cell's family order.
+- Unifont regression (CP3-02): report upstream; meanwhile embed a subset of Unifont Upper 17.0.05
+  holding only the 53 lost assigned characters, labelled in the manifest.
+- Parse the web-font and alias tables on first use (CP3-04); label the CSS dialog size as before
+  HTTP compression (CP3-08).
+- Monthly font watch for Seal, Jurchen and Tangut (CP3-01, CP2-04); report the Seal naming
+  erratum to Unicode (CP3-07).
+
+Acceptance: Latin in Serif/Sans on Standard resolves to a Latin family first; Standard covers all
+188 Latin Extended-G characters; warm start-up back to about 530 ms.
+
 ## Out of scope
 
 - Hieroglyph-specific features (format controls, quadrat layout). See D-4.
