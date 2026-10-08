@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { composeFontStack } from "../src/fonts/composeFontStack.js";
+import { isGenericFamily } from "../src/fonts/isGenericFamily.js";
+import { splitFontFamilies } from "../src/fonts/splitFontFamilies.js";
+import { addToCoverage } from "../src/coverage/addToCoverage.js";
+import { sampleBlock } from "../src/coverage/sampleBlock.js";
+import { blockOf } from "../src/ucd/blockOf.js";
 import { packsForBlocks } from "../src/fonts/packsForBlocks.js";
 import { packStatusText } from "../src/fonts/packStatusText.js";
 import { standardFonts } from "../src/fonts/standardFonts.js";
@@ -11,10 +16,19 @@ import { packBlocks } from "../tools/fonts/packBlocks.js";
 import { packScript, packsManifestScript } from "../tools/fonts/packScripts.js";
 
 describe("composeFontStack", () => {
-  it("orders style stack, device fonts, packs, then embedded fonts and quotes names with spaces", () => {
-    expect(composeFontStack("system-ui,serif", ["Segoe UI Historic"], ["UE Tangut"], ["UE Unifont", "UE Unifont Upper"]))
-      .toBe('system-ui,serif,"Segoe UI Historic","UE Tangut","UE Unifont","UE Unifont Upper"');
-    expect(composeFontStack("monospace", [], [], ["UE Unifont"])).toBe('monospace,"UE Unifont"');
+  it("orders style packs, style stack, device fonts, block packs, then embedded fonts; dedupes and quotes names with spaces", () => {
+    expect(composeFontStack({ stylePacks: ["UE Charis"], style: ["system-ui", "serif"], device: ["Segoe UI Historic", "serif"], blockPacks: ["UE Tangut"], embedded: ["UE Unifont", "UE Unifont Upper"] }))
+      .toBe('"UE Charis",system-ui,serif,"Segoe UI Historic","UE Tangut","UE Unifont","UE Unifont Upper"');
+    expect(composeFontStack({ stylePacks: [], style: ["monospace"], device: [], blockPacks: [], embedded: ["UE Unifont"] })).toBe('monospace,"UE Unifont"');
+  });
+});
+
+describe("splitFontFamilies / isGenericFamily", () => {
+  it("parses quoted and bare names and recognises generic keywords", () => {
+    expect(splitFontFamilies(`'Source Han Serif SC', "Noto Serif", Georgia,serif`)).toEqual(["Source Han Serif SC", "Noto Serif", "Georgia", "serif"]);
+    expect(isGenericFamily("serif")).toBe(true);
+    expect(isGenericFamily("System-UI")).toBe(true);
+    expect(isGenericFamily("Georgia")).toBe(false);
   });
 });
 
@@ -101,5 +115,29 @@ describe("tools/fonts", () => {
     expect(script).toBe('window.UnicodeExplorerFontPackData=window.UnicodeExplorerFontPackData||{};window.UnicodeExplorerFontPackData["tangut"]={"id":"tangut","fonts":[{"family":"UE Tangut","format":"woff2","data":"AQID"}]};\n');
     const manifest = packsManifestScript({ schema: "unicode-explorer-font-packs/1", app: "2.0.0.0", unicode: "17.0.0", edition: "complete", packs: [] });
     expect(manifest).toBe('window.UnicodeExplorerFontPacks={"schema":"unicode-explorer-font-packs/1","app":"2.0.0.0","unicode":"17.0.0","edition":"complete","packs":[]};\n');
+  });
+});
+
+describe("addToCoverage", () => {
+  it("accumulates like summarizeCoverage", () => {
+    const summary = { verified: 0, unverified: 0, byBlock: new Map<string, { verified: number; unverified: number }>() };
+    addToCoverage(summary, "Latin", true); addToCoverage(summary, "Latin", false); addToCoverage(summary, "Tangut", false);
+    expect(summary.verified).toBe(1);
+    expect(summary.unverified).toBe(2);
+    expect(summary.byBlock.get("Latin")).toEqual({ verified: 1, unverified: 1 });
+  });
+});
+
+describe("blockOf / sampleBlock", () => {
+  it("finds the block of a code point and samples only visible assigned characters", () => {
+    expect(blockOf(0x41)?.name).toBe("Basic Latin");
+    expect(blockOf(0x1f600)?.name).toBe("Emoticons");
+    expect(blockOf(0x2fe0)).toBeNull(); // between blocks
+    const greek = blockOf(0x391)!;
+    const samples = sampleBlock(greek, 24);
+    expect(samples.length).toBeGreaterThan(20);
+    expect(samples).not.toContain(0x378); // reserved
+    expect(samples[samples.length - 1]).toBe(0x3ff);
+    expect(sampleBlock(blockOf(0x41)!, 4)).toEqual([0x20, 0x40, 0x60, 0x7e]);
   });
 });
