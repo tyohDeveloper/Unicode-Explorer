@@ -169,19 +169,30 @@ abbreviations or kind; visibility generated from General_Category, Default_Ignor
 and Prepended_Concatenation_Mark (DAT-02 closed; the hand list is gone); CJK locale selector;
 About dialog with embedded font provenance and license texts; 137 device font families named
 per script in `data/device-fonts.json`. Deferred: `local()`-composed script-aware stacks (Q-10).
-Findings closed: GLY-01, GLY-02, GLY-04, GLY-05, GLY-06, DAT-02; GLY-03 partially (device fonts
-named; stack order unchanged).
+Findings closed: GLY-01, GLY-02, GLY-04, GLY-05, DAT-02; GLY-03 partially (device fonts named;
+stack order unchanged); GLY-06 stays open for Phase 5. Audited at
+[Checkpoint 2](audit/checkpoint-2/report.md), which adds CP2-01 (probe cost scales with the
+device-font list: all-blocks Grid is now 52 s) to Phase 5.
 
 ### Phase 5: Scale and accessibility
 
-Findings: PRF-01, PRF-02, ACC-01 to ACC-04, UX-01, UX-02.
+Findings: PRF-01, PRF-02, ACC-01 to ACC-03, UX-01, UX-02; from Checkpoint 2: CP2-01, GLY-06,
+DAT-04, ARC-07 (ACC-04 closed in 1.2.0.0).
 
-- Windowed rendering of fixed-size cells; one delegated click handler; tooltips on hover.
-- Keyboard grid with roving focus; focusable mode and font selectors; `aria-expanded`
-  category headers; live status region; contrast fixes; minimum label size.
+- Prune the probe stack at start-up: measure each `data/device-fonts.json` family once behind
+  Adobe Blank and keep only the families present, so `--glyph-font` is short and detection costs
+  about a second for everything (CP2-01).
+- Windowed rendering of fixed-size cells; one delegated click handler; tooltips on hover; lazy
+  per-block probing in idle chunks with cached coverage so headings fill in progressively.
+- Keyboard grid with roving focus; focusable mode and font selectors (visually hidden, not
+  `display:none`); keep focus in the grid on insert (UX-01); contrast fixes; minimum label size.
+- Cells that grow to the glyph's width and a text/emoji presentation toggle (GLY-06); drop the
+  duplicate "Ch" sort (UX-02); alias and code-point search from `src/data/abbreviations.json`
+  (DAT-04); index `docs/tasks/` (ARC-07).
 
-Acceptance: selecting all blocks renders in under 100 ms of main-thread time; keyboard-only
-traversal reaches every control; contrast ≥ 4.5:1 for text.
+Acceptance: selecting all blocks renders in under 100 ms of main-thread time before the first
+paint and detection finishes in the background; keyboard-only traversal reaches every control;
+contrast ≥ 4.5:1 for text; Checkpoint 3 re-measures CP2-01 and PRF-01.
 
 ### Phase 6: Unicode 18
 

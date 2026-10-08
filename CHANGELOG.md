@@ -32,9 +32,11 @@ Standard `Unicode.html` is 2,795,352 bytes (gzip 1,985,453); 1.77 MB of that is 
   (adds UniHieroglyphica; 159,230, 99.9%), built and attached by the new `release` workflow.
 - **Device fonts named per script.** 137 families (Windows, Apple, Noto) follow the style stack
   so detection credits them and the browser prefers them to the embedded bitmaps (GLY-03, part).
-- **Combining marks** are drawn on a dotted circle (U+25CC) and still insert bare (GLY-06).
+- **Combining marks** are drawn on a dotted circle (U+25CC) and still insert bare (GLY-04).
 - **Labelled boxes** for non-visible characters when "Include non-visible" is on: the Unicode
   abbreviation (NUL, SHY, ZWJ, VS16…) or a kind label (CTRL, FMT, PUA, SURR, SEP, IGN, NCHR) (GLY-04).
+  GLY-06 (fixed cell size, emoji presentation) remains open for Phase 5; an earlier version of
+  this entry listed it as closed (see `docs/audit/checkpoint-2/report.md`).
 - **CJK locale selector** (Auto, zh-Hans, zh-Hant, zh-HK, ja, ko, vi) sets `lang` on the output
   for locale-specific ideograph forms; `l=` in the hash.
 - **About dialog**: versions, embedded fonts with version, license and visible-glyph counts,
