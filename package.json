@@ -10,12 +10,15 @@
     "url": "git+https://github.com/tyohDeveloper/Unicode-Explorer.git"
   },
   "scripts": {
+    "dev": "vite --host 0.0.0.0 --port 5000",
+    "preview": "vite preview --host 0.0.0.0 --port 5000",
     "check": "tsc --noEmit",
     "check:standards": "node scripts/check-standards.mjs",
     "test": "vitest",
     "test:run": "vitest run",
     "test:e2e": "playwright test",
-    "build:bundle": "tsx tools/build/assemble.ts",
+    "generate:data": "tsx tools/ucd/generate.ts",
+    "build:bundle": "vite build && node scripts/minify-artifact.mjs",
     "verify:build": "node scripts/verify-build.mjs",
     "verify:regenerated": "node scripts/verify-regenerated.mjs",
     "build": "npm run check && npm run check:standards && npm run test:run && npm run build:bundle && npm run verify:build",
@@ -24,10 +27,12 @@
   "devDependencies": {
     "@playwright/test": "^1.64.0",
     "@types/node": "^22.10.5",
-    "lz-string": "1.5.0",
-    "terser": "^5.51.2",
+    "fflate": "^0.8.3",
+    "html-minifier-terser": "^7.2.0",
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
+    "vite": "^8.3.4",
+    "vite-plugin-singlefile": "^2.3.3",
     "vitest": "^4.1.11"
   }
 }
