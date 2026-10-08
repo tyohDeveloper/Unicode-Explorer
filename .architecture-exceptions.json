@@ -5,8 +5,14 @@
     {
       "id": "EX-001",
       "section": "§3.1",
-      "scope": ["unicode-src/js/01-sidebar.js", "unicode-src/js/02-render-core.js", "unicode-src/js/04-render-table.js", "scripts/src/unicode/build.ts"],
-      "reason": "buildSidebar (~85 lines), renderOutput (~55 lines), buildTableBody, makeTableRow, fetchUnicodeData, and build() exceed 20 lines.",
+      "scope": [
+        "unicode-src/js/01-sidebar.js",
+        "unicode-src/js/02-render-core.js",
+        "unicode-src/js/03-render-grid.js",
+        "unicode-src/js/04-render-table.js",
+        "unicode-src/js/06-controls.js"
+      ],
+      "reason": "Pre-standards view code: buildSidebar (~85 lines), renderOutput (~55), renderGrid/renderGridName (33/36) and their per-item callbacks, buildTableBody/makeTableRow, and the controls IIFEs exceed 20 lines. Found by scripts/check-standards.mjs.",
       "owner": "@tyohDeveloper",
       "approved": "2026-10-08",
       "expires": "2027-01-31",
@@ -15,7 +21,10 @@
     {
       "id": "EX-002",
       "section": "§3.2",
-      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js"],
+      "scope": [
+        "unicode-src/js/00-classify.js",
+        "unicode-src/data/charnames.js"
+      ],
       "reason": "PURE files export several functions each (cpToStr, cpHex, isNonVisible, isReserved; getAlgoName, hex4, getCharName) as concatenated globals.",
       "owner": "@tyohDeveloper",
       "approved": "2026-10-08",
@@ -25,7 +34,11 @@
     {
       "id": "EX-003",
       "section": "§1.6",
-      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js", "unicode-src/js/01-sidebar.js"],
+      "scope": [
+        "unicode-src/js/00-classify.js",
+        "unicode-src/data/charnames.js",
+        "unicode-src/js/01-sidebar.js"
+      ],
       "reason": "hex4 is defined in charnames.js and used across files via the global scope; cpHex wraps it; the sidebar re-uppercases hex4 output. Cross-file dependency is hidden by concatenation order.",
       "owner": "@tyohDeveloper",
       "approved": "2026-10-08",
@@ -35,7 +48,10 @@
     {
       "id": "EX-004",
       "section": "§3.8",
-      "scope": ["unicode-src/js/00-classify.js", "unicode-src/js/06-controls.js"],
+      "scope": [
+        "unicode-src/js/00-classify.js",
+        "unicode-src/js/06-controls.js"
+      ],
       "reason": "Files are named by sequence number and shape (classify, controls) rather than responsibility; names are load-order markers for the concatenating build.",
       "owner": "@tyohDeveloper",
       "approved": "2026-10-08",
@@ -45,7 +61,11 @@
     {
       "id": "EX-005",
       "section": "§5.1",
-      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js", "unicode-src/data/algo-ranges.js"],
+      "scope": [
+        "unicode-src/js/00-classify.js",
+        "unicode-src/data/charnames.js",
+        "unicode-src/data/algo-ranges.js"
+      ],
       "reason": "Visibility ranges, category-label ranges, Hangul jamo tables, and algorithmic-name ranges are literals in code files rather than DATA derived from the UCD.",
       "owner": "@tyohDeveloper",
       "approved": "2026-10-08",
