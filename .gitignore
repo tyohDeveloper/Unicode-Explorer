@@ -23,3 +23,9 @@ Thumbs.db
 # secrets
 .env*
 !.env.example
+
+# generated at build time from fonts/standard (tools/fonts/embeddedFontsCss.ts)
+.generated/
+
+# sidecar font packs are release assets built by tools/fonts/buildPacks.ts, never committed (ADR-0001)
+unicode-fonts/

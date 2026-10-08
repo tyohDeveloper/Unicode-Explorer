@@ -1,0 +1,5 @@
+Jigmo (字雲) fonts — Jigmo2.ttf and Jigmo3.ttf from Jigmo-20250912.zip
+Author: Kamichi Koichi (上地宏一)
+Source: https://kamichikoichi.github.io/jigmo/
+License: CC0 1.0 Universal (public domain dedication); full text in CC0-1.0.txt.
+The Unicode Explorer ships these fonts converted to WOFF2 without other changes.

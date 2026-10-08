@@ -12,6 +12,10 @@ export interface Settings {
   nonVisible: boolean;
   nameFilter: string;
   tableSort: TableSort | null;
+  /** Draw Last Resort placeholders for glyphs no listed font renders (Phase 4). */
+  placeholders: boolean;
+  /** BCP 47 tag applied to the output for CJK locale-sensitive glyph forms; "" = inherit. */
+  lang: string;
 }
 
 export const SIZE_MIN = 10;
@@ -25,4 +29,6 @@ export const initialSettings: Settings = {
   nonVisible: false,
   nameFilter: "",
   tableSort: null,
+  placeholders: false,
+  lang: "",
 };

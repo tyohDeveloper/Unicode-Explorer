@@ -20,5 +20,8 @@ export function decodeHashState(hash: string): Partial<Settings> {
   if (params.get("nv") === "1") out.nonVisible = true;
   const q = params.get("q");
   if (q) out.nameFilter = q;
+  if (params.get("p") === "1") out.placeholders = true;
+  const l = params.get("l");
+  if (l && /^[A-Za-z0-9-]{2,12}$/.test(l)) out.lang = l;
   return out;
 }

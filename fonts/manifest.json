@@ -24,8 +24,9 @@
       ],
       "guaranteed_visible_code_points": 77874,
       "of": 159375,
-      "embedded_font_bytes": 1622788,
-      "delivery": "embedded in Unicode.html"
+      "embedded_font_bytes": 1659420,
+      "delivery": "embedded in Unicode.html",
+      "packs": []
     },
     {
       "id": "complete",
@@ -44,8 +45,16 @@
       ],
       "guaranteed_visible_code_points": 154164,
       "of": 159375,
-      "embedded_font_bytes": 19154000,
-      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)"
+      "embedded_font_bytes": 19191092,
+      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
+      "packs": [
+        "cjk-ext-b-f",
+        "cjk-ext-g-j",
+        "tangut",
+        "cuneiform",
+        "anatolian-hieroglyphs",
+        "bamum"
+      ]
     },
     {
       "id": "complete-hieroglyphs",
@@ -65,14 +74,189 @@
       ],
       "guaranteed_visible_code_points": 159230,
       "of": 159375,
-      "embedded_font_bytes": 25538564,
-      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)"
+      "embedded_font_bytes": 25577428,
+      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
+      "packs": [
+        "cjk-ext-b-f",
+        "cjk-ext-g-j",
+        "tangut",
+        "cuneiform",
+        "anatolian-hieroglyphs",
+        "bamum",
+        "egyptian-hieroglyphs"
+      ]
+    }
+  ],
+  "packs": [
+    {
+      "id": "cjk-ext-b-f",
+      "label": "CJK Unified Ideographs Extensions B–F, I and Compatibility Supplement",
+      "fonts": [
+        "jigmo2"
+      ],
+      "categories": [
+        "East Asian"
+      ],
+      "license_files": [
+        "fonts/licenses/Jigmo-NOTICE.txt",
+        "fonts/licenses/CC0-1.0.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "20000",
+        "2A700",
+        "2B740",
+        "2B820",
+        "2CEB0",
+        "2EBF0",
+        "2F800"
+      ],
+      "bytes": 17302074
+    },
+    {
+      "id": "cjk-ext-g-j",
+      "label": "CJK Unified Ideographs Extensions G–J",
+      "fonts": [
+        "jigmo3"
+      ],
+      "categories": [
+        "East Asian"
+      ],
+      "license_files": [
+        "fonts/licenses/Jigmo-NOTICE.txt",
+        "fonts/licenses/CC0-1.0.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "30000",
+        "31350",
+        "323B0"
+      ],
+      "bytes": 4065422
+    },
+    {
+      "id": "tangut",
+      "label": "Tangut",
+      "fonts": [
+        "NotoSerifTangut"
+      ],
+      "categories": [
+        "East Asian"
+      ],
+      "license_files": [
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "17000",
+        "18800",
+        "18D00"
+      ],
+      "bytes": 1359916
+    },
+    {
+      "id": "cuneiform",
+      "label": "Cuneiform",
+      "fonts": [
+        "NotoSansCuneiform"
+      ],
+      "categories": [
+        "Ancient & Historic Scripts"
+      ],
+      "license_files": [
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "12000",
+        "12400",
+        "12480"
+      ],
+      "bytes": 399493
+    },
+    {
+      "id": "anatolian-hieroglyphs",
+      "label": "Anatolian Hieroglyphs",
+      "fonts": [
+        "NotoSansAnatolianHieroglyphs"
+      ],
+      "categories": [
+        "Ancient & Historic Scripts"
+      ],
+      "license_files": [
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "14400"
+      ],
+      "bytes": 147645
+    },
+    {
+      "id": "bamum",
+      "label": "Bamum",
+      "fonts": [
+        "NotoSansBamum"
+      ],
+      "categories": [
+        "Other Scripts & Supplements"
+      ],
+      "license_files": [
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "A6A0",
+        "16800"
+      ],
+      "bytes": 102257
+    },
+    {
+      "id": "egyptian-hieroglyphs",
+      "label": "Egyptian Hieroglyphs",
+      "fonts": [
+        "unihieroglyphica"
+      ],
+      "categories": [
+        "Ancient & Historic Scripts"
+      ],
+      "license_files": [
+        "fonts/licenses/UniHieroglyphica-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete-hieroglyphs"
+      ],
+      "blocks": [
+        "13000",
+        "13430",
+        "13460"
+      ],
+      "bytes": 8515342
     }
   ],
   "fonts": [
     {
       "id": "unifont",
       "family": "Unifont",
+      "css_family": "UE Unifont",
       "version": "17.0.05",
       "license": "OFL-1.1",
       "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
@@ -80,19 +264,20 @@
       "source": {
         "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont-17.0.05.otf",
         "format": "otf",
-        "sha256": null,
-        "bytes": null,
-        "note": "SHA-256 of the upstream OTF to be recorded by tools/fetch-fonts.mjs in Phase 4; the WOFF2 hash below is of the Unicode Font Kit conversion."
+        "sha256": "85701ab9b1e251ee16f4df00b13f22eac311d72b7dab427a7d975fe7f5064702",
+        "bytes": 5321628
       },
-      "woff2_sha256": "9c8c08da9bf9b9cd5947bdf443064eed597ce4081e81e2c3414a5c880ab19bae",
-      "woff2_bytes": 911888,
+      "woff2_sha256": "e55c3b385493884b01888deff8cc3665b2e0527d9a2533cc120685c49a6c57e9",
+      "woff2_bytes": 912116,
       "cmap_code_points": 58910,
       "assigned_visible_cmap_count": 57432,
-      "role": "coverage"
+      "role": "coverage",
+      "vendored": "fonts/standard/unifont-17.0.05.woff2"
     },
     {
       "id": "unifont_upper",
       "family": "Unifont Upper",
+      "css_family": "UE Unifont Upper",
       "version": "17.0.05",
       "license": "OFL-1.1",
       "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
@@ -100,19 +285,20 @@
       "source": {
         "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont_upper-17.0.05.otf",
         "format": "otf",
-        "sha256": null,
-        "bytes": null,
-        "note": "SHA-256 of the upstream OTF to be recorded by tools/fetch-fonts.mjs in Phase 4; the WOFF2 hash below is of the Unicode Font Kit conversion."
+        "sha256": "f4fd6d5d752726d384feef175bb780c9f29382cd4941c9e1e6990d7c3822a090",
+        "bytes": 6138788
       },
-      "woff2_sha256": "e02745c10efb2aefd9fe0c1c491aa8631211f4bf8f57bc2d63760ed632a5af73",
-      "woff2_bytes": 572948,
+      "woff2_sha256": "a62caf84016a02ee5241a54e932c1e79f6da6cfab5a6eeb11a0e459d162db25f",
+      "woff2_bytes": 609400,
       "cmap_code_points": 59056,
       "assigned_visible_cmap_count": 22283,
-      "role": "coverage"
+      "role": "coverage",
+      "vendored": "fonts/standard/unifont_upper-17.0.05.woff2"
     },
     {
       "id": "last-resort-he",
       "family": "LastResort HE",
+      "css_family": "UE LastResort",
       "version": "18.000",
       "license": "OFL-1.1",
       "license_url": "https://github.com/unicode-org/last-resort-font/blob/main/LICENSE.md",
@@ -122,27 +308,30 @@
         "sha256": "cb7c2262cb86a33e7bdfabd0a51746e738b0dd10924126c4530c414c5fc7e4b6",
         "bytes": 587864
       },
-      "woff2_bytes": 136464,
+      "woff2_bytes": 136416,
       "cmap_code_points": 1114112,
       "assigned_visible_cmap_count": 159375,
       "role": "placeholder",
-      "note": "Maps every code point to a glyph naming its block. Applied per cell by detection, never in the global stack (PLAN.md D-6)."
+      "note": "Maps every code point to a glyph naming its block. Applied per cell by detection, never in the global stack (PLAN.md D-6).",
+      "vendored": "fonts/standard/LastResortHE-Regular.woff2",
+      "woff2_sha256": "17557d7ef20890cba999ee94af027089cccc405351c73fec8bab01749e6ea96d"
     },
     {
       "id": "jigmo2",
       "family": "Jigmo2",
+      "css_family": "UE Jigmo2",
       "version": "2025-09-12",
       "license": "CC0-1.0",
       "license_url": "https://kamichikoichi.github.io/jigmo/",
       "source": {
         "url": "https://kamichikoichi.github.io/jigmo/Jigmo-20250912.zip",
         "format": "zip/ttf",
-        "sha256": null,
-        "bytes": null,
-        "note": "Zip containing Jigmo, Jigmo2, Jigmo3 TTF; hash recorded by tools/fetch-fonts.mjs in Phase 4."
+        "sha256": "5744c7386d129475d87607ca66d043c8793c65448adeaedc921b6931890e5d0b",
+        "bytes": 35559738,
+        "member": "Jigmo2.ttf"
       },
-      "woff2_sha256": "82e86f71e0a057e8f2e815ab303c3e4b6dd429fedfb7916445a6d2421f0f2756",
-      "woff2_bytes": 12976096,
+      "woff2_sha256": "9c8cb058fde608ca65854b92d3222ecbe16844e2d1aa23b3f17ad226218aa94b",
+      "woff2_bytes": 12976400,
       "cmap_code_points": 63047,
       "assigned_visible_cmap_count": 61610,
       "role": "coverage"
@@ -150,18 +339,19 @@
     {
       "id": "jigmo3",
       "family": "Jigmo3",
+      "css_family": "UE Jigmo3",
       "version": "2025-09-12",
       "license": "CC0-1.0",
       "license_url": "https://kamichikoichi.github.io/jigmo/",
       "source": {
         "url": "https://kamichikoichi.github.io/jigmo/Jigmo-20250912.zip",
         "format": "zip/ttf",
-        "sha256": null,
-        "bytes": null,
-        "note": "Zip containing Jigmo, Jigmo2, Jigmo3 TTF; hash recorded by tools/fetch-fonts.mjs in Phase 4."
+        "sha256": "5744c7386d129475d87607ca66d043c8793c65448adeaedc921b6931890e5d0b",
+        "bytes": 35559738,
+        "member": "Jigmo3.ttf"
       },
-      "woff2_sha256": "6fa28f6e944e43fe65ef2647e6a0afe9753890d7657b7957faff52451717c2de",
-      "woff2_bytes": 3048844,
+      "woff2_sha256": "45567d8756b74328c002c8b292601aad13e8517d4ab2280fda5e18325bd2f93a",
+      "woff2_bytes": 3048912,
       "cmap_code_points": 13529,
       "assigned_visible_cmap_count": 13526,
       "role": "coverage"
@@ -169,6 +359,7 @@
     {
       "id": "NotoSansCuneiform",
       "family": "Noto Sans Cuneiform",
+      "css_family": "UE Cuneiform",
       "version": "Version 2.001",
       "license": "OFL-1.1",
       "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
@@ -178,14 +369,16 @@
         "sha256": "e287671738e7f686d4f5ad2166a03d66ee4f6eb6c087aa47778fe2039f84f2cc",
         "bytes": 819932
       },
-      "woff2_bytes": 299536,
+      "woff2_bytes": 299464,
       "cmap_code_points": 1238,
       "assigned_visible_cmap_count": 1236,
-      "role": "coverage"
+      "role": "coverage",
+      "woff2_sha256": "0af6794588ce2b7ec6d1128c99c0f8a101ef00b65615852bf23f7febc87c6e90"
     },
     {
       "id": "NotoSansAnatolianHieroglyphs",
       "family": "Noto Sans Anatolian Hieroglyphs",
+      "css_family": "UE Anatolian",
       "version": "Version 2.001",
       "license": "OFL-1.1",
       "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
@@ -195,14 +388,16 @@
         "sha256": "42d15a8dbf397f967f23f662a57990c269137002f52ca5087c444c1465da0dd2",
         "bytes": 228124
       },
-      "woff2_bytes": 110596,
+      "woff2_bytes": 110560,
       "cmap_code_points": 588,
       "assigned_visible_cmap_count": 585,
-      "role": "coverage"
+      "role": "coverage",
+      "woff2_sha256": "984ee72993d33a792e872d87adbea9a73cdf9f4fd7a3bbb491a37d748391fc91"
     },
     {
       "id": "NotoSansBamum",
       "family": "Noto Sans Bamum",
+      "css_family": "UE Bamum",
       "version": "Version 2.002",
       "license": "OFL-1.1",
       "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
@@ -212,14 +407,16 @@
         "sha256": "cdcda48acdf2bf3d39accd6b3ba8d4a61a34df5e80c58e10366a346c97388ec6",
         "bytes": 149152
       },
-      "woff2_bytes": 76476,
+      "woff2_bytes": 76548,
       "cmap_code_points": 662,
       "assigned_visible_cmap_count": 660,
-      "role": "coverage"
+      "role": "coverage",
+      "woff2_sha256": "f71c9418cb337657e54f0c74fed70e4dd1648e27de3431073b2b493e1c418230"
     },
     {
       "id": "NotoSerifTangut",
       "family": "Noto Serif Tangut",
+      "css_family": "UE Tangut",
       "version": "Version 2.170",
       "license": "OFL-1.1",
       "license_url": "https://github.com/notofonts/notofonts.github.io/blob/47acfd3806a2b2c7f2b8a7cc95030ead55d03c21/fonts/LICENSE",
@@ -229,14 +426,16 @@
         "sha256": "edcc5b7727fa4d1345d2fca93305c8b90ad88d4975152d4aed79564c9117db91",
         "bytes": 3065476
       },
-      "woff2_bytes": 1019664,
+      "woff2_bytes": 1019788,
       "cmap_code_points": 6920,
       "assigned_visible_cmap_count": 6918,
-      "role": "coverage"
+      "role": "coverage",
+      "woff2_sha256": "693f88ab17ef43d9869c67107c8c213ed4718c9015dd5b7d4b5d2a30a4589922"
     },
     {
       "id": "unihieroglyphica",
       "family": "UniHieroglyphica",
+      "css_family": "UE Egyptian",
       "version": "19.000",
       "license": "OFL-1.1",
       "license_url": "https://github.com/thesaurus-linguae-aegyptiae/UniHieroglyphica/blob/9375eba4e2b626658e57e3a526118b8225c0581e/OFL.txt",
@@ -246,15 +445,17 @@
         "sha256": "ad60bb2f469697837b556388d47b500a21d866370a49a8be770b206108aaf664",
         "bytes": 17455560
       },
-      "woff2_bytes": 6384564,
+      "woff2_bytes": 6386336,
       "cmap_code_points": 14906,
       "assigned_visible_cmap_count": 5268,
       "role": "coverage",
-      "script": "Egyptian Hieroglyphs (basic block and Extended-A, 5,066 characters)"
+      "script": "Egyptian Hieroglyphs (basic block and Extended-A, 5,066 characters)",
+      "woff2_sha256": "91143a8bf5d81f4b2485c5d6c1207b8d3210fe0794f6eec77b26f37193245bda"
     },
     {
       "id": "adobe-blank-2",
       "family": "Adobe Blank 2",
+      "css_family": "UE Blank",
       "version": "1.045",
       "license": "OFL-1.1",
       "license_url": "https://github.com/adobe-fonts/adobe-blank-2/blob/master/LICENSE.txt",
@@ -264,9 +465,13 @@
         "sha256": "97556d8236dd74f8a715d95401fbca9496c9bb226221b1dc34bf404534537e16",
         "bytes": 1488
       },
-      "cmap_code_points": 1114112,
+      "cmap_code_points": 1111998,
       "role": "detection",
-      "note": "Zero-width, no-ink glyph for every code point. Terminal font in the detection stack only; never visible."
+      "note": "Zero-width, no-ink glyph for every code point. Terminal font in the detection stack only; never visible.",
+      "vendored": "fonts/standard/AdobeBlank2.woff",
+      "woff2_sha256": "97556d8236dd74f8a715d95401fbca9496c9bb226221b1dc34bf404534537e16",
+      "woff2_bytes": 1488,
+      "assigned_visible_cmap_count": 159375
     }
   ],
   "candidates": [
@@ -306,5 +511,6 @@
       "assigned_visible_cmap_count": 1081,
       "note": "Basic Egyptian block only (1,071). Kept aside per PLAN.md D-4."
     }
-  ]
+  ],
+  "pack_rule": "A pack is attached to the blocks in its declared categories (data/block-categories.json) whose visible assigned code points its fonts map at least a quarter of; tools/fonts/buildPacks.ts computes and records 'blocks'. Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies, and the category scope keeps stray ASCII glyphs from attaching a CJK pack to Basic Latin. The app loads a pack only when one of its blocks is selected (ADR-0001)."
 }

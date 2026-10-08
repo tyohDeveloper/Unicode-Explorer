@@ -11,6 +11,8 @@ export type SettingsAction =
   | { type: "nonVisible/set"; nonVisible: boolean }
   | { type: "nameFilter/set"; nameFilter: string }
   | { type: "tableSort/toggle"; col: TableSortColumn }
+  | { type: "placeholders/set"; placeholders: boolean }
+  | { type: "lang/set"; lang: string }
   | { type: "settings/hydrate"; settings: Partial<Settings> };
 
 export const setBlocks = (starts: readonly number[]): SettingsAction => ({ type: "blocks/set", starts });
@@ -22,4 +24,6 @@ export const setSize = (size: number): SettingsAction => ({ type: "size/set", si
 export const setNonVisible = (nonVisible: boolean): SettingsAction => ({ type: "nonVisible/set", nonVisible });
 export const setNameFilter = (nameFilter: string): SettingsAction => ({ type: "nameFilter/set", nameFilter });
 export const toggleTableSort = (col: TableSortColumn): SettingsAction => ({ type: "tableSort/toggle", col });
+export const setPlaceholders = (placeholders: boolean): SettingsAction => ({ type: "placeholders/set", placeholders });
+export const setLang = (lang: string): SettingsAction => ({ type: "lang/set", lang });
 export const hydrateSettings = (settings: Partial<Settings>): SettingsAction => ({ type: "settings/hydrate", settings });
