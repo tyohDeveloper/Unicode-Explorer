@@ -1,7 +1,7 @@
 {
   "_doc": "Size baseline for scripts/verify-build.mjs (CODING-STANDARDS §7.6). Update only in a reviewed commit that says what moved it.",
-  "appVersion": "1.1.0.0",
-  "bytes": 408038,
-  "gzipBytes": 275827,
-  "note": "Phase 2 baseline: CSP meta, CDATA wrapping, 28 test IDs, version stamping added over v1.0.0.0 (406,485 bytes / 276,347 gzip)."
+  "appVersion": "1.2.0.0",
+  "bytes": 365040,
+  "gzipBytes": 239926,
+  "note": "Phase 3 baseline: Vite + ES modules, LZString replaced by DecompressionStream (raw DEFLATE name table), html-minifier-terser. Down from 408,006 bytes / 275,829 gzip at 1.1.0.0."
 }

@@ -1,10 +1,14 @@
 #!/usr/bin/env node
 /**
- * Standards lint — enforces docs/CODING-STANDARDS.md §3.1 (function length),
- * §3.3 (file length by layer role), §3.8 (shape names), and §11 (exception
- * expiry) over the layer mapping in §0 of that file. Uses the TypeScript
- * compiler API for function measurement (§7.4: AST, not regex). Every failure
- * names the section it enforces (§7.8).
+ * Standards lint — enforces docs/CODING-STANDARDS.md over the §0 layer mapping:
+ *   §1.4 PURE/STATE purity (no document/window/navigator/location/Date.now/Math.random)
+ *   §3.1 function bodies ≤ 20 lines
+ *   §3.2 one export per PURE file, filename matches the export
+ *   §3.3 file length by layer role
+ *   §3.8 shape names prohibited
+ *   §3.9 no barrel files or re-exports
+ *   §11  exception expiry
+ * Uses the TypeScript compiler API (§7.4). Every failure names its section (§7.8).
  */
 import { readFileSync, readdirSync, statSync } from "node:fs";
 import { resolve, relative, basename, join } from "node:path";
@@ -14,37 +18,43 @@ const root = resolve(import.meta.dirname, "..");
 const failures = [];
 const fail = (section, msg) => failures.push(`[CODING-STANDARDS ${section}] ${msg}`);
 
-/* §0 mapping for the current layout. Phase 3 moves this to src/ and the table changes with it. */
+function walk(dir) {
+  const out = [];
+  for (const name of readdirSync(resolve(root, dir))) {
+    if (name === "node_modules") continue;
+    const p = join(dir, name);
+    if (statSync(resolve(root, p)).isDirectory()) out.push(...walk(p));
+    else if (/\.(ts|mjs)$/.test(p) && !p.endsWith(".d.ts")) out.push(p);
+  }
+  return out;
+}
+
+/* §0 mapping (CODING-STANDARDS.md §0). Order matters: first match wins. */
 const LAYERS = [
-  { role: "VIEW", limit: 250, files: ["unicode-src/js/01-sidebar.js", "unicode-src/js/02-render-core.js", "unicode-src/js/03-render-grid.js", "unicode-src/js/04-render-table.js", "unicode-src/js/05-render-plain.js", "unicode-src/js/06-controls.js"] },
-  { role: "PURE", limit: 150, files: ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js"] },
-  { role: "DATA", limit: Infinity, files: ["unicode-src/data/blocks.js", "unicode-src/data/algo-ranges.js"] },
-  { role: "BUILD", limit: 250, files: walk("tools").filter((f) => f.endsWith(".ts")) },
+  { role: "PURE-CORE", limit: 100, oneExport: true, pure: true, match: (f) => f.startsWith("src/codepoint/") },
+  { role: "PURE", limit: 150, oneExport: true, pure: true, match: (f) => /^src\/(ucd|selection|markup)\//.test(f) || f === "src/names/decodeNameTable.ts" },
+  { role: "STATE", limit: 150, oneExport: false, pure: true, match: (f) => f.startsWith("src/state/") },
+  { role: "CONTROLLER", limit: 150, oneExport: false, pure: false, match: (f) => /^src\/(settings|clipboard|render)\//.test(f) || f === "src/names/loadNameTable.ts" },
+  { role: "VIEW", limit: 250, oneExport: false, pure: false, match: (f) => /^src\/[^/]+\.ts$/.test(f) },
+  { role: "BUILD", limit: 250, oneExport: false, pure: false, match: (f) => f.startsWith("tools/") || f.startsWith("scripts/") },
 ];
 const SHAPE_NAMES = /^(helpers?|utils?|misc|common|shared|handlers|setters|getters|stuff|things|lib|index|types|useHelpers|useHandlers|useSetters|client|stub|connector|gateway)$/i;
+const AMBIENT = new Set(["document", "window", "navigator", "location", "localStorage", "sessionStorage", "history", "fetch", "setTimeout", "setInterval", "requestAnimationFrame"]);
 
-/* §11 exceptions: active entries suppress (section, file) pairs; expired entries fail. */
 const today = new Date().toISOString().slice(0, 10);
 const exceptions = JSON.parse(readFileSync(resolve(root, ".architecture-exceptions.json"), "utf-8")).exceptions;
 for (const ex of exceptions) if (ex.expires < today) fail("§11", `exception ${ex.id} (${ex.section}) expired ${ex.expires}; renew or remove`);
 const excepted = (section, file) => exceptions.some((ex) => ex.expires >= today && ex.section === section && ex.scope.includes(file));
 
-function walk(dir) {
-  const out = [];
-  for (const name of readdirSync(resolve(root, dir))) {
-    const p = join(dir, name);
-    if (statSync(resolve(root, p)).isDirectory()) out.push(...walk(p));
-    else out.push(p);
-  }
-  return out;
-}
-
 function codeLines(text) {
   return text.split("\n").filter((l) => { const t = l.trim(); return t && !t.startsWith("//") && !t.startsWith("/*") && !t.startsWith("*"); }).length;
 }
 
-function functionBodies(file, text) {
-  const sf = ts.createSourceFile(file, text, ts.ScriptTarget.ES2022, true, file.endsWith(".ts") ? ts.ScriptKind.TS : ts.ScriptKind.JS);
+function parse(file, text) {
+  return ts.createSourceFile(file, text, ts.ScriptTarget.ES2022, true, file.endsWith(".ts") ? ts.ScriptKind.TS : ts.ScriptKind.JS);
+}
+
+function functionBodies(sf) {
   const out = [];
   const visit = (node) => {
     if ((ts.isFunctionDeclaration(node) || ts.isMethodDeclaration(node) || ts.isFunctionExpression(node) || ts.isArrowFunction(node)) && node.body && ts.isBlock(node.body)) {
@@ -59,23 +69,63 @@ function functionBodies(file, text) {
   return out;
 }
 
-for (const layer of LAYERS) {
-  for (const file of layer.files) {
-    const text = readFileSync(resolve(root, file), "utf-8");
-    const n = codeLines(text);
-    if (n > layer.limit && !excepted("§3.3", file)) fail("§3.3", `${file} has ${n} code lines; ${layer.role} limit is ${layer.limit}`);
-    if (layer.role !== "DATA") {
-      for (const fn of functionBodies(file, text)) {
-        if (fn.lines > 20 && !excepted("§3.1", file)) fail("§3.1", `${file}: ${fn.name} body is ${fn.lines} lines (limit 20)`);
-      }
-    }
-    const stem = basename(file).replace(/\.(m?js|ts)$/, "").replace(/^\d+-/, "");
-    if (SHAPE_NAMES.test(stem) && !excepted("§3.8", file)) fail("§3.8", `${file} is named for a shape, not a responsibility`);
+function exportedValues(sf) {
+  const names = [];
+  for (const node of sf.statements) {
+    const exported = ts.canHaveModifiers(node) && ts.getModifiers(node)?.some((m) => m.kind === ts.SyntaxKind.ExportKeyword);
+    if (!exported) continue;
+    if (ts.isFunctionDeclaration(node) && node.name) names.push(node.name.text);
+    else if (ts.isVariableStatement(node)) for (const d of node.declarationList.declarations) names.push(d.name.getText(sf));
   }
+  return names;
+}
+
+function hasReExport(sf) {
+  return sf.statements.some((n) => ts.isExportDeclaration(n) && (n.moduleSpecifier || n.exportClause));
+}
+
+function ambientIdentifiers(sf) {
+  const hits = new Set();
+  const visit = (node) => {
+    if (ts.isIdentifier(node) && AMBIENT.has(node.text) && !(ts.isPropertyAccessExpression(node.parent) && node.parent.name === node)) hits.add(node.text);
+    if (ts.isPropertyAccessExpression(node) && /^(Date\.now|Math\.random)$/.test(node.getText(sf))) hits.add(node.getText(sf));
+    ts.forEachChild(node, visit);
+  };
+  visit(sf);
+  return [...hits];
+}
+
+function checkFile(file, layer) {
+  const text = readFileSync(resolve(root, file), "utf-8");
+  const sf = parse(file, text);
+  const n = codeLines(text);
+  if (n > layer.limit && !excepted("§3.3", file)) fail("§3.3", `${file} has ${n} code lines; ${layer.role} limit is ${layer.limit}`);
+  for (const fn of functionBodies(sf)) if (fn.lines > 20 && !excepted("§3.1", file)) fail("§3.1", `${file}: ${fn.name} body is ${fn.lines} lines (limit 20)`);
+  const stem = basename(file).replace(/\.(mjs|ts)$/, "");
+  if (SHAPE_NAMES.test(stem) && !excepted("§3.8", file)) fail("§3.8", `${file} is named for a shape, not a responsibility`);
+  if (hasReExport(sf) && !excepted("§3.9", file)) fail("§3.9", `${file} re-exports symbols (barrel)`);
+  if (layer.oneExport) {
+    const names = exportedValues(sf);
+    if (names.length !== 1 && !excepted("§3.2", file)) fail("§3.2", `${file} exports ${names.length} values (${names.join(", ")}); PURE files export exactly one`);
+    if (names.length === 1 && names[0] !== stem && !excepted("§3.2", file)) fail("§3.2", `${file} exports ${names[0]}; filename must match`);
+  }
+  if (layer.pure) {
+    const hits = ambientIdentifiers(sf);
+    if (hits.length && !excepted("§1.4", file)) fail("§1.4", `${file} touches ambient state: ${hits.join(", ")}`);
+  }
+}
+
+const files = [...walk("src"), ...walk("tools"), ...walk("scripts")];
+let checked = 0;
+for (const file of files) {
+  const layer = LAYERS.find((l) => l.match(file));
+  if (!layer) { fail("§0", `${file} is not covered by the layer mapping`); continue; }
+  checkFile(file, layer);
+  checked++;
 }
 
 if (failures.length) {
   console.error("check:standards FAILED\n" + failures.map((f) => "  " + f).join("\n"));
   process.exit(1);
 }
-console.log(`check:standards OK — ${LAYERS.reduce((a, l) => a + l.files.length, 0)} files checked, ${exceptions.length} active exceptions`);
+console.log(`check:standards OK — ${checked} files checked across ${LAYERS.length} layer roles, ${exceptions.length} active exceptions`);

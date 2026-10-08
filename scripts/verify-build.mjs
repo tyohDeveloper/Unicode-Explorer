@@ -44,14 +44,18 @@ try {
 } catch (e) {
   fail("ARCHITECTURE §8", `artifact is not well-formed XML: ${e.message}`);
 }
-if ((html.match(/<script>\/\*<!\[CDATA\[\*\//g) ?? []).length !== 1) fail("ARCHITECTURE §8", "script body is not CDATA-wrapped exactly once");
-if ((html.match(/<style>\/\*<!\[CDATA\[\*\//g) ?? []).length !== 1) fail("ARCHITECTURE §8", "style body is not CDATA-wrapped exactly once");
+if ((html.match(/<script[^>]*>\/\*<!\[CDATA\[\*\//g) ?? []).length !== 1) fail("ARCHITECTURE §8", "script body is not CDATA-wrapped exactly once");
+if ((html.match(/<style[^>]*>\/\*<!\[CDATA\[\*\//g) ?? []).length !== 1) fail("ARCHITECTURE §8", "style body is not CDATA-wrapped exactly once");
+if (/<script[^>]*\ssrc=/.test(html)) fail("ARCHITECTURE §2", "artifact references an external script");
 if ((html.match(/\]\]>/g) ?? []).length !== 2) fail("ARCHITECTURE §8", "unexpected ']]>' inside an inlined body");
 if (/<!--/.test(html)) fail("ARCHITECTURE §8", "comment survived minification");
 
 /* §9 test IDs */
 const manifest = JSON.parse(readFileSync(resolve(root, "scripts/testid-manifest.json"), "utf-8"));
-const present = new Set([...html.matchAll(/data-testid="([^"]+)"/g)].map((m) => m[1]));
+const allIds = [...html.matchAll(/data-testid="([^"]+)"/g)].map((m) => m[1]);
+const present = new Set(allIds);
+if (allIds.length !== present.size) fail("CODING-STANDARDS §4.3", `duplicate data-testid in artifact: ${allIds.filter((id, i) => allIds.indexOf(id) !== i).join(", ")}`);
+for (const id of manifest.dynamic) if (!html.includes(id.split("<")[0])) fail("ARCHITECTURE §9", `dynamic test ID prefix not found in bundle: ${id}`);
 for (const id of manifest.required) if (!present.has(id)) fail("ARCHITECTURE §9", `required test ID missing: ${id}`);
 for (const id of present) if (!manifest.required.includes(id)) fail("ARCHITECTURE §9", `test ID in artifact but not in manifest: ${id}`);
 for (const id of [...present, ...manifest.required]) if (!/^[a-z]+-[a-z0-9]+-[a-z0-9-]+$/.test(id)) fail("ARCHITECTURE §9", `test ID violates {role}-{area}-{name}: ${id}`);

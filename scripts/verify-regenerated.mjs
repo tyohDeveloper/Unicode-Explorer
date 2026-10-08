@@ -1,9 +1,8 @@
 #!/usr/bin/env node
 /**
  * Regeneration check (docs/PLAN.md D-9, ARCHITECTURE §5): the committed
- * Unicode.html must be exactly what the committed sources produce. Rebuilds in
- * place and compares against the git HEAD copy; restores nothing because a
- * clean tree makes the two identical by construction.
+ * src/data/*.json and Unicode.html must be exactly what the committed sources
+ * produce. Regenerates and rebuilds in place, then compares with git HEAD.
  */
 import { execFileSync } from "node:child_process";
 import { createHash } from "node:crypto";
@@ -12,13 +11,22 @@ import { resolve } from "node:path";
 
 const root = resolve(import.meta.dirname, "..");
 const sha = (buf) => createHash("sha256").update(buf).digest("hex");
+function committed(path) {
+  try {
+    return sha(execFileSync("git", ["show", `HEAD:${path}`], { cwd: root, maxBuffer: 1 << 28, stdio: ["ignore", "pipe", "ignore"] }));
+  } catch {
+    return null; // not in HEAD yet: reported as stale below
+  }
+}
+const run = (cmd, args) => execFileSync(cmd, args, { cwd: root, stdio: "inherit" });
 
-const committed = sha(execFileSync("git", ["show", "HEAD:Unicode.html"], { cwd: root, maxBuffer: 1 << 28 }));
-execFileSync("npm", ["run", "-s", "build:bundle"], { cwd: root, stdio: "inherit" });
-const rebuilt = sha(readFileSync(resolve(root, "Unicode.html")));
+run("npm", ["run", "-s", "generate:data"]);
+run("npm", ["run", "-s", "build:bundle"]);
 
-if (committed !== rebuilt) {
-  console.error(`verify:regenerated FAILED — committed Unicode.html ${committed.slice(0, 12)} != rebuilt ${rebuilt.slice(0, 12)}. Rebuild and commit the artifact with its source change.`);
+const files = ["src/data/blocks.json", "src/data/unassigned.json", "src/data/names.json", "Unicode.html"];
+const stale = files.filter((f) => committed(f) !== sha(readFileSync(resolve(root, f))));
+if (stale.length) {
+  console.error(`verify:regenerated FAILED — committed files differ from regenerated output: ${stale.join(", ")}. Run npm run generate:data && npm run build:bundle and commit the result with its source change.`);
   process.exit(1);
 }
-console.log(`verify:regenerated OK — ${rebuilt.slice(0, 12)}`);
+console.log(`verify:regenerated OK — ${files.length} generated files match HEAD`);
