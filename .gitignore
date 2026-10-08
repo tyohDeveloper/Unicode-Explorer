@@ -1,49 +1,25 @@
-# See https://docs.github.com/en/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
-
-# compiled output
-dist
-tmp
-out-tsc
-*.tsbuildinfo
-.expo
-.expo-shared
-
 # dependencies
-node_modules
+node_modules/
 
-# IDEs and editors
-/.idea
-.project
-.classpath
-.c9/
-*.launch
-.settings/
-*.sublime-workspace
+# build outputs (Unicode.html at the root is committed on purpose; see docs/PLAN.md D-9)
+dist/
+tmp/
+*.tsbuildinfo
+test-results/
+playwright-report/
+coverage/
 
-# IDE - VSCode
+# font cache (binaries are fetched by manifest, never committed)
+fonts/cache/
+
+# editors and OS
+.idea/
 .vscode/*
 !.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
 !.vscode/extensions.json
-
-# misc
-/.sass-cache
-/connect.lock
-/coverage
-/libpeerconnection.log
-npm-debug.log
-yarn-error.log
-testem.log
-/typings
-system/
-
-# System Files
 .DS_Store
 Thumbs.db
 
-.cursor/rules/nx-rules.mdc
-.github/instructions/nx.instructions.md
-
-# Replit
-.cache/
+# secrets
+.env*
+!.env.example
