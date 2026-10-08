@@ -32,9 +32,9 @@ function walk(dir) {
 /* §0 mapping (CODING-STANDARDS.md §0). Order matters: first match wins. */
 const LAYERS = [
   { role: "PURE-CORE", limit: 100, oneExport: true, pure: true, match: (f) => f.startsWith("src/codepoint/") },
-  { role: "PURE", limit: 150, oneExport: true, pure: true, match: (f) => /^src\/(ucd|selection|markup|coverage)\//.test(f) || f === "src/names/decodeNameTable.ts" || /^src\/fonts\/(composeFontStack|packsForBlocks|packStatusText|standardFonts)\.ts$/.test(f) },
+  { role: "PURE", limit: 150, oneExport: true, pure: true, match: (f) => /^src\/(ucd|selection|markup|coverage)\//.test(f) || f === "src/names/decodeNameTable.ts" || /^src\/fonts\/(composeFontStack|packsForBlocks|packStatusText|standardFonts|splitFontFamilies|isGenericFamily)\.ts$/.test(f) },
   { role: "STATE", limit: 150, oneExport: false, pure: true, match: (f) => f.startsWith("src/state/") },
-  { role: "CONTROLLER", limit: 150, oneExport: false, pure: false, match: (f) => /^src\/(settings|clipboard|render)\//.test(f) || f === "src/names/loadNameTable.ts" || /^src\/fonts\/(glyphProbe|fontPacks)\.ts$/.test(f) },
+  { role: "CONTROLLER", limit: 150, oneExport: false, pure: false, match: (f) => /^src\/(settings|clipboard|render)\//.test(f) || f === "src/names/loadNameTable.ts" || /^src\/fonts\/(glyphProbe|fontPacks|coverageScanner)\.ts$/.test(f) },
   { role: "VIEW", limit: 250, oneExport: false, pure: false, match: (f) => /^src\/[^/]+\.ts$/.test(f) },
   { role: "BUILD", limit: 250, oneExport: false, pure: false, match: (f) => f.startsWith("tools/") || f.startsWith("scripts/") },
 ];
