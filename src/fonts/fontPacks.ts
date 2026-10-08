@@ -10,7 +10,7 @@ import { packsForBlocks } from "./packsForBlocks.js";
 import { packsForStyle } from "./packsForStyle.js";
 import type { PackStatus } from "./packStatusText.js";
 
-interface PackFont { family: string; format: string; data: string; weight?: number; style?: string }
+interface PackFont { family: string; format: string; data: string; weight?: number; style?: string; range?: string }
 interface Catalogue { packs: PackCatalogueEntry[] }
 declare global { interface Window { UnicodeExplorerFontPacks?: Catalogue; UnicodeExplorerFontPackData?: Record<string, { fonts: PackFont[] }> } }
 
@@ -54,7 +54,7 @@ function base64ToBuffer(data: string): ArrayBuffer {
 async function registerPack(id: string): Promise<string[]> {
   const payload = window.UnicodeExplorerFontPackData?.[id];
   if (!payload) throw new Error(`${id}: no pack data`);
-  const faces = payload.fonts.map((f) => new FontFace(f.family, base64ToBuffer(f.data), f.weight ? { weight: String(f.weight), style: f.style ?? "normal" } : {}));
+  const faces = payload.fonts.map((f) => new FontFace(f.family, base64ToBuffer(f.data), { ...(f.weight ? { weight: String(f.weight), style: f.style ?? "normal" } : {}), ...(f.range ? { unicodeRange: f.range } : {}) }));
   delete window.UnicodeExplorerFontPackData?.[id];
   for (const face of faces) document.fonts.add(face);
   await Promise.all(faces.map((face) => face.load()));
