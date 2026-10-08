@@ -281,3 +281,13 @@ button:active { opacity: 0.7; }
 .css-summary { color: var(--accent-text); }
 .css-head { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 4px; }
 .css-out { width: 100%; font-family: var(--mono); font-size: 0.72rem; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; resize: vertical; }
+
+/* Character details strip (D-19) */
+#details { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 14px; border-bottom: 1px solid var(--border); background: var(--panel); font-size: 0.78rem; overflow: hidden; }
+#details .details-hint { color: var(--text-dim); }
+.details-glyph { font-family: var(--glyph-font); font-size: 2rem; line-height: 1; min-width: 2.2rem; text-align: center; color: #fff; }
+.details-cp { font-family: var(--mono); color: var(--accent-text); white-space: nowrap; }
+.details-list { display: flex; flex-wrap: wrap; gap: 2px 14px; margin: 0; }
+.details-list dt { color: var(--text-dim); }
+.details-list dt::after { content: ":"; }
+.details-list dd { margin: 0 0 0 -10px; color: var(--text); }

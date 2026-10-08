@@ -35,7 +35,8 @@
     "checkbox-controls-nosynth",
     "button-controls-css",
     "dialog-css-main",
-    "button-css-close"
+    "button-css-close",
+    "panel-details-main"
   ],
   "dynamic": [
     "radio-font-<id>",
@@ -52,6 +53,8 @@
     "text-css-<form>",
     "button-css-copy-<form>",
     "radio-css-<order>",
-    "text-css-summary"
+    "text-css-summary",
+    "text-details-<field>",
+    "text-details-cp"
   ]
 }

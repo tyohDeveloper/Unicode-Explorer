@@ -6,6 +6,7 @@
  */
 import { wireAbout } from "./about.js";
 import { wireCssDialog } from "./cssDialog.js";
+import { wireDetailsStrip } from "./detailsStrip.js";
 import type { GlyphProbe } from "./fonts/glyphProbe.js";
 import { wireComposePad } from "./composePad.js";
 import { buildLangOptions, reflectControls, wireControls, type ControlElements } from "./controls.js";
@@ -149,6 +150,7 @@ async function start(): Promise<void> {
   const draw = () => { handle = renderOutput(views.outputEl, store.get(), ctx, handle); };
   wireOutput(views.outputEl.output, pad, () => handle);
   wireExtras(store, probe, () => handle);
+  wireDetailsStrip(views.outputEl.output, byId("details"), { nameOf: ctx.nameOf });
   render = createRenderScheduler(draw);
   store.dispatch(hydrateSettings(decodeHashState(location.hash)));
   subscribe(store, views, fonts, packs, render);
