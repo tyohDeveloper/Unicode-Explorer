@@ -11,20 +11,21 @@ The six rules most likely to be violated by accident:
    build check.
 2. **No `localStorage` / `IndexedDB` / cookies.** Session state is in-memory only. Use
    `location.hash` if state must survive a reload.
-3. **`Unicode.html` is generated.** Edit `unicode-src/`, rebuild with
-   `pnpm --filter @workspace/scripts build:unicode`, commit source and output together.
-   Generated tables (`UNASSIGNED`, `CN`) are never hand-edited.
+3. **`Unicode.html` is generated.** Edit `unicode-src/`, rebuild with `npm run build:bundle`,
+   commit source and output together; CI rejects a committed artifact that does not match its
+   sources. Generated tables (`UNASSIGNED`, `CN`) are never hand-edited.
 4. **The Unicode version is one build input.** Do not add a block, range, or name by hand; it
-   derives from the Unicode Character Database for the pinned version.
+   derives from the vendored, hash-verified Unicode Character Database in `data/ucd/<version>/`.
+   A new test ID means updating `scripts/testid-manifest.json` in the same change.
 5. **Fonts need provenance.** A font enters `fonts/manifest.json` with source URL, version,
    SHA-256, license (OFL or CC0 only), and measured coverage, or it does not build. No
    Egyptian-hieroglyph font ships in Standard or Complete (`PLAN.md` D-4).
 6. **Never put a full-coverage font (Last Resort, Adobe Blank) in the global font stack.** It
    is applied per cell by detection (`PLAN.md` D-6).
 
-Verify with `pnpm install --frozen-lockfile && pnpm run typecheck && pnpm --filter
-@workspace/scripts build:unicode`. The Phase 2 chain (`npm run build && npm run test:e2e`)
-replaces this when it lands.
+Verify with `npm run build && npm run verify:regenerated && npm run test:e2e`. All three must
+pass. Versions move only through `npm run release -- <app|data> <version>`, which requires a
+CHANGELOG section first.
 
 ## Coding & architecture standards
 

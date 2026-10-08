@@ -73,17 +73,16 @@ Findings: ARC-01, ARC-03, ARC-04, ARC-06, ARC-08, DOC-01.
 - Add `AGENTS.md`, `docs/ARCHITECTURE.md`, `README.md`, `LICENSE`, `CHANGELOG.md`.
 - Record edition definitions and font provenance in `fonts/manifest.json`.
 - Remove the unused Replit scaffold: mockup sandbox, OpenAPI client and schema generation,
-  Drizzle/Postgres package, third-party agent skills. Keep the Express server as a plain
-  static server until Q-6 is decided.
+  Drizzle/Postgres package, third-party agent skills. (The Express server was kept at the time
+  and removed in Phase 2 once D-7 settled hosting.)
 - Rewrite `replit.md` as a pointer to `AGENTS.md`.
 - Record known standards exceptions in `.architecture-exceptions.json` with expiry at the
   end of Phase 3.
 
-Acceptance: `pnpm install --frozen-lockfile`, `pnpm run typecheck`, and
-`pnpm --filter @workspace/scripts build:unicode` pass; the rebuilt `Unicode.html` is
-byte-identical to the baseline artifact (SHA-256
-`50975b2609091ba74490c91ce6828bd9330e513240dd3c820082575e4c0c1679`); the Express server still
-serves `/` and `/api/healthz`.
+Acceptance: install, typecheck, and build pass; the rebuilt `Unicode.html` is byte-identical to
+the baseline artifact (SHA-256 `50975b2609091ba74490c91ce6828bd9330e513240dd3c820082575e4c0c1679`).
+
+Status 2026-10-08: delivered (commits `5e61669`..`058b20d`).
 
 ### Phase 2: Build integrity
 
@@ -104,6 +103,12 @@ Findings: BLD-01, BLD-02, BLD-03, BLD-04, SEC-01, SEC-03.
 
 Acceptance: CI green on `main`; a deliberately broken UCD file fails the build.
 
+Status 2026-10-08: delivered. Vendored UCD with hash verification; `npm run build` chain;
+21 unit tests (every assigned code point's name checked against the UCD); verify-build with XML,
+CSP, test-ID, and gzip checks; regeneration check; check-standards via TypeScript AST; 5 Playwright
+tests over `file://`; GitHub Actions; `release.mjs`. Released as app 1.1.0.0 and data 1.0.0.0.
+Also removed the Express server and Replit configuration (D-7) and flattened to one npm package.
+
 ### Phase 3: Module migration
 
 Findings: ARC-02, BLD-05, BLD-06, SEC-02, ARC-05.
@@ -114,7 +119,7 @@ Findings: ARC-02, BLD-05, BLD-06, SEC-02, ARC-05.
   332 KB).
 - Replace the regex minifiers with `html-minifier-terser`.
 - URL-fragment state for selection, mode, font, and size.
-- Remove the Express server once Q-6 is decided; `vite preview` replaces it on Replit.
+- (Express server already removed in Phase 2 under D-7.)
 
 Acceptance: behaviour parity with the Phase 2 end-to-end suite; gzip baseline recorded.
 

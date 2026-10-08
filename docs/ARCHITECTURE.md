@@ -24,7 +24,7 @@ bolt a backend on. Escalate the decision.
 ## 2. The no-network rule
 
 The app makes **zero** outbound requests at runtime. Fonts are embedded as `data:font/woff2`
-URLs, never referenced by URL. Enforcement (Phase 2 of `PLAN.md`):
+URLs, never referenced by URL. Enforcement:
 
 1. A strict CSP `<meta>`: `default-src 'none'; style-src 'unsafe-inline'; script-src 'unsafe-inline';
    font-src data:; img-src data:; connect-src 'none'; frame-src 'none'; object-src 'none';
@@ -34,11 +34,14 @@ URLs, never referenced by URL. Enforcement (Phase 2 of `PLAN.md`):
    URL outside user-initiated links, and fails the build on a hit.
 3. A Playwright test asserts no non-`file://` request fires on load or during use.
 
-The **build** may read the network only through `tools/fetch-fonts.mjs`, which downloads
-manifest entries into a git-ignored cache and verifies SHA-256. The Unicode Character Database
-files the build needs are vendored under `data/ucd/<version>/` with a hash manifest (Phase 2);
-until then the build fetches `UnicodeData.txt` at build time, which is a known defect (BLD-01,
-BLD-02 in the audit).
+The **build** may read the network only through `tools/fetch-fonts.mjs` (Phase 4), which
+downloads manifest entries into a git-ignored cache and verifies SHA-256. The Unicode Character
+Database files the build needs are vendored under `data/ucd/<version>/` with a hash manifest;
+`tools/ucd/readUcdFile.ts` verifies every file and throws on any mismatch, so a degraded artifact
+is never written.
+
+Sibling font packs (ADR-0001, proposed) are the one permitted same-location load: classic
+scripts under `unicode-fonts/`, injected by the app on demand, failing softly when absent.
 
 ## 3. The no-storage rule
 
@@ -57,7 +60,10 @@ unicode-src/js/00-classify.js     PURE   visibility and reserved-range lookup
 unicode-src/data/charnames.js     PURE   name resolution (table, algorithmic, category labels)
 unicode-src/js/01..06-*.js        VIEW   sidebar, render core, grid, table, plain, controls
 unicode-src/data/*.js, config/    DATA   block list, algorithmic ranges, font stacks
-scripts/src/unicode/build.ts      build  concatenate, inject generated tables, minify
+data/ucd/<version>/               DATA   vendored UCD files + sha256 manifest
+tools/ucd/*.ts                    build  UCD parsing and table generation (one export per file)
+tools/build/assemble.ts           build  concatenate, inject generated tables, minify
+scripts/*.mjs                     build  verify-build, verify-regenerated, check-standards, release
 ```
 
 Target layout (Phase 3; adopt in one commit together with the §0 table):
@@ -114,27 +120,32 @@ names, or compute coverage.
 
 ## 7. Build chain
 
-Today: `pnpm --filter @workspace/scripts build:unicode` assembles `Unicode.html` and prints a
-size line. Nothing fails.
+`npm run build` = `check` → `check:standards` → `test:run` → `build:bundle` → `verify:build`,
+failing at the first stage error. Minification happens inside `build:bundle` (terser for JS;
+Phase 3 moves HTML/CSS to `html-minifier-terser`). CI runs the identical command, then
+`verify:regenerated`, then Playwright as a separate job.
 
-Phase 2 target: `npm run build` = `check` → `check:standards` → `test:run` → `build:bundle` →
-`minify:artifact` → `verify:build`, failing at the first stage error, with CI running the identical
-command and Playwright as a separate job. `verify:build` enforces: single-file output with no
-siblings, no external URLs, no forbidden network or storage APIs, CSP present with
-`connect-src 'none'`, fonts only as `data:` URLs, strict-XML-parseable shell, no `]]>` in inlined
-bodies, full test-ID manifest coverage, and gzip within 5% of the recorded baseline **per edition**.
+`verify:build` enforces: no external URLs, no forbidden network or storage APIs, CSP present with
+`connect-src 'none'`, fonts only as `data:` URLs, strict-XML-parseable shell with CDATA-wrapped
+script and style bodies, no `]]>` in inlined bodies, full test-ID manifest coverage (both
+directions), version stamp agreeing with `package.json` and `data/version.json`, and gzip within
+5% of `scripts/build-baseline.json`. Phase 4 extends the baseline per edition.
+
+`check:standards` enforces §3.1, §3.3, §3.8, and §11 of the coding standards over the §0 mapping
+using the TypeScript AST; active exceptions suppress, expired ones fail.
 
 ## 8. Markup
 
 Ship `.html` so browsers use the forgiving parser, but keep the markup strict-XML valid. Boolean
 attributes in long form, void elements self-closed, script and style bodies CDATA-wrapped, no
-comments inside them. The shell is XML-parsed as a build check (Phase 2).
+comments inside them. The shell is XML-parsed as a build check (`scripts/xmlParse.mjs`).
 
 ## 9. Test IDs
 
 Format: `{role}-{area}-{name}[-{key}]`. Examples: `input-sidebar-search`, `button-mode-grid`,
 `cell-grid-1F600`. Statically present IDs go in `scripts/testid-manifest.json` under `required`;
-template-built IDs are listed under `dynamic` and covered by Playwright (Phase 2).
+template-built IDs are listed under `dynamic` and covered by Playwright. The verifier fails on a
+required ID missing from the artifact and on an artifact ID missing from the manifest.
 
 ## 10. Links
 
@@ -150,8 +161,10 @@ Terse messages, one concern per commit, large changes decomposed. Plan checkpoin
 `50533494+tyohDeveloper@users.noreply.github.com`.
 
 Versions are four-part `MAJOR.MAJORFIX.MINORFIX.SPELLING` on two tracks, `<id>-app` and
-`<id>-data`, cut only by `scripts/release.mjs` (Phase 2). Documentation-only standards updates
-are tagged `standards-*` and do not move either track.
+`<id>-data`, cut only by `scripts/release.mjs`. The number says how large the change was; what
+changed is in `CHANGELOG.md` / `data/CHANGELOG.md`, and the release script refuses to tag a
+version without a changelog section and writes that section into the annotated tag (PLAN.md
+D-8). Documentation-only standards updates are tagged `standards-*` and do not move either track.
 
 ## 12. Open decisions
 

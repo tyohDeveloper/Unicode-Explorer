@@ -8,22 +8,21 @@ plan of record is [`docs/PLAN.md`](docs/PLAN.md); work only on the active phase.
 - `unicode-src/` — application source (template, CSS, JS, data, font config). Edit here.
 - `Unicode.html` — **generated** single-file app. Never edit by hand; rebuild and commit with the
   source change.
-- `scripts/src/unicode/build.ts` — the build. `pnpm --filter @workspace/scripts build:unicode`
-  (one shot) or `watch:unicode`.
-- `artifacts/api-server/` — Express server that serves `Unicode.html` at `/` and `/unicode` for
-  the Replit deployment. Hosting glue only; not part of the app.
+- `tools/build/assemble.ts` — the build (`npm run build:bundle`; `--watch` for rebuild on change).
+- `tools/ucd/`, `data/ucd/<version>/` — UCD parsing and the vendored, hash-verified data it reads.
+- `scripts/` — verify-build, verify-regenerated, check-standards, release, test-ID manifest, size baseline.
 - `fonts/manifest.json` — font provenance and edition definitions. No binaries are committed.
 - `docs/tasks/` — historical task records.
 
 ## Checks
 
 ```
-pnpm install --frozen-lockfile
-pnpm run typecheck
-pnpm --filter @workspace/scripts build:unicode
+npm ci
+npm run build && npm run verify:regenerated && npm run test:e2e
 ```
 
-The build must leave `Unicode.html` unchanged unless the commit intends to change it.
+This repository is not deployed on Replit at present (`docs/PLAN.md` D-7). If it returns, run it
+the way history-and-prehistory does: a Vite dev/preview server bound to `0.0.0.0:5000`, no Express.
 
 ## Standards
 

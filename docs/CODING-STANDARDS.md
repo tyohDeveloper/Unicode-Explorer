@@ -42,15 +42,14 @@ changes in the same commit.
 | **STATE** | *(unmapped — selection state is in-memory in the views per the standalone-HTML5 no-persistence rule)* |
 | **PURE** | `unicode-src/js/00-classify.js`, `unicode-src/data/charnames.js` (name resolution) |
 | **PURE-CORE** | *(unmapped until Phase 3 — code-point conversion and hex formatting currently live inside the PURE and VIEW files above)* |
-| **DATA** | `unicode-src/data/blocks.js`, `unicode-src/data/algo-ranges.js`, `unicode-src/config/fonts.json`, `fonts/manifest.json`, and the `UNASSIGNED` / `CN` tables the build generates from the Unicode Character Database |
+| **DATA** | `unicode-src/data/blocks.js`, `unicode-src/data/algo-ranges.js`, `unicode-src/config/fonts.json`, `fonts/manifest.json`, `data/ucd/<version>/**`, and the `UNASSIGNED` / `CN` tables the build generates from the vendored Unicode Character Database |
 | **PLATFORM-PURE** | *(unmapped)* |
 | **PLATFORM-AMBIENT** | *(unmapped)* |
 | **MODEL** | *(unmapped)* |
 | **REMOTE** | *(unmapped)* |
 
-Build tooling (`scripts/src/unicode/build.ts`) is not a layer; §7 and §9 govern
-it. The Express server under `artifacts/api-server` is hosting glue retained
-until `PLAN.md` Q-6 is decided; it is not part of the application.
+Build tooling (`tools/**`, `scripts/*.mjs`) is not a layer; §7 and §9 govern it,
+and `scripts/check-standards.mjs` applies the §3 limits to it as well.
 
 **Target:** standalone single-file HTML5. The §17 standalone rules apply in full —
 no `fetch()`, no CDN assets, no persisted user data, polyglot XHTML-conformant
@@ -562,12 +561,11 @@ removed.
 - **The app and its data are versioned on separate tracks.** They move for different reasons and
   neither number constrains the other. `scripts/release.mjs` is the only supported way to bump
   either: it refuses a dirty tree, validates the format, keeps the manifests in step, and tags
-  `<id>-app` or `<id>-data` so the two histories stay legible in `git tag`. In this repository
-  the script arrives in Phase 2 (`TODO(coding-standards §12)`); until then no tag is cut.
+  `<id>-app` or `<id>-data` so the two histories stay legible in `git tag`.
 
   A track's leading digit is a readiness claim, so the two can sit far apart. In this repo the app
-  is at `1.0.0.0`; the data track (Unicode Character Database snapshot plus font manifest) is
-  introduced by `PLAN.md` Q-7. Do not "tidy" one to match the other.
+  is at `1.1.x.x` and the data track (Unicode Character Database snapshot plus font manifest) at
+  `1.0.x.x`. Do not "tidy" one to match the other.
 - **Repo topics** — a small set per repo (`tyoh-app`, deployment target, primary language) for discoverability.
 
 ---
