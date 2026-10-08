@@ -1,0 +1,42 @@
+# Release assets (ADR-0001, PLAN.md D-10). On an app tag the workflow fetches the
+# pack fonts from their pinned upstream sources (the one network step of the
+# toolchain; hashes in fonts/manifest.json must match), builds the sidecar packs
+# and edition zips, and attaches them with Unicode.html to the GitHub release
+# for the tag. Standard needs nothing but Unicode.html.
+name: release
+
+on:
+  push:
+    tags: ["*-app"]
+
+permissions:
+  contents: write
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Composed build
+        run: npm run build
+      - name: Committed artifact matches its sources
+        run: npm run verify:regenerated
+      - name: Fetch pinned pack fonts
+        run: npm run fetch:fonts
+      - name: Manifest unchanged by the fetch (hashes and measurements pinned)
+        run: git diff --exit-code -- fonts/manifest.json
+      - name: Build sidecar packs and edition zips
+        run: npm run build:packs
+      - name: Pack blocks unchanged by the build
+        run: git diff --exit-code -- fonts/manifest.json
+      - name: Create the GitHub release with assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          notes=$(node -e "const s=require('fs').readFileSync('CHANGELOG.md','utf8');const v=process.env.GITHUB_REF_NAME.replace(/-app$/,'');const m=s.split(/^## /m).find(x=>x.startsWith('['+v+']'));process.stdout.write(m?('## '+m):'See CHANGELOG.md')")
+          gh release create "$GITHUB_REF_NAME" Unicode.html dist/release/*.zip --title "Unicode Explorer app $GITHUB_REF_NAME" --notes "$notes"
