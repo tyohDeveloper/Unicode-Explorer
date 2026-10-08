@@ -10,7 +10,7 @@
     ],
     "stack_rule": "Device fonts first, embedded coverage fonts second; placeholder and detection fonts are applied per cell by detection and never appear in the global font-family list (PLAN.md D-6).",
     "egyptian": "No Egyptian-hieroglyph font ships in standard or complete (PLAN.md D-4). Candidates are listed under candidates and are not fetched by default.",
-    "delivery": "WOFF2 embedded as data: URLs with unicode-range descriptors generated from the measured cmap intersected with assigned visible code points."
+    "delivery": "Standard fonts embed in Unicode.html as data: URLs with unicode-range descriptors. Complete fonts ship as classic-script sidecar packs under unicode-fonts/ (one per pack, base64 data: URL registered via FontFace), loaded on demand per selected block and failing softly when absent (ADR-0001, PLAN D-10)."
   },
   "editions": [
     {
@@ -24,7 +24,8 @@
       ],
       "guaranteed_visible_code_points": 77874,
       "of": 159375,
-      "embedded_font_bytes": 1622788
+      "embedded_font_bytes": 1622788,
+      "delivery": "embedded in Unicode.html"
     },
     {
       "id": "complete",
@@ -43,7 +44,8 @@
       ],
       "guaranteed_visible_code_points": 154164,
       "of": 159375,
-      "embedded_font_bytes": 19154000
+      "embedded_font_bytes": 19154000,
+      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)"
     },
     {
       "id": "complete-hieroglyphs",
@@ -63,7 +65,8 @@
       ],
       "guaranteed_visible_code_points": 159230,
       "of": 159375,
-      "embedded_font_bytes": 25538564
+      "embedded_font_bytes": 25538564,
+      "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)"
     }
   ],
   "fonts": [

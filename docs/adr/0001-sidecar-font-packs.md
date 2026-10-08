@@ -1,7 +1,7 @@
 # ADR-0001: Sidecar font packs with soft failure
 
-Status: proposed 2026-10-08 (confirm before Phase 4). Supersedes the packaging in PLAN.md D-2
-and D-3 if accepted; the font set and the licensing are unchanged.
+Status: **accepted 2026-10-08** (owner decision). Supersedes the packaging in PLAN.md D-2 and
+D-3; the font set and the licensing are unchanged.
 
 ## Context
 
