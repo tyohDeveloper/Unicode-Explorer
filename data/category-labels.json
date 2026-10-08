@@ -1,5 +1,5 @@
 {
-  "_doc": "Labels for code points without a character name, by range (hex, inclusive). Rendered as <label-XXXX>. 'noncharacter_tail' covers U+xFFFE/U+xFFFF in every plane. Anything else unassigned renders as U+XXXX.",
+  "_doc": "Labels for code points without a character name, by range (hex, inclusive). Rendered as <label-XXXX>. 'noncharacter_tail' covers U+xFFFE/U+xFFFF in every plane. Anything else unassigned renders as U+XXXX. 'hidden_kind_labels' are the short box labels for non-visible characters without a Unicode abbreviation, by kind from src/data/visibility.json.",
   "ranges": [
     {
       "start": "0000",
@@ -37,5 +37,14 @@
       "label": "noncharacter"
     }
   ],
-  "noncharacter_tail": "noncharacter"
+  "noncharacter_tail": "noncharacter",
+  "hidden_kind_labels": {
+    "cc": "CTRL",
+    "cf": "FMT",
+    "cs": "SURR",
+    "co": "PUA",
+    "z": "SEP",
+    "di": "IGN",
+    "nc": "NCHR"
+  }
 }

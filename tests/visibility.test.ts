@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { isNonVisible } from "../src/ucd/isNonVisible.js";
-import { ucd } from "./ucdFixture.js";
+import { hiddenLabel } from "../src/ucd/hiddenLabel.js";
+import { isCombiningMark } from "../src/ucd/isCombiningMark.js";
+import { parsePropertyRanges } from "../tools/ucd/parsePropertyRanges.js";
+import { readUcdFile } from "../tools/ucd/readUcdFile.js";
+import { repoRoot, ucd, unicodeVersion } from "./ucdFixture.js";
 
 describe("isNonVisible", () => {
   it("hides controls, surrogates, private use, noncharacters, and format ranges", () => {
@@ -15,27 +19,51 @@ describe("isNonVisible", () => {
     }
   });
 
-  /*
-   * Known gaps still gaps (audit GLY-04 / DAT-02). These characters are format
-   * or default-ignorable yet shown by default today. Phase 4 derives visibility
-   * from Unicode properties; update this list in the same commit that fixes it.
-   */
-  it("still shows these invisible characters by default (known gap)", () => {
-    const knownShown = [0x00ad, 0x034f, 0x061c, 0x115f, 0x1160, 0x180e, 0x2028, 0x2029, 0x0600, 0x110bd, 0x13430, 0x1d173];
-    for (const cp of knownShown) expect(isNonVisible(cp), `U+${cp.toString(16)}`).toBe(false);
+  it("hides default-ignorable and format characters that v1 showed (audit DAT-02 fixed)", () => {
+    for (const cp of [0x00ad, 0x034f, 0x061c, 0x115f, 0x1160, 0x180e, 0x2028, 0x2029, 0x13430, 0x1d173]) {
+      expect(isNonVisible(cp), `U+${cp.toString(16)}`).toBe(true);
+    }
   });
 
-  it("never hides an assigned graphic character (General Category outside Cc/Cf/Cs/Co/Zl/Zp)", () => {
-    const invisibleCategories = new Set(["Cc", "Cf", "Cs", "Co", "Zl", "Zp"]);
-    // Variation selectors are Mn but Default_Ignorable; hiding them is correct.
-    // Phase 4 vendors DerivedCoreProperties.txt and tests the property directly.
-    const variationSelector = (cp: number) => (cp >= 0xfe00 && cp <= 0xfe0f) || (cp >= 0xe0100 && cp <= 0xe01ef);
-    const hiddenGraphic: string[] = [];
-    for (const [cp, category] of ucd.categoryMap) {
-      if (isNonVisible(cp) && !invisibleCategories.has(category) && !variationSelector(cp) && hiddenGraphic.length < 10) {
-        hiddenGraphic.push(`U+${cp.toString(16)} ${category} ${ucd.nameMap.get(cp) ?? ""}`);
-      }
+  it("keeps Prepended_Concatenation_Mark characters visible although they are Cf", () => {
+    for (const cp of [0x0600, 0x0605, 0x06dd, 0x070f, 0x0890, 0x08e2, 0x110bd, 0x110cd]) {
+      expect(isNonVisible(cp), `U+${cp.toString(16)}`).toBe(false);
     }
-    expect(hiddenGraphic).toEqual([]);
+  });
+
+  it("hides exactly the property-defined set over every assigned code point", () => {
+    const invisibleCategories = new Set(["Cc", "Cf", "Cs", "Co", "Zl", "Zp"]);
+    const ignorable = parsePropertyRanges(readUcdFile(repoRoot, unicodeVersion, "DerivedCoreProperties.txt"), "Default_Ignorable_Code_Point");
+    const prepended = parsePropertyRanges(readUcdFile(repoRoot, unicodeVersion, "PropList.txt"), "Prepended_Concatenation_Mark");
+    const inRanges = (cp: number, ranges: [number, number][]) => ranges.some(([s, e]) => cp >= s && cp <= e);
+    const wrong: string[] = [];
+    for (const [cp, category] of ucd.categoryMap) {
+      const expected = !inRanges(cp, prepended) && (invisibleCategories.has(category) || inRanges(cp, ignorable));
+      if (isNonVisible(cp) !== expected && wrong.length < 10) wrong.push(`U+${cp.toString(16)} ${category} ${ucd.nameMap.get(cp) ?? ""}`);
+    }
+    expect(wrong).toEqual([]);
+  });
+});
+
+describe("hiddenLabel and isCombiningMark", () => {
+  it("labels non-visible characters by Unicode abbreviation, else by kind", () => {
+    expect(hiddenLabel(0x00ad)).toBe("SHY");
+    expect(hiddenLabel(0x200d)).toBe("ZWJ");
+    expect(hiddenLabel(0xfe0f)).toBe("VS16");
+    expect(hiddenLabel(0xe000)).toBe("PUA");
+    expect(hiddenLabel(0xfffe)).toBe("NCHR");
+    expect(hiddenLabel(0x2028)).toBe("SEP"); // no abbreviation alias exists for LINE SEPARATOR
+    expect(hiddenLabel(0x41)).toBeNull();
+  });
+
+  it("recognises combining marks (Mn, Mc, Me) and nothing else", () => {
+    expect(isCombiningMark(0x0301)).toBe(true);
+    expect(isCombiningMark(0x093e)).toBe(true); // Mc
+    expect(isCombiningMark(0x20dd)).toBe(true); // Me
+    expect(isCombiningMark(0x41)).toBe(false);
+    expect(isCombiningMark(0x25cc)).toBe(false);
+    let wrong = 0;
+    for (const [cp, gc] of ucd.categoryMap) if (isCombiningMark(cp) !== (gc === "Mn" || gc === "Mc" || gc === "Me")) wrong++;
+    expect(wrong).toBe(0);
   });
 });

@@ -28,11 +28,13 @@
     "@playwright/test": "^1.64.0",
     "@types/node": "^22.10.5",
     "fflate": "^0.8.3",
+    "fontkit": "^2.0.4",
     "html-minifier-terser": "^7.2.0",
     "tsx": "^4.23.15",
     "typescript": "~5.9.3",
     "vite": "^8.3.4",
     "vite-plugin-singlefile": "^2.3.3",
-    "vitest": "^4.1.11"
+    "vitest": "^4.1.11",
+    "wawoff2": "^2.0.1"
   }
 }
