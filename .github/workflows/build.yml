@@ -1,0 +1,54 @@
+# Build gate (CODING-STANDARDS §7.3, ARCHITECTURE §7). `npm run build` is the
+# composed chain — check → standards → unit tests → bundle → verify — and fails
+# on the first stage error. The regeneration check then proves the committed
+# Unicode.html is what the committed sources produce (PLAN.md D-9). Playwright
+# runs as a separate job against the built artifact over file://.
+name: build
+
+on:
+  push:
+    branches: [main]
+    tags: ["*-app", "*-data"]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - name: Verify the install actually completed
+        run: node -e "require.resolve('vitest/package.json'); console.log('devDependencies present')"
+      - name: Composed build (check + standards + unit tests + bundle + verify)
+        run: npm run build
+      - name: Committed artifact matches its sources
+        run: npm run verify:regenerated
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Unicode.html
+          path: Unicode.html
+          retention-days: 14
+
+  e2e:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Build artifact for e2e
+        run: npm run build:bundle
+      - run: npm run test:e2e
