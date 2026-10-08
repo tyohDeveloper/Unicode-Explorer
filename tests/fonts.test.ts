@@ -15,6 +15,8 @@ import { toUnicodeRange } from "../tools/fonts/toUnicodeRange.js";
 import { packBlocks } from "../tools/fonts/packBlocks.js";
 import { packScript, packsManifestScript } from "../tools/fonts/packScripts.js";
 
+import { readFontManifest } from "../tools/fonts/fontManifest.js";
+import { repoRoot } from "./ucdFixture.js";
 describe("composeFontStack", () => {
   it("orders style packs, style stack, device fonts, block packs, then embedded fonts; dedupes and quotes names with spaces", () => {
     expect(composeFontStack({ stylePacks: ["UE Charis"], style: ["system-ui", "serif"], device: ["Segoe UI Historic", "serif"], blockPacks: ["UE Tangut"], embedded: ["UE Unifont", "UE Unifont Upper"] }))
@@ -51,6 +53,22 @@ describe("packStatusText", () => {
     expect(packStatusText([
       { id: "a", label: "Tangut", state: "loaded", bytes: 1 }, { id: "b", label: "CJK B\u2013F", state: "loading", bytes: 17302074 }, { id: "c", label: "Ghost", state: "failed", bytes: 1 },
     ])).toBe("Loading font pack: CJK B\u2013F (17 MB)\u2026 \u00B7 Font packs: Tangut \u00B7 Font pack unavailable: Ghost");
+  });
+});
+
+describe("pack size and subsetting (D-20)", () => {
+  it("adds a unicode-range to subset pack fonts", () => {
+    const script = packScript("p", [{ family: "UE X", format: "woff2", bytes: new Uint8Array([1, 2, 3]), range: "U+20000-2537F" }]);
+    expect(script).toContain('"range":"U+20000-2537F"');
+    expect(packScript("q", [{ family: "UE X", format: "woff2", bytes: new Uint8Array([1]) }])).not.toContain("range");
+  });
+  it("keeps every recorded pack under 8 MiB, and the split CJK packs attach to their blocks", () => {
+    const m = readFontManifest(repoRoot);
+    for (const p of m.packs) expect(p.bytes ?? 0, p.id).toBeLessThanOrEqual(8 * 1024 * 1024);
+    const blocksOf = (id: string) => m.packs.find((p) => p.id === id)?.blocks;
+    expect(blocksOf("cjk-ext-b-1")).toEqual(["20000"]);
+    expect(blocksOf("cjk-ext-b-2")).toEqual(["20000"]);
+    expect(blocksOf("cjk-ext-c-f")).toContain("2F800");
   });
 });
 
