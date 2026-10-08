@@ -19,12 +19,18 @@ const fail = (section, msg) => failures.push(`[${section}] ${msg}`);
 for (const api of ["fetch(", "XMLHttpRequest", "sendBeacon", "new WebSocket", "serviceWorker", "RTCPeerConnection", "EventSource", "importScripts("]) {
   if (html.includes(api)) fail("ARCHITECTURE §2", `artifact references ${api}`);
 }
-const urlRe = /\b(?:https?:)?\/\/[a-z0-9.-]+\.[a-z]{2,}[^\s"'<>)]*/gi;
-const allowedUrlHosts = ["www.w3.org/1999/xhtml"];
-for (const m of html.match(urlRe) ?? []) {
-  if (!allowedUrlHosts.some((h) => m.includes(h))) fail("ARCHITECTURE §2", `external URL in artifact: ${m.slice(0, 80)}`);
-}
-if (/url\((?!\s*["']?data:)/i.test(html)) fail("ARCHITECTURE §2", "CSS url() that is not a data: URL");
+/*
+ * URLs may appear as text (license notices, the About dialog, navigation links);
+ * what must not appear is a URL in a position that loads a resource: src= on
+ * any element, href= on <link>, CSS url() or @import, or a <script src> pointing
+ * anywhere but the sidecar pack directory the runtime injects at run time.
+ */
+const resourceUrlRe = /(?:\bsrc|<link[^>]*\bhref)\s*=\s*["']?\s*(?:https?:)?\/\//gi;
+for (const m of html.match(resourceUrlRe) ?? []) fail("ARCHITECTURE §2", `resource loaded from an external URL: ${m.slice(0, 80)}`);
+const css = (html.match(/<style[^>]*>([\s\S]*?)<\/style>/gi) ?? []).join("\n");
+if (/url\((?!\s*["']?data:)/i.test(css)) fail("ARCHITECTURE §2", "CSS url() that is not a data: URL");
+if (/@import\s/i.test(css)) fail("ARCHITECTURE §2", "CSS @import survived the build");
+if (/<script[^>]*\bsrc=/i.test(html)) fail("ARCHITECTURE §2", "static <script src> in artifact");
 
 /* §3 no storage */
 for (const api of ["localStorage", "sessionStorage", "indexedDB", "document.cookie", "openDatabase"]) {
@@ -79,4 +85,4 @@ if (failures.length) {
   console.error("verify:build FAILED\n" + failures.map((f) => "  " + f).join("\n"));
   process.exit(1);
 }
-console.log(`verify:build OK — ${html.length} bytes, gzip ${gz}, ${present.size} test IDs, CSP present, XML well-formed`);
+console.log(`verify:build OK — ${Buffer.byteLength(html)} bytes, gzip ${gz}, ${present.size} test IDs, CSP present, XML well-formed`);

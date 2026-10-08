@@ -1,5 +1,5 @@
 {
-  "_doc": "Test IDs per docs/ARCHITECTURE.md §9 and CODING-STANDARDS §4. `required` IDs must be present verbatim in the built artifact (checked by scripts/verify-build.mjs, which also rejects duplicates and unlisted IDs). `dynamic` IDs are built at runtime from a domain key; their prefix must appear in the bundle and Playwright covers them.",
+  "_doc": "Test IDs per docs/ARCHITECTURE.md \u00a79 and CODING-STANDARDS \u00a74. `required` IDs must be present verbatim in the built artifact (checked by scripts/verify-build.mjs, which also rejects duplicates and unlisted IDs). `dynamic` IDs are built at runtime from a domain key; their prefix must appear in the bundle and Playwright covers them.",
   "required": [
     "text-header-version",
     "input-sidebar-search",
@@ -21,7 +21,13 @@
     "button-compose-toggle",
     "textarea-compose-pad",
     "button-compose-clear",
-    "button-compose-copy"
+    "button-compose-copy",
+    "checkbox-controls-placeholders",
+    "select-controls-lang",
+    "text-status-fonts",
+    "button-header-about",
+    "dialog-about-main",
+    "button-about-close"
   ],
   "dynamic": [
     "radio-font-<id>",
@@ -32,6 +38,8 @@
     "button-table-row-<hex>",
     "button-table-sort-<col>",
     "table-output-main",
-    "text-output-plain"
+    "text-output-plain",
+    "table-about-fonts",
+    "text-about-packs"
   ]
 }
