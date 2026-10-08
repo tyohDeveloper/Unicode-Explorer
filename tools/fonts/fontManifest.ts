@@ -17,10 +17,26 @@ export interface FontEntry {
   woff2_bytes?: number;
   cmap_code_points?: number;
   assigned_visible_cmap_count?: number;
-  role: "coverage" | "placeholder" | "detection";
+  role: "coverage" | "placeholder" | "detection" | "style";
+  weight?: number;
+  style?: "normal" | "italic";
 }
 
-export interface PackEntry { id: string; label: string; fonts: string[]; categories: string[]; license_files: string[]; blocks: string[]; editions: string[]; bytes?: number }
+export interface PackEntry {
+  id: string;
+  label: string;
+  /** "blocks": loaded when a selected block needs it (ADR-0001); "style": loaded for a font button (D-14). */
+  kind: "blocks" | "style";
+  fonts: string[];
+  categories?: string[];
+  /** Style packs: font button ids served, and whether the faces are regular or bold/italic. */
+  styles?: string[];
+  faces?: "regular" | "styled";
+  license_files: string[];
+  blocks?: string[];
+  editions: string[];
+  bytes?: number;
+}
 
 export interface Edition { id: string; default: boolean; fonts: string[]; packs?: string[]; guaranteed_visible_code_points?: number; of?: number; embedded_font_bytes?: number; delivery: string }
 

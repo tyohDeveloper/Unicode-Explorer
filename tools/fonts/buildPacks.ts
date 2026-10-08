@@ -45,11 +45,13 @@ function unionCmap(ctx: Ctx, ids: readonly string[]): Set<number> {
 
 function buildPack(ctx: Ctx, pack: PackEntry): PackCatalogueEntry {
   const fonts = pack.fonts.map((id) => fontById(ctx.manifest, id));
-  const script = packScript(pack.id, fonts.map((f) => ({ family: f.css_family, format: "woff2" as const, bytes: cachedWoff2(f.id) })));
+  const script = packScript(pack.id, fonts.map((f) => ({ family: f.css_family, format: "woff2" as const, bytes: cachedWoff2(f.id), weight: f.weight, style: f.style })));
   writeFileSync(resolve(outDir, `${pack.id}.js`), script);
-  pack.blocks = packBlocks(ctx.blocks, pack.categories, unionCmap(ctx, pack.fonts), ctx.visible);
+  if (pack.kind === "blocks") pack.blocks = packBlocks(ctx.blocks, pack.categories ?? [], unionCmap(ctx, pack.fonts), ctx.visible);
   pack.bytes = Buffer.byteLength(script);
-  return { id: pack.id, label: pack.label, file: `${pack.id}.js`, bytes: pack.bytes, families: fonts.map((f) => f.css_family), blocks: pack.blocks, fonts: fonts.map((f) => ({ family: f.family, version: f.version, license: f.license, license_url: f.license_url })) };
+  const families = [...new Set(fonts.map((f) => f.css_family))];
+  const meta = pack.kind === "style" ? { kind: "style" as const, styles: pack.styles, faces: pack.faces } : { kind: "blocks" as const };
+  return { id: pack.id, label: pack.label, file: `${pack.id}.js`, bytes: pack.bytes, families, blocks: pack.blocks ?? [], ...meta, fonts: fonts.map((f) => ({ family: f.family, version: f.version, license: f.license, license_url: f.license_url })) };
 }
 
 function measureEdition(ctx: Ctx, edition: Edition): void {
