@@ -31,21 +31,37 @@ Every repository fills in this table. A rule that names a layer role applies to
 whatever paths that repository maps the role to. An unmapped role means the
 repository has no such layer, and rules naming it are inert.
 
+This table maps the **current** layout. The Phase 3 target layout is in
+[`ARCHITECTURE.md`](ARCHITECTURE.md) §4; when the migration lands, this table
+changes in the same commit.
+
 | Layer role | This repository's paths |
 |---|---|
-| **VIEW** | `artifacts/*/src/components/**` |
-| **CONTROLLER** | `artifacts/*/src/hooks/**`, `artifacts/api-server/src/routes/**`, `artifacts/api-server/src/middlewares/**` |
-| **STATE** | *(unmapped)* |
-| **PURE** | `artifacts/*/src/lib/**` |
-| **PURE-CORE** | *(unmapped)* |
-| **DATA** | *(unmapped — Unicode tables belong in a DATA layer per §5.1 when they land)* |
+| **VIEW** | `unicode-src/js/01-sidebar.js`, `02-render-core.js`, `03-render-grid.js`, `04-render-table.js`, `05-render-plain.js`, `06-controls.js`, `unicode-src/template.html`, `unicode-src/style.css` |
+| **CONTROLLER** | *(unmapped — the views wire their own events and call PURE directly)* |
+| **STATE** | *(unmapped — selection state is in-memory in the views per the standalone-HTML5 no-persistence rule)* |
+| **PURE** | `unicode-src/js/00-classify.js`, `unicode-src/data/charnames.js` (name resolution) |
+| **PURE-CORE** | *(unmapped until Phase 3 — code-point conversion and hex formatting currently live inside the PURE and VIEW files above)* |
+| **DATA** | `unicode-src/data/blocks.js`, `unicode-src/data/algo-ranges.js`, `unicode-src/config/fonts.json`, `fonts/manifest.json`, and the `UNASSIGNED` / `CN` tables the build generates from the Unicode Character Database |
 | **PLATFORM-PURE** | *(unmapped)* |
 | **PLATFORM-AMBIENT** | *(unmapped)* |
 | **MODEL** | *(unmapped)* |
 | **REMOTE** | *(unmapped)* |
 
-**Multi-artifact repo.** Each `artifacts/<name>/` is an independent deployment
-target and the mapping applies per artifact.
+Build tooling (`scripts/src/unicode/build.ts`) is not a layer; §7 and §9 govern
+it. The Express server under `artifacts/api-server` is hosting glue retained
+until `PLAN.md` Q-6 is decided; it is not part of the application.
+
+**Target:** standalone single-file HTML5. The §17 standalone rules apply in full —
+no `fetch()`, no CDN assets, no persisted user data, polyglot XHTML-conformant
+markup, mandatory final minimization. Embedded fonts are `data:` URLs, never
+external.
+
+Known noncompliance at this mapping is recorded in
+[`../.architecture-exceptions.json`](../.architecture-exceptions.json) with
+expiry at the end of Phase 3 (`PLAN.md`): §3.1 function length, §3.2 one export
+per PURE file, §3.8 responsibility naming, and §1.6 single-sourcing of
+`hex4`/`cpHex`.
 
 ---
 
@@ -526,7 +542,32 @@ removed.
 - **README as a contract** — minimum: one-line description, quickstart, build command, license line, link to the deployed instance if any.
 - **`.gitignore` from the first commit** — `node_modules/`, build outputs, coverage, editor files, OS junk, and secrets (`.env*` except `.env.example`).
 - **CHANGELOG discipline** — Keep-a-Changelog style, adopted at the first tagged release rather than retrofitted.
-- **Semantic versioning** for anything tagged and released.
+- **Four-part versioning** for anything tagged and released — `MAJOR.MAJORFIX.MINORFIX.SPELLING`,
+  significance falling left to right:
+
+  | Position | Bump it for |
+  |---|---|
+  | 1 `MAJOR` | Major change to the application or the database. |
+  | 2 `MAJORFIX` | Major bug fixing, multi-file changes, minor UI changes. |
+  | 3 `MINORFIX` | Minor bug fixes. |
+  | 4 `SPELLING` | Minor spelling and copy changes. |
+
+  This is deliberately **not** semver, and the difference is not cosmetic. Semver encodes a
+  compatibility promise to consumers of an API; these apps have no API consumers, so that promise
+  has nothing to describe. What a solo maintainer actually needs to read off a version is *how big
+  was this change*, which semver cannot express — it has one slot for "not breaking, not a
+  feature" and this scheme has three. Do not describe these versions as semver, and do not link
+  semver.org from a CHANGELOG.
+
+- **The app and its data are versioned on separate tracks.** They move for different reasons and
+  neither number constrains the other. `scripts/release.mjs` is the only supported way to bump
+  either: it refuses a dirty tree, validates the format, keeps the manifests in step, and tags
+  `<id>-app` or `<id>-data` so the two histories stay legible in `git tag`. In this repository
+  the script arrives in Phase 2 (`TODO(coding-standards §12)`); until then no tag is cut.
+
+  A track's leading digit is a readiness claim, so the two can sit far apart. In this repo the app
+  is at `1.0.0.0`; the data track (Unicode Character Database snapshot plus font manifest) is
+  introduced by `PLAN.md` Q-7. Do not "tidy" one to match the other.
 - **Repo topics** — a small set per repo (`tyoh-app`, deployment target, primary language) for discoverability.
 
 ---

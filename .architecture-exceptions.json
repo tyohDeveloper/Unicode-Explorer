@@ -1,0 +1,56 @@
+{
+  "standards": "docs/CODING-STANDARDS.md v2.2",
+  "note": "Repository-wide exceptions per §11. Each expires; CI (Phase 2) fails on an expired entry until it is renewed or removed. All entries below are pre-standards code scheduled for removal by the Phase 3 module migration in docs/PLAN.md.",
+  "exceptions": [
+    {
+      "id": "EX-001",
+      "section": "§3.1",
+      "scope": ["unicode-src/js/01-sidebar.js", "unicode-src/js/02-render-core.js", "unicode-src/js/04-render-table.js", "scripts/src/unicode/build.ts"],
+      "reason": "buildSidebar (~85 lines), renderOutput (~55 lines), buildTableBody, makeTableRow, fetchUnicodeData, and build() exceed 20 lines.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-08",
+      "expires": "2027-01-31",
+      "renewal": "Removed by Phase 3 (extract logic to PURE, then split)."
+    },
+    {
+      "id": "EX-002",
+      "section": "§3.2",
+      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js"],
+      "reason": "PURE files export several functions each (cpToStr, cpHex, isNonVisible, isReserved; getAlgoName, hex4, getCharName) as concatenated globals.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-08",
+      "expires": "2027-01-31",
+      "renewal": "Removed by Phase 3 (one export per module)."
+    },
+    {
+      "id": "EX-003",
+      "section": "§1.6",
+      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js", "unicode-src/js/01-sidebar.js"],
+      "reason": "hex4 is defined in charnames.js and used across files via the global scope; cpHex wraps it; the sidebar re-uppercases hex4 output. Cross-file dependency is hidden by concatenation order.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-08",
+      "expires": "2027-01-31",
+      "renewal": "Removed by Phase 3 (src/codepoint/formatHex.ts)."
+    },
+    {
+      "id": "EX-004",
+      "section": "§3.8",
+      "scope": ["unicode-src/js/00-classify.js", "unicode-src/js/06-controls.js"],
+      "reason": "Files are named by sequence number and shape (classify, controls) rather than responsibility; names are load-order markers for the concatenating build.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-08",
+      "expires": "2027-01-31",
+      "renewal": "Removed by Phase 3 (ES modules; filenames match exports)."
+    },
+    {
+      "id": "EX-005",
+      "section": "§5.1",
+      "scope": ["unicode-src/js/00-classify.js", "unicode-src/data/charnames.js", "unicode-src/data/algo-ranges.js"],
+      "reason": "Visibility ranges, category-label ranges, Hangul jamo tables, and algorithmic-name ranges are literals in code files rather than DATA derived from the UCD.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-08",
+      "expires": "2027-03-31",
+      "renewal": "Removed by Phase 4 (visibility from UCD properties) and Phase 6 (generated algorithmic ranges)."
+    }
+  ]
+}
