@@ -19,6 +19,10 @@ export interface GlyphProbe {
   setStack(candidates: readonly string[], embedded: readonly string[]): void;
   /** True when the family is installed (or embedded/registered): it draws a space, which Adobe Blank does not. */
   familyPresent(family: string): boolean;
+  /** Candidate families that render at least one sample of the code point's block (the CSS dialog's no-download form). */
+  servingFamilies(cp: number): readonly string[];
+  /** Whether the given families (and nothing else) render the text. */
+  rendersWith(families: readonly string[], text: string): boolean;
 }
 
 const PROBE_SIZE = 32;
@@ -36,6 +40,7 @@ interface ProbeState {
   cache: Map<number, boolean>;
   presence: Map<string, boolean>;
   blockFonts: Map<number, string>;
+  blockFamilies: Map<number, string[]>;
   candidates: readonly string[];
   embeddedFont: string;
   key: string;
@@ -60,6 +65,7 @@ function blockFont(st: ProbeState, cp: number): string | null {
     const serving = st.candidates.filter((f) => samples.some((s) => draws(st, fontFor(st, [f]), s)));
     font = serving.length ? fontFor(st, serving) : "";
     st.blockFonts.set(block.start, font);
+    st.blockFamilies.set(block.start, serving);
   }
   return font || null;
 }
@@ -79,6 +85,7 @@ function setStack(st: ProbeState, next: readonly string[], embedded: readonly st
   st.embeddedFont = fontFor(st, embedded);
   st.cache.clear();
   st.blockFonts.clear();
+  st.blockFamilies.clear();
 }
 
 function verified(st: ProbeState, cp: number, text: string): boolean {
@@ -92,10 +99,12 @@ function verified(st: ProbeState, cp: number, text: string): boolean {
 }
 
 export function createGlyphProbe(blankFamily: string): GlyphProbe {
-  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), candidates: [], embeddedFont: "", key: "" };
+  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", key: "" };
   return {
     familyPresent: (family) => familyPresent(st, family),
     setStack: (next, embedded) => setStack(st, next, embedded),
     verified: (cp, text) => verified(st, cp, text),
+    servingFamilies: (cp) => { blockFont(st, cp); const b = blockOf(cp); return (b && st.blockFamilies.get(b.start)) || []; },
+    rendersWith: (families, text) => !!st.context && families.length > 0 && draws(st, fontFor(st, families), text),
   };
 }
