@@ -103,7 +103,28 @@ toggle switches them to the embedded Last Resort font. Results are cached per st
 cache empties when the font selection or the set of loaded packs changes.
 
 Sidecar packs (ADR-0001) are the only resources the artifact ever requests: classic scripts at
-`unicode-fonts/…` relative to the document, injected at run time, failing softly.
+`unicode-fonts/…` relative to the document, injected at run time, failing softly. Block packs
+load for selected blocks; style packs (D-14) load for the Serif and Sans buttons and go first in
+the stack; their bold/italic packs load only when Bold or Italic is on (D-15).
+
+The probe is tiered (CP2-01): a character is first measured with the embedded fonts alone; only
+if they fail is it measured with the families that render at least one of 24 samples of its
+block. Families absent from the device (they draw no space) are pruned from the stack entirely.
+
+### Rendering (Phase 5)
+
+The output paints block headings and sized placeholders immediately; `src/lazyChunks.ts` splits
+each block into 512-character chunks that `src/render/lazyMaterializer.ts` (IntersectionObserver,
+1,500 px margin) builds as they near the viewport. A background scan
+(`src/fonts/coverageScanner.ts`, idle slices) probes every character and fills the headings and
+status bar. One delegated handler (`src/outputEvents.ts`) serves clicks and the keyboard; moving
+into a pending chunk builds it first. "Copy output" reads the item list, not the DOM.
+
+### CSS for this selection (D-16)
+
+`src/cssDialog.ts` builds CSS for other programmers from `data/web-fonts.json`: pinned public URLs
+with cmap-measured coverage, chosen in the font kit's priority order by `chooseWebFonts`, plus a
+device-specific `font-family` list from the probe's per-block serving families. Text only.
 
 ## 5. Data
 

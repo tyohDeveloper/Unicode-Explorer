@@ -9,6 +9,47 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.1.0.0] — 2026-10-08
+
+Scale and accessibility (Phase 5 of `docs/PLAN.md`), plus style packs and the CSS dialog.
+`Unicode.html` is 2,914,679 bytes (gzip 2,027,955).
+
+### Added
+
+- **Serif and Sans style packs** (D-14): the Unicode Font Kit's serif stack (Charis 7.000,
+  Noto Serif, Doulos SIL, Noto Naskh Arabic, Noto Serif Hebrew/Devanagari/Bengali/Thai) and
+  sans stack (Andika 7.000, Noto Sans and its script faces), plus a shared Noto Symbols,
+  Symbols 2 and Math pack, load when Serif or Sans is chosen and go first in the stack. In the
+  Complete editions and the hosted build; OFL fonts only (D-17).
+- **Bold, Italic and No synthesis** toggles (D-15; `bold=1`, `italic=1`, `nosynth=1`). Genuine
+  bold, italic and bold-italic faces load with `serif-styles`/`sans-styles` only when a toggle is
+  on; other scripts get the browser's synthesised styles unless No synthesis is on.
+- **CSS for selection** dialog (D-16): copyable CSS for another programmer's app. The web-font
+  form chooses fonts from pinned, CORS-enabled public URLs for the selected blocks and reports
+  coverage and download size; the no-download form names fonts found on this device.
+- **Search** by formal alias (all 481 from `NameAliases.txt`: NBSP, ZWJ, corrections…), code
+  point (`U+2603`, `0x2603`, `2603`) or the character itself (DAT-04).
+- **Keyboard access**: "Skip to characters" first tab stop; mode and font selectors focusable
+  (ACC-01); the output is one tab stop with arrow keys, Home/End per block, Enter/Space to
+  insert (ACC-02); inserting no longer moves focus to the composition pad (UX-01).
+- **Emoji presentation** select (Default/Text/Colour; `e=`), and cells that grow to the
+  glyph's width (GLY-06).
+- `docs/tasks/README.md` indexing the 70 historical task files (ARC-07).
+
+### Changed
+
+- **All blocks in about 0.2 s** instead of 52 s (PRF-01): headings and sized placeholders paint
+  first and 512-character chunks are built as they near the viewport; one delegated handler
+  replaces per-cell listeners; re-rendering costs only headings and visible chunks (PRF-02).
+- **Detection runs in the background** in idle slices and fills block headings and the status
+  bar as it goes ("checking glyphs…"); full scan 3.9 s with identical results (CP2-01). The
+  probe tests the embedded fonts first, then only the families that render samples of the
+  character's block, and absent device families are pruned from the font stack.
+- Accent text colour #5aabff and dimmed text #a0a0ae: 6.0–6.4:1 on the panel (ACC-03).
+- "Copy output" copies every character of the output, not only those currently built.
+- Table headers are buttons with `aria-sort`; "Ch" is no longer a sort key (UX-02).
+
+## [2.0.0.0] — 2026-10-08
 ## [2.0.0.0] — 2026-10-08
 
 Glyph coverage (Phase 4 of `docs/PLAN.md`): the first edition that carries its own fonts. The

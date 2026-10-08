@@ -27,6 +27,18 @@ Fonts are converted to WOFF2 without other changes. Full provenance (URL, SHA-25
 upstream file and of the conversion, measured coverage) is in
 [`fonts/manifest.json`](fonts/manifest.json).
 
+## Shipped in the style packs (Complete editions, hosted test build)
+
+| Font | Version | License | Packs | License text in zip |
+|---|---|---|---|---|
+| [Charis](https://software.sil.org/charis/) (SIL Global) | 7.000 | SIL Open Font License 1.1 | `serif`, `serif-styles` | `Charis-OFL-1.1.txt` |
+| [Andika](https://software.sil.org/andika/) (SIL Global) | 7.000 | SIL Open Font License 1.1 | `sans`, `sans-styles` | `Andika-OFL-1.1.txt` |
+| [Doulos SIL](https://software.sil.org/doulos/) | 7.000 | SIL Open Font License 1.1 | `serif` | `Doulos-OFL-1.1.txt` |
+| [Noto](https://github.com/notofonts/noto-fonts) Serif, Sans, Naskh Arabic, script faces, Symbols, Symbols 2, Math | noto-fonts @ ffebf8c1 | SIL Open Font License 1.1 | all style packs | `Noto-OFL-1.1.txt` |
+
+DejaVu and GNU FreeFont are not shipped (D-17). The CSS dialog may name them, with their
+licences, as suggestions for other projects; that text distributes nothing.
+
 ## Build-time tools (not shipped)
 
 Vite, esbuild, html-minifier-terser, fflate, TypeScript, Vitest, Playwright,

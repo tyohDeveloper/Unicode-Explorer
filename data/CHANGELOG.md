@@ -4,6 +4,21 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [1.2.0.0] — 2026-10-08
+
+### Added
+
+- `src/data/aliases.json`: every formal name alias in `NameAliases.txt` (481 aliases on 388
+  code points), generated and regeneration-checked; feeds search.
+- `fonts/manifest.json`: 41 style faces (Charis, Andika, Doulos SIL, Noto Serif/Sans and script
+  faces, Noto Symbols/Symbols 2/Math) with pinned upstream URLs and SHA-256 from the Unicode
+  Font Kit's remote profile and WOFF2 measurements; five style packs (`serif`, `sans`,
+  `symbols`, `serif-styles`, `sans-styles`; `kind: "style"`); `policy.style_packs`.
+- `data/web-fonts.json`: 67 public font faces for the CSS dialog with licences, sizes, pinned
+  URLs, the kit's serif and sans priority orders, and compressed coverage ranges for 33 regular
+  faces measured against the 159,375 visible assigned characters.
+- `fonts/licenses/`: Charis, Andika and Doulos SIL OFL texts.
+
 ## [1.1.0.0] — 2026-10-08
 
 ### Added

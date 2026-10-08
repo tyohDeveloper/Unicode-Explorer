@@ -4,8 +4,8 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.0.0.0** ([changelog](CHANGELOG.md)), data **1.1.0.0** (Unicode 17.0.0,
-> [data changelog](data/CHANGELOG.md)), 346 blocks, 2.8 MB. The Standard edition embeds GNU
+> **Status:** app **2.1.0.0** ([changelog](CHANGELOG.md)), data **1.2.0.0** (Unicode 17.0.0,
+> [data changelog](data/CHANGELOG.md)), 346 blocks, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
 > historic scripts and CJK extensions. Unicode 18.0 (September 2026) is scheduled for Phase 6 of
@@ -35,6 +35,26 @@ language of the output so unified ideographs take the regional glyph forms you e
 
 **About** (top right) lists the embedded fonts, their versions and licenses, and which font packs
 are present.
+
+### Styles, search and keyboard
+
+With the Complete packs present, **Serif** and **Sans** use the Unicode Font Kit's stacks
+(Charis or Andika first, then Noto). **B** and **I** switch to genuine bold and italic faces where
+those fonts have them; elsewhere the browser synthesises them, and **No synthesis** shows where.
+**Search** takes a name or alias fragment (`snowman`, `zwj`), a code point (`U+2603`, `2603`) or
+the character itself. **Emoji** chooses text or colour presentation.
+
+Keyboard: the first Tab stop is **Skip to characters**; in the output, arrow keys move, Home and
+End jump to the ends of a block, Enter or Space inserts into the composition pad and focus stays
+in the grid. Selecting every block paints in a fraction of a second; detection fills in the
+counts in the background.
+
+### CSS for your own app
+
+**CSS for selection** writes CSS another programmer can paste into their own page for similar
+coverage of the selected blocks: `@font-face` rules pointing at pinned public font URLs (the
+same on every device, with the download size and licences in a comment) and a no-download
+`font-family` list of fonts found on this device. It never refers to this app's files.
 
 ## Build
 
