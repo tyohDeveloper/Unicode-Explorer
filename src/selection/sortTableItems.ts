@@ -1,6 +1,6 @@
 import type { CodePointItem } from "./collectCodePoints.js";
 
-export type TableSortColumn = "cp" | "ch" | "name" | "block";
+export type TableSortColumn = "cp" | "name" | "block";
 export interface TableSort { col: TableSortColumn; dir: 1 | -1 }
 
 function compareBy(sort: TableSort, nameOf: (cp: number) => string): (a: CodePointItem, b: CodePointItem) => number {
