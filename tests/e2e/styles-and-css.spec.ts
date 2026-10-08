@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 import { artifactUrl } from "./fixtures.js";
 
-test("Serif loads its style pack first in the stack; Bold adds the styled faces only when switched on (D-14, Q-11)", async ({ page }) => {
+test("Serif loads its style pack first in the stack; Bold adds the styled faces only when switched on (D-14, D-15)", async ({ page }) => {
   await page.goto(`${artifactUrl("packs")}#b=0000`);
   await expect(page.getByTestId("button-grid-cell-0041")).toBeVisible();
   await page.locator("label", { has: page.getByTestId("radio-font-serif") }).click();
@@ -11,7 +11,8 @@ test("Serif loads its style pack first in the stack; Bold adds the styled faces 
   await page.getByTestId("checkbox-controls-bold").check();
   await expect(page.getByTestId("text-status-fonts")).toContainText("Test serif bold");
   expect(await page.evaluate(() => [...document.fonts].some((f) => f.family === "UE TestSerif" && f.weight === "700" && f.status === "loaded"))).toBe(true);
-  expect(await page.getByTestId("button-grid-cell-0041").locator(".glyph").evaluate((el) => getComputedStyle(el).fontWeight)).toBe("700");
+  // The pack arriving re-renders the output, so poll rather than read a cell that may be replaced mid-read.
+  await expect.poll(() => page.evaluate(() => { const g = document.querySelector('[data-cp="0041"] .glyph'); return g ? getComputedStyle(g).fontWeight : ""; })).toBe("700");
   await expect.poll(() => page.evaluate(() => location.hash)).toBe("#b=0000&f=serif&bold=1");
   await page.getByTestId("checkbox-controls-nosynth").check();
   await expect(page.locator("#output")).toHaveClass(/no-synthesis/);
