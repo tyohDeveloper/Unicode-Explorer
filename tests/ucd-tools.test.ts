@@ -12,7 +12,7 @@ import { joinBlockCategories } from "../tools/ucd/joinBlockCategories.js";
 import { compressNameTable } from "../tools/ucd/compressNameTable.js";
 import { decodeNameTable } from "../src/names/decodeNameTable.js";
 import { inflateRawSync } from "node:zlib";
-import { repoRoot } from "./ucdFixture.js";
+import { repoRoot, unicodeVersion } from "./ucdFixture.js";
 
 describe("parseUnicodeData", () => {
   it("expands First/Last ranges into assigned code points without naming them", () => {
@@ -61,12 +61,12 @@ describe("joinBlockCategories", () => {
 
 describe("readUcdFile", () => {
   it("rejects files that are not in the manifest", () => {
-    expect(() => readUcdFile(repoRoot, "17.0.0", "NotAFile.txt")).toThrow(/not listed/);
+    expect(() => readUcdFile(repoRoot, unicodeVersion, "NotAFile.txt")).toThrow(/not listed/);
   });
   it("parses the vendored Blocks.txt", () => {
-    const blocks = parseBlocks(readUcdFile(repoRoot, "17.0.0", "Blocks.txt"));
+    const blocks = parseBlocks(readUcdFile(repoRoot, unicodeVersion, "Blocks.txt"));
     expect(blocks[0]).toEqual({ name: "Basic Latin", start: 0, end: 0x7f });
-    expect(blocks.length).toBe(346);
+    expect(blocks.length).toBe(353);
   });
 });
 

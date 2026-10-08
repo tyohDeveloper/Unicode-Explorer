@@ -61,7 +61,7 @@ describe("standardFonts", () => {
     expect(s.placeholder).toBe("UE LastResort");
     expect(s.detection).toBe("UE Blank");
     expect(s.guaranteed).toBeGreaterThan(70000);
-    expect(s.of).toBe(159375);
+    expect(s.of).toBe(172382);
   });
 });
 

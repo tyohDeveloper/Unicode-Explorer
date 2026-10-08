@@ -33,7 +33,7 @@ export function prepareFixtures(): void {
   writeFileSync(resolve(dir, "test-serif.js"), packScript("test-serif", [{ family: "UE TestSerif", format: "woff2", bytes: lastResort, weight: 400, style: "normal" }]));
   writeFileSync(resolve(dir, "test-serif-styles.js"), packScript("test-serif-styles", [{ family: "UE TestSerif", format: "woff2", bytes: lastResort, weight: 700, style: "normal" }]));
   writeFileSync(resolve(dir, "manifest.js"), packsManifestScript({
-    schema: "unicode-explorer-font-packs/1", app: "test", unicode: "17.0.0", edition: "e2e",
+    schema: "unicode-explorer-font-packs/1", app: "test", unicode: "18.0.0", edition: "e2e",
     packs: [
       { id: "test-pack", label: "Test", file: "test-pack.js", bytes: lastResort.length, families: ["UE TestPack"], blocks: [TEST_PACK_BLOCK], fonts: [] },
       { id: "ghost", label: "Ghost", file: "ghost.js", bytes: 1, families: ["UE Ghost"], blocks: [GHOST_PACK_BLOCK], fonts: [] },

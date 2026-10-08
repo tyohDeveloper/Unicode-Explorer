@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { codePointToString } from "../src/codepoint/codePointToString.js";
 import { formatCodePoint } from "../src/codepoint/formatCodePoint.js";
 import { formatHex } from "../src/codepoint/formatHex.js";
-import { nameOf, nameTable, ucd } from "./ucdFixture.js";
+import { nameOf, nameTable, repoRoot, ucd, unicodeVersion } from "./ucdFixture.js";
 
 const HANGUL_L = ["G","GG","N","D","DD","R","M","B","BB","S","SS","","J","JJ","C","K","T","P","H"];
 const HANGUL_V = ["A","AE","YA","YAE","EO","E","YEO","YE","O","WA","WAE","OE","YO","U","WEO","WE","WI","YU","EU","YI","I"];
@@ -21,10 +21,26 @@ function expectedName(cp: number, label: string | undefined): string | null {
   return null;
 }
 
+import { algorithmicName } from "../src/ucd/algorithmicName.js";
+import { readUcdFile } from "../tools/ucd/readUcdFile.js";
 describe("resolveCharName", () => {
-  it("decodes the embedded table to exactly the UnicodeData names", () => {
-    expect(nameTable.size).toBe(ucd.nameMap.size);
-    for (const [cp, name] of ucd.nameMap) if (nameTable.get(cp) !== name) throw new Error(`U+${cp.toString(16)}: ${nameTable.get(cp)} != ${name}`);
+  it("decodes the embedded table to exactly the UnicodeData names outside the DerivedName prefix ranges (D-18)", () => {
+    const stored = [...ucd.nameMap].filter(([cp]) => algorithmicName(cp) === null);
+    expect(nameTable.size).toBe(stored.length);
+    for (const [cp, name] of stored) if (nameTable.get(cp) !== name) throw new Error(`U+${cp.toString(16)}: ${nameTable.get(cp)} != ${name}`);
+  });
+
+  it("resolves every name listed in DerivedName.txt exactly (172,808 characters in Unicode 18)", () => {
+    let checked = 0;
+    for (const line of readUcdFile(repoRoot, unicodeVersion, "DerivedName.txt").split("\n")) {
+      const m = /^([0-9A-F]{4,6})(?:\.\.([0-9A-F]{4,6}))?\s*;\s*(.+)$/.exec(line.trim());
+      if (!m) continue;
+      for (let cp = parseInt(m[1], 16); cp <= parseInt(m[2] ?? m[1], 16); cp++, checked++) {
+        const want = m[3].endsWith("*") ? m[3].slice(0, -1) + cp.toString(16).toUpperCase().padStart(4, "0") : m[3];
+        if (nameOf(cp) !== want) throw new Error(`U+${cp.toString(16)}: ${nameOf(cp)} != ${want}`);
+      }
+    }
+    expect(checked).toBe(unicodeVersion === "18.0.0" ? 172808 : checked);
   });
 
   it("matches UnicodeData.txt for every assigned code point with a name", () => {

@@ -13,7 +13,7 @@ test("all blocks paint quickly, materialise lazily, and finish detection in the 
   const cells = await page.locator("#output [data-cp]").count();
   expect(cells).toBeLessThan(20_000); // only chunks near the viewport exist
   expect(await page.locator(".chunk-pending").count()).toBeGreaterThan(100);
-  await expect(page.getByTestId("text-status-chars")).toHaveText(/^159,375 characters · [\d,]+ verified · [\d,]+ unverified$/, { timeout: 60_000 });
+  await expect(page.getByTestId("text-status-chars")).toHaveText(/^172,382 characters · [\d,]+ verified · [\d,]+ unverified$/, { timeout: 60_000 });
 });
 
 test("skip button, roving keyboard focus, and Enter inserts without leaving the grid", async ({ page }) => {
