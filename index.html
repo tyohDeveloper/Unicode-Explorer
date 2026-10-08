@@ -49,6 +49,9 @@
           <input type="checkbox" id="chk-nonvis" data-testid="checkbox-controls-nonvisible" />
           Include non-visible
         </label>
+        <label class="toggle-label" for="chk-bold" title="Bold output. Genuine bold faces load with the Serif and Sans font packs; other scripts get the browser's synthesised bold."><input type="checkbox" id="chk-bold" data-testid="checkbox-controls-bold" /><strong>B</strong></label>
+        <label class="toggle-label" for="chk-italic" title="Italic output. Genuine italic faces load with the Serif and Sans font packs; other scripts get the browser's synthesised oblique."><input type="checkbox" id="chk-italic" data-testid="checkbox-controls-italic" /><em>I</em></label>
+        <label class="toggle-label" for="chk-nosynth" title="Show synthesis: turn off the browser's fake bold and oblique, so characters without a genuine styled face stay regular"><input type="checkbox" id="chk-nosynth" data-testid="checkbox-controls-nosynth" />No synthesis</label>
         <label class="toggle-label" for="chk-placeholders" title="Draw a Last Resort block symbol in place of characters no listed font renders on this device">
           <input type="checkbox" id="chk-placeholders" data-testid="checkbox-controls-placeholders" />
           Placeholders
@@ -77,6 +80,7 @@
         <input type="search" id="name-filter" data-testid="input-controls-namefilter" placeholder="name, alias, U+2603 or &#x2603;" title="Search the selected blocks by character name or alias (substring), code point (U+2603, 2603), or the character itself" />
       </div>
       <div id="action-btns">
+        <button type="button" class="btn-sm" id="btn-css" data-testid="button-controls-css" title="CSS another programmer can use for the same coverage in their own app">CSS for selection</button>
         <button type="button" class="btn-secondary" id="btn-copy" data-testid="button-controls-copy">Copy output</button>
       </div>
     </div>
@@ -122,6 +126,15 @@
     One file, no network, nothing stored on the device; the URL fragment carries the view state.
     Source and other editions: <a href="https://github.com/tyohDeveloper/Unicode-Explorer" target="_blank" rel="noopener">github.com/tyohDeveloper/Unicode-Explorer</a> (application code MIT).</p>
   <div id="about-dynamic"></div>
+</dialog>
+
+<dialog id="css-dialog" data-testid="dialog-css-main" aria-labelledby="css-title">
+  <div id="css-head">
+    <h2 id="css-title">CSS for this selection</h2>
+    <button type="button" class="btn-sm" id="css-close" data-testid="button-css-close">Close</button>
+  </div>
+  <p>Paste into your own page to show the selected blocks with similar coverage. The web-font form uses pinned public font URLs (no files from this app) and behaves the same everywhere; the no-download form names only fonts installed on this device.</p>
+  <div id="css-body"></div>
 </dialog>
 
 <script type="module" src="/src/main.ts"></script>

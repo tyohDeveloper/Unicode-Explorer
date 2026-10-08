@@ -3,7 +3,7 @@ import cjkLocales from "../data/cjk-locales.json";
 import { makeElement } from "./makeElement.js";
 import type { SettingsStore } from "./settings/settingsStore.js";
 import type { DisplayMode, Presentation, Settings } from "./state/settings.js";
-import { setLang, setMode, setNameFilter, setNonVisible, setPlaceholders, setPresentation, setSize } from "./state/settingsActions.js";
+import { setLang, setMode, setNameFilter, setNonVisible, setPlaceholders, setPresentation, setSize, setTextStyle } from "./state/settingsActions.js";
 
 export interface ControlElements {
   modes: HTMLInputElement[];
@@ -11,6 +11,9 @@ export interface ControlElements {
   placeholders: HTMLInputElement;
   lang: HTMLSelectElement;
   presentation: HTMLSelectElement;
+  bold: HTMLInputElement;
+  italic: HTMLInputElement;
+  noSynthesis: HTMLInputElement;
   slider: HTMLInputElement;
   sizeValue: HTMLElement;
   nameFilter: HTMLInputElement;
@@ -34,6 +37,9 @@ export function wireControls(el: ControlElements, store: SettingsStore): void {
   el.placeholders.addEventListener("change", () => store.dispatch(setPlaceholders(el.placeholders.checked)));
   el.lang.addEventListener("change", () => store.dispatch(setLang(el.lang.value)));
   el.presentation.addEventListener("change", () => store.dispatch(setPresentation(el.presentation.value as Presentation)));
+  el.bold.addEventListener("change", () => store.dispatch(setTextStyle({ bold: el.bold.checked })));
+  el.italic.addEventListener("change", () => store.dispatch(setTextStyle({ italic: el.italic.checked })));
+  el.noSynthesis.addEventListener("change", () => store.dispatch(setTextStyle({ noSynthesis: el.noSynthesis.checked })));
   el.slider.addEventListener("input", () => store.dispatch(setSize(Number(el.slider.value))));
   wireNameFilter(el.nameFilter, store);
 }
@@ -44,6 +50,9 @@ export function reflectControls(el: ControlElements, s: Settings): void {
   el.placeholders.checked = s.placeholders;
   if (el.lang.value !== s.lang) el.lang.value = s.lang;
   if (el.presentation.value !== s.presentation) el.presentation.value = s.presentation;
+  el.bold.checked = s.bold;
+  el.italic.checked = s.italic;
+  el.noSynthesis.checked = s.noSynthesis;
   el.slider.value = String(s.size);
   el.sizeValue.textContent = `${s.size}px`;
   if (el.nameFilter.value !== s.nameFilter && document.activeElement !== el.nameFilter) el.nameFilter.value = s.nameFilter;

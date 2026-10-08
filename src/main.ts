@@ -5,6 +5,8 @@
  * the embedded fonts to load, and the pack catalogue to load or fail.
  */
 import { wireAbout } from "./about.js";
+import { wireCssDialog } from "./cssDialog.js";
+import type { GlyphProbe } from "./fonts/glyphProbe.js";
 import { wireComposePad } from "./composePad.js";
 import { buildLangOptions, reflectControls, wireControls, type ControlElements } from "./controls.js";
 import { wireCopyOutput } from "./copyOutput.js";
@@ -43,6 +45,9 @@ function controlElements(): ControlElements {
     placeholders: byId("chk-placeholders"),
     lang: byId("cjk-lang"),
     presentation: byId("presentation"),
+    bold: byId("chk-bold"),
+    italic: byId("chk-italic"),
+    noSynthesis: byId("chk-nosynth"),
     slider: byId("font-size-slider"),
     sizeValue: byId("font-size-val"),
     nameFilter: byId("name-filter"),
@@ -82,13 +87,17 @@ function reflectAll(views: Views, settings: Settings): void {
   views.outputEl.output.classList.toggle("placeholders", settings.placeholders);
   views.outputEl.output.classList.toggle("emoji-text", settings.presentation === "text");
   views.outputEl.output.classList.toggle("emoji-color", settings.presentation === "emoji");
+  views.outputEl.output.classList.toggle("text-bold", settings.bold);
+  views.outputEl.output.classList.toggle("text-italic", settings.italic);
+  views.outputEl.output.classList.toggle("no-synthesis", settings.noSynthesis);
   if (settings.lang) views.outputEl.output.setAttribute("lang", settings.lang); else views.outputEl.output.removeAttribute("lang");
 }
 
 /** A pack finished loading or failed: refresh the stack (new families), the status line, and the view. */
 function onPacksChanged(views: Views, store: SettingsStore, fonts: { apply(id: string): void }, packs: FontPackLoader, render: () => void): void {
   views.statFonts.textContent = packStatusText(packs.statuses());
-  if (packs.families().length) { fonts.apply(store.get().font); render(); }
+  fonts.apply(store.get().font);
+  render();
 }
 
 function subscribe(store: SettingsStore, views: Views, fonts: { apply(id: string): void }, packs: FontPackLoader, render: () => void): void {
@@ -96,11 +105,16 @@ function subscribe(store: SettingsStore, views: Views, fonts: { apply(id: string
     reflectAll(views, next);
     syncHash(next);
     if (next.font !== previous.font) fonts.apply(next.font);
+    if (next.font !== previous.font || next.bold !== previous.bold || next.italic !== previous.italic) packs.ensureForStyle(next.font, next.bold || next.italic);
     if (next.blocks !== previous.blocks) packs.ensureForBlocks(next.blocks);
     if (needsFullRender(next, previous)) render();
     else if (next.size !== previous.size) views.outputEl.output.style.fontSize = `${next.size}px`;
   });
   window.addEventListener("hashchange", () => store.dispatch(hydrateSettings(decodeHashState(location.hash))));
+}
+
+function wireExtras(store: SettingsStore, probe: GlyphProbe, current: () => RenderHandle | null): void {
+  wireCssDialog(byId("btn-css"), { items: () => current()?.items ?? [], settings: () => store.get(), probe });
 }
 
 function wireOutput(output: HTMLElement, pad: { insert(t: string): void }, current: () => RenderHandle | null): void {
@@ -117,6 +131,7 @@ function firstPaint(settings: Settings, views: Views, fonts: { apply(id: string)
   reflectAll(views, settings);
   syncHash(settings);
   packs.ensureForBlocks(settings.blocks);
+  packs.ensureForStyle(settings.font, settings.bold || settings.italic);
   draw();
 }
 
@@ -133,6 +148,7 @@ async function start(): Promise<void> {
   const views = buildViews(store, packs, () => plainText(handle?.items ?? []));
   const draw = () => { handle = renderOutput(views.outputEl, store.get(), ctx, handle); };
   wireOutput(views.outputEl.output, pad, () => handle);
+  wireExtras(store, probe, () => handle);
   render = createRenderScheduler(draw);
   store.dispatch(hydrateSettings(decodeHashState(location.hash)));
   subscribe(store, views, fonts, packs, render);

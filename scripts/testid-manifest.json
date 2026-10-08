@@ -29,7 +29,13 @@
     "dialog-about-main",
     "button-about-close",
     "select-controls-presentation",
-    "button-skip-output"
+    "button-skip-output",
+    "checkbox-controls-bold",
+    "checkbox-controls-italic",
+    "checkbox-controls-nosynth",
+    "button-controls-css",
+    "dialog-css-main",
+    "button-css-close"
   ],
   "dynamic": [
     "radio-font-<id>",
@@ -42,6 +48,10 @@
     "table-output-main",
     "text-output-plain",
     "table-about-fonts",
-    "text-about-packs"
+    "text-about-packs",
+    "text-css-<form>",
+    "button-css-copy-<form>",
+    "radio-css-<order>",
+    "text-css-summary"
   ]
 }

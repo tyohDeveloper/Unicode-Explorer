@@ -267,3 +267,17 @@ button:active { opacity: 0.7; }
 #presentation { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 3px 6px; font-size: 0.8rem; }
 .skip-link { position: absolute; left: 8px; top: -40px; z-index: 10; background: var(--accent2); color: #fff; border: 0; border-radius: var(--radius); padding: 6px 12px; font: inherit; }
 .skip-link:focus { top: 8px; }
+#output.text-bold .glyph, #output.text-bold .gc, #output.text-bold .td-ch { font-weight: 700; }
+#output.text-italic .glyph, #output.text-italic .gc, #output.text-italic .td-ch { font-style: italic; }
+#output.no-synthesis { font-synthesis: none; }
+
+/* CSS for this selection dialog */
+#css-dialog { background: var(--panel); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px 24px; max-width: 900px; width: calc(100% - 40px); max-height: calc(100% - 40px); overflow: auto; font-size: 0.85rem; }
+#css-dialog::backdrop { background: rgba(0, 0, 0, 0.6); }
+#css-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 8px; }
+#css-dialog h2 { font-size: 1.1rem; color: #fff; }
+#css-dialog p { margin: 6px 0; }
+.css-order { display: flex; gap: 12px; align-items: center; margin: 8px 0; }
+.css-summary { color: var(--accent-text); }
+.css-head { display: flex; align-items: center; justify-content: space-between; margin: 12px 0 4px; }
+.css-out { width: 100%; font-family: var(--mono); font-size: 0.72rem; background: var(--bg); color: var(--text); border: 1px solid var(--border); border-radius: var(--radius); padding: 8px; resize: vertical; }
