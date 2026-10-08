@@ -1,7 +1,7 @@
 {
   "_doc": "Size baseline for scripts/verify-build.mjs (CODING-STANDARDS §7.6). Update only in a reviewed commit that says what moved it.",
-  "appVersion": "2.0.0.0",
-  "bytes": 2795352,
-  "gzipBytes": 1985453,
-  "note": "Phase 4 baseline: Standard edition embeds Unifont 17.0.05 (912,116 B), Unifont Upper (609,400 B), LastResort 18.000 full build (242,224 B) and Adobe Blank 2 (1,488 B) as data: URLs, plus OFL license texts for the About dialog. Up from 365,040 bytes / 239,926 gzip at 1.2.0.0; the fonts are 1.77 MB of the 2.8 MB."
+  "appVersion": "2.1.0.0",
+  "bytes": 2914679,
+  "gzipBytes": 2027955,
+  "note": "Phase 5 baseline: lazy rendering, tiered probe, search with aliases (src/data/aliases.json, 9 KB), CSS dialog with data/web-fonts.json (63 KB, ranges compressed), Bold/Italic and style-pack wiring. Up from 2,795,352 bytes / 1,985,453 gzip at 2.0.0.0."
 }
