@@ -23,7 +23,7 @@ const run = (cmd, args) => execFileSync(cmd, args, { cwd: root, stdio: "inherit"
 run("npm", ["run", "-s", "generate:data"]);
 run("npm", ["run", "-s", "build:bundle"]);
 
-const files = ["src/data/blocks.json", "src/data/unassigned.json", "src/data/names.json", "Unicode.html"];
+const files = ["src/data/blocks.json", "src/data/unassigned.json", "src/data/names.json", "src/data/visibility.json", "src/data/marks.json", "src/data/abbreviations.json", "Unicode.html"];
 const stale = files.filter((f) => committed(f) !== sha(readFileSync(resolve(root, f))));
 if (stale.length) {
   console.error(`verify:regenerated FAILED — committed files differ from regenerated output: ${stale.join(", ")}. Run npm run generate:data && npm run build:bundle and commit the result with its source change.`);
