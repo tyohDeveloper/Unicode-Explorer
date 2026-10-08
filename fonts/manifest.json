@@ -11,7 +11,8 @@
     "stack_rule": "Device fonts first, embedded coverage fonts second; placeholder and detection fonts are applied per cell by detection and never appear in the global font-family list (PLAN.md D-6).",
     "egyptian": "No Egyptian-hieroglyph font ships in standard or complete (PLAN.md D-4). Candidates are listed under candidates and are not fetched by default.",
     "delivery": "Standard fonts embed in Unicode.html as data: URLs with unicode-range descriptors. Complete fonts ship as classic-script sidecar packs under unicode-fonts/ (one per pack, base64 data: URL registered via FontFace), loaded on demand per selected block and failing softly when absent (ADR-0001, PLAN D-10).",
-    "style_packs": "Style packs (D-14) carry the Unicode Font Kit's unicode-serif and unicode-sans stacks, restricted to OFL fonts: DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded by licences_allowed; Noto CJK is excluded for size (device CJK fonts, Unifont and the Jigmo packs cover it). They load when the Serif or Sans button is chosen; the 'styled' packs load only when Bold or Italic is on."
+    "style_packs": "Style packs (D-14) carry the Unicode Font Kit's unicode-serif and unicode-sans stacks, restricted to OFL fonts: DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded by licences_allowed; Noto CJK is excluded for size (device CJK fonts, Unifont and the Jigmo packs cover it). They load when the Serif or Sans button is chosen; the 'styled' packs load only when Bold or Italic is on.",
+    "pack_size": "No pack exceeds 8 MiB (PLAN.md D-20): hosts may refuse or redirect large files, and the hosted test build redirects files over ~10 MB to another origin, which the CSP (script-src self) correctly blocks. Larger fonts are split by code-point ranges (\"subset\") at build time with fontTools, keeping all layout features; each piece registers with a unicode-range."
   },
   "editions": [
     {
@@ -49,7 +50,9 @@
       "embedded_font_bytes": 19295588,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
-        "cjk-ext-b-f",
+        "cjk-ext-b-1",
+        "cjk-ext-b-2",
+        "cjk-ext-c-f",
         "cjk-ext-g-j",
         "tangut",
         "cuneiform",
@@ -83,7 +86,9 @@
       "embedded_font_bytes": 25681924,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
-        "cjk-ext-b-f",
+        "cjk-ext-b-1",
+        "cjk-ext-b-2",
+        "cjk-ext-c-f",
         "cjk-ext-g-j",
         "tangut",
         "cuneiform",
@@ -100,8 +105,18 @@
   ],
   "packs": [
     {
-      "id": "cjk-ext-b-f",
-      "label": "CJK Unified Ideographs Extensions B–F, I and Compatibility Supplement",
+      "id": "cjk-ext-b-1",
+      "label": "CJK Unified Ideographs Extension B (part 1 of 2)",
+      "subset": [
+        [
+          "20000",
+          "2537F"
+        ]
+      ],
+      "blocks": [
+        "20000"
+      ],
+      "bytes": 5825118,
       "fonts": [
         "jigmo2"
       ],
@@ -116,8 +131,47 @@
         "complete",
         "complete-hieroglyphs"
       ],
+      "kind": "blocks"
+    },
+    {
+      "id": "cjk-ext-b-2",
+      "label": "CJK Unified Ideographs Extension B (part 2 of 2)",
+      "subset": [
+        [
+          "25380",
+          "2A6DF"
+        ]
+      ],
       "blocks": [
-        "20000",
+        "20000"
+      ],
+      "bytes": 6282978,
+      "fonts": [
+        "jigmo2"
+      ],
+      "categories": [
+        "East Asian"
+      ],
+      "license_files": [
+        "fonts/licenses/Jigmo-NOTICE.txt",
+        "fonts/licenses/CC0-1.0.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "kind": "blocks"
+    },
+    {
+      "id": "cjk-ext-c-f",
+      "label": "CJK Unified Ideographs Extensions C–F, I and Compatibility Supplement",
+      "subset": [
+        [
+          "2A700",
+          "2FA1F"
+        ]
+      ],
+      "blocks": [
         "2A700",
         "2B740",
         "2B820",
@@ -125,7 +179,21 @@
         "2EBF0",
         "2F800"
       ],
-      "bytes": 17302074,
+      "bytes": 5427342,
+      "fonts": [
+        "jigmo2"
+      ],
+      "categories": [
+        "East Asian"
+      ],
+      "license_files": [
+        "fonts/licenses/Jigmo-NOTICE.txt",
+        "fonts/licenses/CC0-1.0.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
       "kind": "blocks"
     },
     {
@@ -266,8 +334,14 @@
         "13430",
         "13460"
       ],
-      "bytes": 8515342,
-      "kind": "blocks"
+      "bytes": 4475497,
+      "kind": "blocks",
+      "subset": [
+        [
+          "13000",
+          "143FF"
+        ]
+      ]
     },
     {
       "id": "serif",
