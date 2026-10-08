@@ -15,11 +15,14 @@ import { readCmap } from "./readCmap.js";
 
 async function sourceBytes(cacheDir: string, font: FontEntry): Promise<Uint8Array> {
   const path = resolve(cacheDir, `${font.id}.source.${font.source.format.split("/")[0]}`);
-  const bytes = existsSync(path) ? new Uint8Array(readFileSync(path)) : await downloadBytes(font.source.url);
+  // An unpinned source (sha256 null: new font or new version) always downloads; a cached file
+  // is only trusted against a pin, so an old version can never be pinned to a new URL.
+  const cached = !!font.source.sha256 && existsSync(path);
+  const bytes = cached ? new Uint8Array(readFileSync(path)) : await downloadBytes(font.source.url);
   const sha = sha256Hex(bytes);
   if (font.source.sha256 && font.source.sha256 !== sha) throw new Error(`${font.id}: upstream sha256 ${sha} does not match pinned ${font.source.sha256}`);
   if (!font.source.sha256) { font.source.sha256 = sha; font.source.bytes = bytes.length; delete font.source.note; }
-  if (!existsSync(path)) writeFileSync(path, bytes);
+  if (!cached) writeFileSync(path, bytes);
   return bytes;
 }
 
