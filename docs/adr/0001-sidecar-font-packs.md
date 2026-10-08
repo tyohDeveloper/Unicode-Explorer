@@ -1,7 +1,8 @@
 # ADR-0001: Sidecar font packs with soft failure
 
-Status: **accepted 2026-10-08** (owner decision). Supersedes the packaging in PLAN.md D-2 and
-D-3; the font set and the licensing are unchanged.
+Status: **implemented in app 2.0.0.0** (2026-10-08); accepted 2026-10-08 (owner decision).
+Supersedes the packaging in PLAN.md D-2 and D-3; the font set and the licensing are unchanged
+except that the placeholder font is the full Last Resort build (PLAN.md D-11).
 
 ## Context
 
@@ -55,3 +56,18 @@ carrier is therefore the portable choice.
 - The no-network rule is restated: zero requests to any origin other than the artifact's own
   location; sibling packs are same-location requests and must fail softly.
 - Base64 adds one third to pack bytes; accepted because packs are opt-in per block.
+
+## Implementation notes (2.0.0.0)
+
+- `tools/fonts/buildPacks.ts` writes `unicode-fonts/<pack>.js` (base64 WOFF2 under
+  `window.UnicodeExplorerFontPackData[id]`), a per-edition `unicode-fonts/manifest.js`
+  (`window.UnicodeExplorerFontPacks`) inside each zip, and a development catalogue listing every
+  pack beside the packs in the checkout. Both directories are git-ignored; the zips are release
+  assets built by `.github/workflows/release.yml` on an app tag.
+- Runtime: `src/fonts/fontPacks.ts` injects `unicode-fonts/manifest.js` relative to the
+  document at start-up; `error` means "no packs" and the status line stays empty. When the
+  selection touches a pack's blocks, the pack script is injected, its fonts are registered with
+  the FontFace API from decoded bytes, the font stack and glyph probe are refreshed, and the view
+  re-renders. A missing pack reports "Font pack unavailable: …" and nothing else changes.
+- Block attachment follows PLAN.md D-13. Playwright covers a real pack built from the vendored
+  Last Resort font and a listed-but-absent pack (`tests/e2e/fixtures.ts`).

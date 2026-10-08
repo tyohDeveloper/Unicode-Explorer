@@ -19,7 +19,7 @@ repository under the same standards, build chain, and release discipline as
 
 | ID | Decision | Rationale |
 |---|---|---|
-| D-1 | **Standard** edition is the default artifact. It embeds GNU Unifont, Unifont Upper, and Last Resort HE. | Guarantees every visible Basic Multilingual Plane character (77,874 code points, 48.9% of all visible Unicode 17 characters) and eliminates anonymous boxes, at about 2.4 MiB. |
+| D-1 | **Standard** edition is the default artifact. It embeds GNU Unifont, Unifont Upper, Last Resort (full build, see D-11) and Adobe Blank 2. | Guarantees every visible Basic Multilingual Plane character (77,874 code points, 48.9% of all visible Unicode 17 characters) and offers a labelled placeholder for the rest, at 2.8 MB (1.77 MB of fonts). |
 | D-2 | **Complete** edition is a release asset, not the default (packaging superseded by D-10). It adds Jigmo2, Jigmo3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, and Noto Serif Tangut. | 154,164 code points (96.7%), about 24.7 MiB. Too large for routine use or Git history; right as a tagged download. |
 | D-3 | **Complete + Hieroglyphs** edition is a second release asset (packaging superseded by D-10). It is Complete plus UniHieroglyphica. | 159,230 code points (99.9%), about 32.9 MiB. UniHieroglyphica covers the whole Egyptian repertoire, basic block and Extended-A (5,066 characters), in one OFL font. |
 | D-4 | No Egyptian-hieroglyph font ships in Standard or Complete, and no hieroglyph-specific feature is built. Candidate fonts (NewGardiner, Noto Sans Egyptian Hieroglyphs) are recorded in `fonts/manifest.json` as side assets for possible later inclusion. | Owner decision, 2026-10-08. |
@@ -29,6 +29,9 @@ repository under the same standards, build chain, and release discipline as
 | D-9 | The built `Unicode.html` stays committed at the repository root, verified against source by a regeneration check in CI. Release assets are attached in addition. | Resolves Q-5. Keeps the "open the file from GitHub" path working while CI guarantees the copy is honest. |
 | D-10 | **Sidecar font packs with soft failure** ([ADR-0001](adr/0001-sidecar-font-packs.md)). `Unicode.html` stays Standard and self-contained. Complete fonts ship as a sibling `unicode-fonts/` directory of classic-script packs loaded on demand per selected block; absent packs degrade to Standard with a status note. Release assets become `Unicode.html`, `Unicode-Explorer-Complete.zip`, and `Unicode-Explorer-Complete-Hieroglyphs.zip`. Supersedes the single-file packaging of D-2 and D-3; fonts and licenses unchanged. | Owner decision, 2026-10-08, after the Chromium `file://` and HTTP measurements in the ADR. |
 | D-6 | Last Resort is never placed in the global font stack. It is applied per cell, by detection, to characters the device and embedded fonts cannot render. | A font covering every code point anywhere in a `font-family` list stops the browser from reaching device fonts that are not named. Per-cell application keeps device fallback and still shows a block placeholder. |
+| D-11 | The placeholder font is the **full** Last Resort 18.000 build (242 KB as WOFF2), not the "HE" build the audit chose (136 KB). | Measured 2026-10-08 in Chromium: the HE build's cmap format 13 subtable yields no glyphs as a web font, even for BMP characters, so placeholders would silently be the browser's own box. The full build uses a format 12 cmap and renders every code point. HE stays in `fonts/manifest.json` under `candidates`. |
+| D-12 | Detection reports **verified** (a listed font renders the character) or **unverified** (no listed font does), never "missing". Unverified cells are outlined; Last Resort placeholders are an opt-in toggle (`p=1` in the hash), off by default. | The probe can only see fonts named in the stack: a stack terminated by Adobe Blank 2 never reaches system fallback, and Chromium's tofu metrics vary by code point (measured), so no heuristic can tell "the device found a font we did not name" from "nothing rendered". Forcing a placeholder on an unverified cell could therefore hide a real glyph. Naming known device fonts per script (`data/device-fonts.json`) shrinks the unverified set honestly. |
+| D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
 ### Open
 
@@ -36,7 +39,8 @@ repository under the same standards, build chain, and release discipline as
 |---|---|---|
 | Q-4 | Upgrade to Unicode 18 before or after the module migration | After Phase 2, so the upgrade runs through regeneration and verification checks. |
 | Q-7 | Data-track versioning | One data track covering the Unicode Character Database snapshot and the font manifest. Tag the current Unicode 17 build `1.0.0.0-data`; the Unicode 18 upgrade is `2.0.0.0-data`. |
-| Q-8 | Jigmo (the Basic Multilingual Plane file, 7.1 MiB) in Complete | Exclude. Unifont already covers those code points, and most devices have outline CJK fonts for the BMP. Revisit if detection shows BMP CJK falling through to Unifont on target devices. |
+| Q-8 | Jigmo (the Basic Multilingual Plane file, 7.1 MiB) in Complete | Excluded in Phase 4 (only Jigmo2 and Jigmo3 are packed). Revisit if the coverage readout shows BMP CJK unverified on target devices. |
+| Q-10 | Script-aware style stacks via `@font-face local()` + `unicode-range` composition (GLY-03, second half) | Deferred from Phase 4. Phase 4 names device fonts per script in `data/device-fonts.json` instead, which fixes detection credit and most fallback order; composing local() faces is a quality step for Phase 5 or later. |
 
 ## Editions
 
@@ -47,9 +51,11 @@ Unicode 17 characters. "Font bytes" are WOFF2 sizes; packs carry one third more 
 
 | Edition | Fonts | Guaranteed glyphs | Font bytes (WOFF2) | HTML estimate |
 |---|---|---:|---:|---:|
-| Standard (default) | Unifont 17.0.05, Unifont Upper 17.0.05, Last Resort HE 18.000 embedded | 77,874 (48.9%) + placeholders | 1,621,300 | `Unicode.html` ~2.4 MiB |
-| Complete | Standard + packs: Jigmo2, Jigmo3 (2025-09-12), Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut | 154,164 (96.7%) | 19,152,512 | zip; packs ~23 MiB, loaded per block |
-| Complete + Hieroglyphs | Complete + UniHieroglyphica 19.000 pack | 159,230 (99.9%) | 25,537,076 | zip; packs ~32 MiB, loaded per block |
+| Standard (default) | Unifont 17.0.05, Unifont Upper 17.0.05, Last Resort 18.000 (full build), Adobe Blank 2 embedded | 77,874 (48.9%) + placeholders | 1,765,228 | `Unicode.html` 2,795,352 bytes (gzip 1,985,453) |
+| Complete | Standard + packs: Jigmo2, Jigmo3 (2025-09-12), Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut | 154,164 (96.7%) | 19,191,092 | `unicode-explorer-complete-<app>.zip` 18.3 MB; packs 23.4 MB on disk, loaded per block |
+| Complete + Hieroglyphs | Complete + UniHieroglyphica 19.000 pack | 159,230 (99.9%) | 25,577,428 | `unicode-explorer-complete-hieroglyphs-<app>.zip` 24.9 MB; packs 31.9 MB on disk |
+
+Measured by `tools/fonts/buildPacks.ts` (2026-10-08) and recorded in `fonts/manifest.json`.
 
 Remaining gap after Complete + Hieroglyphs: 145 Tangut characters added in Unicode 17 (115 in
 Tangut Components Supplement, 22 in Tangut Supplement, 8 in Tangut) for which no font was
@@ -149,6 +155,22 @@ Findings: GLY-01 to GLY-06, DAT-02.
 
 Acceptance: measured coverage per edition matches the table above within the tolerance of
 detection; Playwright asserts each edition loads its fonts with zero network requests.
+
+Status 2026-10-08: delivered as app 2.0.0.0 / data 1.1.0.0, with two changes of plan recorded
+as D-11 (full Last Resort build; the HE build renders nothing in Chromium), D-12 (detection
+says verified/unverified, placeholders opt-in) and D-13 (pack attachment rule). Delivered:
+`tools/fonts/` (fetch, pin, convert with wawoff2, measure with fontkit, embed, pack, zip);
+Standard fonts vendored in `fonts/standard/` and reproducible from pinned upstream bytes;
+`unicode-fonts/` packs and both zips built by `npm run build:packs` and attached by the
+`release` workflow; on-demand loading per selected block with a status line and soft failure;
+canvas glyph probe with Adobe Blank 2 (ink or advance), coverage per block and in the status
+bar, placeholders toggle; marks on U+25CC; labelled boxes from `NameAliases.txt`
+abbreviations or kind; visibility generated from General_Category, Default_Ignorable_Code_Point
+and Prepended_Concatenation_Mark (DAT-02 closed; the hand list is gone); CJK locale selector;
+About dialog with embedded font provenance and license texts; 137 device font families named
+per script in `data/device-fonts.json`. Deferred: `local()`-composed script-aware stacks (Q-10).
+Findings closed: GLY-01, GLY-02, GLY-04, GLY-05, GLY-06, DAT-02; GLY-03 partially (device fonts
+named; stack order unchanged).
 
 ### Phase 5: Scale and accessibility
 

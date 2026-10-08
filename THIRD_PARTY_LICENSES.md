@@ -3,21 +3,33 @@
 Code in this repository is MIT (see [`LICENSE`](LICENSE)). The built artifact also ships the
 following third-party material. Fonts keep their own licenses; MIT does not relicense them.
 
-## Shipped in `Unicode.html` today
+## Shipped in `Unicode.html` (Standard edition)
 
-None. Since 1.2.0.0 the artifact contains only first-party code; the character-name table is
-unpacked by the browser's built-in `DecompressionStream`. Build-time tools (Vite, esbuild,
-html-minifier-terser, fflate, TypeScript) add nothing to the artifact.
+| Component | Version | License | Use | License text |
+|---|---|---|---|---|
+| [GNU Unifont](https://unifoundry.com/unifont/) and Unifont Upper | 17.0.05 | SIL Open Font License 1.1 (Unifont is dual-licensed GPL-2.0-or-later with font embedding exception / OFL-1.1; OFL elected) | Embedded glyph coverage for the Basic Multilingual Plane and parts of the supplementary planes | [`fonts/standard/licenses/Unifont-OFL-1.1.txt`](fonts/standard/licenses/Unifont-OFL-1.1.txt) (GPL text kept in `Unifont-LICENSE.txt` for reference) |
+| [Last Resort](https://github.com/unicode-org/last-resort-font) (Unicode, Inc.) | 18.000, full build | SIL Open Font License 1.1 | Per-cell placeholder naming the block of an unverified character (Placeholders toggle) | [`fonts/standard/licenses/LastResort-LICENSE.txt`](fonts/standard/licenses/LastResort-LICENSE.txt) |
+| [Adobe Blank 2](https://github.com/adobe-fonts/adobe-blank-2) | 1.045 | SIL Open Font License 1.1 | Terminal font of the glyph-detection stack; never displayed | [`fonts/standard/licenses/AdobeBlank2-LICENSE.txt`](fonts/standard/licenses/AdobeBlank2-LICENSE.txt) |
 
-## Fonts (embedded from Phase 4; see `fonts/manifest.json`)
+The About dialog inside the artifact shows these license texts. No third-party code ships in
+the artifact; the character-name table is unpacked by the browser's built-in
+`DecompressionStream`.
 
-| Font | License | Edition |
-|---|---|---|
-| GNU Unifont, Unifont Upper | SIL Open Font License 1.1 (dual-licensed; OFL elected) | Standard, Complete, Complete + Hieroglyphs |
-| Last Resort HE (Unicode, Inc.) | SIL Open Font License 1.1 | Standard, Complete, Complete + Hieroglyphs |
-| Jigmo2, Jigmo3 | CC0 1.0 | Complete, Complete + Hieroglyphs |
-| Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut | SIL Open Font License 1.1 | Complete, Complete + Hieroglyphs |
-| UniHieroglyphica | SIL Open Font License 1.1 | Complete + Hieroglyphs |
-| Adobe Blank 2 | SIL Open Font License 1.1 | All editions (glyph detection only; renders nothing) |
+## Shipped in the font-pack zips (Complete editions)
 
-Each edition artifact embeds the full license text of every font it contains.
+| Font | Version | License | Edition | License text in zip (`unicode-fonts/LICENSES/`) |
+|---|---|---|---|---|
+| [Jigmo2, Jigmo3](https://kamichikoichi.github.io/jigmo/) (Kamichi Koichi) | 2025-09-12 | CC0 1.0 | Complete, Complete + Hieroglyphs | `Jigmo-NOTICE.txt`, `CC0-1.0.txt` |
+| [Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut](https://notofonts.github.io/) | notofonts.github.io @ 47acfd38 | SIL Open Font License 1.1 | Complete, Complete + Hieroglyphs | `Noto-OFL-1.1.txt` |
+| [UniHieroglyphica](https://github.com/thesaurus-linguae-aegyptiae/UniHieroglyphica) | 19.000 | SIL Open Font License 1.1 | Complete + Hieroglyphs | `UniHieroglyphica-OFL-1.1.txt` |
+
+Fonts are converted to WOFF2 without other changes. Full provenance (URL, SHA-256 of the
+upstream file and of the conversion, measured coverage) is in
+[`fonts/manifest.json`](fonts/manifest.json).
+
+## Build-time tools (not shipped)
+
+Vite, esbuild, html-minifier-terser, fflate, TypeScript, Vitest, Playwright,
+[fontkit](https://github.com/foliojs/fontkit) (MIT; reads character maps) and
+[wawoff2](https://github.com/fontello/wawoff2) (MIT; Google's woff2 encoder compiled to
+WebAssembly) run only in the toolchain.

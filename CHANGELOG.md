@@ -9,6 +9,62 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.0.0.0] — 2026-10-08
+
+Glyph coverage (Phase 4 of `docs/PLAN.md`): the first edition that carries its own fonts. The
+Standard `Unicode.html` is 2,795,352 bytes (gzip 1,985,453); 1.77 MB of that is fonts.
+
+### Added
+
+- **Embedded fonts.** GNU Unifont 17.0.05 and Unifont Upper (OFL) give every visible Basic
+  Multilingual Plane character and 77,874 characters overall a glyph on any device; Last Resort
+  18.000 (OFL) supplies a block-naming placeholder; Adobe Blank 2 (OFL) is the detection font.
+  Each is a `data:` URL with a measured `unicode-range`; license texts ship in the About dialog.
+- **Glyph detection and coverage readout.** A canvas probe checks each character against the
+  font list in use. The status bar and block headings report verified and unverified counts;
+  unverified cells are outlined. A **Placeholders** toggle (`p=1` in the hash) draws Last Resort
+  symbols for them (audit GLY-01, GLY-02, GLY-05).
+- **Sidecar font packs** (ADR-0001): `unicode-fonts/manifest.js` plus one classic script per
+  pack, loaded only when a selected block needs one, with a status line and soft failure when the
+  directory is absent. Two release assets: `unicode-explorer-complete-<version>.zip` (Jigmo2,
+  Jigmo3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif
+  Tangut; 154,164 characters, 96.7%) and `unicode-explorer-complete-hieroglyphs-<version>.zip`
+  (adds UniHieroglyphica; 159,230, 99.9%), built and attached by the new `release` workflow.
+- **Device fonts named per script.** 137 families (Windows, Apple, Noto) follow the style stack
+  so detection credits them and the browser prefers them to the embedded bitmaps (GLY-03, part).
+- **Combining marks** are drawn on a dotted circle (U+25CC) and still insert bare (GLY-06).
+- **Labelled boxes** for non-visible characters when "Include non-visible" is on: the Unicode
+  abbreviation (NUL, SHY, ZWJ, VS16…) or a kind label (CTRL, FMT, PUA, SURR, SEP, IGN, NCHR) (GLY-04).
+- **CJK locale selector** (Auto, zh-Hans, zh-Hant, zh-HK, ja, ko, vi) sets `lang` on the output
+  for locale-specific ideograph forms; `l=` in the hash.
+- **About dialog**: versions, embedded fonts with version, license and visible-glyph counts,
+  font-pack status, license texts.
+- Tooling: `npm run fetch:fonts` (download, pin SHA-256, extract, convert to WOFF2 with wawoff2,
+  measure with fontkit), `npm run build:packs` (packs, catalogues, zips, measured coverage
+  written back to `fonts/manifest.json`), `generate:fonts-css` inside `build:bundle`.
+
+### Changed
+
+- **Visibility is derived from Unicode properties** (General_Category, Default_Ignorable_Code_Point,
+  Prepended_Concatenation_Mark, noncharacters) generated from the vendored UCD; the
+  hand-maintained range list is gone. Soft hyphen, CGJ, Hangul fillers, Mongolian vowel
+  separator, line/paragraph separators, Egyptian format controls and musical format characters
+  are now hidden by default; prepended concatenation marks (U+0600…) stay visible (DAT-02).
+- Changing the glyph font re-renders the output so detection follows the new stack.
+- The placeholder font is the full Last Resort build, not the "HE" build the audit chose: the HE
+  cmap (format 13) yields no glyphs in Chromium (PLAN D-11).
+- `verify:build` now rejects external *resource* loads (`src`, stylesheet `href`, CSS `url()`,
+  `@import`) rather than any URL-shaped text, so license notices and links may appear.
+- Early Dynastic Cuneiform moved from "Other Scripts & Supplements" to "Ancient & Historic
+  Scripts" in the sidebar.
+
+### Known limits
+
+- Detection cannot observe system font fallback. An unverified character may still render
+  correctly on your device; it is reported, not replaced, unless Placeholders is on (PLAN D-12).
+- 145 Tangut characters added in Unicode 17 have no glyph in any shipped or candidate font.
+- Script-aware `local()` composition of style stacks is deferred (PLAN Q-10).
+
 ## [1.2.0.0] — 2026-10-08
 
 Module migration (Phase 3 of `docs/PLAN.md`). Behaviour matches 1.1.0.0 except where noted;

@@ -20,10 +20,14 @@ The six rules most likely to be violated by accident:
    `scripts/testid-manifest.json` in the same change; generated IDs use the domain key (code
    point hex, category slug), never an index.
 5. **Fonts need provenance.** A font enters `fonts/manifest.json` with source URL, version,
-   SHA-256, license (OFL or CC0 only), and measured coverage, or it does not build. No
-   Egyptian-hieroglyph font ships in Standard or Complete (`PLAN.md` D-4).
+   SHA-256, license (OFL or CC0 only), and measured coverage, or it does not build. `npm run
+   fetch:fonts` is the only network step and pins hashes on first fetch; `fonts/cache/` and
+   `unicode-fonts/` are never committed; `fonts/standard/*.woff2` are vendored and must equal the
+   converter's output from the pinned upstream bytes. No Egyptian-hieroglyph font ships in
+   Standard or Complete (`PLAN.md` D-4).
 6. **Never put a full-coverage font (Last Resort, Adobe Blank) in the global font stack.** It
-   is applied per cell by detection (`PLAN.md` D-6).
+   is applied per cell by detection (`PLAN.md` D-6). Detection says verified or unverified,
+   never "missing": it cannot see system fallback (`PLAN.md` D-12).
 
 Verify with `npm run build && npm run verify:regenerated && npm run test:e2e`. All three must
 pass. Versions move only through `npm run release -- <app|data> <version>`, which requires a

@@ -34,14 +34,18 @@ URLs, never referenced by URL. Enforcement:
    URL outside user-initiated links, and fails the build on a hit.
 3. A Playwright test asserts no non-`file://` request fires on load or during use.
 
-The **build** may read the network only through `tools/fetch-fonts.mjs` (Phase 4), which
-downloads manifest entries into a git-ignored cache and verifies SHA-256. The Unicode Character
-Database files the build needs are vendored under `data/ucd/<version>/` with a hash manifest;
+The **build** may read the network only through `tools/fonts/fetchFonts.ts`, which downloads
+manifest entries into a git-ignored cache, pins their SHA-256 on first fetch and verifies it
+after, and is never part of `npm run build`: the Standard fonts are vendored in `fonts/standard/`
+and hash-checked against `fonts/manifest.json` at build time. The Unicode Character Database
+files the build needs are vendored under `data/ucd/<version>/` with a hash manifest;
 `tools/ucd/readUcdFile.ts` verifies every file and throws on any mismatch, so a degraded artifact
 is never written.
 
-Sibling font packs (ADR-0001, proposed) are the one permitted same-location load: classic
+Sibling font packs (ADR-0001, implemented) are the one permitted same-location load: classic
 scripts under `unicode-fonts/`, injected by the app on demand, failing softly when absent.
+`scripts/verify-build.mjs` rejects any `src`, stylesheet `href`, CSS `url()` or `@import` that
+points elsewhere; URLs may appear as text (license notices, the About dialog).
 
 ## 3. The no-storage rule
 
@@ -60,16 +64,20 @@ In outline:
 
 ```
 src/codepoint/*.ts    PURE-CORE   code point ↔ string, hex, sorted-range search, hex ranges
-src/ucd/*.ts          PURE        names (table → algorithmic → label), visibility, reserved, blocks
+src/ucd/*.ts          PURE        names (table → algorithmic → label), hidden kinds and labels, marks, display form, reserved, blocks
 src/selection/*.ts    PURE        collect code points, filter by name, group, sort, count
+src/coverage/*.ts     PURE        coverage summary per block and status text
+src/fonts/            PURE+CTRL   composeFontStack, packsForBlocks, packStatusText, standardFonts (pure); glyphProbe, fontPacks (controllers)
 src/names/            PURE+CTRL   decodeNameTable (pure) and loadNameTable (DecompressionStream)
 src/state/*.ts        STATE       Settings shape, action creators, reducer, URL-hash encode/decode
 src/settings/         CONTROLLER  settingsStore: the one mutable home of Settings
 src/clipboard/, src/render/  CONTROLLER  clipboard IO; render debounce
-src/*.ts              VIEW        sidebar, output, grid/table/plain renderers, controls, compose pad
+src/*.ts              VIEW        sidebar, output, grid/table/plain renderers, controls, glyph fonts, about, compose pad
 src/data/*.json       DATA        generated from the UCD; regeneration-checked
 data/*.json           DATA        authored tables; data/ucd/<version>/ vendored UCD + hashes
+fonts/                DATA        manifest.json (provenance, measurements, packs, editions); standard/ vendored WOFF2 + licenses
 tools/ucd/*.ts        build       UCD parsing and src/data generation (one export per file)
+tools/fonts/*.ts      build       fetch/pin/convert/measure fonts, embedded @font-face CSS, sidecar packs and zips
 scripts/*.mjs         build       minify-artifact, verify-build, verify-regenerated, check-standards, release
 ```
 
@@ -81,7 +89,21 @@ its textarea.
 
 Logic belongs in PURE. If a function can be written without touching the DOM, it goes there and
 it gets a unit test. Views render and wire events; they do not classify code points, resolve
-names, or compute coverage. Phase 4 adds `src/coverage/` (PURE) for detection and stack logic.
+names, or compute coverage.
+
+### Glyph coverage (Phase 4)
+
+The output font stack is `style stack, device fonts named per script, loaded packs, embedded
+coverage fonts` (PLAN.md D-6; `src/glyphFonts.ts`). The same stack, terminated by Adobe Blank 2,
+drives a canvas probe (`src/fonts/glyphProbe.ts`): ink or an advance means a listed font
+rendered the character ("verified"); nothing means no listed font did ("unverified" — the
+browser may still show it through system fallback, which the probe cannot observe; D-12).
+Unverified cells are outlined and counted per block and in the status bar; the Placeholders
+toggle switches them to the embedded Last Resort font. Results are cached per stack and the
+cache empties when the font selection or the set of loaded packs changes.
+
+Sidecar packs (ADR-0001) are the only resources the artifact ever requests: classic scripts at
+`unicode-fonts/…` relative to the document, injected at run time, failing softly.
 
 ## 5. Data
 
@@ -120,18 +142,23 @@ names, or compute coverage. Phase 4 adds `src/coverage/` (PURE) for detection an
 ## 7. Build chain
 
 `npm run build` = `check` → `check:standards` → `test:run` → `build:bundle` → `verify:build`,
-failing at the first stage error. `build:bundle` is `vite build` (esbuild-minified ES modules,
-inlined by `vite-plugin-singlefile`, `modulePreload` disabled because its polyfill injects
-`fetch()`) followed by `scripts/minify-artifact.mjs` (`html-minifier-terser` for HTML and CSS,
-CDATA wrapping, `crossorigin` removal) which writes `Unicode.html`. `npm run generate:data`
-rebuilds `src/data/*.json`. CI runs the identical build, then `verify:regenerated` (generated data
+failing at the first stage error. `build:bundle` is `generate:fonts-css` (`tools/fonts/embeddedFontsCss.ts`:
+the vendored Standard fonts, hash-checked against `fonts/manifest.json`, as `@font-face` data:
+URLs with measured `unicode-range` into `.generated/embedded-fonts.css`, which `src/style.css`
+imports) then `vite build` (esbuild-minified ES modules, inlined by `vite-plugin-singlefile`,
+`modulePreload` disabled because its polyfill injects `fetch()`) then `scripts/minify-artifact.mjs`
+(`html-minifier-terser` for HTML and CSS, CDATA wrapping, `crossorigin` removal) which writes
+`Unicode.html`. `npm run generate:data` rebuilds `src/data/*.json`. `npm run fetch:fonts` (the
+one network step; never part of `build`) fills `fonts/cache/` from pinned upstream sources and
+`npm run build:packs` turns the cache into `unicode-fonts/` packs and the edition zips in
+`dist/release/`; the `release` workflow runs both on an app tag and attaches the assets. CI runs the identical build, then `verify:regenerated` (generated data
 and artifact match HEAD), then Playwright as a separate job.
 
 `verify:build` enforces: no external URLs, no forbidden network or storage APIs, CSP present with
 `connect-src 'none'`, fonts only as `data:` URLs, strict-XML-parseable shell with CDATA-wrapped
 script and style bodies, no `]]>` in inlined bodies, full test-ID manifest coverage (both
 directions), version stamp agreeing with `package.json` and `data/version.json`, and gzip within
-5% of `scripts/build-baseline.json`. Phase 4 extends the baseline per edition.
+5% of `scripts/build-baseline.json` (the Standard artifact; packs and zips are not size-gated, their bytes are recorded in `fonts/manifest.json`).
 
 `check:standards` enforces §1.4 (purity of PURE and STATE), §3.1, §3.2, §3.3, §3.8, §3.9, and
 §11 of the coding standards over the §0 mapping using the TypeScript AST; a file matching no

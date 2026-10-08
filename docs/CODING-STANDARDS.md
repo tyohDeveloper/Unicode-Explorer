@@ -36,12 +36,12 @@ fails the build.
 
 | Layer role | This repository's paths |
 |---|---|
-| **VIEW** | `src/*.ts` — `main.ts`, `sidebar.ts`, `sidebarSearch.ts`, `categoryCheckbox.ts`, `output.ts`, `renderGrid.ts`, `renderGridName.ts`, `renderTable.ts`, `renderPlain.ts`, `renderBlockHeading.ts`, `composePad.ts`, `controls.ts`, `fontButtons.ts`, `copyOutput.ts`, `flashLabel.ts`, `makeElement.ts`; plus `index.html` and `src/style.css` |
-| **CONTROLLER** | `src/settings/settingsStore.ts` (the one mutable home of Settings), `src/names/loadNameTable.ts` (decompression), `src/clipboard/copyText.ts`, `src/render/scheduleRender.ts` (debounce timer) |
+| **VIEW** | `src/*.ts` — `main.ts`, `sidebar.ts`, `sidebarSearch.ts`, `categoryCheckbox.ts`, `output.ts`, `renderGrid.ts`, `renderGridName.ts`, `renderTable.ts`, `renderPlain.ts`, `renderBlockHeading.ts`, `composePad.ts`, `controls.ts`, `fontButtons.ts`, `glyphFonts.ts`, `about.ts`, `copyOutput.ts`, `flashLabel.ts`, `makeElement.ts`; plus `index.html` and `src/style.css` |
+| **CONTROLLER** | `src/settings/settingsStore.ts` (the one mutable home of Settings), `src/names/loadNameTable.ts` (decompression), `src/clipboard/copyText.ts`, `src/render/scheduleRender.ts` (debounce timer), `src/fonts/glyphProbe.ts` (canvas detection), `src/fonts/fontPacks.ts` (sidecar script injection, FontFace registration) |
 | **STATE** | `src/state/**` — `settings.ts` (shape, defaults), `settingsActions.ts`, `settingsReducer.ts`, `encodeHashState.ts`, `decodeHashState.ts` |
-| **PURE** | `src/ucd/**` (names, visibility, reserved lookup, block list), `src/selection/**` (code point collection, filter, grouping, sort, counts), `src/names/decodeNameTable.ts`, `src/markup/slugify.ts` |
+| **PURE** | `src/ucd/**` (names, visibility and hidden kinds, marks, display form, reserved lookup, block list), `src/selection/**` (code point collection, filter, grouping, sort, counts), `src/coverage/**` (coverage summary and text), `src/fonts/{composeFontStack,packsForBlocks,packStatusText,standardFonts}.ts`, `src/names/decodeNameTable.ts`, `src/markup/slugify.ts` |
 | **PURE-CORE** | `src/codepoint/**` — code point ↔ string, hex formatting, sorted-range search, hex-range parsing, noncharacter test |
-| **DATA** | `src/data/*.json` (generated from the UCD; regeneration-checked), `data/*.json` (authored: block categories, algorithmic names, Hangul jamo, visibility ranges, category labels, font stacks), `data/ucd/<version>/**` (vendored UCD + hash manifest), `fonts/manifest.json` |
+| **DATA** | `src/data/*.json` (generated from the UCD; regeneration-checked), `data/*.json` (authored: block categories, algorithmic names, Hangul jamo, category and hidden-kind labels, font stacks, device fonts, CJK locales), `data/ucd/<version>/**` (vendored UCD + hash manifest), `fonts/manifest.json`, `fonts/standard/**` (vendored Standard fonts and license texts), `fonts/licenses/**` (pack font licenses) |
 | **PLATFORM-PURE** | *(unmapped)* |
 | **PLATFORM-AMBIENT** | *(unmapped)* |
 | **MODEL** | *(unmapped)* |
