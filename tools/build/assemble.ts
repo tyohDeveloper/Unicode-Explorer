@@ -56,7 +56,8 @@ function buildFontBtns(): string {
   const fonts: FontEntry[] = JSON.parse(read("config/fonts.json"));
   const labels = fonts.map((f) => {
     const checked = f.checked ? ' checked="checked"' : "";
-    return `<label title="${escapeAttr(f.title)}"><input type="radio" name="gfont" value="${escapeAttr(f.stack)}"${checked} />${escapeAttr(f.label)}</label>`;
+    const testId = `radio-font-${f.title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "cjk"}`;
+    return `<label title="${escapeAttr(f.title)}"><input type="radio" name="gfont" value="${escapeAttr(f.stack)}"${checked} data-testid="${testId}" />${escapeAttr(f.label)}</label>`;
   });
   return `<div class="font-btns">${labels.join("")}</div>`;
 }
@@ -77,6 +78,18 @@ async function minifyJs(js: string): Promise<string> {
 
 function minifyHtml(html: string): string {
   return html.replace(/<!--[\s\S]*?-->/g, "").replace(/\s+/g, " ").replace(/>\s+</g, "><").trim();
+}
+
+function fillTemplate(template: string, values: Record<string, string>): string {
+  return template.replace(/\{\{([A-Z_]+)\}\}/g, (_m, key: string) => {
+    const v = values[key];
+    if (v === undefined) throw new Error(`template marker {{${key}}} has no value`);
+    return v;
+  });
+}
+
+function countCdataEnds(html: string): number {
+  return html.split("]]>").length - 1;
 }
 
 interface GeneratedTables { unassignedJs: string; cnJs: string; blockCount: number; nameCount: number; rangeCount: number }
@@ -106,11 +119,17 @@ async function build(): Promise<void> {
   console.log(`  UCD ${versions.unicode}: ${tables.rangeCount} unassigned ranges across ${tables.blockCount} blocks; ${tables.nameCount} named characters.`);
 
   const rawJs = [tables.unassignedJs, readFileSync(lzStringPath, "utf-8"), tables.cnJs, ...JS_FILES.map(read)].join("\n\n");
-  const assembled = read("template.html")
-    .replace("{{CSS}}", minifyCss(read("style.css")))
-    .replace("{{JS}}", await minifyJs(rawJs))
-    .replace("{{FONT_BTNS}}", buildFontBtns());
-  const html = minifyHtml(assembled);
+  const html = minifyHtml(fillTemplate(read("template.html"), {
+    CSS: minifyCss(read("style.css")),
+    JS: await minifyJs(rawJs),
+    FONT_BTNS: buildFontBtns(),
+    APP_VERSION: versions.app,
+    DATA_VERSION: versions.data,
+    UNICODE_VERSION: versions.unicode,
+    BLOCK_COUNT: String(tables.blockCount),
+  }));
+  if (/\{\{[A-Z_]+\}\}/.test(html)) throw new Error("unfilled template marker in output");
+  if (html.includes("]]>", html.indexOf("/*<![CDATA[*/") + 13) && countCdataEnds(html) !== 2) throw new Error("']]>' inside an inlined body breaks the XML contract");
 
   writeFileSync(outputPath, html, "utf-8");
   console.log(`[${new Date().toLocaleTimeString()}] Built Unicode.html (${(html.length / 1024).toFixed(1)} KB)`);
