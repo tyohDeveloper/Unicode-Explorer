@@ -15,6 +15,7 @@ import { buildUnassignedRanges } from "./buildUnassignedRanges.js";
 import { compressNameTable } from "./compressNameTable.js";
 import { parsePropertyRanges } from "./parsePropertyRanges.js";
 import { parseNameAliases } from "./parseNameAliases.js";
+import { parseAllAliases } from "./parseAllAliases.js";
 import { buildVisibility } from "./buildVisibility.js";
 import { buildMarkRanges } from "./buildMarkRanges.js";
 
@@ -33,7 +34,10 @@ function generateProperties(unicode: string, categoryMap: Map<number, string>): 
   const prepended = parsePropertyRanges(readUcdFile(repoRoot, unicode, "PropList.txt"), "Prepended_Concatenation_Mark");
   const hidden = buildVisibility(categoryMap, ignorable, prepended);
   const marks = buildMarkRanges(categoryMap);
-  const aliases = parseNameAliases(readUcdFile(repoRoot, unicode, "NameAliases.txt"));
+  const aliasText = readUcdFile(repoRoot, unicode, "NameAliases.txt");
+  const aliases = parseNameAliases(aliasText);
+  const allAliases = parseAllAliases(aliasText);
+  writeJson("aliases.json", { unicode, map: Object.fromEntries([...allAliases].map(([cp, a]) => [cp.toString(16).toUpperCase().padStart(4, "0"), a])) });
   writeJson("visibility.json", { unicode, hidden });
   writeJson("marks.json", { unicode, ranges: compact(marks) });
   writeJson("abbreviations.json", { unicode, map: Object.fromEntries([...aliases].map(([cp, a]) => [cp.toString(16).toUpperCase().padStart(4, "0"), a])) });
