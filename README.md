@@ -4,7 +4,7 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.2.0.0** ([changelog](CHANGELOG.md)), data **2.0.0.0** (Unicode 18.0.0,
+> **Status:** app **2.2.1.0** ([changelog](CHANGELOG.md)), data **2.0.1.0** (Unicode 18.0.0,
 > [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
@@ -94,7 +94,7 @@ pattern (`vite dev`/`vite preview` bound to `0.0.0.0:5000`), not a server (`docs
 
 The zips are attached to each [release](https://github.com/tyohDeveloper/Unicode-Explorer/releases).
 Unzip one and open its `Unicode.html`: the packs live in the sibling `unicode-fonts/` directory
-and load only when you select a block they cover (the CJK Extension B–F pack is 17 MB; the
+and load only when you select a block they cover (no pack is over 8 MB; Extension B is split in two; the
 status bar shows progress). Without the directory the same file runs as Standard
 ([ADR-0001](docs/adr/0001-sidecar-font-packs.md)). Measured against the 172,382 visible assigned
 Unicode 18 characters; most of the gap is the 11,328 Seal and 965 Jurchen characters. Coverage is a character-map measurement, not a guarantee of shaping or

@@ -44,4 +44,5 @@ licences, as suggestions for other projects; that text distributes nothing.
 Vite, esbuild, html-minifier-terser, fflate, TypeScript, Vitest, Playwright,
 [fontkit](https://github.com/foliojs/fontkit) (MIT; reads character maps) and
 [wawoff2](https://github.com/fontello/wawoff2) (MIT; Google's woff2 encoder compiled to
-WebAssembly) run only in the toolchain.
+WebAssembly) run only in the toolchain, as does [fontTools](https://github.com/fonttools/fonttools)
+(MIT; `pyftsubset` splits large pack fonts, D-20).

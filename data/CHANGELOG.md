@@ -4,6 +4,14 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.1.0] — 2026-10-08
+
+### Changed
+
+- `fonts/manifest.json`: packs may declare `subset` code-point ranges (D-20); `cjk-ext-b-f` is
+  replaced by `cjk-ext-b-1`, `cjk-ext-b-2` and `cjk-ext-c-f`; `egyptian-hieroglyphs` is subset
+  to U+13000–143FF; `policy.pack_size` records the 8 MiB limit.
+
 ## [2.0.0.0] — 2026-10-08
 
 Unicode 18.0.0 (MAJOR: new Unicode version).

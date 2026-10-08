@@ -9,6 +9,17 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.1.0] — 2026-10-08
+
+### Fixed
+
+- **Large font packs on web hosts** (D-20): the 17.3 MB CJK Extension B–F pack could not load
+  from the hosted test build, whose host redirects large files to another origin that the CSP
+  blocks. It is now three packs (Extension B parts 1 and 2, and Extensions C–F, I with the
+  Compatibility Supplement; 5.4–6.3 MB each), registered as one family with `unicode-range`s.
+  The Egyptian pack drops the font's private-use glyphs: 8.5 → 4.5 MB. No pack exceeds 8 MiB,
+  and the build enforces it. Coverage is unchanged.
+
 ## [2.2.0.0] — 2026-10-08
 
 Unicode 18.0 (Phase 6 of `docs/PLAN.md`); data 2.0.0.0. `Unicode.html` is 2,940,287 bytes

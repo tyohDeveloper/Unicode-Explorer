@@ -104,7 +104,9 @@ cache empties when the font selection or the set of loaded packs changes.
 
 Sidecar packs (ADR-0001) are the only resources the artifact ever requests: classic scripts at
 `unicode-fonts/…` relative to the document, injected at run time, failing softly. Block packs
-load for selected blocks; style packs (D-14) load for the Serif and Sans buttons and go first in
+load for selected blocks, and no pack exceeds 8 MiB (D-20): a larger font is split by code-point
+ranges at build time with fontTools and each piece registers with a `unicode-range`, so the
+pieces form one family. Style packs (D-14) load for the Serif and Sans buttons and go first in
 the stack; their bold/italic packs load only when Bold or Italic is on (D-15).
 
 The probe is tiered (CP2-01): a character is first measured with the embedded fonts alone; only
