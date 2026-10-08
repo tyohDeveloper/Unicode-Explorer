@@ -9,6 +9,45 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [1.2.0.0] — 2026-10-08
+
+Module migration (Phase 3 of `docs/PLAN.md`). Behaviour matches 1.1.0.0 except where noted;
+every Phase 2 end-to-end test still passes. Size 365,040 bytes (gzip 239,926) versus 408,006
+(275,829).
+
+### Added
+
+- URL-fragment state: selected blocks (by start code point), display mode, font, size, the
+  non-visible toggle, and the name filter round-trip through `location.hash`, so a bookmark keeps
+  them. Nothing is stored on the device.
+- Test IDs on every interactive element, keyed by domain value (`checkbox-sidebar-block-0041`,
+  `button-grid-cell-1F600`, `button-sidebar-category-cyrillic`, `button-table-sort-name`).
+- Category headers carry `role="button"` and `aria-expanded`; the status bar is a live region.
+- `npm run generate:data`; `npm run dev` / `npm run preview` (Vite on `0.0.0.0:5000`).
+
+### Changed
+
+- Source is TypeScript ES modules under `src/` by layer (PURE-CORE, PURE, STATE, CONTROLLER,
+  VIEW), built by Vite and `vite-plugin-singlefile`, minified by esbuild and
+  `html-minifier-terser`. The concatenated `unicode-src/` scripts and the custom assembler are
+  gone.
+- The character-name table is raw DEFLATE unpacked by the browser's `DecompressionStream`;
+  the LZString runtime library is no longer shipped. Requires Chrome/Edge 103+, Firefox 113+,
+  Safari 16.4+.
+- Every table that was a literal in code is now data: `data/block-categories.json`,
+  `data/algorithmic-names.json`, `data/hangul-jamo.json`, `data/non-visible-ranges.json`,
+  `data/category-labels.json`, `data/font-stacks.json`. `src/data/*.json` is generated from
+  the UCD and regeneration-checked in CI.
+- Table "Name" sorting uses code-unit order instead of the device locale, so the order is the
+  same everywhere (audit UX-02).
+- Font selector buttons are built from data at start-up.
+- `check:standards` now also enforces purity (§1.4), one export per PURE file (§3.2), and no
+  barrel files (§3.9); all five pre-standards exceptions are retired.
+
+### Removed
+
+- `lz-string` from the artifact; `terser` and the pnpm leftovers from the toolchain.
+
 ## [1.1.0.0] — 2026-10-08
 
 Hardening release. The application behaves as in 1.0.0.0; the artifact, build, and repository

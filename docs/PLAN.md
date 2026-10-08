@@ -123,6 +123,12 @@ Findings: ARC-02, BLD-05, BLD-06, SEC-02, ARC-05.
 
 Acceptance: behaviour parity with the Phase 2 end-to-end suite; gzip baseline recorded.
 
+Status 2026-10-08: delivered. 59 source files across six layer roles, all passing the expanded
+standards lint with zero exceptions; 33 unit tests and 7 end-to-end tests; artifact 365,040
+bytes (gzip 239,926) versus 408,006 (275,829). Released as app 1.2.0.0. Also moved every code
+literal table to `data/*.json` (closing EX-005 early) and added `role`/`aria-expanded` on
+category headers.
+
 ### Phase 4: Glyph coverage
 
 Findings: GLY-01 to GLY-06, DAT-02.

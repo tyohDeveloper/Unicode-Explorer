@@ -49,40 +49,39 @@ No `localStorage`, `sessionStorage`, `IndexedDB`, or cookies — not for prefere
 last-used settings, not for anything. Reloading starts from a clean slate.
 
 If state is worth keeping, put it in `location.hash` so the **user** decides whether to persist it
-by bookmarking (Phase 3: selected blocks, display mode, font, size).
+by bookmarking. Selected blocks (by start code point), display mode, font, size, the non-visible
+toggle, and the name filter round-trip through the hash (`src/state/encodeHashState.ts`); only
+values that differ from the defaults are written.
 
 ## 4. Layers
 
-Current layout (binding now; the §0 table in `CODING-STANDARDS.md` is the normative mapping):
+The §0 table in `CODING-STANDARDS.md` is the normative mapping and `check-standards` enforces it.
+In outline:
 
 ```
-unicode-src/js/00-classify.js     PURE   visibility and reserved-range lookup
-unicode-src/data/charnames.js     PURE   name resolution (table, algorithmic, category labels)
-unicode-src/js/01..06-*.js        VIEW   sidebar, render core, grid, table, plain, controls
-unicode-src/data/*.js, config/    DATA   block list, algorithmic ranges, font stacks
-data/ucd/<version>/               DATA   vendored UCD files + sha256 manifest
-tools/ucd/*.ts                    build  UCD parsing and table generation (one export per file)
-tools/build/assemble.ts           build  concatenate, inject generated tables, minify
-scripts/*.mjs                     build  verify-build, verify-regenerated, check-standards, release
+src/codepoint/*.ts    PURE-CORE   code point ↔ string, hex, sorted-range search, hex ranges
+src/ucd/*.ts          PURE        names (table → algorithmic → label), visibility, reserved, blocks
+src/selection/*.ts    PURE        collect code points, filter by name, group, sort, count
+src/names/            PURE+CTRL   decodeNameTable (pure) and loadNameTable (DecompressionStream)
+src/state/*.ts        STATE       Settings shape, action creators, reducer, URL-hash encode/decode
+src/settings/         CONTROLLER  settingsStore: the one mutable home of Settings
+src/clipboard/, src/render/  CONTROLLER  clipboard IO; render debounce
+src/*.ts              VIEW        sidebar, output, grid/table/plain renderers, controls, compose pad
+src/data/*.json       DATA        generated from the UCD; regeneration-checked
+data/*.json           DATA        authored tables; data/ucd/<version>/ vendored UCD + hashes
+tools/ucd/*.ts        build       UCD parsing and src/data generation (one export per file)
+scripts/*.mjs         build       minify-artifact, verify-build, verify-regenerated, check-standards, release
 ```
 
-Target layout (Phase 3; adopt in one commit together with the §0 table):
-
-```
-src/codepoint/*.ts    PURE-CORE  UTF-16 conversion, hex formatting, sorted-range search
-src/ucd/*.ts          PURE       names, visibility, reserved lookup, block model, aliases
-src/coverage/*.ts     PURE       detection logic, stack ordering, per-block coverage math
-src/state/*.ts        STATE      URL-hash encode/decode, selection reducers (if adopted)
-src/*.ts              VIEW       sidebar, grid, table, plain text, composition pad, controls
-src/data/*.json       DATA       generated tables (read-only at runtime)
-data/ucd/<ver>/       DATA       vendored UCD files + sha256 manifest
-fonts/manifest.json   DATA       font sources, hashes, licenses, measured coverage, editions
-tools/                build      UCD generators, font fetch/convert, coverage measurement
-```
+Data flow: views dispatch action creators to the store; the pure reducer produces the next
+Settings; subscribers reflect it into the DOM, write it to `location.hash`, and schedule a
+render. Rendering reads Settings, runs the PURE selection functions, and builds DOM. Nothing
+outside the store holds domain state; the composition pad's text is user content and lives in
+its textarea.
 
 Logic belongs in PURE. If a function can be written without touching the DOM, it goes there and
 it gets a unit test. Views render and wire events; they do not classify code points, resolve
-names, or compute coverage.
+names, or compute coverage. Phase 4 adds `src/coverage/` (PURE) for detection and stack logic.
 
 ## 5. Data
 
@@ -121,9 +120,12 @@ names, or compute coverage.
 ## 7. Build chain
 
 `npm run build` = `check` → `check:standards` → `test:run` → `build:bundle` → `verify:build`,
-failing at the first stage error. Minification happens inside `build:bundle` (terser for JS;
-Phase 3 moves HTML/CSS to `html-minifier-terser`). CI runs the identical command, then
-`verify:regenerated`, then Playwright as a separate job.
+failing at the first stage error. `build:bundle` is `vite build` (esbuild-minified ES modules,
+inlined by `vite-plugin-singlefile`, `modulePreload` disabled because its polyfill injects
+`fetch()`) followed by `scripts/minify-artifact.mjs` (`html-minifier-terser` for HTML and CSS,
+CDATA wrapping, `crossorigin` removal) which writes `Unicode.html`. `npm run generate:data`
+rebuilds `src/data/*.json`. CI runs the identical build, then `verify:regenerated` (generated data
+and artifact match HEAD), then Playwright as a separate job.
 
 `verify:build` enforces: no external URLs, no forbidden network or storage APIs, CSP present with
 `connect-src 'none'`, fonts only as `data:` URLs, strict-XML-parseable shell with CDATA-wrapped
@@ -131,8 +133,9 @@ script and style bodies, no `]]>` in inlined bodies, full test-ID manifest cover
 directions), version stamp agreeing with `package.json` and `data/version.json`, and gzip within
 5% of `scripts/build-baseline.json`. Phase 4 extends the baseline per edition.
 
-`check:standards` enforces §3.1, §3.3, §3.8, and §11 of the coding standards over the §0 mapping
-using the TypeScript AST; active exceptions suppress, expired ones fail.
+`check:standards` enforces §1.4 (purity of PURE and STATE), §3.1, §3.2, §3.3, §3.8, §3.9, and
+§11 of the coding standards over the §0 mapping using the TypeScript AST; a file matching no
+layer fails; active exceptions suppress, expired ones fail.
 
 ## 8. Markup
 

@@ -5,11 +5,13 @@ plan of record is [`docs/PLAN.md`](docs/PLAN.md); work only on the active phase.
 
 ## Shape
 
-- `unicode-src/` — application source (template, CSS, JS, data, font config). Edit here.
-- `Unicode.html` — **generated** single-file app. Never edit by hand; rebuild and commit with the
-  source change.
-- `tools/build/assemble.ts` — the build (`npm run build:bundle`; `--watch` for rebuild on change).
-- `tools/ucd/`, `data/ucd/<version>/` — UCD parsing and the vendored, hash-verified data it reads.
+- `src/`, `index.html` — application source: TypeScript ES modules by layer (see
+  `docs/CODING-STANDARDS.md` §0) and the HTML shell. Edit here.
+- `data/` — authored JSON tables and the vendored, hash-verified UCD under `data/ucd/<version>/`.
+- `src/data/` — **generated** tables (`npm run generate:data`). Never edit by hand.
+- `Unicode.html` — **generated** single-file app (`npm run build:bundle` = Vite + minify-artifact).
+  Never edit by hand; rebuild and commit with the source change.
+- `tools/ucd/` — UCD parsing and generation.
 - `scripts/` — verify-build, verify-regenerated, check-standards, release, test-ID manifest, size baseline.
 - `fonts/manifest.json` — font provenance and edition definitions. No binaries are committed.
 - `docs/tasks/` — historical task records.
@@ -21,8 +23,8 @@ npm ci
 npm run build && npm run verify:regenerated && npm run test:e2e
 ```
 
-This repository is not deployed on Replit at present (`docs/PLAN.md` D-7). If it returns, run it
-the way history-and-prehistory does: a Vite dev/preview server bound to `0.0.0.0:5000`, no Express.
+This repository is not deployed on Replit at present (`docs/PLAN.md` D-7). If it returns,
+`npm run dev` / `npm run preview` already bind Vite to `0.0.0.0:5000`; no server is needed.
 
 ## Standards
 

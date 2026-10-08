@@ -31,36 +31,33 @@ Every repository fills in this table. A rule that names a layer role applies to
 whatever paths that repository maps the role to. An unmapped role means the
 repository has no such layer, and rules naming it are inert.
 
-This table maps the **current** layout. The Phase 3 target layout is in
-[`ARCHITECTURE.md`](ARCHITECTURE.md) §4; when the migration lands, this table
-changes in the same commit.
+`scripts/check-standards.mjs` enforces this table; a file that matches no row
+fails the build.
 
 | Layer role | This repository's paths |
 |---|---|
-| **VIEW** | `unicode-src/js/01-sidebar.js`, `02-render-core.js`, `03-render-grid.js`, `04-render-table.js`, `05-render-plain.js`, `06-controls.js`, `unicode-src/template.html`, `unicode-src/style.css` |
-| **CONTROLLER** | *(unmapped — the views wire their own events and call PURE directly)* |
-| **STATE** | *(unmapped — selection state is in-memory in the views per the standalone-HTML5 no-persistence rule)* |
-| **PURE** | `unicode-src/js/00-classify.js`, `unicode-src/data/charnames.js` (name resolution) |
-| **PURE-CORE** | *(unmapped until Phase 3 — code-point conversion and hex formatting currently live inside the PURE and VIEW files above)* |
-| **DATA** | `unicode-src/data/blocks.js`, `unicode-src/data/algo-ranges.js`, `unicode-src/config/fonts.json`, `fonts/manifest.json`, `data/ucd/<version>/**`, and the `UNASSIGNED` / `CN` tables the build generates from the vendored Unicode Character Database |
+| **VIEW** | `src/*.ts` — `main.ts`, `sidebar.ts`, `sidebarSearch.ts`, `categoryCheckbox.ts`, `output.ts`, `renderGrid.ts`, `renderGridName.ts`, `renderTable.ts`, `renderPlain.ts`, `renderBlockHeading.ts`, `composePad.ts`, `controls.ts`, `fontButtons.ts`, `copyOutput.ts`, `flashLabel.ts`, `makeElement.ts`; plus `index.html` and `src/style.css` |
+| **CONTROLLER** | `src/settings/settingsStore.ts` (the one mutable home of Settings), `src/names/loadNameTable.ts` (decompression), `src/clipboard/copyText.ts`, `src/render/scheduleRender.ts` (debounce timer) |
+| **STATE** | `src/state/**` — `settings.ts` (shape, defaults), `settingsActions.ts`, `settingsReducer.ts`, `encodeHashState.ts`, `decodeHashState.ts` |
+| **PURE** | `src/ucd/**` (names, visibility, reserved lookup, block list), `src/selection/**` (code point collection, filter, grouping, sort, counts), `src/names/decodeNameTable.ts`, `src/markup/slugify.ts` |
+| **PURE-CORE** | `src/codepoint/**` — code point ↔ string, hex formatting, sorted-range search, hex-range parsing, noncharacter test |
+| **DATA** | `src/data/*.json` (generated from the UCD; regeneration-checked), `data/*.json` (authored: block categories, algorithmic names, Hangul jamo, visibility ranges, category labels, font stacks), `data/ucd/<version>/**` (vendored UCD + hash manifest), `fonts/manifest.json` |
 | **PLATFORM-PURE** | *(unmapped)* |
 | **PLATFORM-AMBIENT** | *(unmapped)* |
 | **MODEL** | *(unmapped)* |
 | **REMOTE** | *(unmapped)* |
 
 Build tooling (`tools/**`, `scripts/*.mjs`) is not a layer; §7 and §9 govern it,
-and `scripts/check-standards.mjs` applies the §3 limits to it as well.
+and `scripts/check-standards.mjs` applies the §3 limits to it as well (role `BUILD`,
+250 lines).
 
 **Target:** standalone single-file HTML5. The §17 standalone rules apply in full —
 no `fetch()`, no CDN assets, no persisted user data, polyglot XHTML-conformant
 markup, mandatory final minimization. Embedded fonts are `data:` URLs, never
 external.
 
-Known noncompliance at this mapping is recorded in
-[`../.architecture-exceptions.json`](../.architecture-exceptions.json) with
-expiry at the end of Phase 3 (`PLAN.md`): §3.1 function length, §3.2 one export
-per PURE file, §3.8 responsibility naming, and §1.6 single-sourcing of
-`hex4`/`cpHex`.
+There are no active exceptions. [`../.architecture-exceptions.json`](../.architecture-exceptions.json)
+is the machine-checked register should one become necessary (§11).
 
 ---
 

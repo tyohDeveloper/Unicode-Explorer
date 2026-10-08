@@ -4,8 +4,8 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **1.1.0.0** ([changelog](CHANGELOG.md)), data **1.0.0.0** (Unicode 17.0.0,
-> [data changelog](data/CHANGELOG.md)), 346 blocks, 398 KiB. Unicode 18.0 (September 2026) is
+> **Status:** app **1.2.0.0** ([changelog](CHANGELOG.md)), data **1.0.0.0** (Unicode 17.0.0,
+> [data changelog](data/CHANGELOG.md)), 346 blocks, 356 KiB. Unicode 18.0 (September 2026) is
 > scheduled for Phase 6 of [`docs/PLAN.md`](docs/PLAN.md). Fonts are not yet embedded, so glyph
 > display depends on the device; the Standard edition and sidecar font packs arrive in Phase 4.
 
@@ -13,17 +13,22 @@ network requests.
 
 Open `Unicode.html` in a browser. Select blocks in the sidebar; switch between Grid, Grid+CP,
 Grid+Name, Table, and Plain views; filter by character name; click any character to add it to
-the composition pad; copy the output.
+the composition pad; copy the output. The selection, view, font, and size are mirrored in the
+URL fragment, so bookmarking the page keeps them; nothing is stored on the device.
+
+Requires a browser with `DecompressionStream` (Chrome 103+, Edge 103+, Firefox 113+,
+Safari 16.4+), which unpacks the embedded character-name table at start-up.
 
 ## Build
 
 ```bash
 npm ci
 npm run build              # typecheck -> standards lint -> unit tests -> bundle -> verify
-npm run verify:regenerated # committed Unicode.html matches its sources
+npm run verify:regenerated # committed src/data and Unicode.html match their sources
 npm run test:e2e           # Playwright against the built artifact over file://
-npm run build:bundle       # just rebuild Unicode.html
-npx tsx tools/build/assemble.ts --watch
+npm run generate:data      # regenerate src/data/*.json from data/ucd and data/*.json
+npm run build:bundle       # vite build + minify-artifact -> Unicode.html
+npm run dev                # Vite dev server on :5000
 ```
 
 The build reads the vendored Unicode Character Database under `data/ucd/<version>/`, verifies

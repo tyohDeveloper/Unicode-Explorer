@@ -5,9 +5,9 @@ following third-party material. Fonts keep their own licenses; MIT does not reli
 
 ## Shipped in `Unicode.html` today
 
-| Component | Version | License | Use |
-|---|---|---|---|
-| [lz-string](https://github.com/pieroxy/lz-string) by Pieroxy | 1.5.0 | MIT | Decompresses the embedded character-name table at page load. Slated for removal in Phase 3 (`docs/PLAN.md`) in favour of the browser's `DecompressionStream`. |
+None. Since 1.2.0.0 the artifact contains only first-party code; the character-name table is
+unpacked by the browser's built-in `DecompressionStream`. Build-time tools (Vite, esbuild,
+html-minifier-terser, fflate, TypeScript) add nothing to the artifact.
 
 ## Fonts (embedded from Phase 4; see `fonts/manifest.json`)
 
