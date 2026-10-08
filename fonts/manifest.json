@@ -10,7 +10,8 @@
     ],
     "stack_rule": "Device fonts first, embedded coverage fonts second; placeholder and detection fonts are applied per cell by detection and never appear in the global font-family list (PLAN.md D-6).",
     "egyptian": "No Egyptian-hieroglyph font ships in standard or complete (PLAN.md D-4). Candidates are listed under candidates and are not fetched by default.",
-    "delivery": "Standard fonts embed in Unicode.html as data: URLs with unicode-range descriptors. Complete fonts ship as classic-script sidecar packs under unicode-fonts/ (one per pack, base64 data: URL registered via FontFace), loaded on demand per selected block and failing softly when absent (ADR-0001, PLAN D-10)."
+    "delivery": "Standard fonts embed in Unicode.html as data: URLs with unicode-range descriptors. Complete fonts ship as classic-script sidecar packs under unicode-fonts/ (one per pack, base64 data: URL registered via FontFace), loaded on demand per selected block and failing softly when absent (ADR-0001, PLAN D-10).",
+    "style_packs": "Style packs (D-14) carry the Unicode Font Kit's unicode-serif and unicode-sans stacks, restricted to OFL fonts: DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded by licences_allowed; Noto CJK is excluded for size (device CJK fonts, Unifont and the Jigmo packs cover it). They load when the Serif or Sans button is chosen; the 'styled' packs load only when Bold or Italic is on."
   },
   "editions": [
     {
@@ -53,7 +54,12 @@
         "tangut",
         "cuneiform",
         "anatolian-hieroglyphs",
-        "bamum"
+        "bamum",
+        "serif",
+        "sans",
+        "symbols",
+        "serif-styles",
+        "sans-styles"
       ]
     },
     {
@@ -83,7 +89,12 @@
         "cuneiform",
         "anatolian-hieroglyphs",
         "bamum",
-        "egyptian-hieroglyphs"
+        "egyptian-hieroglyphs",
+        "serif",
+        "sans",
+        "symbols",
+        "serif-styles",
+        "sans-styles"
       ]
     }
   ],
@@ -114,7 +125,8 @@
         "2EBF0",
         "2F800"
       ],
-      "bytes": 17302074
+      "bytes": 17302074,
+      "kind": "blocks"
     },
     {
       "id": "cjk-ext-g-j",
@@ -138,7 +150,8 @@
         "31350",
         "323B0"
       ],
-      "bytes": 4065422
+      "bytes": 4065422,
+      "kind": "blocks"
     },
     {
       "id": "tangut",
@@ -161,7 +174,8 @@
         "18800",
         "18D00"
       ],
-      "bytes": 1359916
+      "bytes": 1359916,
+      "kind": "blocks"
     },
     {
       "id": "cuneiform",
@@ -184,7 +198,8 @@
         "12400",
         "12480"
       ],
-      "bytes": 399493
+      "bytes": 399493,
+      "kind": "blocks"
     },
     {
       "id": "anatolian-hieroglyphs",
@@ -205,7 +220,8 @@
       "blocks": [
         "14400"
       ],
-      "bytes": 147645
+      "bytes": 147645,
+      "kind": "blocks"
     },
     {
       "id": "bamum",
@@ -227,7 +243,8 @@
         "A6A0",
         "16800"
       ],
-      "bytes": 102257
+      "bytes": 102257,
+      "kind": "blocks"
     },
     {
       "id": "egyptian-hieroglyphs",
@@ -249,7 +266,151 @@
         "13430",
         "13460"
       ],
-      "bytes": 8515342
+      "bytes": 8515342,
+      "kind": "blocks"
+    },
+    {
+      "id": "serif",
+      "label": "Serif (Charis, Noto Serif, Doulos SIL)",
+      "kind": "style",
+      "styles": [
+        "serif"
+      ],
+      "faces": "regular",
+      "fonts": [
+        "style-charis",
+        "style-noto-serif",
+        "style-doulos-sil",
+        "style-noto-naskh-arabic",
+        "style-noto-serif-hebrew",
+        "style-noto-serif-devanagari",
+        "style-noto-serif-bengali",
+        "style-noto-serif-thai"
+      ],
+      "license_files": [
+        "fonts/licenses/Charis-OFL-1.1.txt",
+        "fonts/licenses/Doulos-OFL-1.1.txt",
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "bytes": 1437386
+    },
+    {
+      "id": "sans",
+      "label": "Sans (Andika, Noto Sans)",
+      "kind": "style",
+      "styles": [
+        "sans-serif"
+      ],
+      "faces": "regular",
+      "fonts": [
+        "style-andika",
+        "style-noto-sans",
+        "style-noto-sans-arabic",
+        "style-noto-sans-hebrew",
+        "style-noto-sans-devanagari",
+        "style-noto-sans-bengali",
+        "style-noto-sans-thai"
+      ],
+      "license_files": [
+        "fonts/licenses/Andika-OFL-1.1.txt",
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "bytes": 975102
+    },
+    {
+      "id": "symbols",
+      "label": "Symbols and Math (Noto)",
+      "kind": "style",
+      "styles": [
+        "serif",
+        "sans-serif"
+      ],
+      "faces": "regular",
+      "fonts": [
+        "style-noto-sans-symbols",
+        "style-noto-sans-symbols-2",
+        "style-noto-sans-math"
+      ],
+      "license_files": [
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "bytes": 727052
+    },
+    {
+      "id": "serif-styles",
+      "label": "Serif bold and italic",
+      "kind": "style",
+      "styles": [
+        "serif"
+      ],
+      "faces": "styled",
+      "fonts": [
+        "style-charis-bold",
+        "style-charis-italic",
+        "style-charis-bold-italic",
+        "style-noto-serif-bold",
+        "style-noto-serif-italic",
+        "style-noto-serif-bold-italic",
+        "style-noto-naskh-arabic-bold",
+        "style-noto-serif-hebrew-bold",
+        "style-noto-serif-devanagari-bold",
+        "style-noto-serif-bengali-bold",
+        "style-noto-serif-thai-bold"
+      ],
+      "license_files": [
+        "fonts/licenses/Charis-OFL-1.1.txt",
+        "fonts/licenses/Doulos-OFL-1.1.txt",
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "bytes": 2520848
+    },
+    {
+      "id": "sans-styles",
+      "label": "Sans bold and italic",
+      "kind": "style",
+      "styles": [
+        "sans-serif"
+      ],
+      "faces": "styled",
+      "fonts": [
+        "style-andika-bold",
+        "style-andika-italic",
+        "style-andika-bold-italic",
+        "style-noto-sans-bold",
+        "style-noto-sans-italic",
+        "style-noto-sans-bold-italic",
+        "style-noto-sans-arabic-bold",
+        "style-noto-sans-hebrew-bold",
+        "style-noto-sans-devanagari-bold",
+        "style-noto-sans-bengali-bold",
+        "style-noto-sans-thai-bold",
+        "style-noto-sans-symbols-bold"
+      ],
+      "license_files": [
+        "fonts/licenses/Andika-OFL-1.1.txt",
+        "fonts/licenses/Noto-OFL-1.1.txt"
+      ],
+      "editions": [
+        "complete",
+        "complete-hieroglyphs"
+      ],
+      "bytes": 2441321
     }
   ],
   "fonts": [
@@ -472,6 +633,949 @@
       "woff2_sha256": "97556d8236dd74f8a715d95401fbca9496c9bb226221b1dc34bf404534537e16",
       "woff2_bytes": 1488,
       "assigned_visible_cmap_count": 159375
+    },
+    {
+      "id": "style-doulos-sil",
+      "family": "Doulos SIL",
+      "css_family": "UE Doulos SIL",
+      "version": "Version 7.000",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-doulos/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-doulos@cd7628a7ac38a24300259d8b5e0f90ece0e0877e/references/v7000/DoulosSIL-Regular.ttf",
+        "format": "ttf",
+        "sha256": "cc89b87c047bcc8dc00246398218bb6343e0f2372b153cf560c29a77f27068ef",
+        "bytes": 887828
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "db0bee355e75d76a55cfed076f895452e1678e746ebf2344febbcf4d208e8b13",
+      "woff2_bytes": 311688,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-andika",
+      "family": "Andika",
+      "css_family": "UE Andika",
+      "version": "Version 7.000",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-andika/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-andika@0fefb76d2c5b2ef2bf2661a7a86f02f07e8c2b0e/references/v7000/Andika-Regular.ttf",
+        "format": "ttf",
+        "sha256": "27484fdc98d0d63f90407f8266e28295f6fb16d2b13c5024df0214f17152919a",
+        "bytes": 802572
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "373a409e2b7ccd4af0d7ce9ec40eaa4522b9707c0709ee4a989018290fc2072f",
+      "woff2_bytes": 293188,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-noto-sans",
+      "family": "Noto Sans",
+      "css_family": "UE Noto Sans",
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSans/NotoSans-Regular.ttf",
+        "format": "ttf",
+        "sha256": "b85c38ecea8a7cfb39c24e395a4007474fa5a4fc864f6ee33309eb4948d232d5",
+        "bytes": 569208
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "a78bb2936a591ed4eea82d9d8303731abc0bdb611ab657183d3bf2d207c64371",
+      "woff2_bytes": 194492,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-serif",
+      "family": "Noto Serif",
+      "css_family": "UE Noto Serif",
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerif/NotoSerif-Regular.ttf",
+        "format": "ttf",
+        "sha256": "c8f669ceb2c9c60ccf55198b305e08a997ffca79a38cc7eeb551e643cbe66505",
+        "bytes": 616196
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "6612593c86a3d14d4d98e9b10534a9213c1163554e861f56790cc8fe1894eb8f",
+      "woff2_bytes": 194416,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-sans-arabic",
+      "family": "Noto Sans Arabic",
+      "css_family": "UE Noto Sans Arabic",
+      "version": "Version 2.009; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D arab -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansArabic/NotoSansArabic-Regular.ttf",
+        "format": "ttf",
+        "sha256": "ceea25b464a656dc3b26849bab9356740401af62aedf1bfa8b7f0d9b75925b1b",
+        "bytes": 240456
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "aa5ba01743e5e085ed9280a910f383c2ebba56ac5246cf72362b19259f944c54",
+      "woff2_bytes": 77188,
+      "cmap_code_points": 1162,
+      "assigned_visible_cmap_count": 1152
+    },
+    {
+      "id": "style-noto-naskh-arabic",
+      "family": "Noto Naskh Arabic",
+      "css_family": "UE Noto Naskh Arabic",
+      "version": "Version 2.012; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D arab -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoNaskhArabic/NotoNaskhArabic-Regular.ttf",
+        "format": "ttf",
+        "sha256": "2f4b88e6ee50fa82c617e2d1d4ba18281cb1c6cd71c3af3ec64970c23995db4b",
+        "bytes": 178388
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "92fee1384a9cba609e6c3030975573f6e6b06c0babfe259f4eddf126a0f67292",
+      "woff2_bytes": 63220,
+      "cmap_code_points": 1124,
+      "assigned_visible_cmap_count": 1115
+    },
+    {
+      "id": "style-noto-sans-hebrew",
+      "family": "Noto Sans Hebrew",
+      "css_family": "UE Noto Sans Hebrew",
+      "version": "Version 3.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D hebr -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansHebrew/NotoSansHebrew-Regular.ttf",
+        "format": "ttf",
+        "sha256": "a7fa16fffb27bedb060a0866267c29e9859aeb9c21cc33f5b3aaf6eb062eca85",
+        "bytes": 26900
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "a9ea6581642502902e5c7bcff56203406054d484bef05f5bdcb97a5ba32d430a",
+      "woff2_bytes": 11144,
+      "cmap_code_points": 146,
+      "assigned_visible_cmap_count": 139
+    },
+    {
+      "id": "style-noto-serif-hebrew",
+      "family": "Noto Serif Hebrew",
+      "css_family": "UE Noto Serif Hebrew",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D hebr -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifHebrew/NotoSerifHebrew-Regular.ttf",
+        "format": "ttf",
+        "sha256": "972cfce9bad925c350e0e1a0e79457543fcdc44adab1aa8adeae7b55985cf74b",
+        "bytes": 31584
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "7f134c9986d7e16c609da6c0d47b80032a36e4f3b584464820f16d57df66879a",
+      "woff2_bytes": 12688,
+      "cmap_code_points": 146,
+      "assigned_visible_cmap_count": 139
+    },
+    {
+      "id": "style-noto-sans-devanagari",
+      "family": "Noto Sans Devanagari",
+      "css_family": "UE Noto Sans Devanagari",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D deva -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Regular.ttf",
+        "format": "ttf",
+        "sha256": "385e78e6359a9d88a0f243d53b1209d7548361ba2194e2b9ec779bcaa7e8949d",
+        "bytes": 219212
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "27f0a9184c43b2a1acdf7648a49b9d4b5ac6a155fd6ed9cf0934f89884d8984f",
+      "woff2_bytes": 69800,
+      "cmap_code_points": 273,
+      "assigned_visible_cmap_count": 266
+    },
+    {
+      "id": "style-noto-serif-devanagari",
+      "family": "Noto Serif Devanagari",
+      "css_family": "UE Noto Serif Devanagari",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D deva -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifDevanagari/NotoSerifDevanagari-Regular.ttf",
+        "format": "ttf",
+        "sha256": "7d4e2b1a7712840218a2726d598490647959ed1104934f3d30a72e77b7c51dad",
+        "bytes": 262176
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "5bea35e29caa46cc7945139839fe20da9a9b3ff4f3589152c8cbfe11d261ec6f",
+      "woff2_bytes": 81444,
+      "cmap_code_points": 273,
+      "assigned_visible_cmap_count": 266
+    },
+    {
+      "id": "style-noto-sans-bengali",
+      "family": "Noto Sans Bengali",
+      "css_family": "UE Noto Sans Bengali",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D beng -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansBengali/NotoSansBengali-Regular.ttf",
+        "format": "ttf",
+        "sha256": "6300c5370cd688b0641343de4c786de6d412bb6c578d129dae75e93a0322dcab",
+        "bytes": 200048
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "fa4e5a83334ca2e85d7a6190b5385f5a82badf154cb80a9565c965b7fe26ce71",
+      "woff2_bytes": 69248,
+      "cmap_code_points": 174,
+      "assigned_visible_cmap_count": 167
+    },
+    {
+      "id": "style-noto-serif-bengali",
+      "family": "Noto Serif Bengali",
+      "css_family": "UE Noto Serif Bengali",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D beng -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifBengali/NotoSerifBengali-Regular.ttf",
+        "format": "ttf",
+        "sha256": "04935aea18655c451d05b1d4bb5bdc835226a221663f89a2ecfbcfdc4483e399",
+        "bytes": 263780
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "ab4d0383a7b50fead4376ac37b3ca38e98529c120fb8d4ce4811296a42922a97",
+      "woff2_bytes": 84968,
+      "cmap_code_points": 174,
+      "assigned_visible_cmap_count": 167
+    },
+    {
+      "id": "style-noto-sans-thai",
+      "family": "Noto Sans Thai",
+      "css_family": "UE Noto Sans Thai",
+      "version": "Version 2.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D thai -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansThai/NotoSansThai-Regular.ttf",
+        "format": "ttf",
+        "sha256": "404ddfb5ed0aaa6b6ec8a85700d682978992062d67da93903967b56cbd9a4acc",
+        "bytes": 37752
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "101d4ba5af613245f57e230aa2dea9e238443d002127b5b06755305b681d5c21",
+      "woff2_bytes": 15688,
+      "cmap_code_points": 102,
+      "assigned_visible_cmap_count": 96
+    },
+    {
+      "id": "style-noto-serif-thai",
+      "family": "Noto Serif Thai",
+      "css_family": "UE Noto Serif Thai",
+      "version": "Version 2.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D thai -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifThai/NotoSerifThai-Regular.ttf",
+        "format": "ttf",
+        "sha256": "36718303c18459aa1a6010c71566b1487b4385e923cb13e367ff7e7fba218ae0",
+        "bytes": 46000
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "3480bf3e25a13442e050ca3793a28e2ac971edfc7cfe259750023d88d2d913b5",
+      "woff2_bytes": 18200,
+      "cmap_code_points": 102,
+      "assigned_visible_cmap_count": 96
+    },
+    {
+      "id": "style-noto-sans-symbols",
+      "family": "Noto Sans Symbols",
+      "css_family": "UE Noto Sans Symbols",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Regular.ttf",
+        "format": "ttf",
+        "sha256": "8f02f31959bbdf6061547a188248e13f84dc5fdd940326ec494675f453f072bb",
+        "bytes": 258156
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "3aaac26463917107e2d85b37786cd0d3afb335932c46c9e9607ca327b512f0b9",
+      "woff2_bytes": 90144,
+      "cmap_code_points": 840,
+      "assigned_visible_cmap_count": 838
+    },
+    {
+      "id": "style-noto-sans-symbols-2",
+      "family": "Noto Sans Symbols2",
+      "css_family": "UE Noto Sans Symbols 2",
+      "version": "Version 2.003",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansSymbols2/NotoSansSymbols2-Regular.ttf",
+        "format": "ttf",
+        "sha256": "630846d528dbe4c4981370a4d0a9475a1fd1491a129bb411f8e157cdb5de13c6",
+        "bytes": 656852
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "ca419d8caf66cca011fe46d3d59bbe6ed6ca623b5e6425e87d834e07c2bb1014",
+      "woff2_bytes": 228236,
+      "cmap_code_points": 2655,
+      "assigned_visible_cmap_count": 2587
+    },
+    {
+      "id": "style-noto-sans-math",
+      "family": "Noto Sans Math",
+      "css_family": "UE Noto Sans Math",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansMath/NotoSansMath-Regular.ttf",
+        "format": "ttf",
+        "sha256": "80b61fd613d3519197e64fff6f7e71fdc7f3e6526440ea4115b554ef7fd59af7",
+        "bytes": 590904
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "bae4506122265decfff810e110650c245c8eb932ba3bd3ba80fb00ec66ee3289",
+      "woff2_bytes": 226592,
+      "cmap_code_points": 2472,
+      "assigned_visible_cmap_count": 2470
+    },
+    {
+      "id": "style-charis",
+      "family": "Charis",
+      "css_family": "UE Charis",
+      "version": "Version 7.000",
+      "weight": 400,
+      "style": "normal",
+      "face": "Regular",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-charis@9e118e417d2a1a5607605f3f04e24d323f398bd8/references/v7000/Charis-Regular.ttf",
+        "format": "ttf",
+        "sha256": "c03738834bd3a43c3e4a59b11878bd6ede3ee505998242ae649ed1f9cd2edcf6",
+        "bytes": 878076
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "cf5c8795a74ea18a8d83510f4927dfbf122b7cfb296ca4653d454033a18f6315",
+      "woff2_bytes": 310768,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-charis-bold",
+      "family": "Charis",
+      "css_family": "UE Charis",
+      "version": "Version 7.000",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-charis@9e118e417d2a1a5607605f3f04e24d323f398bd8/references/v7000/Charis-Bold.ttf",
+        "format": "ttf",
+        "sha256": "64e353674f294993fe979075e351afa5da367a8dd16a860e04eba103cb1cdb08",
+        "bytes": 875024
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "c6677b418719086fda110f637aba657b68e2172f3d9b69d47f77d87eb264d9cc",
+      "woff2_bytes": 315296,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-charis-italic",
+      "family": "Charis",
+      "css_family": "UE Charis",
+      "version": "Version 7.000",
+      "weight": 400,
+      "style": "italic",
+      "face": "Italic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-charis@9e118e417d2a1a5607605f3f04e24d323f398bd8/references/v7000/Charis-Italic.ttf",
+        "format": "ttf",
+        "sha256": "f6e3e822b125aca03337f15cdd094663efaa784b67b766b9370d9f1bf5c2cb2e",
+        "bytes": 892576
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "4d8cd4ea2eb3dfa041dbee501e51d3510851f749596114f9b7b930e1a34c3d99",
+      "woff2_bytes": 330804,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-charis-bold-italic",
+      "family": "Charis",
+      "css_family": "UE Charis",
+      "version": "Version 7.000",
+      "weight": 700,
+      "style": "italic",
+      "face": "BoldItalic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-charis@9e118e417d2a1a5607605f3f04e24d323f398bd8/references/v7000/Charis-BoldItalic.ttf",
+        "format": "ttf",
+        "sha256": "d832bcf31000994b07ab8f73b69127d12e764d8c3c67b7c90e58f1d740291d00",
+        "bytes": 895556
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "90d67163d8cde08d2567a0650747d0790568cf62f1f3bba7700975de808c78a5",
+      "woff2_bytes": 334628,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-andika-bold",
+      "family": "Andika",
+      "css_family": "UE Andika",
+      "version": "Version 7.000",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-andika/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-andika@0fefb76d2c5b2ef2bf2661a7a86f02f07e8c2b0e/references/v7000/Andika-Bold.ttf",
+        "format": "ttf",
+        "sha256": "3ad43a77a29ea060528be69a9e0e81c9dbbe8dff894a26ae1818d3c472393319",
+        "bytes": 817832
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "d476698fdd5f267b6705aebf8bc909f363b3625b2ee1c6f842d32a17c2103a5e",
+      "woff2_bytes": 297916,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-andika-italic",
+      "family": "Andika",
+      "css_family": "UE Andika",
+      "version": "Version 7.000",
+      "weight": 400,
+      "style": "italic",
+      "face": "Italic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-andika/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-andika@0fefb76d2c5b2ef2bf2661a7a86f02f07e8c2b0e/references/v7000/Andika-Italic.ttf",
+        "format": "ttf",
+        "sha256": "b5a2d47f6205a6b885e5a8ff6a29b5430c35222dc4dfe27158a0da3e9f853580",
+        "bytes": 838596
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "9aef970e7e06c297df17aaa96a6dea77b3d75f8b09b8f8df63723585e6e78ca3",
+      "woff2_bytes": 309316,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-andika-bold-italic",
+      "family": "Andika",
+      "css_family": "UE Andika",
+      "version": "Version 7.000",
+      "weight": 700,
+      "style": "italic",
+      "face": "BoldItalic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/silnrsi/font-andika/blob/master/OFL.txt",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/silnrsi/font-andika@0fefb76d2c5b2ef2bf2661a7a86f02f07e8c2b0e/references/v7000/Andika-BoldItalic.ttf",
+        "format": "ttf",
+        "sha256": "dc5bdeb0a2c053d7c41d8985596ae76f08319814fd354fa4379a7008237a2825",
+        "bytes": 852700
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "33e143466cbf8c20bdb45340298acb8288821e061c9e4c4d80082eb2aad84eb4",
+      "woff2_bytes": 313480,
+      "cmap_code_points": 2660,
+      "assigned_visible_cmap_count": 2393
+    },
+    {
+      "id": "style-noto-naskh-arabic-bold",
+      "family": "Noto Naskh Arabic",
+      "css_family": "UE Noto Naskh Arabic",
+      "version": "Version 2.012; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D arab -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoNaskhArabic/NotoNaskhArabic-Bold.ttf",
+        "format": "ttf",
+        "sha256": "7432f2350487d9f784b47a24526d9fc48f2712bb6c2ff602898b104b0c26ee80",
+        "bytes": 184164
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "ba02ceddae95cd4ef8ef6903759b546b8d0b21d235ddfcaee7fc8ff95c24a7c7",
+      "woff2_bytes": 65364,
+      "cmap_code_points": 1124,
+      "assigned_visible_cmap_count": 1115
+    },
+    {
+      "id": "style-noto-sans-bold",
+      "family": "Noto Sans",
+      "css_family": "UE Noto Sans",
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSans/NotoSans-Bold.ttf",
+        "format": "ttf",
+        "sha256": "c976e4b1b99edc88775377fcc21692ca4bfa46b6d6ca6522bfda505b28ff9d6a",
+        "bytes": 575740
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "3d50d858e0b74b99a97835936819eb7ddf962361f4bbedfe6207d26ba25d4a7f",
+      "woff2_bytes": 193736,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-sans-italic",
+      "family": "Noto Sans",
+      "css_family": "UE Noto Sans",
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "italic",
+      "face": "Italic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSans/NotoSans-Italic.ttf",
+        "format": "ttf",
+        "sha256": "36cff144df01309dab648bea71baff9bb074026914afe63aeacc8bc90b67a28b",
+        "bytes": 552776
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "79c5a1c12ec8f342dc1c664dd1cf9664f59942270b934267641801bb4c059c3b",
+      "woff2_bytes": 185552,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-sans-bold-italic",
+      "family": "Noto Sans",
+      "css_family": "UE Noto Sans",
+      "version": "Version 2.008; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "italic",
+      "face": "BoldItalic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSans/NotoSans-BoldItalic.ttf",
+        "format": "ttf",
+        "sha256": "6edf4227ef0fa846aca70e86a307804ca4401741830f5b3af0f2554abe2b8466",
+        "bytes": 555292
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "182e5571ee4f33872eacea5aedbcf5103198aa9271066717ead452ca16a55a7e",
+      "woff2_bytes": 185188,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-sans-arabic-bold",
+      "family": "Noto Sans Arabic",
+      "css_family": "UE Noto Sans Arabic",
+      "version": "Version 2.009; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D arab -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansArabic/NotoSansArabic-Bold.ttf",
+        "format": "ttf",
+        "sha256": "ed2711b387750ae991b6a980b8dd16fdd65e6702b97e9f52adf3a8edf09ef4df",
+        "bytes": 248468
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "7d27b0a96e5ed2c14e6c39e9d40826e2e414e8610ca43a4ea02cffd6220b8ae4",
+      "woff2_bytes": 79244,
+      "cmap_code_points": 1162,
+      "assigned_visible_cmap_count": 1152
+    },
+    {
+      "id": "style-noto-sans-bengali-bold",
+      "family": "Noto Sans Bengali",
+      "css_family": "UE Noto Sans Bengali",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D beng -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansBengali/NotoSansBengali-Bold.ttf",
+        "format": "ttf",
+        "sha256": "7ad632c41ae1ac0931bfffb703470df0fd03e76bcb78f1fcd023d35fbed5ea8e",
+        "bytes": 209084
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "98fe87fb92f6b577c3205864f9757d9a10d4377c4a85a723dc32b533434a7573",
+      "woff2_bytes": 72824,
+      "cmap_code_points": 174,
+      "assigned_visible_cmap_count": 167
+    },
+    {
+      "id": "style-noto-sans-devanagari-bold",
+      "family": "Noto Sans Devanagari",
+      "css_family": "UE Noto Sans Devanagari",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D deva -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansDevanagari/NotoSansDevanagari-Bold.ttf",
+        "format": "ttf",
+        "sha256": "19cc835a064c4af63e3c20feb54f5bf51dc25ffa52c0f493a23904572af8b26e",
+        "bytes": 225748
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "40a9a789f857c6fbf7b3ac7104f4110b0345bffac6e5434d9d550f5d99fb7a21",
+      "woff2_bytes": 71104,
+      "cmap_code_points": 273,
+      "assigned_visible_cmap_count": 266
+    },
+    {
+      "id": "style-noto-sans-hebrew-bold",
+      "family": "Noto Sans Hebrew",
+      "css_family": "UE Noto Sans Hebrew",
+      "version": "Version 3.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D hebr -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansHebrew/NotoSansHebrew-Bold.ttf",
+        "format": "ttf",
+        "sha256": "a30243d1c625eaf63bb889f036fe9de97e81d9248976f89e6e4252f9668c832e",
+        "bytes": 27164
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "a10a66d9e95aa3598a8849a4ec11c7486b9ef41fd03a6db5425f7e783b1d6b25",
+      "woff2_bytes": 11188,
+      "cmap_code_points": 146,
+      "assigned_visible_cmap_count": 139
+    },
+    {
+      "id": "style-noto-sans-symbols-bold",
+      "family": "Noto Sans Symbols",
+      "css_family": "UE Noto Sans Symbols",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansSymbols/NotoSansSymbols-Bold.ttf",
+        "format": "ttf",
+        "sha256": "8a962e49d186810e201ca591f42d5c4a826fcee63bf13db117f5fa6da7404152",
+        "bytes": 258920
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "51be5e4f92f295150b268cff59dec52023390a8846c727d399056bead6c9053f",
+      "woff2_bytes": 94712,
+      "cmap_code_points": 840,
+      "assigned_visible_cmap_count": 838
+    },
+    {
+      "id": "style-noto-sans-thai-bold",
+      "family": "Noto Sans Thai",
+      "css_family": "UE Noto Sans Thai",
+      "version": "Version 2.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D thai -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSansThai/NotoSansThai-Bold.ttf",
+        "format": "ttf",
+        "sha256": "2b67cfb22337a868c6c85709e648ea30c79e0a7c530a5fc169a73d3f461d7c52",
+        "bytes": 37796
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "104b3c353cdc51bbac3218e6fed4824199d910c4fb30e061622d6e4680ca8cfe",
+      "woff2_bytes": 15820,
+      "cmap_code_points": 102,
+      "assigned_visible_cmap_count": 96
+    },
+    {
+      "id": "style-noto-serif-bold",
+      "family": "Noto Serif",
+      "css_family": "UE Noto Serif",
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerif/NotoSerif-Bold.ttf",
+        "format": "ttf",
+        "sha256": "3b2086a869bcded2aeb4416fc281ceec9d6ce3c06756cda19f8f763636204e7d",
+        "bytes": 638164
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "fcc7373e8a42b524e1472fe43497ebca6a011611932130c3527493009134013a",
+      "woff2_bytes": 199296,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-serif-italic",
+      "family": "Noto Serif",
+      "css_family": "UE Noto Serif",
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 400,
+      "style": "italic",
+      "face": "Italic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerif/NotoSerif-Italic.ttf",
+        "format": "ttf",
+        "sha256": "0ea81d6b54fc8aa5dff0fd6ebe7cfa431e9e6cf747a8d4aa33581fa0aaccffea",
+        "bytes": 657092
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "b31c094430c63d78014eec23facdab66e687c914bdcce921ae11115eecdfb07d",
+      "woff2_bytes": 212736,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-serif-bold-italic",
+      "family": "Noto Serif",
+      "css_family": "UE Noto Serif",
+      "version": "Version 2.007; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D latn -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "italic",
+      "face": "BoldItalic",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerif/NotoSerif-BoldItalic.ttf",
+        "format": "ttf",
+        "sha256": "4fb8737145b4a503d548af4b517afdfc532e44a96ac15378257e825741334eec",
+        "bytes": 675428
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "a7711db7c2a4bb686a233e7cc36da41810dfaec59f3e9ef818da4312ab93a0dc",
+      "woff2_bytes": 219656,
+      "cmap_code_points": 2841,
+      "assigned_visible_cmap_count": 2807
+    },
+    {
+      "id": "style-noto-serif-bengali-bold",
+      "family": "Noto Serif Bengali",
+      "css_family": "UE Noto Serif Bengali",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D beng -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifBengali/NotoSerifBengali-Bold.ttf",
+        "format": "ttf",
+        "sha256": "f752131cd292f3e0fd7a25c8fc86f5424062bc06e29f6dfadcb3c09ff4881dd0",
+        "bytes": 258728
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "ff0f1d377226dda8edd8b5f13c05c59d26fbf3baf6c9afd612879d2e8b0cf6bb",
+      "woff2_bytes": 94768,
+      "cmap_code_points": 174,
+      "assigned_visible_cmap_count": 167
+    },
+    {
+      "id": "style-noto-serif-devanagari-bold",
+      "family": "Noto Serif Devanagari",
+      "css_family": "UE Noto Serif Devanagari",
+      "version": "Version 2.001; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D deva -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifDevanagari/NotoSerifDevanagari-Bold.ttf",
+        "format": "ttf",
+        "sha256": "ed4f180a6c63605a336541ba533f7aeb30e1e979a0d1ca7ce110703c13ef8015",
+        "bytes": 278024
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "2922c0ac1ca46575b79b6baea1e801b6bfbd65706948fc94da9c73d09e762e30",
+      "woff2_bytes": 85300,
+      "cmap_code_points": 273,
+      "assigned_visible_cmap_count": 266
+    },
+    {
+      "id": "style-noto-serif-hebrew-bold",
+      "family": "Noto Serif Hebrew",
+      "css_family": "UE Noto Serif Hebrew",
+      "version": "Version 2.002; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D hebr -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifHebrew/NotoSerifHebrew-Bold.ttf",
+        "format": "ttf",
+        "sha256": "9fa00119ecf50e8b40e19589660a6ecc432efec3042d2dbd414184fefc84ca61",
+        "bytes": 32324
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "027047975acc45465129c6ff27e27d900a59301a5e3a6f7944378ea5be99ea52",
+      "woff2_bytes": 13004,
+      "cmap_code_points": 146,
+      "assigned_visible_cmap_count": 139
+    },
+    {
+      "id": "style-noto-serif-thai-bold",
+      "family": "Noto Serif Thai",
+      "css_family": "UE Noto Serif Thai",
+      "version": "Version 2.000; ttfautohint (v1.8) -l 8 -r 50 -G 200 -x 14 -D thai -f none -a qsq -X \"\"",
+      "weight": 700,
+      "style": "normal",
+      "face": "Bold",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/notofonts/noto-fonts/blob/main/LICENSE",
+      "source": {
+        "url": "https://cdn.jsdelivr.net/gh/notofonts/noto-fonts@ffebf8c1ee449e544955a7e813c54f9b73848eac/hinted/ttf/NotoSerifThai/NotoSerifThai-Bold.ttf",
+        "format": "ttf",
+        "sha256": "29185ee50f218e5e6998bc67d33b75d147479660213d6d3a6e2a152f9e62b176",
+        "bytes": 47000
+      },
+      "role": "style",
+      "note": "Pinned public copy recorded by the Unicode Font Kit (remote profile, CORS-verified); D-14.",
+      "woff2_sha256": "af07126ac71b6040d1da2d76196091473d30b7e16c34a9d8becef3ca1eb432a9",
+      "woff2_bytes": 18944,
+      "cmap_code_points": 102,
+      "assigned_visible_cmap_count": 96
     }
   ],
   "candidates": [
