@@ -1,12 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { buildUnassignedRanges } from "../tools/ucd/buildUnassignedRanges.js";
 import { encodeNameMap } from "../tools/ucd/encodeNameMap.js";
-import { extractBlockRanges } from "../tools/ucd/extractBlockRanges.js";
 import { parseBlocks } from "../tools/ucd/parseBlocks.js";
 import { parseUnicodeData } from "../tools/ucd/parseUnicodeData.js";
 import { readUcdFile } from "../tools/ucd/readUcdFile.js";
-import { serializeUnassigned } from "../tools/ucd/serializeUnassigned.js";
-import { repoRoot } from "./loadRuntime.js";
+import { joinBlockCategories } from "../tools/ucd/joinBlockCategories.js";
+import { compressNameTable } from "../tools/ucd/compressNameTable.js";
+import { decodeNameTable } from "../src/names/decodeNameTable.js";
+import { inflateRawSync } from "node:zlib";
+import { repoRoot } from "./ucdFixture.js";
 
 describe("parseUnicodeData", () => {
   it("expands First/Last ranges into assigned code points without naming them", () => {
@@ -30,17 +32,26 @@ describe("buildUnassignedRanges", () => {
   });
 });
 
-describe("serializeUnassigned / extractBlockRanges / encodeNameMap", () => {
-  it("round-trips ranges through the JS literal", () => {
-    const js = serializeUnassigned([[1, 1], [5, 9]]);
-    expect(js).toBe("var UNASSIGNED=[\n[1],[5,9]\n];");
-  });
-  it("reads block ranges from the data file syntax", () => {
-    expect(extractBlockRanges('var B=[["Basic Latin",0x0000,0x007F,"x"],["Tags",0xE0000,0xE007F,"y"]];')).toEqual([[0, 0x7f], [0xe0000, 0xe007f]]);
-  });
+describe("name table encoding", () => {
   it("delta-encodes sorted names with shared prefix lengths", () => {
     const enc = encodeNameMap(new Map([[0x42, "LATIN B"], [0x41, "LATIN A"]]));
     expect(enc).toBe("0|LATIN A|41\n6|B|42");
+  });
+  it("round-trips through raw DEFLATE and the runtime decoder", () => {
+    const map = new Map([[0x41, "LATIN CAPITAL LETTER A"], [0x42, "LATIN CAPITAL LETTER B"], [0x1f600, "GRINNING FACE"]]);
+    const b64 = compressNameTable(map);
+    expect(decodeNameTable(inflateRawSync(Buffer.from(b64, "base64")).toString("utf-8"))).toEqual(map);
+  });
+});
+
+describe("joinBlockCategories", () => {
+  const blocks = [{ name: "Basic Latin", start: 0, end: 0x7f }];
+  it("attaches categories", () => {
+    expect(joinBlockCategories(blocks, { "Basic Latin": "Latin & Extensions" })).toEqual([{ name: "Basic Latin", start: 0, end: 0x7f, category: "Latin & Extensions" }]);
+  });
+  it("fails on a block without a category or a category for an unknown block", () => {
+    expect(() => joinBlockCategories(blocks, {})).toThrow(/no category/);
+    expect(() => joinBlockCategories(blocks, { "Basic Latin": "x", Ghost: "y" })).toThrow(/not in Blocks.txt/);
   });
 });
 
