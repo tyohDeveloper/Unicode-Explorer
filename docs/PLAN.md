@@ -34,6 +34,8 @@ repository under the same standards, build chain, and release discipline as
 | D-14 | **Style packs** for the Serif and Sans buttons: the Unicode Font Kit's `unicode-serif` (Charis 7.000 → Noto Serif → Doulos SIL → script Noto serif faces → FreeSerif → DejaVu Serif) and `unicode-sans` (Andika 7.000 → Noto Sans → script Noto sans faces → FreeSans → DejaVu Sans) stacks ship as two sidecar packs, loaded when the button is chosen, placed ahead of the device style stack (deliberate, known faces first) and before the embedded Unifont pair. Regular faces only by default (~1–1.5 MB per pack); `Unicode.html` does not grow. Without the packs the buttons behave as in 2.0.0.0. | Owner decision, 2026-10-08. Until now Serif and Sans differed only where the device had fonts; everything else fell to the same pixel font (GLY-03). Same mechanism, tooling and licences (OFL) as ADR-0001. |
 | D-15 | **Bold and Italic** are two toggles (`bold=1`, `italic=1`), not a weight scale; a third, **No synthesis** (`nosynth=1`), sets `font-synthesis: none`. Genuine bold, italic and bold-italic faces ship as `serif-styles` and `sans-styles` packs, loaded only when a toggle is on. Weights are out of scope. | Owner decision 2026-10-08 (was Q-11, Q-12). Weight changes no coverage; synthesis is what real pages get, and the switch shows where it happens. |
 | D-16 | **CSS for this selection** writes CSS for other programmers' apps: a web-font form from pinned, CORS-enabled public URLs (`data/web-fonts.json`, measured from cmaps, so the same on every device) and a no-download form naming only fonts found on this device. It never refers to this app's `unicode-fonts/` files and never fetches. Fonts are chosen in the Unicode Font Kit's serif or sans priority order, keeping a family only if it adds coverage; families of 1 MB or more whose characters other families cover are dropped. | Owner decision 2026-10-08 (was Q-13). |
+| D-18 | Algorithmic-name ranges and prefixes are generated from `DerivedName.txt` (DAT-03); the authored table is removed. | Phase 6 checkpoint 2026-10-08. |
+| D-19 | Character details (DAT-05) as a strip that follows focus and hover (option A of three). | Recommended at the Phase 6 checkpoint 2026-10-08; owner may revise. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
@@ -216,15 +218,45 @@ ACC-01, ACC-02, ACC-03, UX-01, UX-02, GLY-06, DAT-04, ARC-07, CP2-01; GLY-03 via
 
 ### Phase 6: Unicode 18
 
-Findings: DAT-01, DAT-03, DAT-04, DAT-05.
+Findings: DAT-01, DAT-03, DAT-05 (DAT-04 closed in 2.1.0.0). Checkpointed 2026-10-08 before the
+build; Unicode 18.0.0 was released 2026-09-16 (172,808 characters, 7 new blocks).
 
-- Generate the block list and algorithmic-name ranges from the UCD plus a committed
-  category-assignment file. Vendor UCD 18.0.0. Data release `2.0.0.0-data`.
-- Name aliases, code-point and literal-character search, per-character properties (General
-  Category, Script, Age).
-- Remeasure coverage; add gap fonts for Seal and Jurchen as they become available.
+Data (track `2.0.0.0-data`: new Unicode major):
 
-Acceptance: 353 blocks; 172,808 characters; regeneration check green.
+- Vendor UCD 18.0.0 under `data/ucd/18.0.0/` with a SHA-256 manifest: the five files used today
+  plus `DerivedName.txt`, `Scripts.txt`, `DerivedAge.txt` and `PropertyValueAliases.txt`.
+- Block categories for the 7 new blocks in `data/block-categories.json`; the generator already
+  fails on an uncategorised block.
+- D-18 (DAT-03): algorithmic-name ranges come from the `PREFIX-*` lines of `DerivedName.txt`
+  instead of the authored `data/algorithmic-names.json`, which is removed. Hangul stays NR1.
+  A test checks every assigned code point's derived name against `DerivedName.txt`. Note:
+  Table 4-8 and `DerivedName.txt` give `SMALL SEAL CHARACTER-`; the Seal section of chapter 18
+  says `SEAL CHARACTER-`; the data files win.
+- Per-character properties for D-19: General Category, Script, Age and decomposition as
+  generated range/map tables, compressed like the name table; budget ≤ 60 KB in the artifact.
+
+App (`2.2.0.0`):
+
+- D-19 (DAT-05) character details. Options: (A) a details strip under the toolbar that follows
+  keyboard focus and mouse hover, click still inserts; (B) a dialog opened by a details button
+  or a modifier-click; (C) a tooltip. **Recommended: A** — no extra click, works with the
+  Phase 5 keyboard model, and screen readers get it as a polite live region. Shows code point,
+  name, aliases, block, General Category, Script, Age, decomposition (type and mapping, with
+  names) and the cell's detection result.
+
+Fonts:
+
+- GNU Unifont and Unifont Upper 17.0.05 → 18.0.01 (Bengali Supplement, Musical Symbols
+  Supplement, Miscellaneous Symbols and Arrows Extended, Latin Extended-G updates and more).
+  Last Resort is already 18.000.
+- Seal: LXGW Seal (OFL-1.1, alpha `v0.001-alpha.10.8`, 2026-10-08) as a Complete-edition
+  `seal` pack if its measured coverage meets the D-13 rule; Kaiyuan Small Seal has no release
+  yet. Jurchen and Archaic Cuneiform Numerals: no font with standard code points was found;
+  Last Resort placeholders only, listed as gaps.
+- Remeasure every font, pack, edition and `data/web-fonts.json` against Unicode 18.
+
+Acceptance: 353 blocks; 172,808 characters counted from the UCD; every derived name matches
+`DerivedName.txt`; regeneration check green; edition coverage remeasured and reported.
 
 ## Out of scope
 
