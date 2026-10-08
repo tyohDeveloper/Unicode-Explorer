@@ -1,5 +1,5 @@
 import type { DisplayMode, Settings } from "./settings.js";
-import { DISPLAY_MODES } from "./settings.js";
+import { DISPLAY_MODES, PRESENTATIONS, type Presentation } from "./settings.js";
 
 function parseBlocks(value: string): number[] {
   return value.split(",").map((h) => parseInt(h, 16)).filter((n) => Number.isInteger(n) && n >= 0 && n <= 0x10ffff);
@@ -23,5 +23,7 @@ export function decodeHashState(hash: string): Partial<Settings> {
   if (params.get("p") === "1") out.placeholders = true;
   const l = params.get("l");
   if (l && /^[A-Za-z0-9-]{2,12}$/.test(l)) out.lang = l;
+  const e = params.get("e");
+  if (e && (PRESENTATIONS as readonly string[]).includes(e)) out.presentation = e as Presentation;
   return out;
 }

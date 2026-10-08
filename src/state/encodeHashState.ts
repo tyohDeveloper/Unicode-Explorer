@@ -17,5 +17,6 @@ export function encodeHashState(s: Settings): string {
   if (s.nameFilter) parts.push(`q=${encodeURIComponent(s.nameFilter)}`);
   if (s.placeholders) parts.push("p=1");
   if (s.lang) parts.push(`l=${encodeURIComponent(s.lang)}`);
+  if (s.presentation) parts.push(`e=${s.presentation}`);
   return parts.join("&");
 }

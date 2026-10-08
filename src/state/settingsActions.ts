@@ -1,5 +1,5 @@
 import type { TableSortColumn } from "../selection/sortTableItems.js";
-import type { DisplayMode, Settings } from "./settings.js";
+import type { DisplayMode, Presentation, Settings } from "./settings.js";
 
 export type SettingsAction =
   | { type: "blocks/set"; starts: readonly number[] }
@@ -13,6 +13,7 @@ export type SettingsAction =
   | { type: "tableSort/toggle"; col: TableSortColumn }
   | { type: "placeholders/set"; placeholders: boolean }
   | { type: "lang/set"; lang: string }
+  | { type: "presentation/set"; presentation: Presentation }
   | { type: "settings/hydrate"; settings: Partial<Settings> };
 
 export const setBlocks = (starts: readonly number[]): SettingsAction => ({ type: "blocks/set", starts });
@@ -26,4 +27,5 @@ export const setNameFilter = (nameFilter: string): SettingsAction => ({ type: "n
 export const toggleTableSort = (col: TableSortColumn): SettingsAction => ({ type: "tableSort/toggle", col });
 export const setPlaceholders = (placeholders: boolean): SettingsAction => ({ type: "placeholders/set", placeholders });
 export const setLang = (lang: string): SettingsAction => ({ type: "lang/set", lang });
+export const setPresentation = (presentation: Presentation): SettingsAction => ({ type: "presentation/set", presentation });
 export const hydrateSettings = (settings: Partial<Settings>): SettingsAction => ({ type: "settings/hydrate", settings });

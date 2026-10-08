@@ -37,6 +37,7 @@ export function settingsReducer(state: Settings, action: SettingsAction): Settin
     case "nameFilter/set": return { ...state, nameFilter: action.nameFilter, tableSort: null };
     case "placeholders/set": return { ...state, placeholders: action.placeholders };
     case "lang/set": return { ...state, lang: action.lang };
+    case "presentation/set": return { ...state, presentation: action.presentation };
     case "tableSort/toggle": {
       const dir = state.tableSort?.col === action.col ? (state.tableSort.dir === 1 ? -1 : 1) : 1;
       return { ...state, tableSort: { col: action.col, dir } };
