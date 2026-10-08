@@ -1,11 +1,11 @@
-import algorithmic from "../../data/algorithmic-names.json";
+import algorithmic from "../data/algorithmic-names.json";
 import { formatHex } from "../codepoint/formatHex.js";
 import { parseHexRanges } from "../codepoint/parseHexRanges.js";
 import { hangulSyllableName } from "./hangulSyllableName.js";
 
 const ranges = parseHexRanges(algorithmic.ranges);
 
-/** Names derived from the code point (CJK, Tangut, Nushu, Khitan, Hangul); null when not derivable. */
+/** Names derived from the code point (DerivedName.txt prefix ranges, D-18; Hangul by NR1); null when not derivable. */
 export function algorithmicName(cp: number): string | null {
   const range = ranges.find((r) => cp >= r.start && cp <= r.end);
   if (range) return range.prefix + formatHex(cp);

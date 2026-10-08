@@ -9,6 +9,8 @@ export interface UnicodeData {
   nameMap: Map<number, string>;
   /** General_Category per assigned code point (ranges expanded). */
   categoryMap: Map<number, string>;
+  /** Decomposition_Mapping field as written (e.g. "<compat> 0020 0308", "0041 0300"). */
+  decompositionMap: Map<number, string>;
 }
 
 function assignRange(data: UnicodeData, first: number, last: number, category: string): void {
@@ -19,7 +21,7 @@ function assignRange(data: UnicodeData, first: number, last: number, category: s
 }
 
 export function parseUnicodeData(text: string): UnicodeData {
-  const data: UnicodeData = { assigned: new Set(), nameMap: new Map(), categoryMap: new Map() };
+  const data: UnicodeData = { assigned: new Set(), nameMap: new Map(), categoryMap: new Map(), decompositionMap: new Map() };
   let rangeFirst = -1;
   for (const line of text.split("\n")) {
     const fields = line.trim().split(";");
@@ -35,6 +37,7 @@ export function parseUnicodeData(text: string): UnicodeData {
     assignRange(data, cp, cp, fields[2]);
     rangeFirst = -1;
     if (!name.startsWith("<")) data.nameMap.set(cp, name);
+    if (fields[5]) data.decompositionMap.set(cp, fields[5]);
   }
   return data;
 }
