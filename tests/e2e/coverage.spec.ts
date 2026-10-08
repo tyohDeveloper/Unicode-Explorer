@@ -22,6 +22,16 @@ test("a block no listed font covers is unverified; placeholders switch those cel
   await page.getByTestId("checkbox-controls-placeholders").check();
   await expect.poll(() => cell.evaluate((el) => getComputedStyle(el).fontFamily)).toContain("UE LastResort");
   await expect.poll(() => page.evaluate(() => location.hash)).toBe(`#b=${TEST_PACK_BLOCK}&p=1`);
+  // The embedded placeholder font must really render (the Last Resort HE build loaded but drew nothing; PLAN D-11):
+  // measured with Adobe Blank behind it, so system fallback cannot stand in.
+  const ink = await page.evaluate(async () => {
+    await document.fonts.load('32px "UE LastResort"');
+    const c = document.createElement("canvas").getContext("2d")!;
+    c.font = '32px "UE LastResort","UE Blank"';
+    const m = c.measureText(String.fromCodePoint(0x18d80));
+    return m.width > 1 && m.actualBoundingBoxAscent + m.actualBoundingBoxDescent > 1;
+  });
+  expect(ink).toBe(true);
 });
 
 test("combining marks are drawn on a dotted circle but insert bare", async ({ page }) => {
