@@ -31,6 +31,7 @@ repository under the same standards, build chain, and release discipline as
 | D-6 | Last Resort is never placed in the global font stack. It is applied per cell, by detection, to characters the device and embedded fonts cannot render. | A font covering every code point anywhere in a `font-family` list stops the browser from reaching device fonts that are not named. Per-cell application keeps device fallback and still shows a block placeholder. |
 | D-11 | The placeholder font is the **full** Last Resort 18.000 build (242 KB as WOFF2), not the "HE" build the audit chose (136 KB). | Measured 2026-10-08 in Chromium: the HE build's cmap format 13 subtable yields no glyphs as a web font, even for BMP characters, so placeholders would silently be the browser's own box. The full build uses a format 12 cmap and renders every code point. HE stays in `fonts/manifest.json` under `candidates`. |
 | D-12 | Detection reports **verified** (a listed font renders the character) or **unverified** (no listed font does), never "missing". Unverified cells are outlined; Last Resort placeholders are an opt-in toggle (`p=1` in the hash), off by default. | The probe can only see fonts named in the stack: a stack terminated by Adobe Blank 2 never reaches system fallback, and Chromium's tofu metrics vary by code point (measured), so no heuristic can tell "the device found a font we did not name" from "nothing rendered". Forcing a placeholder on an unverified cell could therefore hide a real glyph. Naming known device fonts per script (`data/device-fonts.json`) shrinks the unverified set honestly. |
+| D-14 | **Style packs** for the Serif and Sans buttons: the Unicode Font Kit's `unicode-serif` (Charis 7.000 → Noto Serif → Doulos SIL → script Noto serif faces → FreeSerif → DejaVu Serif) and `unicode-sans` (Andika 7.000 → Noto Sans → script Noto sans faces → FreeSans → DejaVu Sans) stacks ship as two sidecar packs, loaded when the button is chosen, placed after the device style stack and before the embedded Unifont pair. Regular faces only by default (~1–1.5 MB per pack); `Unicode.html` does not grow. Without the packs the buttons behave as in 2.0.0.0. | Owner decision, 2026-10-08. Until now Serif and Sans differed only where the device had fonts; everything else fell to the same pixel font (GLY-03). Same mechanism, tooling and licences (OFL) as ADR-0001. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
 ### Open
@@ -40,6 +41,9 @@ repository under the same standards, build chain, and release discipline as
 | Q-4 | Upgrade to Unicode 18 before or after the module migration | After Phase 2, so the upgrade runs through regeneration and verification checks. |
 | Q-7 | Data-track versioning | One data track covering the Unicode Character Database snapshot and the font manifest. Tag the current Unicode 17 build `1.0.0.0-data`; the Unicode 18 upgrade is `2.0.0.0-data`. |
 | Q-8 | Jigmo (the Basic Multilingual Plane file, 7.1 MiB) in Complete | Excluded in Phase 4 (only Jigmo2 and Jigmo3 are packed). Revisit if the coverage readout shows BMP CJK unverified on target devices. |
+| Q-11 | Bold and Italic | Two toggles (`Bold`, `Italic`; hash `w=b`, `i=1`), not a weight scale. Genuine bold, italic and bold-italic faces for the Latin primaries (Charis, Andika, Noto Serif, Noto Sans) ship as separate style-pack files loaded only when a toggle is on (~2.5 MB for all faces); every other script gets the browser's synthesised bold/oblique, which is what a user's page would get. An optional "Show synthesis" switch (`font-synthesis: none`) reveals which characters have no genuine styled face. Oblique needs no separate control: CSS falls back from italic to oblique. |
+| Q-12 | Multiple weights | No. Weight changes no code-point coverage, few coverage fonts have more than regular and bold, and the app's purpose is what a browser can display without special knowledge. |
+| Q-13 | "CSS for this selection" panel | Yes. A dialog that writes copyable CSS giving the most coverage for the selected blocks, in two forms: **no downloads** (a `font-family` list of commonly installed platform fonts for the scripts selected, with this device's verified count, labelled as device-specific) and **web fonts** (minimal set of `@font-face` rules using the Unicode Font Kit's 62 CORS-verified public URLs, plus the `font-family` list, with coverage and byte cost computed from cmaps, so device-independent). Text only: nothing is fetched. |
 | Q-10 | Script-aware style stacks via `@font-face local()` + `unicode-range` composition (GLY-03, second half) | Deferred from Phase 4. Phase 4 names device fonts per script in `data/device-fonts.json` instead, which fixes detection credit and most fallback order; composing local() faces is a quality step for Phase 5 or later. |
 
 ## Editions
@@ -177,7 +181,11 @@ device-font list: all-blocks Grid is now 52 s) to Phase 5.
 ### Phase 5: Scale and accessibility
 
 Findings: PRF-01, PRF-02, ACC-01 to ACC-03, UX-01, UX-02; from Checkpoint 2: CP2-01, GLY-06,
-DAT-04, ARC-07 (ACC-04 closed in 1.2.0.0).
+DAT-04, ARC-07 (ACC-04 closed in 1.2.0.0); GLY-03 via D-14; Q-11 and Q-13 if confirmed.
+
+- Style packs `serif` and `sans` from the Unicode Font Kit sources (D-14), in the Complete
+  editions and the hosted test build; Bold/Italic toggles with on-demand styled faces (Q-11);
+  "CSS for this selection" dialog (Q-13).
 
 - Prune the probe stack at start-up: measure each `data/device-fonts.json` family once behind
   Adobe Blank and keep only the families present, so `--glyph-font` is short and detection costs
