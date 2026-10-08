@@ -1,0 +1,54 @@
+{
+  "_doc": "Glyph font selector. 'stack' is a CSS font-family list; 'id' feeds data-testid radio-font-<id> and the URL hash. Edit here, never in markup.",
+  "fonts": [
+    {
+      "label": "System",
+      "title": "System UI",
+      "stack": "system-ui,serif",
+      "checked": true,
+      "id": "system-ui"
+    },
+    {
+      "label": "Serif",
+      "title": "Serif",
+      "stack": "'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Georgia,'Times New Roman',serif",
+      "id": "serif"
+    },
+    {
+      "label": "Sans",
+      "title": "Sans-serif",
+      "stack": "'Source Han Sans SC', 'Source Han Sans TC', 'Source Han Sans HC', 'Source Han Sans JP', 'Source Han Sans K','Source Han Sans','Heisei Kaku Gothic','Noto Sans JP', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans HK', 'Noto Sans KR', 'Noto Sans','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro',Meiryo,'Malgun Gothic',Arial,Helvetica,sans-serif",
+      "id": "sans-serif"
+    },
+    {
+      "label": "Mono",
+      "title": "Monospace",
+      "stack": "'Source Han Mono','Sarasa Mono SC','Sarasa Mono TC','Sarasa Mono J','Sarasa Mono K','Noto Sans Mono CJK','Maple Mono','MS Gothic',NSimSun,MingLiU,'Cascadia Code','Fira Code',Consolas,'DejaVu Sans Mono',monospace",
+      "id": "monospace"
+    },
+    {
+      "label": "Cursive",
+      "title": "Cursive",
+      "stack": "'Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK','Segoe Script','Brush Script MT','Comic Sans MS',cursive",
+      "id": "cursive"
+    },
+    {
+      "label": "Fantasy",
+      "title": "Fantasy",
+      "stack": "'Adobe Kaiti Std','Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Papyrus,Impact,fantasy",
+      "id": "fantasy"
+    },
+    {
+      "label": "仿宋",
+      "title": "仿宋 (FangSong)",
+      "stack": "'Adobe Fangsong Std',FangSong,SimFang,cwTeXFangSong,fangsong,'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',serif",
+      "id": "fangsong"
+    },
+    {
+      "label": "Math",
+      "title": "Math",
+      "stack": "'STIX Two Math','Latin Modern Math','Cambria Math',math,serif",
+      "id": "math"
+    }
+  ]
+}

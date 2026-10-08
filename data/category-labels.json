@@ -1,0 +1,41 @@
+{
+  "_doc": "Labels for code points without a character name, by range (hex, inclusive). Rendered as <label-XXXX>. 'noncharacter_tail' covers U+xFFFE/U+xFFFF in every plane. Anything else unassigned renders as U+XXXX.",
+  "ranges": [
+    {
+      "start": "0000",
+      "end": "001F",
+      "label": "control"
+    },
+    {
+      "start": "007F",
+      "end": "009F",
+      "label": "control"
+    },
+    {
+      "start": "D800",
+      "end": "DFFF",
+      "label": "surrogate"
+    },
+    {
+      "start": "E000",
+      "end": "F8FF",
+      "label": "private-use"
+    },
+    {
+      "start": "F0000",
+      "end": "FFFFF",
+      "label": "private-use"
+    },
+    {
+      "start": "100000",
+      "end": "10FFFF",
+      "label": "private-use"
+    },
+    {
+      "start": "FDD0",
+      "end": "FDEF",
+      "label": "noncharacter"
+    }
+  ],
+  "noncharacter_tail": "noncharacter"
+}
