@@ -21,6 +21,11 @@ export interface Settings {
   /** BCP 47 tag applied to the output for CJK locale-sensitive glyph forms; "" = inherit. */
   lang: string;
   presentation: Presentation;
+  /** Bold and italic output (Q-11); styled faces load with the Serif/Sans style packs. */
+  bold: boolean;
+  italic: boolean;
+  /** Show synthesis: font-synthesis none, so characters without a genuine styled face stay upright and regular. */
+  noSynthesis: boolean;
 }
 
 export const SIZE_MIN = 10;
@@ -37,4 +42,7 @@ export const initialSettings: Settings = {
   placeholders: false,
   lang: "",
   presentation: "",
+  bold: false,
+  italic: false,
+  noSynthesis: false,
 };

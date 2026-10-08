@@ -14,6 +14,7 @@ export type SettingsAction =
   | { type: "placeholders/set"; placeholders: boolean }
   | { type: "lang/set"; lang: string }
   | { type: "presentation/set"; presentation: Presentation }
+  | { type: "style/set"; bold?: boolean; italic?: boolean; noSynthesis?: boolean }
   | { type: "settings/hydrate"; settings: Partial<Settings> };
 
 export const setBlocks = (starts: readonly number[]): SettingsAction => ({ type: "blocks/set", starts });
@@ -28,4 +29,5 @@ export const toggleTableSort = (col: TableSortColumn): SettingsAction => ({ type
 export const setPlaceholders = (placeholders: boolean): SettingsAction => ({ type: "placeholders/set", placeholders });
 export const setLang = (lang: string): SettingsAction => ({ type: "lang/set", lang });
 export const setPresentation = (presentation: Presentation): SettingsAction => ({ type: "presentation/set", presentation });
+export const setTextStyle = (style: { bold?: boolean; italic?: boolean; noSynthesis?: boolean }): SettingsAction => ({ type: "style/set", ...style });
 export const hydrateSettings = (settings: Partial<Settings>): SettingsAction => ({ type: "settings/hydrate", settings });

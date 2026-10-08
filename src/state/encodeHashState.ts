@@ -18,5 +18,8 @@ export function encodeHashState(s: Settings): string {
   if (s.placeholders) parts.push("p=1");
   if (s.lang) parts.push(`l=${encodeURIComponent(s.lang)}`);
   if (s.presentation) parts.push(`e=${s.presentation}`);
+  if (s.bold) parts.push("bold=1");
+  if (s.italic) parts.push("italic=1");
+  if (s.noSynthesis) parts.push("nosynth=1");
   return parts.join("&");
 }

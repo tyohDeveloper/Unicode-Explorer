@@ -38,6 +38,7 @@ export function settingsReducer(state: Settings, action: SettingsAction): Settin
     case "placeholders/set": return { ...state, placeholders: action.placeholders };
     case "lang/set": return { ...state, lang: action.lang };
     case "presentation/set": return { ...state, presentation: action.presentation };
+    case "style/set": return { ...state, bold: action.bold ?? state.bold, italic: action.italic ?? state.italic, noSynthesis: action.noSynthesis ?? state.noSynthesis };
     case "tableSort/toggle": {
       const dir = state.tableSort?.col === action.col ? (state.tableSort.dir === 1 ? -1 : 1) : 1;
       return { ...state, tableSort: { col: action.col, dir } };
