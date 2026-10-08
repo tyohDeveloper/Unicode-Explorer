@@ -19,6 +19,8 @@ export interface FontPackLoader {
   catalogue(): PackCatalogueEntry[] | null;
   ensureForBlocks(selected: readonly number[]): void;
   families(): string[];
+  /** Families of loaded style packs for a font button id ("serif", "sans-serif"), in stack order (D-14). */
+  styleFamilies(fontId: string): string[];
   statuses(): PackStatus[];
 }
 
@@ -66,6 +68,7 @@ export function createFontPackLoader(onChange: () => void): FontPackLoader {
     catalogue: () => packs,
     ensureForBlocks: (selected) => { for (const pack of packsForBlocks(packs ?? [], selected)) if (!states.has(pack.id)) void load(pack); },
     families: () => [...loaded],
+    styleFamilies: () => [],
     statuses: () => (packs ?? []).filter((p) => states.has(p.id)).map((p) => ({ id: p.id, label: p.label, state: states.get(p.id)!, bytes: p.bytes })),
   };
 }

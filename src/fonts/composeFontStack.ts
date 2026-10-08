@@ -1,11 +1,21 @@
 /**
- * The output pane's font-family list (PLAN.md D-6, fonts/manifest.json
- * stack_rule): the chosen style stack, then device fonts known to carry rarer
- * scripts, then any loaded sidecar packs, then the embedded coverage fonts.
- * Placeholder and detection fonts are never part of it.
+ * The output pane's font-family list (PLAN.md D-6, D-14): style-pack families
+ * first (deliberate, known faces), then the chosen device style stack, then
+ * device fonts known to carry rarer scripts, then block packs, then the
+ * embedded coverage fonts. Callers pass only families present on this device
+ * (generic keywords always count as present). Placeholder and detection fonts
+ * are never part of it.
  */
-export function composeFontStack(styleStack: string, deviceFonts: readonly string[], packFamilies: readonly string[], embedded: readonly string[]): string {
+export interface StackParts { stylePacks: readonly string[]; style: readonly string[]; device: readonly string[]; blockPacks: readonly string[]; embedded: readonly string[] }
+
+export function composeFontStack(parts: StackParts): string {
   const quote = (name: string) => (/^[A-Za-z-]+$/.test(name) ? name : `"${name.replace(/"/g, "")}"`);
-  const rest = [...deviceFonts, ...packFamilies, ...embedded].map(quote);
-  return [styleStack.trim(), ...rest].filter(Boolean).join(",");
+  const seen = new Set<string>();
+  const out: string[] = [];
+  for (const name of [...parts.stylePacks, ...parts.style, ...parts.device, ...parts.blockPacks, ...parts.embedded]) {
+    if (seen.has(name)) continue;
+    seen.add(name);
+    out.push(quote(name));
+  }
+  return out.join(",");
 }
