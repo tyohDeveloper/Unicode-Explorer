@@ -43,3 +43,12 @@ describe("hash state", () => {
     expect(decodeHashState("#b=zz,0041&m=bogus&s=abc&x=1")).toEqual({ blocks: [0x41] });
   });
 });
+
+describe("Phase 4 settings in the hash", () => {
+  it("round-trips placeholders and the CJK locale", () => {
+    const s = { ...initialSettings, placeholders: true, lang: "zh-Hant" };
+    expect(encodeHashState(s)).toBe("p=1&l=zh-Hant");
+    expect(decodeHashState("#p=1&l=zh-Hant")).toEqual({ placeholders: true, lang: "zh-Hant" });
+    expect(decodeHashState("#l=<script>")).toEqual({});
+  });
+});
