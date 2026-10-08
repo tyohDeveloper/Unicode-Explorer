@@ -30,11 +30,15 @@ export function prepareFixtures(): void {
   const lastResort = new Uint8Array(readFileSync(resolve(repoRoot, "fonts/standard/LastResort-Regular.woff2")));
   const dir = resolve(fixtureRoot, "packs/unicode-fonts");
   writeFileSync(resolve(dir, "test-pack.js"), packScript("test-pack", [{ family: "UE TestPack", format: "woff2", bytes: lastResort }]));
+  writeFileSync(resolve(dir, "test-serif.js"), packScript("test-serif", [{ family: "UE TestSerif", format: "woff2", bytes: lastResort, weight: 400, style: "normal" }]));
+  writeFileSync(resolve(dir, "test-serif-styles.js"), packScript("test-serif-styles", [{ family: "UE TestSerif", format: "woff2", bytes: lastResort, weight: 700, style: "normal" }]));
   writeFileSync(resolve(dir, "manifest.js"), packsManifestScript({
     schema: "unicode-explorer-font-packs/1", app: "test", unicode: "17.0.0", edition: "e2e",
     packs: [
       { id: "test-pack", label: "Test", file: "test-pack.js", bytes: lastResort.length, families: ["UE TestPack"], blocks: [TEST_PACK_BLOCK], fonts: [] },
       { id: "ghost", label: "Ghost", file: "ghost.js", bytes: 1, families: ["UE Ghost"], blocks: [GHOST_PACK_BLOCK], fonts: [] },
+      { id: "test-serif", label: "Test serif", file: "test-serif.js", bytes: lastResort.length, families: ["UE TestSerif"], blocks: [], kind: "style", styles: ["serif"], faces: "regular", fonts: [] },
+      { id: "test-serif-styles", label: "Test serif bold", file: "test-serif-styles.js", bytes: lastResort.length, families: ["UE TestSerif"], blocks: [], kind: "style", styles: ["serif"], faces: "styled", fonts: [] },
     ],
   }));
 }

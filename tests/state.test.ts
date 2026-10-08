@@ -52,3 +52,12 @@ describe("Phase 4 settings in the hash", () => {
     expect(decodeHashState("#l=<script>")).toEqual({});
   });
 });
+
+describe("Phase 5 settings in the hash", () => {
+  it("round-trips emoji presentation, bold, italic and no-synthesis", () => {
+    const s = { ...initialSettings, presentation: "text" as const, bold: true, italic: true, noSynthesis: true };
+    expect(encodeHashState(s)).toBe("e=text&bold=1&italic=1&nosynth=1");
+    expect(decodeHashState("#e=text&bold=1&italic=1&nosynth=1")).toEqual({ presentation: "text", bold: true, italic: true, noSynthesis: true });
+    expect(decodeHashState("#e=sparkly")).toEqual({});
+  });
+});
