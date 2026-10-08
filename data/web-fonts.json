@@ -1,7 +1,7 @@
 {
  "_doc": "Web fonts for the 'CSS for this selection' dialog (PLAN Q-13). Pinned public URLs (Unicode Font Kit remote profile, CORS-verified; block fonts from fonts/manifest.json). 'ranges' is deflate-raw+base64 JSON: family → visible assigned code points of the regular face as [start,end]|[cp] runs. Written by tools/fonts/buildWebFontTable.ts.",
  "generated": "2026-10-08",
- "unicode": "17.0.0",
+ "unicode": "18.0.0",
  "order": {
   "serif": [
    "Charis",

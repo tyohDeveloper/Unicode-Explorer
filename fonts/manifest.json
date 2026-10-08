@@ -1,8 +1,8 @@
 {
   "schema": "unicode-explorer-font-manifest/1",
   "generated": "2026-10-08",
-  "unicode_reference": "17.0.0",
-  "measurement_note": "assigned_visible_cmap_count = code points in the font's cmap that are assigned in Unicode 17.0.0 and visible (General Category not Cc/Cf/Cs/Co/Cn/Zl/Zp, not Default_Ignorable_Code_Point, plus Prepended_Concatenation_Mark). Out of 159,375. A cmap entry is not proof of correct shaping, mark positioning, or style design.",
+  "unicode_reference": "18.0.0",
+  "measurement_note": "assigned_visible_cmap_count = code points in the font's cmap that are assigned in Unicode 18.0.0 and visible (General Category not Cc/Cf/Cs/Co/Cn/Zl/Zp, not Default_Ignorable_Code_Point, plus Prepended_Concatenation_Mark). Out of 159,375. A cmap entry is not proof of correct shaping, mark positioning, or style design.",
   "policy": {
     "licenses_allowed": [
       "OFL-1.1",
@@ -23,9 +23,9 @@
         "last-resort",
         "adobe-blank-2"
       ],
-      "guaranteed_visible_code_points": 77874,
-      "of": 159375,
-      "embedded_font_bytes": 1765228,
+      "guaranteed_visible_code_points": 78224,
+      "of": 172382,
+      "embedded_font_bytes": 1763916,
       "delivery": "embedded in Unicode.html",
       "packs": []
     },
@@ -44,9 +44,9 @@
         "NotoSansBamum",
         "NotoSerifTangut"
       ],
-      "guaranteed_visible_code_points": 154164,
-      "of": 159375,
-      "embedded_font_bytes": 19296900,
+      "guaranteed_visible_code_points": 154514,
+      "of": 172382,
+      "embedded_font_bytes": 19295588,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-f",
@@ -78,9 +78,9 @@
         "NotoSerifTangut",
         "unihieroglyphica"
       ],
-      "guaranteed_visible_code_points": 159230,
-      "of": 159375,
-      "embedded_font_bytes": 25683236,
+      "guaranteed_visible_code_points": 159580,
+      "of": 172382,
+      "embedded_font_bytes": 25681924,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-f",
@@ -418,43 +418,43 @@
       "id": "unifont",
       "family": "Unifont",
       "css_family": "UE Unifont",
-      "version": "17.0.05",
+      "version": "18.0.01",
       "license": "OFL-1.1",
       "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
       "license_url": "https://www.unifoundry.com/LICENSE.txt",
       "source": {
-        "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont-17.0.05.otf",
+        "url": "https://www.unifoundry.com/pub/unifont/unifont-18.0.01/font-builds/unifont-18.0.01.otf",
         "format": "otf",
-        "sha256": "85701ab9b1e251ee16f4df00b13f22eac311d72b7dab427a7d975fe7f5064702",
-        "bytes": 5321628
+        "sha256": "88d0a14d4aa9a96419720b39ba5da921a59560d76d4ec7d523acc06ed85cd3c2",
+        "bytes": 5320148
       },
-      "woff2_sha256": "e55c3b385493884b01888deff8cc3665b2e0527d9a2533cc120685c49a6c57e9",
-      "woff2_bytes": 912116,
       "cmap_code_points": 58910,
-      "assigned_visible_cmap_count": 57432,
+      "assigned_visible_cmap_count": 57461,
       "role": "coverage",
-      "vendored": "fonts/standard/unifont-17.0.05.woff2"
+      "vendored": "fonts/standard/unifont-18.0.01.woff2",
+      "woff2_sha256": "287f9b48a08f670d91a539dcf7fccebadc8459acc00e0999d02e3ac01e7bebe5",
+      "woff2_bytes": 912708
     },
     {
       "id": "unifont_upper",
       "family": "Unifont Upper",
       "css_family": "UE Unifont Upper",
-      "version": "17.0.05",
+      "version": "18.0.01",
       "license": "OFL-1.1",
       "license_note": "Unifont is dual-licensed (GPL-2.0-or-later with font embedding exception, or OFL-1.1); OFL elected.",
       "license_url": "https://www.unifoundry.com/LICENSE.txt",
       "source": {
-        "url": "https://www.unifoundry.com/pub/unifont/unifont-17.0.05/font-builds/unifont_upper-17.0.05.otf",
+        "url": "https://www.unifoundry.com/pub/unifont/unifont-18.0.01/font-builds/unifont_upper-18.0.01.otf",
         "format": "otf",
-        "sha256": "f4fd6d5d752726d384feef175bb780c9f29382cd4941c9e1e6990d7c3822a090",
-        "bytes": 6138788
+        "sha256": "472201e45a050bff4c7658208b8c73e34ebce3764b287a5a46c7774038ef9391",
+        "bytes": 5954156
       },
-      "woff2_sha256": "a62caf84016a02ee5241a54e932c1e79f6da6cfab5a6eeb11a0e459d162db25f",
-      "woff2_bytes": 609400,
-      "cmap_code_points": 59056,
-      "assigned_visible_cmap_count": 22283,
+      "cmap_code_points": 57728,
+      "assigned_visible_cmap_count": 22604,
       "role": "coverage",
-      "vendored": "fonts/standard/unifont_upper-17.0.05.woff2"
+      "vendored": "fonts/standard/unifont_upper-18.0.01.woff2",
+      "woff2_sha256": "2691ec65e9b74ded923e77ac9a69ebc3804bf0a520ec15f497d60c6a2dd3e75e",
+      "woff2_bytes": 607496
     },
     {
       "id": "last-resort",
@@ -475,7 +475,7 @@
       "woff2_sha256": "aca5b106bf5a85dc2436d4d3f8c89f314c7769bf488043c177cf9b8c041f8ba3",
       "woff2_bytes": 242224,
       "cmap_code_points": 1114112,
-      "assigned_visible_cmap_count": 159375
+      "assigned_visible_cmap_count": 172382
     },
     {
       "id": "jigmo2",
@@ -632,7 +632,7 @@
       "vendored": "fonts/standard/AdobeBlank2.woff",
       "woff2_sha256": "97556d8236dd74f8a715d95401fbca9496c9bb226221b1dc34bf404534537e16",
       "woff2_bytes": 1488,
-      "assigned_visible_cmap_count": 159375
+      "assigned_visible_cmap_count": 172382
     },
     {
       "id": "style-doulos-sil",
@@ -1629,6 +1629,25 @@
       },
       "role": "placeholder",
       "note": "136 KB as WOFF2 but its cmap format 13 subtable yields no glyphs in Chromium (measured 2026-10-08); revisit if browsers gain support."
+    },
+    {
+      "id": "lxgw-seal",
+      "family": "LXGW Seal",
+      "version": "0.001-alpha.10.8",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/lxgw/LxgwSeal/blob/v0.001-alpha.10.8/OFL.txt",
+      "source": {
+        "url": "https://github.com/lxgw/LxgwSeal/releases/download/v0.001-alpha.10.8/LXGWSeal-Regular.ttf",
+        "format": "ttf",
+        "sha256": "06100c9d0afd79612dc0cf7ef8ddef997cce4ec22bf7d93f7cf238ca08bac29e",
+        "bytes": 227780
+      },
+      "note": "First free font for the Unicode 18 Seal block (OFL-1.1, alpha 2026-10-08). Measured 511 of 11,328 Seal characters (4.5%), below the D-13 pack rule (25% of a block), so not shipped; re-measure on each release.",
+      "woff2_sha256": "8e5e02799c376badaba07b88ee3868707b921e9a32975f8c2698f88165db7171",
+      "woff2_bytes": 68672,
+      "cmap_code_points": 512,
+      "assigned_visible_cmap_count": 511,
+      "status": "candidate"
     }
   ],
   "pack_rule": "A pack is attached to the blocks in its declared categories (data/block-categories.json) whose visible assigned code points its fonts map at least a quarter of; tools/fonts/buildPacks.ts computes and records 'blocks'. Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies, and the category scope keeps stray ASCII glyphs from attaching a CJK pack to Basic Latin. The app loads a pack only when one of its blocks is selected (ADR-0001)."
