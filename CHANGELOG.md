@@ -9,6 +9,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.3.0] — 2026-10-08
+
+### Changed
+
+- **CSS for selection** can offer web fonts for 2,812 more characters (157,704 of 172,382
+  visible, was 154,892): 38 per-script Noto fonts (SignWriting, Nushu, Khitan Small Script,
+  Znamenny, Cypro-Minoan, Tangsa, Kawi, Nyiakeng Puachue Hmong, Vithkuqi, Nandinagari, Ottoman
+  Siyaq, Wancho, Todhri, Tamil Supplement and others) at a pinned notofonts.github.io commit via
+  jsDelivr (issue #15).
+
 ## [2.2.2.0] — 2026-10-08
 
 Phase 7 of `docs/PLAN.md`.

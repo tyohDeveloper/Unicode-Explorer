@@ -314,6 +314,13 @@ Status 2026-10-08: delivered as app 2.2.2.0 / data 2.0.2.0.
   watch 2027-01", due 2027-01-08), and a reminder for that date.
 - CP3-07: an erratum report is drafted in `docs/upstream/unicode-18-seal-name-erratum.md`; it is
   submitted by the owner.
+- Issue #15 (2.2.3.0 / data 2.0.3.0): all 226 Noto Regular faces at notofonts.github.io
+  `578d18e1` (2026-10-09) measured against the web-font gap; 38 added to the CSS dialog
+  (`data/web-font-extras.json`), +2,812 characters. Not added: Noto Fangsong KSS Rotated, whose
+  Khitan glyphs are rotated for vertical layout (Noto Serif Khitan Small Script covers the same
+  470); newer Noto Sans Symbols2 and Devanagari (+46), to avoid two versions of one family.
+  1,876 web-only characters remain, mostly in blocks from Unicode 16–18 that Noto has not
+  published yet. None of the 226 covers any of the 12,802 characters missing from every edition.
 
 ## Out of scope
 

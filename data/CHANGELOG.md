@@ -4,6 +4,14 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.3.0] — 2026-10-08
+
+### Added
+
+- `data/web-font-extras.json`: 38 per-script Noto Regular faces (pinned commit `578d18e1`,
+  SHA-256 each) for the CSS dialog, chosen by measured gain; families already in the Unicode
+  Font Kit set are not repeated. `data/web-fonts.json` re-measured: 71 measured families.
+
 ## [2.0.2.0] — 2026-10-08
 
 ### Changed
