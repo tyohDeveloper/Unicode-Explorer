@@ -1,5 +1,5 @@
 {
- "_doc": "Extra public web fonts for the CSS dialog (issue #15): per-script Noto Regular faces at a pinned notofonts.github.io commit, served by jsDelivr with Access-Control-Allow-Origin: *. Chosen by measured gain over the Unicode Font Kit set; families the kit already lists are not repeated. Read by tools/fonts/buildWebFontTable.ts, which verifies each sha256. OFL-1.1.",
+ "_doc": "Extra public web fonts for the CSS dialog (issue #15): public OFL faces at pinned commits (per-script Noto from notofonts.github.io; Noto Emoji from google/fonts; Fairfax HD from kreativekorp/open-relay), served by jsDelivr with Access-Control-Allow-Origin: *. Chosen by measured gain over the Unicode Font Kit set; families the kit already lists are not repeated. Read by tools/fonts/buildWebFontTable.ts, which verifies each sha256. OFL-1.1.",
  "source": "notofonts/notofonts.github.io",
  "commit": "578d18e1cfce41c8cc93d0a0f514cac3a1affb2e",
  "license": "OFL-1.1",
@@ -232,6 +232,24 @@
    "url": "https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@578d18e1cfce41c8cc93d0a0f514cac3a1affb2e/fonts/NotoSerifKhitanSmallScript/unhinted/ttf/NotoSerifKhitanSmallScript-Regular.ttf",
    "sha256": "53434afa8313ffb127235c1b0b9a9eb396b8f831a75bcf111e8887eff20ebf57",
    "bytes": 609184
+  },
+  {
+   "file": "NotoEmoji[wght].ttf",
+   "url": "https://cdn.jsdelivr.net/gh/google/fonts@51303ca9e8ac9dcea7b12d307ba568fd0e6fcfca/ofl/notoemoji/NotoEmoji%5Bwght%5D.ttf",
+   "sha256": "de6c18832938afc99caf132b39d6a30a19bac7f2e812e28db2535b4608d27551",
+   "bytes": 1982596,
+   "source": "google/fonts",
+   "license": "OFL-1.1",
+   "license_url": "https://github.com/google/fonts/blob/51303ca9e8ac9dcea7b12d307ba568fd0e6fcfca/ofl/notoemoji/OFL.txt"
+  },
+  {
+   "file": "FairfaxHD.ttf",
+   "url": "https://cdn.jsdelivr.net/gh/kreativekorp/open-relay@e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/FairfaxHD.ttf",
+   "sha256": "8ed5c84fa50fd02f145026da522b30519b1637222372d1b47b721cd021fc79ce",
+   "bytes": 3190724,
+   "source": "kreativekorp/open-relay",
+   "license": "OFL-1.1",
+   "license_url": "https://github.com/kreativekorp/open-relay/blob/e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/OFL.txt"
   }
  ]
 }

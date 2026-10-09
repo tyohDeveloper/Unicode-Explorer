@@ -102,7 +102,7 @@ function blockFonts(visible: Set<number>): { fonts: WebFont[]; ranges: Record<st
   return { fonts, ranges };
 }
 
-interface Extra { file: string; url: string; sha256: string; bytes: number }
+interface Extra { file: string; url: string; sha256: string; bytes: number; license?: string; license_url?: string }
 interface Extras { commit: string; license: string; license_url: string; fonts: Extra[] }
 
 async function extraBytes(e: Extra): Promise<Uint8Array> {
@@ -121,7 +121,7 @@ async function extraFonts(visible: Set<number>): Promise<{ fonts: WebFont[]; ran
   for (const e of extras.fonts) {
     const bytes = await extraBytes(e);
     const font = fontkit.create(Buffer.from(bytes)) as fontkit.Font;
-    fonts.push({ family: font.familyName, face: "Regular", weight: 400, style: "normal", url: e.url, format: "truetype", bytes: e.bytes, sha256: e.sha256, license: extras.license, license_url: extras.license_url, version: String(font.version ?? extras.commit.slice(0, 8)) });
+    fonts.push({ family: font.familyName, face: "Regular", weight: 400, style: "normal", url: e.url, format: "truetype", bytes: e.bytes, sha256: e.sha256, license: e.license ?? extras.license, license_url: e.license_url ?? extras.license_url, version: String(font.version ?? extras.commit.slice(0, 8)) });
     ranges[font.familyName] = compactRanges(readCmap(bytes).filter((cp) => visible.has(cp)));
   }
   return { fonts, ranges };
