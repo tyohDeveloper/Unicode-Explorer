@@ -9,6 +9,16 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.5.0] — 2026-10-09
+
+### Added
+
+- **CSS for selection: self-host template** (D-21, option B of Q-14). When selected characters
+  have no public web font but GNU Unifont 18 covers them, the CSS ends with a commented
+  `@font-face` per Unifont file. Each has the exact `unicode-range`, the unifoundry.com download
+  link, the licence, and a note that Unifont is bitmap-style. For example, Garay gets 69
+  characters. Nothing points at this app's files.
+
 ## [2.2.4.0] — 2026-10-09
 
 ### Added

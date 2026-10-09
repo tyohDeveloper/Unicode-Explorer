@@ -4,7 +4,7 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.2.4.0** ([changelog](CHANGELOG.md)), data **2.0.4.0** (Unicode 18.0.0,
+> **Status:** app **2.2.5.0** ([changelog](CHANGELOG.md)), data **2.0.5.0** (Unicode 18.0.0,
 > [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
@@ -56,7 +56,8 @@ counts in the background.
 **CSS for selection** writes CSS another programmer can paste into their own page for similar
 coverage of the selected blocks: `@font-face` rules pointing at pinned public font URLs (the
 same on every device, with the download size and licences in a comment) and a no-download
-`font-family` list of fonts found on this device. It never refers to this app's files.
+`font-family` list of fonts found on this device. Characters only GNU Unifont 18 covers get a
+commented self-host template with the official download link. It never refers to this app's files.
 
 ## Build
 

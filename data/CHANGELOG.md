@@ -4,6 +4,14 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.5.0] — 2026-10-09
+
+### Added
+
+- `data/web-fonts.json`: `self_host` entries and ranges (`self-host:unifont`,
+  `self-host:unifont_upper`) for GNU Unifont 18.0.01, measured from the vendored conversions;
+  not in the priority orders and not counted as public web fonts.
+
 ## [2.0.4.0] — 2026-10-09
 
 ### Added
