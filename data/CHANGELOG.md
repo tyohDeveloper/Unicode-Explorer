@@ -4,6 +4,16 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.4.0] — 2026-10-09
+
+### Added
+
+- `fonts/manifest.json`: `fairfax-hd-latin-ext-g`, an embedded coverage font subset at fetch
+  time to U+1DF00..1DFFF (fonts may now declare `subset`, D-20); in all editions.
+- `data/web-font-extras.json`: Noto Emoji (google/fonts `51303ca9`) and Fairfax HD
+  (kreativekorp/open-relay `e4b81241`), each with its own source and licence; `data/web-fonts.json`
+  re-measured (73 families).
+
 ## [2.0.3.0] — 2026-10-08
 
 ### Added

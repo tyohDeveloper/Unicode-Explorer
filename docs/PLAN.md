@@ -37,6 +37,7 @@ repository under the same standards, build chain, and release discipline as
 | D-18 | Algorithmic-name ranges and prefixes are generated from `DerivedName.txt` (DAT-03); the authored table is removed. | Phase 6 checkpoint 2026-10-08. |
 | D-19 | Character details (DAT-05) as a strip that follows focus and hover (option A of three). | Recommended at the Phase 6 checkpoint 2026-10-08; owner may revise. |
 | D-20 | No sidecar pack exceeds 8 MiB. Larger fonts are split by code-point ranges (`subset` in `fonts/manifest.json`) with fontTools `pyftsubset`, keeping all layout features, and each piece registers with a `unicode-range`. CJK Ext B–F (17.3 MB) became Ext B part 1 (5.8 MB), part 2 (6.3 MB) and C–F, I + Compatibility Supplement (5.4 MB); Egyptian, restricted to its three blocks, fell from 8.5 to 4.5 MB (the font's private-use glyphs are dropped). harfbuzzjs (subset-font) was rejected: it truncated the glyph table for ~20,000-glyph subsets. | Owner accepted the recommendation 2026-10-08. The hosted test build redirects files over ~10 MB to another origin, and the CSP (`script-src 'self'`) correctly blocks the redirected script; smaller packs also mean smaller downloads. Coverage unchanged; subset Egyptian renders pixel-identically to the full font on format-control sequences. |
+| Q-14 | Open: how the CSS dialog should handle characters only GNU Unifont 18 covers (748). (A) Point at this repository's vendored, hash-pinned Unifont 18.0.01 WOFF2 through jsDelivr, a faithful conversion of the upstream release but this project's file, so D-16 would change. (B) Emit a commented self-host `@font-face` template for Unifont 18 with a unicode-range for the uncovered characters and the unifoundry.com download link, keeping D-16. (C) Leave them uncovered until Noto or UnifontEX catch up. **Recommended: B**, plus the January font watch. | Raised 2026-10-09 for the owner. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
@@ -321,6 +322,14 @@ Status 2026-10-08: delivered as app 2.2.2.0 / data 2.0.2.0.
   470); newer Noto Sans Symbols2 and Devanagari (+46), to avoid two versions of one family.
   1,876 web-only characters remain, mostly in blocks from Unicode 16–18 that Noto has not
   published yet. None of the 226 covers any of the 12,802 characters missing from every edition.
+- 2.2.4.0 / data 2.0.4.0: Fairfax HD 2026.09.21 (Kreative Software, OFL), found while searching
+  for the remaining web-only characters, maps all 51 Unicode 18 Latin Extended-G additions.
+  An 11.5 KB subset is embedded after Unifont (#14 closed: 188 of 188 verified), and Fairfax HD
+  plus Noto Emoji join the CSS dialog (+1,179; this also covers Hebrew U+05C8/05C9, closing CP3-03). The remaining 748 web-only characters in 29
+  blocks (Tulu-Tigalari, Garay, Gurung Khema, Kirat Rai, Arabic Extended-C, Tai Yo, Tolong
+  Siki, Beria Erfe, Musical Symbols Supplement, Ol Onal, Sidetic, …) are covered only by GNU
+  Unifont 18. No public host serves Unifont 18 with CORS: unifoundry.com sends no CORS header;
+  npm and GitHub mirrors stop at 13–15. Q-14 is open (below).
 
 ## Out of scope
 

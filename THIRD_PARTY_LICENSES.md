@@ -27,6 +27,15 @@ Fonts are converted to WOFF2 without other changes. Full provenance (URL, SHA-25
 upstream file and of the conversion, measured coverage) is in
 [`fonts/manifest.json`](fonts/manifest.json).
 
+## Embedded subset
+
+| Font | Version | License | Use | License text |
+|---|---|---|---|---|
+| [Fairfax HD](https://github.com/kreativekorp/open-relay) (Kreative Software) | 2026.09.21 | SIL Open Font License 1.1 | Latin Extended-G only (U+1DF00..1DFFF, 11.5 KB), after Unifont | `fonts/standard/licenses/FairfaxHD-OFL-1.1.txt` |
+
+The CSS dialog also names Noto Emoji (google/fonts) and Fairfax HD at pinned public URLs, as
+text; nothing of theirs ships beyond the subset above.
+
 ## Shipped in the style packs (Complete editions, hosted test build)
 
 | Font | Version | License | Packs | License text in zip |

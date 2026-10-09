@@ -4,7 +4,7 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.2.2.0** ([changelog](CHANGELOG.md)), data **2.0.2.0** (Unicode 18.0.0,
+> **Status:** app **2.2.4.0** ([changelog](CHANGELOG.md)), data **2.0.4.0** (Unicode 18.0.0,
 > [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
@@ -88,9 +88,9 @@ pattern (`vite dev`/`vite preview` bound to `0.0.0.0:5000`), not a server (`docs
 
 | Edition | Download | Fonts | Guaranteed glyphs |
 |---|---|---|---:|
-| Standard | `Unicode.html` (2.9 MB) | Unifont 18.0.01, Unifont Upper, Last Resort 18.000, Adobe Blank 2 embedded | 78,224 (45.4%) + placeholders |
-| Complete | `unicode-explorer-complete-<version>.zip` (26 MB) | Standard + packs: Jigmo2/3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut; Serif/Sans style packs | 154,514 (89.6%) |
-| Complete + Hieroglyphs | `unicode-explorer-complete-hieroglyphs-<version>.zip` (33 MB) | Complete + UniHieroglyphica 19.000 pack | 159,580 (92.6%) |
+| Standard | `Unicode.html` (2.9 MB) | Unifont 18.0.01, Unifont Upper, Fairfax HD (Latin Extended-G), Last Resort 18.000, Adobe Blank 2 embedded | 78,275 (45.4%) + placeholders |
+| Complete | `unicode-explorer-complete-<version>.zip` (26 MB) | Standard + packs: Jigmo2/3, Noto Sans Cuneiform, Noto Sans Anatolian Hieroglyphs, Noto Sans Bamum, Noto Serif Tangut; Serif/Sans style packs | 154,565 (89.7%) |
+| Complete + Hieroglyphs | `unicode-explorer-complete-hieroglyphs-<version>.zip` (33 MB) | Complete + UniHieroglyphica 19.000 pack | 159,631 (92.6%) |
 
 The zips are attached to each [release](https://github.com/tyohDeveloper/Unicode-Explorer/releases).
 Unzip one and open its `Unicode.html`: the packs live in the sibling `unicode-fonts/` directory

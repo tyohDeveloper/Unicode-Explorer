@@ -9,6 +9,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.4.0] — 2026-10-09
+
+### Added
+
+- **Latin Extended-G is complete in every edition** (#14): a 11.5 KB subset of Fairfax HD
+  2026.09.21 (Kreative Software, OFL) is embedded after Unifont and draws the 51 Unicode 18
+  additions U+1DFCD..1DFFF that Unifont 18.0.01 lacks. Standard 78,275, Complete 154,565,
+  Complete + Hieroglyphs 159,631 of 172,382.
+- **CSS for selection** gains Noto Emoji (monochrome) and Fairfax HD at pinned public URLs:
+  +1,179 characters (158,883 of 172,382), including all of Symbols for Legacy Computing
+  Supplement (#15).
+
+### Fixed
+
+- Embedded fonts with a `unicode-range` that excludes the space character are loaded before
+  detection (`document.fonts.load()` tests U+0020 by default and skipped them), so their
+  characters count as verified.
+
 ## [2.2.3.0] — 2026-10-08
 
 ### Changed
