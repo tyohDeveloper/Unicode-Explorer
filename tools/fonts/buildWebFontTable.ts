@@ -17,6 +17,7 @@ import { readCmap } from "./readCmap.js";
 import { visibleAssignedSet } from "./visibleAssignedSet.js";
 import { downloadBytes } from "./downloadBytes.js";
 import { sha256Hex } from "./sha256Hex.js";
+import * as fontkit from "fontkit";
 
 const repoRoot = resolve(dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -101,6 +102,31 @@ function blockFonts(visible: Set<number>): { fonts: WebFont[]; ranges: Record<st
   return { fonts, ranges };
 }
 
+interface Extra { file: string; url: string; sha256: string; bytes: number }
+interface Extras { commit: string; license: string; license_url: string; fonts: Extra[] }
+
+async function extraBytes(e: Extra): Promise<Uint8Array> {
+  const path = resolve(repoRoot, "fonts/cache", `web-extra-${e.file}`);
+  const bytes = existsSync(path) ? new Uint8Array(readFileSync(path)) : await downloadBytes(e.url);
+  if (sha256Hex(bytes) !== e.sha256) throw new Error(`${e.file}: sha256 does not match data/web-font-extras.json`);
+  writeFileSync(path, bytes);
+  return bytes;
+}
+
+/** Issue #15: per-script Noto faces from data/web-font-extras.json, pinned and hash-checked. */
+async function extraFonts(visible: Set<number>): Promise<{ fonts: WebFont[]; ranges: Record<string, number[][]> }> {
+  const extras = JSON.parse(readFileSync(resolve(repoRoot, "data/web-font-extras.json"), "utf-8")) as Extras;
+  const fonts: WebFont[] = [];
+  const ranges: Record<string, number[][]> = {};
+  for (const e of extras.fonts) {
+    const bytes = await extraBytes(e);
+    const font = fontkit.create(Buffer.from(bytes)) as fontkit.Font;
+    fonts.push({ family: font.familyName, face: "Regular", weight: 400, style: "normal", url: e.url, format: "truetype", bytes: e.bytes, sha256: e.sha256, license: extras.license, license_url: extras.license_url, version: String(font.version ?? extras.commit.slice(0, 8)) });
+    ranges[font.familyName] = compactRanges(readCmap(bytes).filter((cp) => visible.has(cp)));
+  }
+  return { fonts, ranges };
+}
+
 function order(kitDir: string, variable: string, names: Map<string, string>, extra: string[]): string[] {
   const css = readFileSync(resolve(kitDir, "unicode-fonts.css"), "utf-8");
   const body = new RegExp(`--${variable}:([^;]+);`).exec(css)?.[1] ?? "";
@@ -113,14 +139,15 @@ export async function buildWebFontTable(kitDir: string): Promise<void> {
   const visible = visibleAssignedSet(repoRoot);
   const kit = await kitFonts(kitDir, visible);
   const local = blockFonts(visible);
-  const extra = local.fonts.map((f) => f.family);
+  const more = await extraFonts(visible);
+  const extra = [...local.fonts, ...more.fonts].map((f) => f.family);
   const { unicode } = JSON.parse(readFileSync(resolve(repoRoot, "data/version.json"), "utf-8")) as { unicode: string };
-  const ranges = { ...kit.ranges, ...local.ranges };
+  const ranges = { ...kit.ranges, ...local.ranges, ...more.ranges };
   const table = {
     _doc: "Web fonts for the 'CSS for this selection' dialog (PLAN Q-13). Pinned public URLs (Unicode Font Kit remote profile, CORS-verified; block fonts from fonts/manifest.json). 'ranges' is deflate-raw+base64 JSON: family → visible assigned code points of the regular face as [start,end]|[cp] runs. Written by tools/fonts/buildWebFontTable.ts.",
     generated: new Date().toISOString().slice(0, 10), unicode,
     order: { serif: order(kitDir, "unicode-serif", kit.names, extra), sans: order(kitDir, "unicode-sans", kit.names, extra) },
-    fonts: [...kit.fonts, ...local.fonts],
+    fonts: [...kit.fonts, ...local.fonts, ...more.fonts],
     ranges: Buffer.from(deflateSync(strToU8(JSON.stringify(ranges)), { level: 9 })).toString("base64"),
   };
   writeFileSync(resolve(repoRoot, "data/web-fonts.json"), JSON.stringify(table, null, 1) + "\n");
