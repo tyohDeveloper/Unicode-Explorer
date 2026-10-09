@@ -106,6 +106,23 @@ In priority order:
    the Noto pins (CP4-07).
 6. **Submit the Seal erratum** (CP3-07): owner action.
 
+## Corrections after the checkpoint (2.3.1.1, 2026-10-09)
+
+The register above is left as it was at the tag.
+
+- **CP2-07 is browser behaviour, not a font gap.** The character is U+FFFC OBJECT
+  REPLACEMENT CHARACTER. Chromium gives it zero advance and no ink with Unifont, Charis and every
+  device font in the sandbox; only Last Resort shows ink, and U+FFFD draws normally. The probe
+  correctly reports U+FFFC as unverified, and the Placeholders toggle shows the Last Resort box.
+  The register's note that it "renders from device fonts everywhere" was wrong. Now **accepted**.
+- **CP4-05 closed.** `scripts/release.mjs` refuses an app release while `data/` or
+  `fonts/manifest.json` has changes since the last data tag (`scripts/release-guard.mjs`, unit
+  test).
+- **CP4-06 closed.** `npm run plan:outline -- --fetch` lists the Regular TTFs at the pinned
+  notofonts.github.io commit through the GitHub tree API (jsDelivr's listing service returns
+  403) and downloads them from jsDelivr. Re-planning, fetching and building produce a
+  byte-identical `fonts/manifest.json`.
+
 ## Sources
 
 - Measurements: [`evidence/measure-checkpoint-4.cjs`](evidence/measure-checkpoint-4.cjs),

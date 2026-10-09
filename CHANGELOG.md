@@ -9,6 +9,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.1.1] — 2026-10-09
+
+Tooling and documentation only; the artifact differs only in its version stamp.
+
+### Added
+
+- **Release guard** (CP4-05): an app release is refused while `data/` or
+  `fonts/manifest.json` has changes since the last data tag. Release the data track first.
+- **`npm run plan:outline -- --fetch`** (CP4-06): downloads the pinned Noto Regular TTFs itself,
+  so the outline-pack plan is reproducible from the repository (verified byte-identical).
+- **Coding standards, text representation:** code points inside the app, UTF-16 only at the
+  browser boundary; `Intl.Segmenter` when grapheme clusters are needed.
+
+### Changed
+
+- CP2-07 re-diagnosed: Chromium draws no glyph for U+FFFC OBJECT REPLACEMENT CHARACTER with
+  any font. Accepted as browser behaviour.
+
 ## [2.3.1.0] — 2026-10-09
 
 Fixes from Audit Checkpoint 4.

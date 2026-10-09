@@ -373,8 +373,9 @@ U+1DF12 is drawn by Charis (CDP platform font); U+11103 and U+1D11E by pack font
 
 Audit Checkpoint 4 (2026-10-09, `docs/audit/checkpoint-4/report.md`) found that System mode
 drew installed CJK and Hangul with Unifont, because the device-font list lacked their names
-(CP4-01). Fixed in 2.3.1.0. Next, in order: release guard for data bumps (CP4-05);
-`plan:outline --fetch` (CP4-06); performance review parked with #17 (CP4-03); Q-15 stays deferred.
+(CP4-01). Fixed in 2.3.1.0. The release guard (CP4-05) and `plan:outline --fetch` (CP4-06)
+shipped in 2.3.1.1; CP2-07 is accepted browser behaviour (U+FFFC). Still open: the performance
+review parked with #17 (CP4-03). Q-15 is deferred (D-25).
 
 Acceptance: U+1DF12 is drawn by Charis in Standard (CDP platform font); the details strip names
 the drawing font and says bitmap or outline; Complete bitmap-drawn count measured before and
