@@ -6,7 +6,7 @@
  */
 import { wireAbout } from "./about.js";
 import { wireCssDialog } from "./cssDialog.js";
-import { wireDetailsStrip } from "./detailsStrip.js";
+import { wireDetailsStrip, type DetailsSource } from "./detailsStrip.js";
 import type { GlyphProbe } from "./fonts/glyphProbe.js";
 import { wireComposePad } from "./composePad.js";
 import { buildLangOptions, reflectControls, wireControls, type ControlElements } from "./controls.js";
@@ -123,6 +123,18 @@ function wireOutput(output: HTMLElement, pad: { insert(t: string): void }, curre
   wireSkipButton(byId("btn-skip"), output);
 }
 
+/** D-22: name the drawing font — embedded (with its design), a loaded pack, or an installed font. */
+function drawnByResolver(probe: GlyphProbe, packs: FontPackLoader): NonNullable<DetailsSource["drawnBy"]> {
+  return (cp, text) => {
+    const family = probe.drawnBy(cp, text);
+    if (!family) return null;
+    const embedded = standardFonts().all.find((f) => f.css_family === family);
+    if (embedded) return { family: embedded.family, design: embedded.design ?? "outline", source: "embedded" };
+    const packed = [...packs.families(), ...packs.styleFamilies("serif"), ...packs.styleFamilies("sans-serif")].includes(family);
+    return packed ? { family: family.replace(/^UE (Outline )?/, ""), design: "outline", source: "pack" } : { family, design: "unknown", source: "installed" };
+  };
+}
+
 function outputContext(names: ReadonlyMap<number, string>, probe: { verified(cp: number, ch: string): boolean }, store: SettingsStore): OutputContext {
   return { nameOf: (cp) => resolveCharName(names, cp), aliasesOf, verified: (cp, ch) => probe.verified(cp, ch), onSort: (col: TableSortColumn) => store.dispatch(toggleTableSort(col)) };
 }
@@ -150,7 +162,7 @@ async function start(): Promise<void> {
   const draw = () => { handle = renderOutput(views.outputEl, store.get(), ctx, handle); };
   wireOutput(views.outputEl.output, pad, () => handle);
   wireExtras(store, probe, () => handle);
-  wireDetailsStrip(views.outputEl.output, byId("details"), { nameOf: ctx.nameOf });
+  wireDetailsStrip(views.outputEl.output, byId("details"), { nameOf: ctx.nameOf, drawnBy: drawnByResolver(probe, packs) });
   render = createRenderScheduler(draw);
   store.dispatch(hydrateSettings(decodeHashState(location.hash)));
   subscribe(store, views, fonts, packs, render);

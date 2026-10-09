@@ -10,6 +10,8 @@ export interface DescribeInput {
   aliases: readonly string[];
   block: string | null;
   rendered: boolean | null;
+  /** D-22: the drawing font, when the probe can name it. */
+  drawnBy?: { family: string; design: "outline" | "bitmap" | "unknown"; source: "embedded" | "pack" | "installed" } | null;
 }
 
 export type DetailField = [label: string, value: string];
@@ -28,6 +30,14 @@ function category(i: DescribeInput): string {
   return k < 0 ? "Cn Unassigned" : `${i.props.gc.values[k]} ${i.props.gc.names[k]}`;
 }
 
+function glyph(i: DescribeInput): string {
+  if (!i.rendered) return "no font found: block placeholder";
+  const d = i.drawnBy;
+  if (!d) return "drawn by a system fallback font (not identifiable, D-12)";
+  const design = d.design === "unknown" ? "" : `${d.design}, `;
+  return `${d.family} (${design}${d.source === "installed" ? "installed on this device" : d.source === "pack" ? "font pack" : "embedded"})`;
+}
+
 /** Label/value pairs for the details strip (PLAN.md D-19, finding DAT-05). Age is the version that added the character. */
 export function describeCharacter(i: DescribeInput): DetailField[] {
   const sc = lookupRun(i.props.sc, i.cp);
@@ -41,6 +51,6 @@ export function describeCharacter(i: DescribeInput): DetailField[] {
     ["Decomposition", decomposition(i)],
   ];
   if (i.aliases.length) fields.splice(1, 0, ["Aliases", i.aliases.join(", ")]);
-  if (i.rendered !== null) fields.push(["Glyph", i.rendered ? "drawn by a font" : "no font found: block placeholder"]);
+  if (i.rendered !== null) fields.push(["Glyph", glyph(i)]);
   return fields;
 }

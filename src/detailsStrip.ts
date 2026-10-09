@@ -7,12 +7,12 @@
 import { codePointToString } from "./codepoint/codePointToString.js";
 import { formatCodePoint } from "./codepoint/formatCodePoint.js";
 import { makeElement } from "./makeElement.js";
-import { describeCharacter } from "./properties/describeCharacter.js";
+import { describeCharacter, type DescribeInput } from "./properties/describeCharacter.js";
 import { loadProperties } from "./properties/loadProperties.js";
 import { aliasesOf } from "./ucd/aliasesOf.js";
 import { blockOf } from "./ucd/blockOf.js";
 
-export interface DetailsSource { nameOf(cp: number): string }
+export interface DetailsSource { nameOf(cp: number): string; drawnBy?(cp: number, text: string): DescribeInput["drawnBy"] }
 
 function cellOf(target: EventTarget | null): HTMLElement | null {
   return target instanceof Element ? target.closest<HTMLElement>("[data-cp]") : null;
@@ -27,7 +27,9 @@ async function show(strip: HTMLElement, cell: HTMLElement, src: DetailsSource, a
   const cp = parseInt(cell.dataset.cp ?? "", 16);
   const props = await loadProperties();
   if (strip.dataset.shown === cell.dataset.cp) return;
-  const fields = describeCharacter({ cp, props, nameOf: src.nameOf, aliases: aliasesOf(cp), block: blockOf(cp)?.name ?? null, rendered: renderedState(cell) });
+  const rendered = renderedState(cell);
+  const drawnBy = rendered ? src.drawnBy?.(cp, codePointToString(cp)) ?? null : null;
+  const fields = describeCharacter({ cp, props, nameOf: src.nameOf, aliases: aliasesOf(cp), block: blockOf(cp)?.name ?? null, rendered, drawnBy });
   const glyph = makeElement("span", { class: "details-glyph", "aria-hidden": "true", text: cell.querySelector(".glyph")?.textContent ?? codePointToString(cp) });
   const list = makeElement("dl", { class: "details-list" }, fields.flatMap(([k, v]) => [makeElement("dt", { text: k }), makeElement("dd", { text: v, "data-testid": `text-details-${k.toLowerCase()}` })]));
   strip.dataset.shown = cell.dataset.cp ?? "";

@@ -7,11 +7,12 @@ import unifontOfl from "../fonts/standard/licenses/Unifont-OFL-1.1.txt?raw";
 import lastResortOfl from "../fonts/standard/licenses/LastResort-LICENSE.txt?raw";
 import adobeBlankOfl from "../fonts/standard/licenses/AdobeBlank2-LICENSE.txt?raw";
 import fairfaxOfl from "../fonts/standard/licenses/FairfaxHD-OFL-1.1.txt?raw";
+import charisOfl from "../fonts/standard/licenses/Charis-OFL-1.1.txt?raw";
 import type { FontPackLoader } from "./fonts/fontPacks.js";
 import { standardFonts, type StandardFont } from "./fonts/standardFonts.js";
 import { makeElement } from "./makeElement.js";
 
-const LICENSE_TEXTS: Record<string, string> = { unifont: unifontOfl, unifont_upper: unifontOfl, "last-resort": lastResortOfl, "adobe-blank-2": adobeBlankOfl, "fairfax-hd-latin-ext-g": fairfaxOfl };
+const LICENSE_TEXTS: Record<string, string> = { unifont: unifontOfl, unifont_upper: unifontOfl, "last-resort": lastResortOfl, "adobe-blank-2": adobeBlankOfl, "fairfax-hd-latin-ext-g": fairfaxOfl, "charis-latin": charisOfl };
 const ROLE_NOTE: Record<string, string> = { coverage: "glyph coverage", placeholder: "placeholder for unverified glyphs", detection: "glyph detection only (never displayed)" };
 
 function fontRow(font: StandardFont): HTMLTableRowElement {

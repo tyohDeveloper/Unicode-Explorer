@@ -23,6 +23,8 @@ export interface GlyphProbe {
   servingFamilies(cp: number): readonly string[];
   /** Whether the given families (and nothing else) render the text. */
   rendersWith(families: readonly string[], text: string): boolean;
+  /** The first family in stack order that draws the text (D-22), or null when none named does. */
+  drawnBy(cp: number, text: string): string | null;
 }
 
 const PROBE_SIZE = 32;
@@ -43,6 +45,7 @@ interface ProbeState {
   blockFamilies: Map<number, string[]>;
   candidates: readonly string[];
   embeddedFont: string;
+  embedded: string[];
   key: string;
 }
 
@@ -83,9 +86,19 @@ function setStack(st: ProbeState, next: readonly string[], embedded: readonly st
   st.key = key;
   st.candidates = next.filter((f) => !embedded.includes(f));
   st.embeddedFont = fontFor(st, embedded);
+  st.embedded = [...embedded];
   st.cache.clear();
   st.blockFonts.clear();
   st.blockFamilies.clear();
+}
+
+/** Block-serving families first (they precede the embedded fonts in the stack), then each embedded font. */
+function drawnBy(st: ProbeState, cp: number, text: string): string | null {
+  if (!st.context) return null;
+  blockFont(st, cp);
+  const block = blockOf(cp);
+  const serving = (block && st.blockFamilies.get(block.start)) || [];
+  return [...serving, ...st.embedded].find((f) => draws(st, fontFor(st, [f]), text)) ?? null;
 }
 
 function verified(st: ProbeState, cp: number, text: string): boolean {
@@ -99,12 +112,13 @@ function verified(st: ProbeState, cp: number, text: string): boolean {
 }
 
 export function createGlyphProbe(blankFamily: string): GlyphProbe {
-  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", key: "" };
+  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", embedded: [], key: "" };
   return {
     familyPresent: (family) => familyPresent(st, family),
     setStack: (next, embedded) => setStack(st, next, embedded),
     verified: (cp, text) => verified(st, cp, text),
     servingFamilies: (cp) => { blockFont(st, cp); const b = blockOf(cp); return (b && st.blockFamilies.get(b.start)) || []; },
+    drawnBy: (cp, text) => drawnBy(st, cp, text),
     rendersWith: (families, text) => !!st.context && families.length > 0 && draws(st, fontFor(st, families), text),
   };
 }
