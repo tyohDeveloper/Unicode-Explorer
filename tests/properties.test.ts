@@ -65,6 +65,7 @@ describe("character details (D-19, DAT-05)", () => {
     expect(glyph({ family: "Charis", design: "outline", source: "embedded" })).toEqual(["Glyph", "Charis (outline, embedded)"]);
     expect(glyph({ family: "Unifont", design: "bitmap", source: "embedded" })).toEqual(["Glyph", "Unifont (bitmap, embedded)"]);
     expect(glyph({ family: "Noto Sans", design: "unknown", source: "installed" })).toEqual(["Glyph", "Noto Sans (installed on this device)"]);
+    expect(glyph({ family: "system-ui", design: "unknown", source: "generic" })).toEqual(["Glyph", "the browser's system-ui font (a generic family; the face is chosen by the browser)"]);
     expect(glyph(null)).toEqual(["Glyph", "drawn by a system fallback font (not identifiable, D-12)"]);
   });
 });

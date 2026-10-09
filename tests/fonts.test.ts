@@ -186,3 +186,11 @@ describe("outline packs (D-23, #16)", () => {
     }
   });
 });
+
+describe("device font names (GLY-03, CP4-01)", () => {
+  const d = JSON.parse(readFileSync(resolve(__dirname, "../data/device-fonts.json"), "utf-8")) as { families: Record<string, string[]> };
+  const all = Object.values(d.families).flat();
+  it("name CJK and Hangul families for Windows, Apple and Linux, so System mode does not fall to Unifont", () => {
+    for (const f of ["Microsoft YaHei", "Microsoft JhengHei", "Malgun Gothic", "Yu Gothic", "PingFang SC", "Apple SD Gothic Neo", "Noto Sans CJK SC", "Noto Sans CJK KR"]) expect(all).toContain(f);
+  });
+});

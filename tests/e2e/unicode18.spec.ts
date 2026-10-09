@@ -39,3 +39,9 @@ test("the details strip names the drawing font: outline Charis, bitmap Fairfax H
   await page.getByTestId("button-grid-cell-1DFCD").hover();
   await expect(page.getByTestId("text-details-glyph")).toHaveText("Fairfax HD (bitmap, embedded)");
 });
+
+test("the details strip calls a generic family the browser's choice, not an installed font (CP4-02)", async ({ page }) => {
+  await page.goto(`${artifactUrl("standard")}#b=0000`);
+  await page.getByTestId("button-grid-cell-0041").hover();
+  await expect(page.getByTestId("text-details-glyph")).toHaveText(/^the browser's (system-ui|serif) font \(a generic family/);
+});
