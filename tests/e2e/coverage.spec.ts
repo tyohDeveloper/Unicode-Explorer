@@ -75,9 +75,10 @@ test("the About dialog lists the embedded fonts, pack status, and license texts"
   await page.getByTestId("button-header-about").click();
   const dialog = page.getByTestId("dialog-about-main");
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByTestId("table-about-fonts").locator("tbody tr")).toHaveCount(4);
+  await expect(dialog.getByTestId("table-about-fonts").locator("tbody tr")).toHaveCount(5);
   await expect(dialog.getByTestId("text-about-packs")).toContainText("No font packs found");
-  await expect(dialog.locator("details")).toHaveCount(3);
+  await expect(dialog.locator("details")).toHaveCount(4);
+  await expect(dialog.locator("details", { hasText: "Fairfax HD" }).locator("pre")).toContainText("Kreative Software");
   await expect(dialog.locator("details").first().locator("pre")).toContainText("SIL OPEN FONT LICENSE");
   await page.getByTestId("button-about-close").click();
   await expect(dialog).toBeHidden();

@@ -25,3 +25,8 @@ test("details strip follows hover and keyboard focus; click still inserts (D-19,
   await page.getByTestId("button-grid-cell-00E9").click();
   await expect(page.getByTestId("textarea-compose-pad")).toHaveValue(/é$/);
 });
+
+test("Latin Extended-G is fully drawn by the embedded fonts, including the Unicode 18 additions (#14)", async ({ page }) => {
+  await page.goto(`${artifactUrl("standard")}#b=1DF00`);
+  await expect(page.getByTestId("text-status-chars")).toHaveText("188 characters · 188 verified", { timeout: 30_000 });
+});

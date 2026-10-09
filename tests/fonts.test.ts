@@ -75,7 +75,7 @@ describe("pack size and subsetting (D-20)", () => {
 describe("standardFonts", () => {
   it("exposes the embedded fonts by role from fonts/manifest.json", () => {
     const s = standardFonts();
-    expect(s.coverage).toEqual(["UE Unifont", "UE Unifont Upper"]);
+    expect(s.coverage).toEqual(["UE Unifont", "UE Unifont Upper", "UE Fairfax HD"]);
     expect(s.placeholder).toBe("UE LastResort");
     expect(s.detection).toBe("UE Blank");
     expect(s.guaranteed).toBeGreaterThan(70000);
