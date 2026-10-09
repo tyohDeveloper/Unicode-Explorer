@@ -39,7 +39,7 @@ fails the build.
 | **VIEW** | `src/*.ts` — `main.ts`, `sidebar.ts`, `sidebarSearch.ts`, `categoryCheckbox.ts`, `output.ts`, `renderGrid.ts`, `renderGridName.ts`, `renderTable.ts`, `renderPlain.ts`, `renderBlockHeading.ts`, `composePad.ts`, `controls.ts`, `fontButtons.ts`, `glyphFonts.ts`, `about.ts`, `cssDialog.ts`, `detailsStrip.ts`, `lazyChunks.ts`, `outputEvents.ts`, `copyOutput.ts`, `flashLabel.ts`, `makeElement.ts`; plus `index.html` and `src/style.css` |
 | **CONTROLLER** | `src/settings/settingsStore.ts` (the one mutable home of Settings), `src/names/loadNameTable.ts` (decompression), `src/clipboard/copyText.ts`, `src/render/scheduleRender.ts` (debounce timer), `src/fonts/glyphProbe.ts` (tiered canvas detection), `src/fonts/fontPacks.ts` (sidecar script injection, FontFace registration), `src/fonts/coverageScanner.ts` (background scan), `src/render/lazyMaterializer.ts`, `src/render/idleSlices.ts`, `src/webfonts/loadWebFontRanges.ts`, `src/properties/loadProperties.ts` |
 | **STATE** | `src/state/**` — `settings.ts` (shape, defaults), `settingsActions.ts`, `settingsReducer.ts`, `encodeHashState.ts`, `decodeHashState.ts` |
-| **PURE** | `src/ucd/**` (names, visibility and hidden kinds, marks, display form, reserved lookup, block list), `src/selection/**` (code point collection, filter, grouping, sort, counts), `src/coverage/**` (coverage summary, accumulation, block sampling), `src/fonts/{composeFontStack,packsForBlocks,packsForStyle,packStatusText,standardFonts,splitFontFamilies,isGenericFamily}.ts`, `src/webfonts/{chooseWebFonts,blockSpansFor,webFontCss,deviceFontCss}.ts`, `src/properties/{decodeRuns,lookupRun,decodeProperties,hangulDecomposition,describeCharacter}.ts`, `src/names/decodeNameTable.ts`, `src/markup/slugify.ts` |
+| **PURE** | `src/ucd/**` (names, visibility and hidden kinds, marks, display form, reserved lookup, block list), `src/selection/**` (code point collection, filter, grouping, sort, counts), `src/coverage/**` (coverage summary, accumulation, block sampling), `src/fonts/{composeFontStack,packsForBlocks,packsForStyle,packStatusText,standardFonts,splitFontFamilies,isGenericFamily}.ts`, `src/webfonts/{chooseWebFonts,blockSpansFor,webFontCss,deviceFontCss,selfHostCss}.ts`, `src/properties/{decodeRuns,lookupRun,decodeProperties,hangulDecomposition,describeCharacter}.ts`, `src/names/decodeNameTable.ts`, `src/markup/slugify.ts` |
 | **PURE-CORE** | `src/codepoint/**` — code point ↔ string, hex formatting, sorted-range search, hex-range parsing, noncharacter test |
 | **DATA** | `src/data/*.json` (generated from the UCD; regeneration-checked), `data/*.json` (authored: block categories, algorithmic names, Hangul jamo, category and hidden-kind labels, font stacks, device fonts, CJK locales; `data/web-fonts.json` is tool-measured like `fonts/manifest.json`), `data/ucd/<version>/**` (vendored UCD + hash manifest), `fonts/manifest.json`, `fonts/standard/**` (vendored Standard fonts and license texts), `fonts/licenses/**` (pack font licenses) |
 | **PLATFORM-PURE** | *(unmapped)* |
@@ -55,6 +55,17 @@ and `scripts/check-standards.mjs` applies the §3 limits to it as well (role `BU
 no `fetch()`, no CDN assets, no persisted user data, polyglot XHTML-conformant
 markup, mandatory final minimization. Embedded fonts are `data:` URLs, never
 external.
+
+**Text representation (this repository).** A character is a Unicode code point held as
+a number. Selections, ranges, data tables, coverage sets and lookups are keyed by code point,
+never by string position. UTF-16 strings exist only at the browser boundary: built with
+`src/codepoint/codePointToString.ts` for display and insertion, and split back with code-point
+iteration (`[...text]`, `codePointAt`). Do not count or index characters by UTF-16 unit
+(`.length`, `charCodeAt`, `slice` positions); the only `charCodeAt` uses decode base64 bytes.
+Sequences of several code points (combining marks, emoji sequences, Hangul syllables) stay
+separate code points until a feature needs grapheme clusters; that feature uses
+`Intl.Segmenter`. UTF-32 storage would add conversions at every boundary without helping
+with those sequences.
 
 There are no active exceptions. [`../.architecture-exceptions.json`](../.architecture-exceptions.json)
 is the machine-checked register should one become necessary (§11).
