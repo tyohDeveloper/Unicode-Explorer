@@ -28,7 +28,7 @@
       ],
       "guaranteed_visible_code_points": 78275,
       "of": 172382,
-      "embedded_font_bytes": 1984792,
+      "embedded_font_bytes": 1985040,
       "delivery": "embedded in Unicode.html",
       "packs": []
     },
@@ -51,7 +51,7 @@
       ],
       "guaranteed_visible_code_points": 154565,
       "of": 172382,
-      "embedded_font_bytes": 19516464,
+      "embedded_font_bytes": 19516712,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",
@@ -102,7 +102,7 @@
       ],
       "guaranteed_visible_code_points": 159631,
       "of": 172382,
-      "embedded_font_bytes": 25902800,
+      "embedded_font_bytes": 25903048,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",
@@ -427,7 +427,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 307850
+      "bytes": 307934
     },
     {
       "id": "outline-emoji-pictographs",
@@ -491,7 +491,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 368728
+      "bytes": 369816
     },
     {
       "id": "outline-east-asian",
@@ -537,7 +537,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 463188
+      "bytes": 462832
     },
     {
       "id": "outline-cyrillic",
@@ -589,7 +589,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 110464
+      "bytes": 110468
     },
     {
       "id": "outline-middle-eastern-scripts",
@@ -634,7 +634,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 123651
+      "bytes": 125011
     },
     {
       "id": "outline-other-european-scripts",
@@ -680,7 +680,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 197421
+      "bytes": 198109
     },
     {
       "id": "outline-other-scripts-supplements",
@@ -753,7 +753,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 1861975
+      "bytes": 1866499
     },
     {
       "id": "outline-musical-numeric-symbols",
@@ -781,7 +781,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 61868
+      "bytes": 61952
     },
     {
       "id": "outline-ancient-historic-scripts",
@@ -887,7 +887,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 363678
+      "bytes": 368306
     },
     {
       "id": "outline-southeast-asian-scripts",
@@ -968,7 +968,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 736134
+      "bytes": 741618
     },
     {
       "id": "outline-south-asian-scripts",
@@ -1070,7 +1070,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 1009268
+      "bytes": 1019296
     },
     {
       "id": "outline-presentation-forms",
@@ -1102,7 +1102,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 104207
+      "bytes": 104555
     },
     {
       "id": "outline-greek-coptic",
@@ -1126,7 +1126,7 @@
         "complete",
         "complete-hieroglyphs"
       ],
-      "bytes": 11242
+      "bytes": 11466
     },
     {
       "id": "serif",
@@ -1396,10 +1396,10 @@
       "design": "outline",
       "vendored": "fonts/standard/Charis-Latin-7.000.woff2",
       "note": "Latin, IPA, phonetic, modifier, combining-mark and punctuation blocks only (D-24, D-20 subset), ahead of Unifont: outline glyphs where the device has none (issue #16).",
-      "woff2_sha256": "9bd5289256f8f57f0c9485252591f266f30766ff55c3f326bf556a74f424760d",
-      "woff2_bytes": 209368,
-      "cmap_code_points": 1877,
-      "assigned_visible_cmap_count": 1853
+      "woff2_sha256": "7e2f47938b70081252a90d80eba7135fb6b445b7240fed94e5fbda8facb8a496",
+      "woff2_bytes": 209532,
+      "cmap_code_points": 1878,
+      "assigned_visible_cmap_count": 1854
     },
     {
       "id": "unifont",
@@ -1437,13 +1437,20 @@
         "sha256": "472201e45a050bff4c7658208b8c73e34ebce3764b287a5a46c7774038ef9391",
         "bytes": 5954156
       },
-      "cmap_code_points": 57728,
-      "assigned_visible_cmap_count": 22604,
+      "cmap_code_points": 57729,
+      "assigned_visible_cmap_count": 22605,
       "role": "coverage",
       "vendored": "fonts/standard/unifont_upper-18.0.01.woff2",
-      "woff2_sha256": "2691ec65e9b74ded923e77ac9a69ebc3804bf0a520ec15f497d60c6a2dd3e75e",
-      "woff2_bytes": 607496,
-      "design": "bitmap"
+      "woff2_sha256": "5d808ef4bfd6247a7ceb2fff78d2d5a2a9f885cc24c1bf21627beabf615ad085",
+      "woff2_bytes": 607376,
+      "design": "bitmap",
+      "borrow": {
+        "from": "unifont",
+        "code_points": [
+          "25CC"
+        ]
+      },
+      "note": "U+25CC DOTTED CIRCLE copied from Unifont (D-27), so combining marks only Unifont Upper covers draw on the circle instead of as empty boxes."
     },
     {
       "id": "fairfax-hd-latin-ext-g",
@@ -1467,10 +1474,10 @@
       "role": "coverage",
       "vendored": "fonts/standard/FairfaxHD-LatinExtG-2026.09.21.woff2",
       "note": "Latin Extended-G only (subset, D-20), after Unifont in the stack: fills the 51 Unicode 18 additions (U+1DFCD..1DFFF) that Unifont 18.0.01 does not have (issue #14).",
-      "woff2_sha256": "0bb5098766a13fd246f0bbfd028e6c3268930e58ae974d9cfe4829444677854e",
-      "woff2_bytes": 11508,
-      "cmap_code_points": 224,
-      "assigned_visible_cmap_count": 188,
+      "woff2_sha256": "6f15faa57908d5829504f84c8dc3857c84b6eb16fb28ad16fb354b0f2a67d222",
+      "woff2_bytes": 11712,
+      "cmap_code_points": 226,
+      "assigned_visible_cmap_count": 190,
       "design": "bitmap"
     },
     {
@@ -2716,10 +2723,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 2742 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5f13ffb9571d0b61042462b04456b782218408deeeac6b1972c221b4edc568ef",
-      "woff2_bytes": 230708,
-      "cmap_code_points": 2780,
-      "assigned_visible_cmap_count": 2779
+      "woff2_sha256": "62d577816c255e7e2312496c1665cde2aff0633fd18fa8443e42b5c2872b9b91",
+      "woff2_bytes": 230772,
+      "cmap_code_points": 2781,
+      "assigned_visible_cmap_count": 2780
     },
     {
       "id": "outline-notosanssymbols2",
@@ -2867,10 +2874,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 2335 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "84f72ffea71787228bfaa220ef55bc2588c910fc26e1ca81c12b6620ed0f951d",
-      "woff2_bytes": 227548,
-      "cmap_code_points": 2502,
-      "assigned_visible_cmap_count": 2502
+      "woff2_sha256": "e74d43b70302edd0b0cd46d2f2dd47a1ff5460fa2a221b4f6e5976281f5bbee9",
+      "woff2_bytes": 228188,
+      "cmap_code_points": 2504,
+      "assigned_visible_cmap_count": 2504
     },
     {
       "id": "outline-notosansyi",
@@ -2910,10 +2917,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 1251 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "eb624a4eccc7bc615c9313010fcf707b3a01cbe9d2904835fe831e3a079c2c42",
-      "woff2_bytes": 57400,
-      "cmap_code_points": 1252,
-      "assigned_visible_cmap_count": 1251
+      "woff2_sha256": "c1e1b5219c3d1b4e6deddb9f41eaf9820beaeb8130cd701b4603f6966f197829",
+      "woff2_bytes": 57368,
+      "cmap_code_points": 1253,
+      "assigned_visible_cmap_count": 1252
     },
     {
       "id": "outline-notosansmono",
@@ -3025,10 +3032,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 1178 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "439b4cecb4f0dc2611f1d5362f94b21b85030a1e763f974d691c0f5f3b9064d0",
-      "woff2_bytes": 82672,
-      "cmap_code_points": 1961,
-      "assigned_visible_cmap_count": 1932
+      "woff2_sha256": "9f20a7347e690162be9b673de5699a809284bbe591479551ce8f40f6139e8eeb",
+      "woff2_bytes": 82676,
+      "cmap_code_points": 1963,
+      "assigned_visible_cmap_count": 1934
     },
     {
       "id": "outline-notonaskharabic",
@@ -3080,10 +3087,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 1153 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b55c8ae34aedd56200140414b2bba16dba5bbc9330060f19d388cbf7eeae7319",
-      "woff2_bytes": 53000,
-      "cmap_code_points": 1217,
-      "assigned_visible_cmap_count": 1215
+      "woff2_sha256": "6ab72fd9425ec5ee05c68e503f6f777fc649f79b34b728da7d692a8db47af368",
+      "woff2_bytes": 53316,
+      "cmap_code_points": 1219,
+      "assigned_visible_cmap_count": 1217
     },
     {
       "id": "outline-notosanscanadianaboriginal",
@@ -3115,10 +3122,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 726 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5cf5306caff706daafb793fa186cbf0ca0d759a75d3cd4c54b833f20cc019275",
-      "woff2_bytes": 21884,
-      "cmap_code_points": 726,
-      "assigned_visible_cmap_count": 726
+      "woff2_sha256": "ffdb3f3239b45a0904690243213d0ade79494bc7a14d027ea7b67b7dec780bc2",
+      "woff2_bytes": 21928,
+      "cmap_code_points": 727,
+      "assigned_visible_cmap_count": 727
     },
     {
       "id": "outline-notosanssignwriting",
@@ -3142,10 +3149,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 672 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6152792dbbe3257d07527d3c25da1062419f6de092e500b99e15d7686816d825",
-      "woff2_bytes": 839332,
-      "cmap_code_points": 672,
-      "assigned_visible_cmap_count": 672
+      "woff2_sha256": "f973e43321b6fa6d9631e8c2009cf7dd4d62a261c28015437ab81db94716bc91",
+      "woff2_bytes": 838580,
+      "cmap_code_points": 674,
+      "assigned_visible_cmap_count": 674
     },
     {
       "id": "outline-notosanssymbols",
@@ -3201,10 +3208,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 665 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "e440fa99c26a36ed792bebb70776330006406a2d607741b2e18c18926a564147",
-      "woff2_bytes": 48752,
-      "cmap_code_points": 719,
-      "assigned_visible_cmap_count": 719
+      "woff2_sha256": "3d479a01271365ea9923fa1c22ecdb909b3c50f9b237fe7345fade407a94a781",
+      "woff2_bytes": 48928,
+      "cmap_code_points": 721,
+      "assigned_visible_cmap_count": 721
     },
     {
       "id": "outline-notomusic",
@@ -3236,10 +3243,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 541 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "38fe63bb855541714108ddf51dce5493e8858bf67132b7a893c868e78acbc8b3",
-      "woff2_bytes": 35328,
-      "cmap_code_points": 549,
-      "assigned_visible_cmap_count": 541
+      "woff2_sha256": "c8bb72f538224d22ccf1534be72354dad74526dad491d4178572b7642ee7e002",
+      "woff2_bytes": 35400,
+      "cmap_code_points": 551,
+      "assigned_visible_cmap_count": 543
     },
     {
       "id": "outline-notosansethiopic",
@@ -3279,10 +3286,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 523 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6c2b3438d12bb340fefd2f884272b70984829563aaf7337086a542920d671067",
-      "woff2_bytes": 72404,
-      "cmap_code_points": 523,
-      "assigned_visible_cmap_count": 523
+      "woff2_sha256": "57b0792530dac4beaad209a9efce836e7021550f4dc26f72f74ee88f10014b6d",
+      "woff2_bytes": 72588,
+      "cmap_code_points": 525,
+      "assigned_visible_cmap_count": 525
     },
     {
       "id": "outline-notoserifkhitansmallscript",
@@ -3314,10 +3321,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 480 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "d0aa1c649dc2fe45821b0c598776821011c6ab65a0be4c2a12df723fb0a70a75",
-      "woff2_bytes": 141064,
-      "cmap_code_points": 480,
-      "assigned_visible_cmap_count": 480
+      "woff2_sha256": "58d7d9ccd46fb55df9ed4be4c300bb34f13a62ad3eebd2b167f8d60828f89820",
+      "woff2_bytes": 140676,
+      "cmap_code_points": 481,
+      "assigned_visible_cmap_count": 481
     },
     {
       "id": "outline-nototraditionalnushu",
@@ -3369,10 +3376,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 427 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "8885e7caa78acf80fcf9f8562cc1ff502d95d89b327c6efbe28d698b5eef0cae",
-      "woff2_bytes": 55512,
-      "cmap_code_points": 427,
-      "assigned_visible_cmap_count": 427
+      "woff2_sha256": "eb515abd9501469bde220d21e973b02dc7fbea3b59215a6bbb03c7007230bdb6",
+      "woff2_bytes": 55556,
+      "cmap_code_points": 428,
+      "assigned_visible_cmap_count": 428
     },
     {
       "id": "outline-notosanslineara",
@@ -3396,10 +3403,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 341 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "dfed49fa5663aae068cfb704cfb8d5b4657b430714dbe237f5a03c99692aed71",
-      "woff2_bytes": 23548,
-      "cmap_code_points": 341,
-      "assigned_visible_cmap_count": 341
+      "woff2_sha256": "3b5683cf5aefbe3d359c10071649ed25e960305893a0ebf9890ba4e148e44d99",
+      "woff2_bytes": 23608,
+      "cmap_code_points": 342,
+      "assigned_visible_cmap_count": 342
     },
     {
       "id": "outline-notosansvai",
@@ -3423,10 +3430,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 300 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a188d7911dc110201d00a617ce7e9b157ea14f9f37a213d1582a986d3ed9130c",
-      "woff2_bytes": 15940,
-      "cmap_code_points": 301,
-      "assigned_visible_cmap_count": 300
+      "woff2_sha256": "96ec9bbd2cbd711edf1599b17c0a1a8e3e7bb1a3c7bf3246265606f0a2aa9aa8",
+      "woff2_bytes": 15944,
+      "cmap_code_points": 302,
+      "assigned_visible_cmap_count": 301
     },
     {
       "id": "outline-notoserifhentaigana",
@@ -3458,10 +3465,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 292 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f1c416965db0eae3fe186f0a411b8a7ab7c0a10025d0042df049218fdbcb6c6e",
+      "woff2_sha256": "a3b4a37f6acbef5315e32137ca8ab834047e014d179ede4f781a10fa660e8635",
       "woff2_bytes": 81664,
-      "cmap_code_points": 292,
-      "assigned_visible_cmap_count": 292
+      "cmap_code_points": 293,
+      "assigned_visible_cmap_count": 293
     },
     {
       "id": "outline-notosanslinearb",
@@ -3493,10 +3500,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 268 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "e92098856d658a49c7c6105c321ad9b6414ece4b4af72f179af2b73c2f898315",
-      "woff2_bytes": 27524,
-      "cmap_code_points": 268,
-      "assigned_visible_cmap_count": 268
+      "woff2_sha256": "6121b5fcc84e2ddc17491b4af989310c0bb7dc4225fe4519eefc475d3070dfeb",
+      "woff2_bytes": 27584,
+      "cmap_code_points": 269,
+      "assigned_visible_cmap_count": 269
     },
     {
       "id": "outline-notosansmyanmar",
@@ -3528,10 +3535,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 223 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "157c574c636c8fe6729d24008d3ca706ae9f821ec55d4f86889274f9cdadc593",
-      "woff2_bytes": 41824,
-      "cmap_code_points": 224,
-      "assigned_visible_cmap_count": 223
+      "woff2_sha256": "d8be0c0c1e9710bb1fdb631524164eaf09aedf1d12ed494b4edd261b2425475d",
+      "woff2_bytes": 41976,
+      "cmap_code_points": 226,
+      "assigned_visible_cmap_count": 225
     },
     {
       "id": "outline-notosansdevanagari",
@@ -3571,10 +3578,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 221 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f186352593dac4ccfa1110d6f3ed99f984b41b5a34dd72600d1cc636356e7853",
-      "woff2_bytes": 48704,
-      "cmap_code_points": 221,
-      "assigned_visible_cmap_count": 221
+      "woff2_sha256": "739a9ae8313ff420125bb94cf479677decae7dedf4159106bd59849d8efa998e",
+      "woff2_bytes": 48944,
+      "cmap_code_points": 223,
+      "assigned_visible_cmap_count": 223
     },
     {
       "id": "outline-notosansmendekikakui",
@@ -3598,10 +3605,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 213 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "0e762aaae50ae9cf4cc1bf2ea370074c182e1f547c5d98f790740550cc83ed15",
-      "woff2_bytes": 13192,
-      "cmap_code_points": 213,
-      "assigned_visible_cmap_count": 213
+      "woff2_sha256": "33967590ecfec5e00bea2478d287436c4cc2b616713764b89ef2a539fdd3a40f",
+      "woff2_bytes": 13408,
+      "cmap_code_points": 215,
+      "assigned_visible_cmap_count": 215
     },
     {
       "id": "outline-notoseriftibetan",
@@ -3625,10 +3632,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 211 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "aca190d9c840764ca6432baf6e113449c5daa46888dbbd914295ac36566a8f3a",
-      "woff2_bytes": 159216,
-      "cmap_code_points": 212,
-      "assigned_visible_cmap_count": 211
+      "woff2_sha256": "954c387615f321a0d9cde2b02c3791d475280b991f5905eabb18e7f8f8cd3ac2",
+      "woff2_bytes": 159188,
+      "cmap_code_points": 214,
+      "assigned_visible_cmap_count": 213
     },
     {
       "id": "outline-notoznamennymusicalnotation",
@@ -3652,10 +3659,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 185 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "838e7048dab44b8cc7f6f55f122c8f423ba4f19f479be3de33cc99299f76b9a2",
-      "woff2_bytes": 10816,
-      "cmap_code_points": 185,
-      "assigned_visible_cmap_count": 185
+      "woff2_sha256": "6c970e4dd50f7dda93855f9e8dfd18515761877810a29f0a36dde0a92da48818",
+      "woff2_bytes": 10808,
+      "cmap_code_points": 186,
+      "assigned_visible_cmap_count": 186
     },
     {
       "id": "outline-notosansgeorgian",
@@ -3691,10 +3698,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 174 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "90e4ab05ed8e174b0346090c5d149187b519843f8e5fa9571106c0964f7f78d0",
-      "woff2_bytes": 14404,
-      "cmap_code_points": 176,
-      "assigned_visible_cmap_count": 175
+      "woff2_sha256": "9067fec3bd36f72e0b635df5e65cfec7ca184bbc05ec42d994a783ed5e45a3d1",
+      "woff2_bytes": 14416,
+      "cmap_code_points": 177,
+      "assigned_visible_cmap_count": 176
     },
     {
       "id": "outline-notosanscherokee",
@@ -3722,10 +3729,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 172 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "33cdb1ba23de0a96fd9560669f092c3d3ea699bf4f64e22f0311e436ba30ccb5",
-      "woff2_bytes": 26348,
-      "cmap_code_points": 173,
-      "assigned_visible_cmap_count": 172
+      "woff2_sha256": "f4b2a19aaf14a8cc2485ec8170bf81855a5f2a0eefd3c9a53cc6da6fff57db98",
+      "woff2_bytes": 26376,
+      "cmap_code_points": 174,
+      "assigned_visible_cmap_count": 173
     },
     {
       "id": "outline-notosansmongolian",
@@ -3761,10 +3768,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 171 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5f232bb1e55d058cca518c2d5f53bc613cc904110cc8a9229ad4e2caba33fd1a",
-      "woff2_bytes": 69324,
-      "cmap_code_points": 191,
-      "assigned_visible_cmap_count": 186
+      "woff2_sha256": "708c9194580ddb708573b5c4d3436070c68f2fd402f390175531546649571308",
+      "woff2_bytes": 69440,
+      "cmap_code_points": 193,
+      "assigned_visible_cmap_count": 188
     },
     {
       "id": "outline-notosansmiao",
@@ -3788,10 +3795,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 149 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "957b2dee5702bd7999c5c24693c89de281c8989926f55ee6aab657b77bbd1783",
-      "woff2_bytes": 10500,
-      "cmap_code_points": 149,
-      "assigned_visible_cmap_count": 149
+      "woff2_sha256": "7a91654a26c3cd3b8e2f5ab3894f31747d7358fb7bcd7c3883b4ac666009fadb",
+      "woff2_bytes": 10652,
+      "cmap_code_points": 151,
+      "assigned_visible_cmap_count": 151
     },
     {
       "id": "outline-notosanskhmer",
@@ -3819,10 +3826,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 144 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b8255cebe40e12cafd12d5110ba19a90a22825a4526019bb53dc9a840de8e1d4",
-      "woff2_bytes": 16604,
-      "cmap_code_points": 147,
-      "assigned_visible_cmap_count": 144
+      "woff2_sha256": "16fe11edef9679dec7596aeb103319243bfb5e26e932b585272ef42bc2ec6b8b",
+      "woff2_bytes": 16684,
+      "cmap_code_points": 149,
+      "assigned_visible_cmap_count": 146
     },
     {
       "id": "outline-notosansduployan",
@@ -3846,10 +3853,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 143 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "28bf4758857dc5719dcd2fc7b914cd492de5490645b839906b0dd4e9fe6bb520",
-      "woff2_bytes": 298852,
-      "cmap_code_points": 143,
-      "assigned_visible_cmap_count": 143
+      "woff2_sha256": "436c0e153f313447679570c117482ca06b6790b17afb727c7ef5810ec034b11c",
+      "woff2_bytes": 299224,
+      "cmap_code_points": 145,
+      "assigned_visible_cmap_count": 145
     },
     {
       "id": "outline-notosanscoptic",
@@ -3877,10 +3884,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 137 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2aa3c3ad089ffbfff077678daa4daab74321bb806efca29650719ff6c91fc771",
-      "woff2_bytes": 8248,
-      "cmap_code_points": 140,
-      "assigned_visible_cmap_count": 139
+      "woff2_sha256": "249bac77410ad695cebd2c00e78127e778ef1813b67b57e79805476b1fd41238",
+      "woff2_bytes": 8416,
+      "cmap_code_points": 142,
+      "assigned_visible_cmap_count": 141
     },
     {
       "id": "outline-notosanshebrew",
@@ -3908,10 +3915,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 134 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a5c185ad923a38d0b5936be71707d3fbfea4367b23397272c4c736613527dae1",
-      "woff2_bytes": 6196,
-      "cmap_code_points": 135,
-      "assigned_visible_cmap_count": 134
+      "woff2_sha256": "f1e8705fb576a7d8ca68f87ccaf76e7a1b18a068e7c78c2e01f47e89e97b7b98",
+      "woff2_bytes": 6360,
+      "cmap_code_points": 137,
+      "assigned_visible_cmap_count": 136
     },
     {
       "id": "outline-notosansglagolitic",
@@ -3939,10 +3946,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 132 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "87ed1ee9ab8d15cd50750650f1b6f9aed5352912a81a2378b4adb764b80af585",
-      "woff2_bytes": 10272,
-      "cmap_code_points": 132,
-      "assigned_visible_cmap_count": 132
+      "woff2_sha256": "1b086fcdfd68ac187e75e1fd3203c1828877abc7ac9d2e1f22eedefa316a56c1",
+      "woff2_bytes": 10376,
+      "cmap_code_points": 134,
+      "assigned_visible_cmap_count": 134
     },
     {
       "id": "outline-notosanspahawhhmong",
@@ -3966,10 +3973,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 127 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b1728ce79e2b998547faefa07d2be611f2756ad8a969967ab95c5c97dc6d50e4",
-      "woff2_bytes": 7828,
-      "cmap_code_points": 127,
-      "assigned_visible_cmap_count": 127
+      "woff2_sha256": "731166e92d768849266d5313d52d91272984a6d50eaace4d3c61c2ef50ed1e02",
+      "woff2_bytes": 8036,
+      "cmap_code_points": 129,
+      "assigned_visible_cmap_count": 129
     },
     {
       "id": "outline-notosanstaitham",
@@ -3993,10 +4000,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 127 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "01e11d34c7445c0066a734d559f73066a8ad41d586b907750c337221d71df9ab",
-      "woff2_bytes": 39864,
-      "cmap_code_points": 128,
-      "assigned_visible_cmap_count": 127
+      "woff2_sha256": "556f0ae41030e612f318c980b15a72de7ab00cccb3bbfe4af41897e2f973af3b",
+      "woff2_bytes": 39904,
+      "cmap_code_points": 129,
+      "assigned_visible_cmap_count": 128
     },
     {
       "id": "outline-notosansbalinese",
@@ -4020,10 +4027,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 124 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "378fedb37a5665530f2abafab4a675552a2550229b1c915f2d4be08964267ca7",
-      "woff2_bytes": 30088,
-      "cmap_code_points": 125,
-      "assigned_visible_cmap_count": 124
+      "woff2_sha256": "bcd2e5eb2ee233c959879a1306e194f23668895d8b88867a83ea59be07ef18ae",
+      "woff2_bytes": 29992,
+      "cmap_code_points": 127,
+      "assigned_visible_cmap_count": 126
     },
     {
       "id": "outline-notosansmeroitic",
@@ -4051,10 +4058,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 122 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ff207058ceebbd1a5e8591bfffdbd4705f4075431737d31bb76e9a6b4685b9e3",
-      "woff2_bytes": 12844,
-      "cmap_code_points": 122,
-      "assigned_visible_cmap_count": 122
+      "woff2_sha256": "ce3baa19e51d041050793cbf9fe81cdb179b94b6af0aa54f03cdab497fbd33ee",
+      "woff2_bytes": 12912,
+      "cmap_code_points": 123,
+      "assigned_visible_cmap_count": 123
     },
     {
       "id": "outline-notosansmalayalam",
@@ -4078,10 +4085,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 118 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "bc79121d4f66da8ac939dc675d2edf88d463d3ca48c6bd830cf41940aecba86e",
-      "woff2_bytes": 21812,
-      "cmap_code_points": 119,
-      "assigned_visible_cmap_count": 118
+      "woff2_sha256": "c0a163733c7f98a0aea08145a22e4a4d317589be1fba09e634acc3cc37c4f168",
+      "woff2_bytes": 21904,
+      "cmap_code_points": 121,
+      "assigned_visible_cmap_count": 120
     },
     {
       "id": "outline-notosansbrahmi",
@@ -4105,10 +4112,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 115 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b7b5df80dc3d8bd9beb1b036baa68310ad02b9123c8c2c79227799c1381a4401",
-      "woff2_bytes": 17692,
-      "cmap_code_points": 115,
-      "assigned_visible_cmap_count": 115
+      "woff2_sha256": "3eaee6a1ecca0a15aa9223cc536f734a240c5f755941e8138aae2ea9f859e518",
+      "woff2_bytes": 18004,
+      "cmap_code_points": 117,
+      "assigned_visible_cmap_count": 117
     },
     {
       "id": "outline-notosanssinhala",
@@ -4136,10 +4143,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 111 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "0e4f9353547ff1197762eb13f4770ad01150229fc2dad7404159e22a7bf301d3",
-      "woff2_bytes": 19236,
-      "cmap_code_points": 111,
-      "assigned_visible_cmap_count": 111
+      "woff2_sha256": "2dc4a8d020c2d8ecdd26ce3a724be07eeacadef61449f3d931dcc046cdbedc46",
+      "woff2_bytes": 19404,
+      "cmap_code_points": 113,
+      "assigned_visible_cmap_count": 113
     },
     {
       "id": "outline-notosansoldhungarian",
@@ -4163,10 +4170,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 108 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b70892639c522345443f6801f5e21afabe556fdfb3f8fd5d5b40deb45106e733",
-      "woff2_bytes": 16732,
-      "cmap_code_points": 108,
-      "assigned_visible_cmap_count": 108
+      "woff2_sha256": "c0577d8c5b7369dcaa3f944eb97eb5d9f06d1dfa5676189435fe019fe41a4bec",
+      "woff2_bytes": 16820,
+      "cmap_code_points": 109,
+      "assigned_visible_cmap_count": 109
     },
     {
       "id": "outline-notosansgrantha",
@@ -4194,10 +4201,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 101 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "8e2fe7f27b3748b52222b6ea8aa9fe7e6a5b5adc18587e92dce9268873cb7ffe",
-      "woff2_bytes": 73016,
-      "cmap_code_points": 101,
-      "assigned_visible_cmap_count": 101
+      "woff2_sha256": "203afb3f9c882507b442e53dc36b5b9091a625885f390b5adcb777158581df98",
+      "woff2_bytes": 73148,
+      "cmap_code_points": 103,
+      "assigned_visible_cmap_count": 103
     },
     {
       "id": "outline-notosanstelugu",
@@ -4221,10 +4228,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 100 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "abfdcef3caddff3bf8c1ba7a0d71febb5cff6c5be0ce1498b7e2f9e2b694fbfe",
-      "woff2_bytes": 34340,
-      "cmap_code_points": 101,
-      "assigned_visible_cmap_count": 100
+      "woff2_sha256": "2d5dda687ae55480afcfcc030cfd008c6a1c6c5e9b65932d30aa94ab428824ea",
+      "woff2_bytes": 34748,
+      "cmap_code_points": 103,
+      "assigned_visible_cmap_count": 102
     },
     {
       "id": "outline-notosanscyprominoan",
@@ -4248,10 +4255,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 99 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7f20b370dac6193e297fb46ae951749454da788434ababfed71c333b0567564b",
-      "woff2_bytes": 5000,
-      "cmap_code_points": 99,
-      "assigned_visible_cmap_count": 99
+      "woff2_sha256": "f49856c3a515a6f61e976c3e8b1aaaae2d435087f774182d4dba8ea3a0a7afd4",
+      "woff2_bytes": 5112,
+      "cmap_code_points": 101,
+      "assigned_visible_cmap_count": 101
     },
     {
       "id": "outline-notosansbengali",
@@ -4279,10 +4286,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 97 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "25c60a2b371e1fde51c187924f6b48551369fc69939f210ca492ff852a84d0b7",
-      "woff2_bytes": 41196,
-      "cmap_code_points": 109,
-      "assigned_visible_cmap_count": 108
+      "woff2_sha256": "0fd358b5948c57e891832b5fd4db0e42cb232ed3553089ae8777323481e3ae39",
+      "woff2_bytes": 41460,
+      "cmap_code_points": 111,
+      "assigned_visible_cmap_count": 110
     },
     {
       "id": "outline-notosansbhaiksuki",
@@ -4306,10 +4313,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 97 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2890e9a5e27e4b77f67c0a00710535636a758c1d97ae38f75e862f98eb59780d",
-      "woff2_bytes": 59576,
-      "cmap_code_points": 97,
-      "assigned_visible_cmap_count": 97
+      "woff2_sha256": "e5c541785a62469fd9e04dacc68baa9cba68f44225432e8696aa4f6a05b8ce7e",
+      "woff2_bytes": 59812,
+      "cmap_code_points": 99,
+      "assigned_visible_cmap_count": 99
     },
     {
       "id": "outline-notosansnewa",
@@ -4333,10 +4340,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 97 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2f77df66edeadc37e7f45be28ee7fd2bd37ca3551cb84351550f4ee0d2b52442",
-      "woff2_bytes": 47580,
-      "cmap_code_points": 97,
-      "assigned_visible_cmap_count": 97
+      "woff2_sha256": "687235913407d919bf4601f767ee310094252f4c3f928dc2c3e947a23f7b9cbe",
+      "woff2_bytes": 47660,
+      "cmap_code_points": 99,
+      "assigned_visible_cmap_count": 99
     },
     {
       "id": "outline-notosanssharada",
@@ -4360,10 +4367,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 96 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f87d59ece2cc1d7fc8673f4c0957ae1f3ca7dcf5c89b965b9609545f11faa789",
-      "woff2_bytes": 21008,
-      "cmap_code_points": 96,
-      "assigned_visible_cmap_count": 96
+      "woff2_sha256": "61ea9ec12fae947c0d408e5752ef254e16dd30768bf67dcd157000aa4be4503d",
+      "woff2_bytes": 21248,
+      "cmap_code_points": 98,
+      "assigned_visible_cmap_count": 98
     },
     {
       "id": "outline-notosansarmenian",
@@ -4391,10 +4398,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 95 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "322ddf52e77e8bf09ce55adf88352cb2801e4dd7f8d5dcd7b908a44f1d09a9bc",
-      "woff2_bytes": 7408,
-      "cmap_code_points": 97,
-      "assigned_visible_cmap_count": 96
+      "woff2_sha256": "d1f03631922607991bf3a5c61e7505ae24ca3c081e146dfeecc7c31fc665d593",
+      "woff2_bytes": 7548,
+      "cmap_code_points": 99,
+      "assigned_visible_cmap_count": 98
     },
     {
       "id": "outline-notosanssiddham",
@@ -4418,10 +4425,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 92 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6fc9e3352142eb9c9151be91bfc0446e36bd2b4a4c21d5c9ff0a83d4215aab94",
-      "woff2_bytes": 46492,
-      "cmap_code_points": 92,
-      "assigned_visible_cmap_count": 92
+      "woff2_sha256": "b81e48707ae82de94e2b066d764a3ce18c83048cb5ae193776ccf37f2c6beb9e",
+      "woff2_bytes": 46936,
+      "cmap_code_points": 94,
+      "assigned_visible_cmap_count": 94
     },
     {
       "id": "outline-notosansgujarati",
@@ -4445,10 +4452,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 91 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "9f16a849161738b3e3065a9a33b8b4b441e5fefe6dd7ad03cdb3e65c4db255a0",
-      "woff2_bytes": 34384,
-      "cmap_code_points": 92,
-      "assigned_visible_cmap_count": 91
+      "woff2_sha256": "41f488e271bcafb35d3a3974cd51bc663469fa15d81277cd09a23dc837c1a93e",
+      "woff2_bytes": 34616,
+      "cmap_code_points": 93,
+      "assigned_visible_cmap_count": 92
     },
     {
       "id": "outline-notosansjavanese",
@@ -4472,10 +4479,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 91 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "780e5b1bf489e19053257d2fe4f6ad986256bf2554876cef2f952a8b2952b5ef",
-      "woff2_bytes": 33288,
-      "cmap_code_points": 92,
-      "assigned_visible_cmap_count": 91
+      "woff2_sha256": "10e5460253c6901dd5a3692aaf91ff5b7ebd2e7d6014f3849e176442029042a4",
+      "woff2_bytes": 33580,
+      "cmap_code_points": 94,
+      "assigned_visible_cmap_count": 93
     },
     {
       "id": "outline-notosanskannada",
@@ -4499,10 +4506,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 91 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a8f5744dfe7a34c5111f4c52432c2db363b839da15f1656155e0ea467ff0b76b",
-      "woff2_bytes": 26864,
-      "cmap_code_points": 92,
-      "assigned_visible_cmap_count": 91
+      "woff2_sha256": "d54069914d6a8e6c36a88623d3d4b560a4693139c6f8f8a5053ebd807a45312f",
+      "woff2_bytes": 27008,
+      "cmap_code_points": 94,
+      "assigned_visible_cmap_count": 93
     },
     {
       "id": "outline-notosansmedefaidrin",
@@ -4526,10 +4533,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 91 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6d30ffa725a5e303705d17ae3dd15680c67c8f1d3541e7c1686c537e02fa3b64",
-      "woff2_bytes": 13340,
-      "cmap_code_points": 91,
-      "assigned_visible_cmap_count": 91
+      "woff2_sha256": "99f2a41ac0add3645f70e7861dc247677bfec7df363b8e3a214557cda6c1dc3d",
+      "woff2_bytes": 13352,
+      "cmap_code_points": 92,
+      "assigned_visible_cmap_count": 92
     },
     {
       "id": "outline-notosansoriya",
@@ -4553,10 +4560,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 91 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "d50a0cb27b9b65da02f77dd831923d381e9496dc03b40ab72c1a354e1aa2add5",
-      "woff2_bytes": 35712,
-      "cmap_code_points": 92,
-      "assigned_visible_cmap_count": 91
+      "woff2_sha256": "530ced1c20b708b896dc83365fc90f8494065939d6a9ecd4bd62c46b8187450d",
+      "woff2_bytes": 35816,
+      "cmap_code_points": 94,
+      "assigned_visible_cmap_count": 93
     },
     {
       "id": "outline-notosansrunic",
@@ -4580,10 +4587,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 89 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "21d57738d05533e5a54f868dc5ae86390580783c53606cee624ed430ca710f67",
-      "woff2_bytes": 3672,
-      "cmap_code_points": 90,
-      "assigned_visible_cmap_count": 89
+      "woff2_sha256": "44fd288fbd973eba08e3fe81c6b087360f80c93bf8a43cb99680c665f0239d43",
+      "woff2_bytes": 3792,
+      "cmap_code_points": 92,
+      "assigned_visible_cmap_count": 91
     },
     {
       "id": "outline-notosanstangsa",
@@ -4607,10 +4614,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 89 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6d9f4424b898899bdc65eeeee20a2e0e651f94ae815d78e6117875d7da0085ae",
-      "woff2_bytes": 10808,
-      "cmap_code_points": 89,
-      "assigned_visible_cmap_count": 89
+      "woff2_sha256": "bdccb28bff944b693299a32a6dc56d3581b8c0ac3cc71bc7efc0d550b9b58b2c",
+      "woff2_bytes": 10836,
+      "cmap_code_points": 90,
+      "assigned_visible_cmap_count": 90
     },
     {
       "id": "outline-notosansadlam",
@@ -4634,10 +4641,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 88 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4d9d52aa3e7ade26a1aae0d0e347b908830f2fddb503b1a2110fdf01ef7fd133",
-      "woff2_bytes": 14452,
-      "cmap_code_points": 88,
-      "assigned_visible_cmap_count": 88
+      "woff2_sha256": "e55ae6d8a9f3502738a93d78c12876be9e8bc80b83ddce0f46e10591e4944dcc",
+      "woff2_bytes": 14716,
+      "cmap_code_points": 90,
+      "assigned_visible_cmap_count": 90
     },
     {
       "id": "outline-notosansthai",
@@ -4661,10 +4668,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 87 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "c051445ebbe06f8eacfdc7fd15be8a8a7f5cc5ed1fe6d11aedd4304be8f1fb83",
-      "woff2_bytes": 8576,
-      "cmap_code_points": 88,
-      "assigned_visible_cmap_count": 87
+      "woff2_sha256": "4fc1875a6b010596d88f706c58f4e34c15382b1c7ec3f26f3fb2e2c167161129",
+      "woff2_bytes": 8676,
+      "cmap_code_points": 90,
+      "assigned_visible_cmap_count": 89
     },
     {
       "id": "outline-notosanskawi",
@@ -4688,10 +4695,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 86 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "322aaadf22133794ba0b06fcd6bf8712efae237d4135d1d2bd5dd000bbd52b78",
-      "woff2_bytes": 15452,
-      "cmap_code_points": 87,
-      "assigned_visible_cmap_count": 86
+      "woff2_sha256": "5b388479000baad38b070249bdf95c770ed3e8c3163cc2935c6083f3eda5f227",
+      "woff2_bytes": 15696,
+      "cmap_code_points": 89,
+      "assigned_visible_cmap_count": 88
     },
     {
       "id": "outline-notosansnewtailue",
@@ -4719,10 +4726,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 84 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6da5a0db53b0a4dc9e2b73af6a9d22b98fef5fa3c0d3178bc1589af212163fa4",
-      "woff2_bytes": 7216,
-      "cmap_code_points": 94,
-      "assigned_visible_cmap_count": 93
+      "woff2_sha256": "a1d0bf0d6630a27432db984578563308fc179e87219ac64dd2320451e117c899",
+      "woff2_bytes": 7224,
+      "cmap_code_points": 95,
+      "assigned_visible_cmap_count": 94
     },
     {
       "id": "outline-notosanswarangciti",
@@ -4746,10 +4753,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 84 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a092f8d9f15908cf47f96400c0e7c56af762f4db6b21f43fdb9747f53a4ce0e9",
-      "woff2_bytes": 6940,
-      "cmap_code_points": 84,
-      "assigned_visible_cmap_count": 84
+      "woff2_sha256": "fd78236cf165c50dfeefe94fe3595a7f0bce674cdbcac2ffbdb45c446a1bf2df",
+      "woff2_bytes": 6972,
+      "cmap_code_points": 85,
+      "assigned_visible_cmap_count": 85
     },
     {
       "id": "outline-notosanscham",
@@ -4773,10 +4780,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 83 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5f1c7ca7f80423dcbd58032442ff509d26ce29b7290f9f8cbbb1db9e0c9a37cd",
-      "woff2_bytes": 11500,
-      "cmap_code_points": 84,
-      "assigned_visible_cmap_count": 83
+      "woff2_sha256": "c53e77d7ea149cd33758ee2a2f7c94bf913117cc3c67e1401ac4e9fdbbc49cff",
+      "woff2_bytes": 11572,
+      "cmap_code_points": 86,
+      "assigned_visible_cmap_count": 85
     },
     {
       "id": "outline-notosanslao",
@@ -4800,10 +4807,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 83 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6e95e2a1511291ddbbd6df0719628d75bc1976a71078e7cac9f2880650dfb037",
-      "woff2_bytes": 8484,
-      "cmap_code_points": 84,
-      "assigned_visible_cmap_count": 83
+      "woff2_sha256": "ae243ad565167d2233a9a4978aaf9fc9e574920cdc7cd3e058593f857115ca85",
+      "woff2_bytes": 8652,
+      "cmap_code_points": 86,
+      "assigned_visible_cmap_count": 85
     },
     {
       "id": "outline-notosanssoyombo",
@@ -4827,10 +4834,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 83 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "9f8e75743779a5dbe3b4dbe5226b3d7aae14ca7ac6c7bdea7ce549d4ba0092f1",
-      "woff2_bytes": 19684,
-      "cmap_code_points": 83,
-      "assigned_visible_cmap_count": 83
+      "woff2_sha256": "4165c3444051180ef906f894b11d465d367649879a047fa8f996c4615da08b86",
+      "woff2_bytes": 20632,
+      "cmap_code_points": 85,
+      "assigned_visible_cmap_count": 85
     },
     {
       "id": "outline-notosanssaurashtra",
@@ -4854,10 +4861,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 82 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "743fefc879288b91aac45b463399c8b7a4101857939a4fa50deae07897de7ed1",
-      "woff2_bytes": 9592,
-      "cmap_code_points": 83,
-      "assigned_visible_cmap_count": 82
+      "woff2_sha256": "98eeddf62264f24026d63cb2cb5fab04ebe4ba6bc51c86091c41b41d37f7204c",
+      "woff2_bytes": 9800,
+      "cmap_code_points": 85,
+      "assigned_visible_cmap_count": 84
     },
     {
       "id": "outline-notosanstirhuta",
@@ -4881,10 +4888,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 82 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "aaf849a0fdc0ee813652dfb1600e1b677093c0bbb43545d2403ea649ac6c7c57",
-      "woff2_bytes": 28388,
-      "cmap_code_points": 82,
-      "assigned_visible_cmap_count": 82
+      "woff2_sha256": "f9f3aa64d7b7996c8dac1316bef16a9694cc9a81d6a95eb22fd02c253bb65d49",
+      "woff2_bytes": 28480,
+      "cmap_code_points": 84,
+      "assigned_visible_cmap_count": 84
     },
     {
       "id": "outline-notosansdeseret",
@@ -4908,10 +4915,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 80 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "0e00d0e5fb18f96ba710f1e5a65fd519c1bfc6568c3886762d9305d46cb127fe",
-      "woff2_bytes": 5288,
-      "cmap_code_points": 80,
-      "assigned_visible_cmap_count": 80
+      "woff2_sha256": "a06a4f13926c4b317ad20d81c7635fd2d64504a76afa3e7c5cea9d2c6bcbe56f",
+      "woff2_bytes": 5344,
+      "cmap_code_points": 81,
+      "assigned_visible_cmap_count": 81
     },
     {
       "id": "outline-notosansgurmukhi",
@@ -4935,10 +4942,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 80 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "c3fd0c5a746ab4dd4522349c2f92a38022efc900792ca9d24edd75707ed250f7",
-      "woff2_bytes": 9888,
-      "cmap_code_points": 81,
-      "assigned_visible_cmap_count": 80
+      "woff2_sha256": "ba3298c15845f57acdaf6b5643af3ecfadec748ab7b744980df337164d43998e",
+      "woff2_bytes": 10120,
+      "cmap_code_points": 83,
+      "assigned_visible_cmap_count": 82
     },
     {
       "id": "outline-notosansmeeteimayek",
@@ -4966,10 +4973,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 79 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "1500dad5bd83bd866e9cff4dd1f09ce0abdb820b51414d666176188ead377fe8",
-      "woff2_bytes": 8264,
-      "cmap_code_points": 80,
-      "assigned_visible_cmap_count": 79
+      "woff2_sha256": "31dba592994d716e0ec7349742db4fb6f177dc52e6cdfaa55ff3783c023e40e1",
+      "woff2_bytes": 8484,
+      "cmap_code_points": 82,
+      "assigned_visible_cmap_count": 81
     },
     {
       "id": "outline-notosansmodi",
@@ -4993,10 +5000,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 79 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "e0d350a445150be77c2c5a1a9d72239d772354435fb5c2822026aa9417e7ddd1",
-      "woff2_bytes": 19088,
-      "cmap_code_points": 79,
-      "assigned_visible_cmap_count": 79
+      "woff2_sha256": "3c72721d0e8806b819b52273538f32c561f8b8f831856b1717fa9cfd3ae520d6",
+      "woff2_bytes": 19384,
+      "cmap_code_points": 81,
+      "assigned_visible_cmap_count": 81
     },
     {
       "id": "outline-notosanssyriacwestern",
@@ -5024,10 +5031,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 78 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "57d98fb3fb5cf7b2c7b113178d2970a787cfaf2332ff3f216aa1c9a917780cbc",
-      "woff2_bytes": 13704,
-      "cmap_code_points": 80,
-      "assigned_visible_cmap_count": 79
+      "woff2_sha256": "22244a54d81f706de7f700ec629f7834349e96c8f80328e1220849c12581ec9c",
+      "woff2_bytes": 13776,
+      "cmap_code_points": 82,
+      "assigned_visible_cmap_count": 81
     },
     {
       "id": "outline-notosansmasaramgondi",
@@ -5051,10 +5058,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 75 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "670491b516b214d4b74d960e3c93da490ba378c5b142f7b8b32ae5c4386146a3",
-      "woff2_bytes": 9440,
-      "cmap_code_points": 75,
-      "assigned_visible_cmap_count": 75
+      "woff2_sha256": "ebd3448df6c88e1bef337ae61d44a6231c9ffba906079484e4503c218ecf2509",
+      "woff2_bytes": 9728,
+      "cmap_code_points": 77,
+      "assigned_visible_cmap_count": 77
     },
     {
       "id": "outline-notosanslepcha",
@@ -5078,10 +5085,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 74 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5b7a6b856ba8750d513fa05d50b62007bc1078dd54fcf98305c4396127d4642e",
-      "woff2_bytes": 10788,
-      "cmap_code_points": 75,
-      "assigned_visible_cmap_count": 74
+      "woff2_sha256": "6bc30a0809254446dbc7c863c7f7c514225809d33c0e31314762062631621b2c",
+      "woff2_bytes": 10956,
+      "cmap_code_points": 77,
+      "assigned_visible_cmap_count": 76
     },
     {
       "id": "outline-notosansoldturkic",
@@ -5105,10 +5112,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 73 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a4c72422a9a89df3a108dd62c3f9c1b33a21de59da39e44afc391b4807a92428",
-      "woff2_bytes": 3816,
-      "cmap_code_points": 73,
-      "assigned_visible_cmap_count": 73
+      "woff2_sha256": "8ef4ce0f41abdf8bc99c00a27990a1a95810febb9ba85050b8cac20246dfbc11",
+      "woff2_bytes": 3860,
+      "cmap_code_points": 74,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosansosage",
@@ -5132,10 +5139,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 72 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "fdbd147c919577b2000f3c073ab01b258cda21614b454fb747d3f4476960d6d3",
-      "woff2_bytes": 4760,
-      "cmap_code_points": 72,
-      "assigned_visible_cmap_count": 72
+      "woff2_sha256": "020032c985f44de1388a8d339f4ae022e0aea4b290e096248307cc0359fbdc14",
+      "woff2_bytes": 4864,
+      "cmap_code_points": 74,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosanssundanese",
@@ -5163,10 +5170,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 72 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "df02307e8dfb072ddd838ad4d8e82f1427fcb6a98f1c71e39801097084533369",
-      "woff2_bytes": 4852,
-      "cmap_code_points": 73,
-      "assigned_visible_cmap_count": 72
+      "woff2_sha256": "11a8367657718881b353a02923c57ebb69c8d761a4cb2860695c19c50f664b3b",
+      "woff2_bytes": 4984,
+      "cmap_code_points": 75,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosanstaiviet",
@@ -5190,10 +5197,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 72 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "959f2699ea72329e47a51ba293ded447944738553c200b4440b68434c98c4eac",
-      "woff2_bytes": 8424,
-      "cmap_code_points": 73,
-      "assigned_visible_cmap_count": 72
+      "woff2_sha256": "b7dbf86d9cbc002a6fca1c4c7c69df0b6229dc1485277f3c7cdaea2baebf4c7d",
+      "woff2_bytes": 8580,
+      "cmap_code_points": 75,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosanszanabazarsquare",
@@ -5217,10 +5224,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 72 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "c279f084fb34916da8533d24b1f066e972d714398c119b9feb8e63d4350bb470",
-      "woff2_bytes": 6248,
-      "cmap_code_points": 72,
-      "assigned_visible_cmap_count": 72
+      "woff2_sha256": "8b129cd5ce1012cb51c003843ac42757c7996a7091dd78fb91b465d34dce874e",
+      "woff2_bytes": 6528,
+      "cmap_code_points": 74,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosanschakma",
@@ -5244,10 +5251,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 71 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7e1ccfd20ed8d319ab8cf24507aadfb4c8a841b2a6f06f92e3cbfa2e6a6dc1da",
-      "woff2_bytes": 20504,
-      "cmap_code_points": 71,
-      "assigned_visible_cmap_count": 71
+      "woff2_sha256": "3c54f860e8bed9e523d7c0eb3362ccd5f6b47fe1c6cdad3b8b83ec5697f9fe92",
+      "woff2_bytes": 20908,
+      "cmap_code_points": 73,
+      "assigned_visible_cmap_count": 73
     },
     {
       "id": "outline-notoserifnphmong",
@@ -5271,10 +5278,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 71 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b7d1541104ad0b40feda778a12c6d9e1fea22502046ab772b38cf1950b548b93",
-      "woff2_bytes": 6780,
-      "cmap_code_points": 71,
-      "assigned_visible_cmap_count": 71
+      "woff2_sha256": "617dbd2c6d38d4ce62ed8d0c00324f439e3c3b0af3ab49a1cfbb42d4b268f2fc",
+      "woff2_bytes": 6984,
+      "cmap_code_points": 73,
+      "assigned_visible_cmap_count": 73
     },
     {
       "id": "outline-notosansvithkuqi",
@@ -5298,10 +5305,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 70 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7add332a2005b2511503f260f0850fd8430063347386b0284e6e66d6e1085af1",
-      "woff2_bytes": 8104,
-      "cmap_code_points": 70,
-      "assigned_visible_cmap_count": 70
+      "woff2_sha256": "cb70eb895fd912ea8662d306d7127d9a237c2e79d531c849f6238823755f51da",
+      "woff2_bytes": 8096,
+      "cmap_code_points": 71,
+      "assigned_visible_cmap_count": 71
     },
     {
       "id": "outline-notosanskhudawadi",
@@ -5325,10 +5332,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 69 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5ef30fdb9277b08a65f8fcd3323f78b6151e41ec68b5d09c93d844218bdbfb8e",
-      "woff2_bytes": 8160,
-      "cmap_code_points": 69,
-      "assigned_visible_cmap_count": 69
+      "woff2_sha256": "145f4f674280a5fce0d5bb8f277cd786b9f6ff3a9f9485ef7324afd319e6d792",
+      "woff2_bytes": 8364,
+      "cmap_code_points": 71,
+      "assigned_visible_cmap_count": 71
     },
     {
       "id": "outline-notosansindicsiyaqnumbers",
@@ -5352,10 +5359,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "52348b3ca9dcb09f99e1b0e641e0c4f59c946cb1f54a67350db3160cd328139d",
-      "woff2_bytes": 8236,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "73029ae7b64a3b77b9530b079c8f5c62ce491dd8c134d6fb48e127494f9a8465",
+      "woff2_bytes": 8284,
+      "cmap_code_points": 69,
+      "assigned_visible_cmap_count": 69
     },
     {
       "id": "outline-notosanskaithi",
@@ -5379,10 +5386,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5ce562caf0445456de8d08248fefd3d1433728f5e8dcc425a2dfda69b2f2d886",
-      "woff2_bytes": 20112,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "9185f76e5068e94a267a16ddfb1e2d6b1ec7514cae384c3f87da3ca9c608cb0e",
+      "woff2_bytes": 20348,
+      "cmap_code_points": 70,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notosanskharoshthi",
@@ -5406,10 +5413,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "c6029dfb7ff4300696056a00dfbdb71a0cffd57c01d128b32a3d24b2d178aff1",
-      "woff2_bytes": 16088,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "53e3a97fbc2ca2b9e58da12ec91f4945bf5ee0b452a6c9c98615e5be86ed1214",
+      "woff2_bytes": 16484,
+      "cmap_code_points": 70,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notosanslimbu",
@@ -5433,10 +5440,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7e72aedb7f6153de8872e2ce58e40dff603af682a48ac2b3948b63f494e75715",
-      "woff2_bytes": 6576,
-      "cmap_code_points": 69,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "a6c560c96b2bcb984888adfebcbf1b51bd98737a6132515fe95089750c91d170",
+      "woff2_bytes": 6740,
+      "cmap_code_points": 71,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notosansmarchen",
@@ -5460,10 +5467,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "49b58e76ebaf15058320a0e894a619b82eaf02568535927f0614808e3f8997e3",
-      "woff2_bytes": 25672,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "cf975f1e967127196e59d6eebd7e59a8e95ab84a50e5e5d1e95de8fad6e68d6b",
+      "woff2_bytes": 25888,
+      "cmap_code_points": 70,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notosanstakri",
@@ -5487,10 +5494,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 68 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "66b199e71f709ad0446370d9d66be96f153b9306483b75464c67f2d66fdceb0f",
-      "woff2_bytes": 7920,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "6920525ba1af938bed94fe803b432c6ceec04d4460fedb3524e3b01324132caa",
+      "woff2_bytes": 8128,
+      "cmap_code_points": 70,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notosansnandinagari",
@@ -5518,10 +5525,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 66 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ea5311a4eddfa5a493e95f1306475c6d78f357b59a9dadb354a44242ae50d99c",
-      "woff2_bytes": 39312,
-      "cmap_code_points": 68,
-      "assigned_visible_cmap_count": 68
+      "woff2_sha256": "907359d40a4b34f82bc1a2acf034146703f59a855b91f444ceb99ccab5875a41",
+      "woff2_bytes": 39500,
+      "cmap_code_points": 70,
+      "assigned_visible_cmap_count": 70
     },
     {
       "id": "outline-notoserifahom",
@@ -5545,10 +5552,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 65 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "56fbdf687ac22b70a234d25812768939abbf7d36e71b051e260b70237ab36c94",
-      "woff2_bytes": 9364,
-      "cmap_code_points": 65,
-      "assigned_visible_cmap_count": 65
+      "woff2_sha256": "382fa76897906ef8a3e0247e957316dc876351256308fba9bca4ddcde31bc860",
+      "woff2_bytes": 9572,
+      "cmap_code_points": 67,
+      "assigned_visible_cmap_count": 67
     },
     {
       "id": "outline-notoserifkhojki",
@@ -5572,10 +5579,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 65 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "716fc2fd7a4b9cb240b286ba431f000b02f86c17dc3e7811a37116b2427d93aa",
-      "woff2_bytes": 27752,
-      "cmap_code_points": 65,
-      "assigned_visible_cmap_count": 65
+      "woff2_sha256": "4e959582c3cd31907d4e58a80778e6e675447d2329bd66136ab2a86d702398a6",
+      "woff2_bytes": 28024,
+      "cmap_code_points": 67,
+      "assigned_visible_cmap_count": 67
     },
     {
       "id": "outline-notosansgunjalagondi",
@@ -5599,10 +5606,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 63 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f562520978d012fb240f80642423b935e35b1bd4a9e1f06a25879f2fb4245331",
-      "woff2_bytes": 16156,
-      "cmap_code_points": 63,
-      "assigned_visible_cmap_count": 63
+      "woff2_sha256": "7d5b85ef3e79fde7ea0ed6bcd457567b8fe91529352a297a36acc3504f3382dc",
+      "woff2_bytes": 16260,
+      "cmap_code_points": 65,
+      "assigned_visible_cmap_count": 65
     },
     {
       "id": "outline-notosansnko",
@@ -5626,10 +5633,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 62 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "619a49b9ff45958e07630d6a55e9724d1dea5639be80b7ec62c6f7fc5371b120",
-      "woff2_bytes": 7260,
-      "cmap_code_points": 63,
-      "assigned_visible_cmap_count": 62
+      "woff2_sha256": "ede92d220fcdf612cfe61b207798d3b9a57e19e35710c03945ec08a20379a404",
+      "woff2_bytes": 7380,
+      "cmap_code_points": 65,
+      "assigned_visible_cmap_count": 64
     },
     {
       "id": "outline-notosansavestan",
@@ -5653,10 +5660,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 61 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "af748519e367d3f0dce68ff59d9916452753963b1eae6750aac826ee5afb9f7c",
-      "woff2_bytes": 5516,
-      "cmap_code_points": 61,
-      "assigned_visible_cmap_count": 61
+      "woff2_sha256": "17bdaab0aace3ca72b723b55fd10c80eb5ab17c2f9a553f722b326460d5e4a86",
+      "woff2_bytes": 5624,
+      "cmap_code_points": 62,
+      "assigned_visible_cmap_count": 62
     },
     {
       "id": "outline-notosanssamaritan",
@@ -5680,10 +5687,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 61 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "91e2d544307cf593fb331259bda484fc535e40c145e93dcdfe4111bb155df916",
-      "woff2_bytes": 5452,
-      "cmap_code_points": 62,
-      "assigned_visible_cmap_count": 61
+      "woff2_sha256": "2746069eeefcb033817792d54a72dd202f4a1a4a6f39ed2707de50b894704c66",
+      "woff2_bytes": 5484,
+      "cmap_code_points": 63,
+      "assigned_visible_cmap_count": 62
     },
     {
       "id": "outline-notoserifottomansiyaq",
@@ -5734,10 +5741,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 60 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "1a770d66a42470b747606693f23c164e6a8e68ade00cc541ae9f16dc81b9363a",
-      "woff2_bytes": 10640,
-      "cmap_code_points": 60,
-      "assigned_visible_cmap_count": 60
+      "woff2_sha256": "8fed6c78b9919ae40049485cb49f38fb0b0e8575d59d64219d3ae390af7a7b5b",
+      "woff2_bytes": 11120,
+      "cmap_code_points": 62,
+      "assigned_visible_cmap_count": 62
     },
     {
       "id": "outline-notosanstifinagh",
@@ -5761,10 +5768,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 59 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "3005d526590741d1a8d5aa430cc59cb00105e1cde13c7ee0ebd6aada9b75df6c",
-      "woff2_bytes": 10532,
-      "cmap_code_points": 60,
-      "assigned_visible_cmap_count": 59
+      "woff2_sha256": "0e4cfb2ed5e118e59863335bc6964c34145c94f796199086709b981d7969f2ef",
+      "woff2_bytes": 10728,
+      "cmap_code_points": 62,
+      "assigned_visible_cmap_count": 61
     },
     {
       "id": "outline-notosanswancho",
@@ -5788,10 +5795,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 59 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7dfb84fd7a993a0cb162f6bc20aadf90ac36a0f7ea0ece42acfa809ae18a9ebc",
-      "woff2_bytes": 6740,
-      "cmap_code_points": 59,
-      "assigned_visible_cmap_count": 59
+      "woff2_sha256": "8d2de4845eef4bf75377526d444397837afbc03e7168fa3bfe004b0537ddb94a",
+      "woff2_bytes": 6916,
+      "cmap_code_points": 61,
+      "assigned_visible_cmap_count": 61
     },
     {
       "id": "outline-notosanspaucinhau",
@@ -5815,10 +5822,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 57 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4b5dc0af59e40d024f4444a1d7baf41124f179353c25852091ef6a5422c7f4c1",
-      "woff2_bytes": 4020,
-      "cmap_code_points": 57,
-      "assigned_visible_cmap_count": 57
+      "woff2_sha256": "5fe5192a8ab132d718636c07edd941009e0e5e2a18f5e6956c8c879dd52ff9c9",
+      "woff2_bytes": 4088,
+      "cmap_code_points": 58,
+      "assigned_visible_cmap_count": 58
     },
     {
       "id": "outline-notosansphagspa",
@@ -5846,10 +5853,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 57 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "bd4bb998559bdca728fa41f14a26bfc37148f50e45a73a2f120eb4390e19deec",
-      "woff2_bytes": 11344,
-      "cmap_code_points": 78,
-      "assigned_visible_cmap_count": 77
+      "woff2_sha256": "4a10a80b46ea83e9bc00da7e7e38ad53c4527e2d5b8eedb683bc7fcbd2d7c964",
+      "woff2_bytes": 11456,
+      "cmap_code_points": 80,
+      "assigned_visible_cmap_count": 79
     },
     {
       "id": "outline-notosanstamil",
@@ -5873,10 +5880,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 57 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2a2e3d04b9461180aa8b6a581463c0a9aafd9ca9dc4b2280dd895dddbe710be4",
-      "woff2_bytes": 13504,
-      "cmap_code_points": 73,
-      "assigned_visible_cmap_count": 72
+      "woff2_sha256": "8855c4e46a744791740d146b5ad169ca08129dcac1fdb7551a379177851218ab",
+      "woff2_bytes": 13660,
+      "cmap_code_points": 75,
+      "assigned_visible_cmap_count": 74
     },
     {
       "id": "outline-notosansbatak",
@@ -5900,10 +5907,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 56 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f1cf1ba1aa05124fe631423990318473c8ca46b910b5eb58ef09cf3b9fbdf409",
-      "woff2_bytes": 8720,
-      "cmap_code_points": 57,
-      "assigned_visible_cmap_count": 56
+      "woff2_sha256": "d1446bcc008cbc858c1d565ede046e05689cc9288b1982120312ff06cc3ba713",
+      "woff2_bytes": 8936,
+      "cmap_code_points": 59,
+      "assigned_visible_cmap_count": 58
     },
     {
       "id": "outline-notosanscypriot",
@@ -5927,10 +5934,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 55 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "67ee9de0dcda42b865b73a77e508b301e93fd139a08716c17f7d2d17c222d40f",
-      "woff2_bytes": 3960,
-      "cmap_code_points": 55,
-      "assigned_visible_cmap_count": 55
+      "woff2_sha256": "f7e7a1fedf458807bba819c3e1425bf0d522ecc9302f9963a8b293a758082eda",
+      "woff2_bytes": 3976,
+      "cmap_code_points": 56,
+      "assigned_visible_cmap_count": 56
     },
     {
       "id": "outline-notosanscaucasianalbanian",
@@ -5954,10 +5961,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 53 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "06b8157cd7fe7532da8f29816d9e95d1ae64652999ccfe0fe2cb3727e59d3f1a",
-      "woff2_bytes": 4052,
-      "cmap_code_points": 53,
-      "assigned_visible_cmap_count": 53
+      "woff2_sha256": "2667b3f14bcdfef70ec6662515bd42861fe66be47e74b16b033f3a1c3a997a68",
+      "woff2_bytes": 4248,
+      "cmap_code_points": 55,
+      "assigned_visible_cmap_count": 55
     },
     {
       "id": "outline-notoseriftodhri",
@@ -5981,10 +5988,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 52 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "dc039ca9b94e75aa0ebf2ef497d5957e394c0faf1bbfd1e2df7e2951907fec67",
-      "woff2_bytes": 4312,
-      "cmap_code_points": 52,
-      "assigned_visible_cmap_count": 52
+      "woff2_sha256": "1c3b4ebabca1bec3b4ad544cd83ca3b3c230a042b8ef13c2cce00ccc12eaf46e",
+      "woff2_bytes": 4476,
+      "cmap_code_points": 54,
+      "assigned_visible_cmap_count": 54
     },
     {
       "id": "outline-notosansmanichaean",
@@ -6008,10 +6015,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 51 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ef8d1c4b3e7152a181f34178fce366e17b35d7a77e79aac0ea0936c57c1f926d",
-      "woff2_bytes": 8648,
-      "cmap_code_points": 51,
-      "assigned_visible_cmap_count": 51
+      "woff2_sha256": "513258873199d13af16e3a2cfb1c554bd45faa26cd86f8a9d87ff18e8f0e4f66",
+      "woff2_bytes": 8808,
+      "cmap_code_points": 53,
+      "assigned_visible_cmap_count": 53
     },
     {
       "id": "outline-notosanstamilsupplement",
@@ -6062,10 +6069,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 50 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "152ffb17421bea9efa8b41c0152945be125e2dcee997c33b888dd7202e389b44",
-      "woff2_bytes": 6016,
-      "cmap_code_points": 50,
-      "assigned_visible_cmap_count": 50
+      "woff2_sha256": "b0ecf349ffee48913aa15bd549347cbd584fa22063704bbb0b1e45fb4bcb8a81",
+      "woff2_bytes": 6132,
+      "cmap_code_points": 52,
+      "assigned_visible_cmap_count": 52
     },
     {
       "id": "outline-notosansoldpersian",
@@ -6089,10 +6096,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 50 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4d05c27b4b261411d4da060600d6a1430c69ea090fbf98e99aad44d430f8de9a",
-      "woff2_bytes": 4768,
-      "cmap_code_points": 50,
-      "assigned_visible_cmap_count": 50
+      "woff2_sha256": "b2d3b0a9720881bb2dfc2959875b961c2d0b3c844e0a5c23d3ea728b0df3f833",
+      "woff2_bytes": 4860,
+      "cmap_code_points": 51,
+      "assigned_visible_cmap_count": 51
     },
     {
       "id": "outline-notosansthaana",
@@ -6116,10 +6123,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 50 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "941263b30bb36b4add2860ad2e2779602fd8367ef839ebd6208cc9b3514a1e31",
-      "woff2_bytes": 7416,
-      "cmap_code_points": 51,
-      "assigned_visible_cmap_count": 50
+      "woff2_sha256": "878a8d468851e30a2954f457a943780bc10051c0ff1becaeb513bc8b9712aee7",
+      "woff2_bytes": 7700,
+      "cmap_code_points": 53,
+      "assigned_visible_cmap_count": 52
     },
     {
       "id": "outline-notosanscarian",
@@ -6143,10 +6150,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 49 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5a52f527af853fd60d093124dc55ef262ea8db41777d93098518da4fc2833405",
-      "woff2_bytes": 3008,
-      "cmap_code_points": 49,
-      "assigned_visible_cmap_count": 49
+      "woff2_sha256": "3ca457a91ca18b515c5e70497cde72791047329d3b97c25fcd71124176f0bb60",
+      "woff2_bytes": 3036,
+      "cmap_code_points": 50,
+      "assigned_visible_cmap_count": 50
     },
     {
       "id": "outline-notosanslisu",
@@ -6174,10 +6181,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 49 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "b08ffa12a4b79603ae90638a22967289a0cd99acfa033f72e9e92ab16c8f53a7",
-      "woff2_bytes": 2648,
-      "cmap_code_points": 49,
-      "assigned_visible_cmap_count": 49
+      "woff2_sha256": "9b03cdd65b45e0d94b6cb750dbe243e6c3655fe937a904106b7b37d55d6d044c",
+      "woff2_bytes": 2680,
+      "cmap_code_points": 50,
+      "assigned_visible_cmap_count": 50
     },
     {
       "id": "outline-notoserifdivesakuru",
@@ -6201,10 +6208,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 49 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "f1502a6e8ad1d8520c71d60011e6c39938393e8d337ce78db4d1094eafbc70e3",
-      "woff2_bytes": 77240,
-      "cmap_code_points": 50,
-      "assigned_visible_cmap_count": 49
+      "woff2_sha256": "6f0d136b18bb4b61c0b32b98b7b4e7f102770eb0e0dcc2177c4eaa8a6df06c07",
+      "woff2_bytes": 77336,
+      "cmap_code_points": 52,
+      "assigned_visible_cmap_count": 51
     },
     {
       "id": "outline-notosansolchiki",
@@ -6228,10 +6235,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 48 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "953ce9af0168ba7e76bfb6a76b92dfcfe0b50fe41d712717d8de92cd470bd80e",
-      "woff2_bytes": 4512,
-      "cmap_code_points": 49,
-      "assigned_visible_cmap_count": 48
+      "woff2_sha256": "041904feb071b54e058dd13136fc19b2d6299e1b3218ad3869aa29f3ea155a7f",
+      "woff2_bytes": 4528,
+      "cmap_code_points": 50,
+      "assigned_visible_cmap_count": 49
     },
     {
       "id": "outline-notosansshavian",
@@ -6255,10 +6262,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 48 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a2463b8bed61a96c9bb899b2727217a522571faabd46cdf74cdea340be988b67",
-      "woff2_bytes": 3140,
-      "cmap_code_points": 48,
-      "assigned_visible_cmap_count": 48
+      "woff2_sha256": "b28e345053daaa2b6dd2cf55590198b79c1124e88731a1902ca483af6be849ec",
+      "woff2_bytes": 3184,
+      "cmap_code_points": 49,
+      "assigned_visible_cmap_count": 49
     },
     {
       "id": "outline-notosanskayahli",
@@ -6282,10 +6289,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 47 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "0e323857c5363d3109cf4ef5c77a5b2829db0771111093b19e1524117709a557",
-      "woff2_bytes": 3852,
-      "cmap_code_points": 49,
-      "assigned_visible_cmap_count": 48
+      "woff2_sha256": "cbc30a22bd2e8f334d5b64aa331173c8aa403287574be1a9a766391d4e4e0afa",
+      "woff2_bytes": 4064,
+      "cmap_code_points": 51,
+      "assigned_visible_cmap_count": 50
     },
     {
       "id": "outline-notoserifyezidi",
@@ -6309,10 +6316,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 47 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4c0aa897798dc4513254d020c799afa04ccfad07a2ee1038b203efa842395f4b",
-      "woff2_bytes": 4000,
-      "cmap_code_points": 47,
-      "assigned_visible_cmap_count": 47
+      "woff2_sha256": "0ec0416f1b52e3463a5958621d25b9c63ac7e7277547293f21a15ee49b4a3580",
+      "woff2_bytes": 4272,
+      "cmap_code_points": 49,
+      "assigned_visible_cmap_count": 49
     },
     {
       "id": "outline-notosanssylotinagri",
@@ -6336,10 +6343,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 45 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "788479955d0f444551c012f5ff5706ac1285cedf544b72a6508544c064178312",
-      "woff2_bytes": 6824,
-      "cmap_code_points": 46,
-      "assigned_visible_cmap_count": 45
+      "woff2_sha256": "b6fe814dadf22df3dbf37e195749eb944913bbaf8ab4ff81dd7c90856cf61187",
+      "woff2_bytes": 7060,
+      "cmap_code_points": 48,
+      "assigned_visible_cmap_count": 47
     },
     {
       "id": "outline-notosanssunuwar",
@@ -6363,10 +6370,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 44 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "fadf5834894594ec205bcff3615e77954ab4b30c74a2d9e5c127e1e1dc2255fc",
-      "woff2_bytes": 5064,
-      "cmap_code_points": 44,
-      "assigned_visible_cmap_count": 44
+      "woff2_sha256": "77dcbdbc03f3fb9f9bbbb2ffc485d25cdc4bc3c12260211afccec27ad2bceea4",
+      "woff2_bytes": 5248,
+      "cmap_code_points": 46,
+      "assigned_visible_cmap_count": 46
     },
     {
       "id": "outline-notosansmro",
@@ -6390,10 +6397,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 43 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "fb401ae84e37a8d3ddad9ed4d4f9f27d0212dea23252094dc6c4994e27723409",
-      "woff2_bytes": 3428,
-      "cmap_code_points": 43,
-      "assigned_visible_cmap_count": 43
+      "woff2_sha256": "8aab5925f1d2f654ef8691350745ed89b2e900c9c0fe9f5dbbd58425eff6f181",
+      "woff2_bytes": 3472,
+      "cmap_code_points": 44,
+      "assigned_visible_cmap_count": 44
     },
     {
       "id": "outline-notosansoldpermic",
@@ -6417,10 +6424,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 43 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4b0e12862610f833075b8be777322b3ec84d21f98af4f3c958917844f4efe5d2",
-      "woff2_bytes": 3664,
-      "cmap_code_points": 43,
-      "assigned_visible_cmap_count": 43
+      "woff2_sha256": "8b1903c0c56ac89b85a536054416887d80f72487d021addfa3b0239e94c42045",
+      "woff2_bytes": 3812,
+      "cmap_code_points": 45,
+      "assigned_visible_cmap_count": 45
     },
     {
       "id": "outline-notosansnagmundari",
@@ -6444,10 +6451,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 42 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5fe604e9932d99f9ac9081ff16a18b17a0c336dc83dac6bad437f58b3f4d5ad2",
-      "woff2_bytes": 4400,
-      "cmap_code_points": 42,
-      "assigned_visible_cmap_count": 42
+      "woff2_sha256": "85e2c090aa5c2a627e864db92161fe67fa204a2d62c189fe4dabe5cf362e006d",
+      "woff2_bytes": 4684,
+      "cmap_code_points": 44,
+      "assigned_visible_cmap_count": 44
     },
     {
       "id": "outline-notosanssogdian",
@@ -6471,10 +6478,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 42 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "fe249d6e3e1cf41faa067aefbdf3c7ae240054a90b6b91b31c9b924da732204d",
-      "woff2_bytes": 21660,
-      "cmap_code_points": 42,
-      "assigned_visible_cmap_count": 42
+      "woff2_sha256": "962a8737b01055ec0c18072710bd0c80b6126a73f24c383f41ab838f0623138e",
+      "woff2_bytes": 21868,
+      "cmap_code_points": 44,
+      "assigned_visible_cmap_count": 44
     },
     {
       "id": "outline-notosanselbasan",
@@ -6498,10 +6505,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 40 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "982f061e3084515f6e11f2329960d7d9590f208fc87aa77ad3de8b4b35c80721",
-      "woff2_bytes": 3440,
-      "cmap_code_points": 40,
-      "assigned_visible_cmap_count": 40
+      "woff2_sha256": "771f96caee81bb1de1ba44d5d19b895206699ebfb71fadd2da0ffe3667996641",
+      "woff2_bytes": 3576,
+      "cmap_code_points": 42,
+      "assigned_visible_cmap_count": 42
     },
     {
       "id": "outline-notosansnabataean",
@@ -6525,10 +6532,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 40 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "66a91da840914a0ddda73d536027d7f5c42ac8efc6c28f3bf76b8e837f120119",
-      "woff2_bytes": 4060,
-      "cmap_code_points": 40,
-      "assigned_visible_cmap_count": 40
+      "woff2_sha256": "acc1cb8896a0818961e9dfe5c558133abf03162ccb236de3d45118660840cfbd",
+      "woff2_bytes": 4088,
+      "cmap_code_points": 41,
+      "assigned_visible_cmap_count": 41
     },
     {
       "id": "outline-notosansoldsogdian",
@@ -6552,10 +6559,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 40 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "074530621a64c82147c17284387bac8d240a3f898e075c797fecf5c58b63cc27",
-      "woff2_bytes": 6620,
-      "cmap_code_points": 40,
-      "assigned_visible_cmap_count": 40
+      "woff2_sha256": "526652134a310fce2c927ace144ec9813e424184e9c604c3fe0b55700a1b42fc",
+      "woff2_bytes": 6780,
+      "cmap_code_points": 42,
+      "assigned_visible_cmap_count": 42
     },
     {
       "id": "outline-notosansosmanya",
@@ -6579,10 +6586,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 40 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4fd411474a4051a5d6f0a130cb0158674da435ef79ed36c09b7ed2592fc3c35f",
-      "woff2_bytes": 4248,
-      "cmap_code_points": 40,
-      "assigned_visible_cmap_count": 40
+      "woff2_sha256": "49005dff96178dc18e0f337b7dd6888d2576877c84d1e23d1819b4447faf731f",
+      "woff2_bytes": 4320,
+      "cmap_code_points": 41,
+      "assigned_visible_cmap_count": 41
     },
     {
       "id": "outline-notosansmahajani",
@@ -6606,10 +6613,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 39 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "978480ab3c951ae05d9d078887e7370f5169f337e00a4fb111346a99795401b1",
-      "woff2_bytes": 5140,
-      "cmap_code_points": 39,
-      "assigned_visible_cmap_count": 39
+      "woff2_sha256": "f6a9542df3b379061660f881487395b9534a753be98646098aab440d09c96e7e",
+      "woff2_bytes": 5340,
+      "cmap_code_points": 41,
+      "assigned_visible_cmap_count": 41
     },
     {
       "id": "outline-notosansolditalic",
@@ -6633,10 +6640,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 39 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ed93bcafe162f972a8603622968307d1e54b480e511f1d43e2a9330d02e5bf6c",
-      "woff2_bytes": 3544,
-      "cmap_code_points": 39,
-      "assigned_visible_cmap_count": 39
+      "woff2_sha256": "85a59eec66e55a88085c94cca8d4a4ca9f81226f747198a2b7eb1446037b7fd5",
+      "woff2_bytes": 3616,
+      "cmap_code_points": 40,
+      "assigned_visible_cmap_count": 40
     },
     {
       "id": "outline-notosansmultani",
@@ -6660,10 +6667,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 38 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "602211a0c83ff0614697bb2fc3dfa6774c6321831ba075381e3cb00fd9655d45",
-      "woff2_bytes": 4512,
-      "cmap_code_points": 38,
-      "assigned_visible_cmap_count": 38
+      "woff2_sha256": "d3813c56a8900370a6b7f1211386de194cd75b0e844f91c311c54179cab60b74",
+      "woff2_bytes": 4588,
+      "cmap_code_points": 39,
+      "assigned_visible_cmap_count": 39
     },
     {
       "id": "outline-notosansrejang",
@@ -6687,10 +6694,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 37 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "c75684584ac5abced2adcd817c2d0cb6c7e09de03f9d8c2b9bbb31e96af9e2be",
-      "woff2_bytes": 3092,
-      "cmap_code_points": 38,
-      "assigned_visible_cmap_count": 37
+      "woff2_sha256": "4759b28e89545745b760c9bc3e022fb4b9eec223da7112b1838b51dce7a06bcb",
+      "woff2_bytes": 3296,
+      "cmap_code_points": 40,
+      "assigned_visible_cmap_count": 39
     },
     {
       "id": "outline-notosansbassavah",
@@ -6714,10 +6721,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 36 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "6b4a0e4c65439478eb0de820579b5b32d60abd043b53e2e1e2cefe5f3d2c27c4",
-      "woff2_bytes": 3612,
-      "cmap_code_points": 36,
-      "assigned_visible_cmap_count": 36
+      "woff2_sha256": "2fd9fb80630eefc2d1c517a1a0fd76554cdd549970cb6977f2e6cfdb41521e0e",
+      "woff2_bytes": 3756,
+      "cmap_code_points": 38,
+      "assigned_visible_cmap_count": 38
     },
     {
       "id": "outline-notosanssorasompeng",
@@ -6741,10 +6748,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 35 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ae294ed10c0cea9d32da7d3cfef0784bddfcf9d92e428ff44779b1ff82de98eb",
-      "woff2_bytes": 3860,
-      "cmap_code_points": 35,
-      "assigned_visible_cmap_count": 35
+      "woff2_sha256": "ffa344a23077a4fc5752ad6b7fda162816fcf619f7427e7234c3b823ac346162",
+      "woff2_bytes": 3888,
+      "cmap_code_points": 36,
+      "assigned_visible_cmap_count": 36
     },
     {
       "id": "outline-notosanstaile",
@@ -6768,10 +6775,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 35 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "33ad1ef66b89c0c52595d76306e4f2b71f6dab8b3dddbe95d0a0de4750a2d851",
-      "woff2_bytes": 3868,
-      "cmap_code_points": 36,
-      "assigned_visible_cmap_count": 35
+      "woff2_sha256": "29eb70005279f9a37c212fb605adb93a4346855e97db1d8f349d9b48608044c6",
+      "woff2_bytes": 4012,
+      "cmap_code_points": 38,
+      "assigned_visible_cmap_count": 37
     },
     {
       "id": "outline-notosansoldnortharabian",
@@ -6795,10 +6802,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 32 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "31a56f0f5c70e3dd35c1f0711de70feb076ab4228c9435703dd83fec5053e875",
-      "woff2_bytes": 3336,
-      "cmap_code_points": 32,
-      "assigned_visible_cmap_count": 32
+      "woff2_sha256": "c7333179516a84855b166588256b944548c89a14327401524a11249095596bfd",
+      "woff2_bytes": 3352,
+      "cmap_code_points": 33,
+      "assigned_visible_cmap_count": 33
     },
     {
       "id": "outline-notosansoldsoutharabian",
@@ -6822,10 +6829,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 32 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "7ac4c44a6b082709edd34327bb0b220c8c97a582e7b63c523b042d34f67204a6",
-      "woff2_bytes": 2196,
-      "cmap_code_points": 32,
-      "assigned_visible_cmap_count": 32
+      "woff2_sha256": "8bbea6ef8772b78dd83932fc117aa24c55b1f4dd676a67547414515ebdc77fdd",
+      "woff2_bytes": 2180,
+      "cmap_code_points": 33,
+      "assigned_visible_cmap_count": 33
     },
     {
       "id": "outline-notosanspalmyrene",
@@ -6849,10 +6856,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 32 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "609a6b2a4060d4bbed659385d33ef8e72c8d95b3281f6088988cf0417a366650",
-      "woff2_bytes": 5284,
-      "cmap_code_points": 32,
-      "assigned_visible_cmap_count": 32
+      "woff2_sha256": "9229b49450b92297705713b4ccb2d4ddff9c06cc7b4303a65ecfe38229482bb3",
+      "woff2_bytes": 5312,
+      "cmap_code_points": 33,
+      "assigned_visible_cmap_count": 33
     },
     {
       "id": "outline-notosansimperialaramaic",
@@ -6876,10 +6883,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 31 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "78caba45613fe7730107980f7d08e0a6986dec24cafbb3454641af1ac8dcd34c",
-      "woff2_bytes": 3308,
-      "cmap_code_points": 31,
-      "assigned_visible_cmap_count": 31
+      "woff2_sha256": "8a0df7e0d1f6da1495be7bf224bf5e8874a711659b105585848d754484b5e96d",
+      "woff2_bytes": 3384,
+      "cmap_code_points": 32,
+      "assigned_visible_cmap_count": 32
     },
     {
       "id": "outline-notosansugaritic",
@@ -6903,10 +6910,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 31 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "060b917ca6b816844f21928184434f4ddaccba792aa4f3444e176cb05647d4b4",
-      "woff2_bytes": 2684,
-      "cmap_code_points": 31,
-      "assigned_visible_cmap_count": 31
+      "woff2_sha256": "5e96070db7219dd2b0cce1f1fb2f8768c4c394fa16dc4af239bca52577fcacde",
+      "woff2_bytes": 2736,
+      "cmap_code_points": 32,
+      "assigned_visible_cmap_count": 32
     },
     {
       "id": "outline-notoseriftoto",
@@ -6930,10 +6937,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 31 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "4e9312e6b413d437efed3954c1537bed27453a501f16323d4403e8122dee51aa",
-      "woff2_bytes": 2952,
-      "cmap_code_points": 31,
-      "assigned_visible_cmap_count": 31
+      "woff2_sha256": "7c90e5541fecd2214311eaa5db2f96a00321ff8328c4ac87087024dc67c7f7f1",
+      "woff2_bytes": 3124,
+      "cmap_code_points": 33,
+      "assigned_visible_cmap_count": 33
     },
     {
       "id": "outline-notosansbuginese",
@@ -6957,10 +6964,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 30 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "1ebd35765c86a9c0862add7f5f582fca68661666d436faacc8ce7ecd27a9fe07",
-      "woff2_bytes": 3036,
-      "cmap_code_points": 31,
-      "assigned_visible_cmap_count": 30
+      "woff2_sha256": "c5926884ce19b747dbdbf5c21757892e2e0231d51b330fa265fa35d03699641e",
+      "woff2_bytes": 3200,
+      "cmap_code_points": 33,
+      "assigned_visible_cmap_count": 32
     },
     {
       "id": "outline-notosansinscriptionalparthian",
@@ -6984,10 +6991,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 30 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "3e20ed4bfbcbfb098b9fb1f53db060d131f0730705d6de3f331d48362b46e0ed",
-      "woff2_bytes": 3708,
-      "cmap_code_points": 30,
-      "assigned_visible_cmap_count": 30
+      "woff2_sha256": "84112698ea2e98b90c9d02074b81551b785dfbc989056bad3c8223e16da7459f",
+      "woff2_bytes": 3792,
+      "cmap_code_points": 31,
+      "assigned_visible_cmap_count": 31
     },
     {
       "id": "outline-notosanslycian",
@@ -7011,10 +7018,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 29 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "0bba39e0aa11a5c4d53be0b1572d7a79028adca91f95aba6ee23f07557dd5da5",
-      "woff2_bytes": 2000,
-      "cmap_code_points": 29,
-      "assigned_visible_cmap_count": 29
+      "woff2_sha256": "715110f2b25fe7d6c554cee8fde5f47a995be4692ae809446e317d5e8961ac72",
+      "woff2_bytes": 2044,
+      "cmap_code_points": 30,
+      "assigned_visible_cmap_count": 30
     },
     {
       "id": "outline-notosansmandaic",
@@ -7038,10 +7045,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 29 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "d9535b19ca5a37d674b828f5bc880a00cd0c3dca2d388d62ebe58d805e03a352",
-      "woff2_bytes": 6504,
-      "cmap_code_points": 30,
-      "assigned_visible_cmap_count": 29
+      "woff2_sha256": "9edfd94fba0381318fbaabeb29ccac670411a0d36b90b1b2aa07dff80c768afa",
+      "woff2_bytes": 6660,
+      "cmap_code_points": 32,
+      "assigned_visible_cmap_count": 31
     },
     {
       "id": "outline-notosansogham",
@@ -7065,10 +7072,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 29 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "5987e450c66a07f61a6cb354aca6a359cf28f72b175bc63e5d02b2cd5f9f4269",
-      "woff2_bytes": 1420,
-      "cmap_code_points": 30,
-      "assigned_visible_cmap_count": 29
+      "woff2_sha256": "63f03917c985d454117b8d2295289e20f6e2897c3cb1a9e0bae3557977e8c304",
+      "woff2_bytes": 1412,
+      "cmap_code_points": 31,
+      "assigned_visible_cmap_count": 30
     },
     {
       "id": "outline-notosansphoenician",
@@ -7092,10 +7099,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 29 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "112e96b3ea949c4703b6044ee6f113afc931fcbead0a9e43c8a4418cbe0d3a97",
-      "woff2_bytes": 3280,
-      "cmap_code_points": 29,
-      "assigned_visible_cmap_count": 29
+      "woff2_sha256": "50018e028fb9c34650a49944952d7256d83ecd6c57aefc3fc99907da533130c3",
+      "woff2_bytes": 3316,
+      "cmap_code_points": 30,
+      "assigned_visible_cmap_count": 30
     },
     {
       "id": "outline-notosanspsalterpahlavi",
@@ -7119,10 +7126,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 29 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2caf7977f9ec0dce8d54683735cebc12f99f19aa5b48e7f72a6d0b133e4bc95c",
-      "woff2_bytes": 6784,
-      "cmap_code_points": 29,
-      "assigned_visible_cmap_count": 29
+      "woff2_sha256": "e839bdad5b367ad60946c09e3d41f0675e68851cc4eb29e07ad28a7061ef827b",
+      "woff2_bytes": 6932,
+      "cmap_code_points": 31,
+      "assigned_visible_cmap_count": 31
     },
     {
       "id": "outline-notosanschorasmian",
@@ -7146,10 +7153,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 28 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "2a1e5b4a312ec7968c1dcb190de432ff6b596415a8931456ad28d5594f4b4b61",
-      "woff2_bytes": 6264,
-      "cmap_code_points": 28,
-      "assigned_visible_cmap_count": 28
+      "woff2_sha256": "97fc7c00df599a0258d07c34190c6078e132596760fde69ee5066858b30a6536",
+      "woff2_bytes": 6272,
+      "cmap_code_points": 29,
+      "assigned_visible_cmap_count": 29
     },
     {
       "id": "outline-notosansgothic",
@@ -7173,10 +7180,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 27 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "651ef4d12582412fbb14612bafd773864d3336bb8b78acca0dc6a507383668c4",
-      "woff2_bytes": 2260,
-      "cmap_code_points": 27,
-      "assigned_visible_cmap_count": 27
+      "woff2_sha256": "5dddc254ff75fdece80e9fbc87cd4a2717ce87af95fd4a173b941f07ea2f6866",
+      "woff2_bytes": 2376,
+      "cmap_code_points": 29,
+      "assigned_visible_cmap_count": 29
     },
     {
       "id": "outline-notosansinscriptionalpahlavi",
@@ -7200,10 +7207,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 27 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "8f418b79b2895876f6817198d20e6dce042256eb29e0399c2a45bac000511fd3",
-      "woff2_bytes": 2804,
-      "cmap_code_points": 27,
-      "assigned_visible_cmap_count": 27
+      "woff2_sha256": "4314005810a170a785b725ef3bf374e319b189ddb9c9017883257cccf0c665a4",
+      "woff2_bytes": 2844,
+      "cmap_code_points": 28,
+      "assigned_visible_cmap_count": 28
     },
     {
       "id": "outline-notosanslydian",
@@ -7227,10 +7234,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 27 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "ce54cd93f1b53567aca28618c1648fa1767e7154fbad2d71bb8fa94fae688ca9",
-      "woff2_bytes": 2060,
-      "cmap_code_points": 27,
-      "assigned_visible_cmap_count": 27
+      "woff2_sha256": "2fdf50e3c8b593154e99c0d57ca7570aa00e0b50f82b463af579cd355179c88d",
+      "woff2_bytes": 2052,
+      "cmap_code_points": 28,
+      "assigned_visible_cmap_count": 28
     },
     {
       "id": "outline-notosanshatran",
@@ -7254,10 +7261,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 26 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a37512285b414a808d28e86f132fb674a8bd3ee24a6439586a7356aca80ab25a",
-      "woff2_bytes": 2032,
-      "cmap_code_points": 26,
-      "assigned_visible_cmap_count": 26
+      "woff2_sha256": "27707562a521aa4c91c5c72170ae67a94bb3f19c586229012f1bb3ca39717775",
+      "woff2_bytes": 2024,
+      "cmap_code_points": 27,
+      "assigned_visible_cmap_count": 27
     },
     {
       "id": "outline-notoserifolduyghur",
@@ -7281,10 +7288,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 26 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "576d7a4d2564277c00a24a5276d762de42ac7412340993da8f9e6ac003428cbf",
-      "woff2_bytes": 7708,
-      "cmap_code_points": 26,
-      "assigned_visible_cmap_count": 26
+      "woff2_sha256": "d2ed375ffa4d2d108425a7250cb0961d28876d0bf2e1c05d25b530f09d91ab80",
+      "woff2_bytes": 7916,
+      "cmap_code_points": 28,
+      "assigned_visible_cmap_count": 28
     },
     {
       "id": "outline-notosanstagalog",
@@ -7312,10 +7319,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 25 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "59581564064ce0bd9b3af6e43849f201a1a5cbd2fb52270b0610e3580523ddd5",
-      "woff2_bytes": 3392,
-      "cmap_code_points": 26,
-      "assigned_visible_cmap_count": 25
+      "woff2_sha256": "1ea518d18d881970ab0ee73dbe039a76302444a0216097504ccd244ccd3c8c90",
+      "woff2_bytes": 3532,
+      "cmap_code_points": 28,
+      "assigned_visible_cmap_count": 27
     },
     {
       "id": "outline-notoserifmakasar",
@@ -7339,10 +7346,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 25 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "312fc265e2df2874b7b5a48c5e36cd764fd597cc4ce32cacc673ba7a7c762c4e",
-      "woff2_bytes": 3164,
-      "cmap_code_points": 25,
-      "assigned_visible_cmap_count": 25
+      "woff2_sha256": "7f578f50f160752459e8bbc00aaf17bed6e2dda1bd98430679a3cfd22aa8b429",
+      "woff2_bytes": 3348,
+      "cmap_code_points": 27,
+      "assigned_visible_cmap_count": 27
     },
     {
       "id": "outline-notosanselymaic",
@@ -7366,10 +7373,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 23 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "71ff8cd0d8cbb4d28f78dec913475b54cf055c8f59a5dba8a540ae8bb539d6cf",
-      "woff2_bytes": 4552,
-      "cmap_code_points": 23,
-      "assigned_visible_cmap_count": 23
+      "woff2_sha256": "566856254708e4b019f9b855ba8fa410ea69c98dada09fe22906fccd31a280ad",
+      "woff2_bytes": 4560,
+      "cmap_code_points": 24,
+      "assigned_visible_cmap_count": 24
     },
     {
       "id": "outline-notosanshanunoo",
@@ -7393,10 +7400,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 21 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "40a2510b057b72e1ce69b14aeaa7c524144ae6fb07524d13b41cf285b78270ba",
-      "woff2_bytes": 3384,
-      "cmap_code_points": 24,
-      "assigned_visible_cmap_count": 23
+      "woff2_sha256": "70b718f1066cce0fed283b5d3fd94c0eb93617d274fb59b111a71c3dac0dae03",
+      "woff2_bytes": 3540,
+      "cmap_code_points": 26,
+      "assigned_visible_cmap_count": 25
     },
     {
       "id": "outline-notosansbuhid",
@@ -7420,10 +7427,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 20 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "11f31bc6c938890ff015f0e91c378925798749b64444515be4489c2b53f780ff",
-      "woff2_bytes": 1896,
-      "cmap_code_points": 21,
-      "assigned_visible_cmap_count": 20
+      "woff2_sha256": "781c00779a137c49663b5becb3cbdeb07c17a783e8909426facd905c8acf8f26",
+      "woff2_bytes": 2056,
+      "cmap_code_points": 23,
+      "assigned_visible_cmap_count": 22
     },
     {
       "id": "outline-notosanstagbanwa",
@@ -7447,10 +7454,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 18 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "fa3ff83b4fa33768654dae70c12398dab7ed11ecc1663c5af07e8361e743e9bd",
-      "woff2_bytes": 2820,
-      "cmap_code_points": 19,
-      "assigned_visible_cmap_count": 18
+      "woff2_sha256": "039d6f05ce6692207dcab85eb89da28bf1fef7f3241599fac5bebcfdfcc2e1ef",
+      "woff2_bytes": 2960,
+      "cmap_code_points": 21,
+      "assigned_visible_cmap_count": 20
     },
     {
       "id": "outline-notosans",
@@ -7474,10 +7481,10 @@
       "role": "coverage",
       "design": "outline",
       "note": "D-23 outline pack font: 7 characters otherwise drawn by a bitmap font in the Complete editions.",
-      "woff2_sha256": "a7a89b4dace0353190de718dbd388c21d8a59cfe57a88908e0981862c72e5ecf",
-      "woff2_bytes": 1320,
-      "cmap_code_points": 8,
-      "assigned_visible_cmap_count": 7
+      "woff2_sha256": "7e5104935e6043038015e195d89bb367b110f7d18ce8c7ba7f73899534c04cf0",
+      "woff2_bytes": 1456,
+      "cmap_code_points": 10,
+      "assigned_visible_cmap_count": 9
     }
   ],
   "candidates": [
