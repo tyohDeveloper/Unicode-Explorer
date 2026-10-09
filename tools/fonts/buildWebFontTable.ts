@@ -127,6 +127,21 @@ async function extraFonts(visible: Set<number>): Promise<{ fonts: WebFont[]; ran
   return { fonts, ranges };
 }
 
+export interface SelfHost { family: string; key: string; file: string; download: string; format: string; version: string; bytes: number; sha256: string; license: string; license_url: string }
+
+/** Q-14 option B: GNU Unifont 18 has no CORS-enabled public host, so the dialog offers a self-host template; ranges come from the vendored conversions. */
+function selfHostFonts(visible: Set<number>): { entries: SelfHost[]; ranges: Record<string, number[][]> } {
+  const manifest = readFontManifest(repoRoot);
+  const entries: SelfHost[] = [];
+  const ranges: Record<string, number[][]> = {};
+  for (const font of ["unifont", "unifont_upper"].map((id) => manifest.fonts.find((f) => f.id === id)!)) {
+    const key = `self-host:${font.id}`;
+    entries.push({ family: "Unifont", key, file: font.source.url.split("/").pop()!, download: font.source.url, format: "opentype", version: font.version, bytes: font.source.bytes ?? 0, sha256: font.source.sha256 ?? "", license: "OFL-1.1 OR GPL-2.0-or-later WITH Font-exception-2.0", license_url: "https://unifoundry.com/LICENSE.txt" });
+    ranges[key] = compactRanges(readCmap(new Uint8Array(readFileSync(resolve(repoRoot, font.vendored!)))).filter((cp) => visible.has(cp)));
+  }
+  return { entries, ranges };
+}
+
 function order(kitDir: string, variable: string, names: Map<string, string>, extra: string[]): string[] {
   const css = readFileSync(resolve(kitDir, "unicode-fonts.css"), "utf-8");
   const body = new RegExp(`--${variable}:([^;]+);`).exec(css)?.[1] ?? "";
@@ -140,14 +155,16 @@ export async function buildWebFontTable(kitDir: string): Promise<void> {
   const kit = await kitFonts(kitDir, visible);
   const local = blockFonts(visible);
   const more = await extraFonts(visible);
+  const self = selfHostFonts(visible);
   const extra = [...local.fonts, ...more.fonts].map((f) => f.family);
   const { unicode } = JSON.parse(readFileSync(resolve(repoRoot, "data/version.json"), "utf-8")) as { unicode: string };
-  const ranges = { ...kit.ranges, ...local.ranges, ...more.ranges };
+  const ranges = { ...kit.ranges, ...local.ranges, ...more.ranges, ...self.ranges };
   const table = {
     _doc: "Web fonts for the 'CSS for this selection' dialog (PLAN Q-13). Pinned public URLs (Unicode Font Kit remote profile, CORS-verified; block fonts from fonts/manifest.json). 'ranges' is deflate-raw+base64 JSON: family → visible assigned code points of the regular face as [start,end]|[cp] runs. Written by tools/fonts/buildWebFontTable.ts.",
     generated: new Date().toISOString().slice(0, 10), unicode,
     order: { serif: order(kitDir, "unicode-serif", kit.names, extra), sans: order(kitDir, "unicode-sans", kit.names, extra) },
     fonts: [...kit.fonts, ...local.fonts, ...more.fonts],
+    self_host: self.entries,
     ranges: Buffer.from(deflateSync(strToU8(JSON.stringify(ranges)), { level: 9 })).toString("base64"),
   };
   writeFileSync(resolve(repoRoot, "data/web-fonts.json"), JSON.stringify(table, null, 1) + "\n");

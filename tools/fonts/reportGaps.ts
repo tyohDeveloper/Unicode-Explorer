@@ -53,7 +53,7 @@ function webCmap(): Set<number> {
   const { ranges } = json<{ ranges: string }>("data/web-fonts.json");
   const table = JSON.parse(strFromU8(inflateSync(Buffer.from(ranges, "base64")))) as Record<string, number[][]>;
   const out = new Set<number>();
-  for (const runs of Object.values(table)) for (const r of runs) for (let cp = r[0]; cp <= (r[1] ?? r[0]); cp++) out.add(cp);
+  for (const [key, runs] of Object.entries(table)) if (!key.startsWith("self-host:")) for (const r of runs) for (let cp = r[0]; cp <= (r[1] ?? r[0]); cp++) out.add(cp);
   return out;
 }
 
