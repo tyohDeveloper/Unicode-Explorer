@@ -476,6 +476,55 @@ ids; the CSS-panel status line; re-scan on switch; About status.
 **Size and version.** About 300–500 lines with tests. App MAJORFIX bump (a new user-facing
 setting); no data change unless Q-18 option A adds a published-pack URL to the manifest.
 
+### Phase 10: Rendering and style correctness
+
+Checkpointed 2026-10-09 before the build. Runs before Phase 9. Every audit so far measured
+whether a character draws; this phase measures whether it draws **correctly**: marks attached to
+their base, complex-script shaping, emoji sequences, Hangul composition, and real versus
+synthesized bold and italic. The project instructions keep these separate from code-point
+coverage.
+
+**Test environment.** A "minimal device" Chromium with one Latin font (fontconfig pointed at a
+directory holding Liberation Sans) is the main fixture, because installed fonts hide pack
+behaviour. The sandbox's full font set stays the "rich device" comparison.
+
+**Found while planning (R-0).** The app shows each combining mark on U+25CC DOTTED CIRCLE.
+Browsers choose one font for the whole cluster, so the circle and the mark must come from the
+same font. 158 of the 159 outline fonts and the Charis Latin subset were cut down to their own
+blocks and lost U+25CC. On the minimal device:
+
+- Chakma U+11127 (Complete) renders as two empty boxes.
+- Devanagari U+0941 and Latin U+0301 render with bitmap Unifont, although outline fonts have
+  them.
+
+The probe tests the mark alone, so it reports them as verified. Evidence:
+`docs/audit/rendering/evidence/dotted-circle-before.png`.
+
+Work items, in order:
+
+- **R-0, keep U+25CC (and U+00A0) in every subset font** (outline packs, Charis Latin, block
+  packs). HarfBuzz also uses U+25CC for broken clusters. Probe cells that show a mark as
+  `◌+mark`, so detection matches what is drawn.
+- **R-1, shaping parity for subset fonts:** shape a per-script corpus with the full and the
+  subset font (HarfBuzz) and compare glyph IDs, clusters and advances. A `verify:shaping`
+  check runs in CI over every subset font.
+- **R-2, marks census:** for every combining mark, measure on both devices whether
+  `◌+mark` draws from one font with zero added advance. Report by block.
+- **R-3, script samples:** one short real-text sample per script (Arabic joining, Indic
+  conjuncts, Thai, Myanmar, Khmer, Tibetan, Mongolian, Hebrew points). Check the sample is
+  drawn by one font in each edition, and keep a rendered sheet as evidence.
+- **R-4, emoji sequences:** ZWJ sequences, flags, keycaps, skin tones and VS15/VS16 in plain
+  mode and the compose pad. Check each shows as one glyph where an emoji font exists, and that
+  the presentation control (GLY-06) applies.
+- **R-5, Hangul:** precomposed syllables against conjoining jamo L+V+T sequences, per edition.
+- **R-6, style faces:** per style pack, count characters with genuine Bold, Italic and Bold
+  Italic faces against those left to synthesis or upright (D-15).
+
+Deliverables: `docs/audit/rendering/report.md` with findings `RND-*`, fixes for anything
+broken, and the `verify:shaping` check. Acceptance: on the minimal device, U+11127, U+0941 and
+U+0301 draw from one outline font with the circle; `verify:shaping` passes in CI; every
+`RND-*` finding is closed, accepted or tracked.
+
 ## Out of scope
 
 - Hieroglyph-specific features (format controls, quadrat layout). See D-4.
