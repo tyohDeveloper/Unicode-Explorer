@@ -1,53 +1,27 @@
 {
  "generated": "2026-10-09",
  "unicode": "18.0.0",
- "app": "2.2.3.0",
- "data": "2.0.3.0",
+ "app": "2.2.4.0",
+ "data": "2.0.4.0",
  "editions": {
   "standard": {
-   "covered": 78224,
+   "covered": 78275,
    "of": 172382
   },
   "complete": {
-   "covered": 154514,
+   "covered": 154565,
    "of": 172382
   },
   "complete-hieroglyphs": {
-   "covered": 159580,
+   "covered": 159631,
    "of": 172382
   },
   "web": {
-   "covered": 157704,
+   "covered": 158883,
    "of": 172382
   }
  },
  "blocks": [
-  {
-   "block": "Armenian",
-   "start": "0530",
-   "visible": 94,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 3
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Hebrew",
-   "start": "0590",
-   "visible": 90,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
   {
    "block": "Oriya",
    "start": "0B00",
@@ -57,97 +31,6 @@
     "complete": 0,
     "complete-hieroglyphs": 0,
     "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Combining Diacritical Marks Extended",
-   "start": "1AB0",
-   "visible": 65,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 7
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Superscripts and Subscripts",
-   "start": "2070",
-   "visible": 46,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 4
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Currency Symbols",
-   "start": "20A0",
-   "visible": 37,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 3
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Supplemental Punctuation",
-   "start": "2E00",
-   "visible": 98,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 4
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Latin Extended-D",
-   "start": "A720",
-   "visible": 206,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Latin Extended-E",
-   "start": "AB30",
-   "visible": 62,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Latin Extended-F",
-   "start": "10780",
-   "visible": 62,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 5
    },
    "ranges": [],
    "added_in": {}
@@ -600,32 +483,6 @@
    "added_in": {}
   },
   {
-   "block": "Symbols for Legacy Computing Supplement",
-   "start": "1CC00",
-   "visible": 695,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 695
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Miscellaneous Symbols Supplement",
-   "start": "1CEC0",
-   "visible": 53,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 53
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Musical Symbols",
    "start": "1D100",
    "visible": 248,
@@ -652,19 +509,6 @@
    "added_in": {}
   },
   {
-   "block": "Kaktovik Numerals",
-   "start": "1D2C0",
-   "visible": 20,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 20
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Mathematical Alphanumeric Symbols",
    "start": "1D400",
    "visible": 997,
@@ -673,50 +517,6 @@
     "complete": 0,
     "complete-hieroglyphs": 0,
     "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Miscellaneous Symbols and Arrows Extended",
-   "start": "1DB00",
-   "visible": 29,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 29
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Latin Extended-G",
-   "start": "1DF00",
-   "visible": 188,
-   "missing": {
-    "standard": 51,
-    "complete": 51,
-    "complete-hieroglyphs": 51,
-    "web": 151
-   },
-   "ranges": [
-    "1DFCD..1DFFF"
-   ],
-   "added_in": {
-    "18.0": 51
-   },
-   "issue": 14
-  },
-  {
-   "block": "Cyrillic Extended-D",
-   "start": "1E030",
-   "visible": 63,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
    },
    "ranges": [],
    "added_in": {}
@@ -748,19 +548,6 @@
    "added_in": {}
   },
   {
-   "block": "Enclosed Alphanumeric Supplement",
-   "start": "1F100",
-   "visible": 201,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 8
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Transport and Map Symbols",
    "start": "1F680",
    "visible": 120,
@@ -768,20 +555,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 6
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Alchemical Symbols",
-   "start": "1F700",
-   "visible": 128,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 12
+    "web": 2
    },
    "ranges": [],
    "added_in": {}
@@ -794,46 +568,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 19
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Supplemental Arrows-C",
-   "start": "1F800",
-   "visible": 171,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 19
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Supplemental Symbols and Pictographs",
-   "start": "1F900",
-   "visible": 256,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 43
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Chess Symbols",
-   "start": "1FA00",
-   "visible": 102,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 4
+    "web": 1
    },
    "ranges": [],
    "added_in": {}
@@ -846,20 +581,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 71
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Symbols for Legacy Computing",
-   "start": "1FB00",
-   "visible": 250,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 38
+    "web": 20
    },
    "ranges": [],
    "added_in": {}

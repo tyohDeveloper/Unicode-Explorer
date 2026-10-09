@@ -1,13 +1,13 @@
 # Missing glyphs
 
-Generated 2026-10-09 by `npm run report:gaps` for app 2.2.3.0, data 2.0.3.0, Unicode 18.0.0. Counts are visible assigned characters that no font in the edition maps (character-map measurement). Machine-readable: [missing-glyphs.json](missing-glyphs.json). Re-run after `npm run fetch:fonts` to see what new font releases close; the command prints the change against this snapshot.
+Generated 2026-10-09 by `npm run report:gaps` for app 2.2.4.0, data 2.0.4.0, Unicode 18.0.0. Counts are visible assigned characters that no font in the edition maps (character-map measurement). Machine-readable: [missing-glyphs.json](missing-glyphs.json). Re-run after `npm run fetch:fonts` to see what new font releases close; the command prints the change against this snapshot.
 
 | Edition | With a font | Missing | Coverage |
 |---|---:|---:|---:|
-| standard | 78,224 | 94,158 | 45.4% |
-| complete | 154,514 | 17,868 | 89.6% |
-| complete-hieroglyphs | 159,580 | 12,802 | 92.6% |
-| Public web fonts (CSS dialog) | 157,704 | 14,678 | 91.5% |
+| standard | 78,275 | 94,107 | 45.4% |
+| complete | 154,565 | 17,817 | 89.7% |
+| complete-hieroglyphs | 159,631 | 12,751 | 92.6% |
+| Public web fonts (CSS dialog) | 158,883 | 13,499 | 92.2% |
 
 ## Missing from every edition
 
@@ -21,7 +21,6 @@ No shipped or packed font maps these. Each has a tracking issue.
 | Tangut Components Supplement (U+18D80) | 115 | 115 | 17.0: 115 | 18D80..18DF2 | [#13](https://github.com/tyohDeveloper/Unicode-Explorer/issues/13) |
 | Jurchen (U+18E00) | 914 | 914 | 18.0: 914 | 18E00..19191 | [#11](https://github.com/tyohDeveloper/Unicode-Explorer/issues/11) |
 | Jurchen Radicals (U+191A0) | 51 | 51 | 18.0: 51 | 191A0..191D2 | [#11](https://github.com/tyohDeveloper/Unicode-Explorer/issues/11) |
-| Latin Extended-G (U+1DF00) | 188 | 51 | 18.0: 51 | 1DFCD..1DFFF | [#14](https://github.com/tyohDeveloper/Unicode-Explorer/issues/14) |
 | Seal (U+3D000) | 11,328 | 11,328 | 18.0: 11,328 | 3D000..3FC3F | [#10](https://github.com/tyohDeveloper/Unicode-Explorer/issues/10) |
 
 ## Covered only by the Complete packs
@@ -53,29 +52,29 @@ What the CSS dialog cannot offer another programmer.
 |---|---:|
 | Seal | 11,328 of 11,328 |
 | Jurchen | 914 of 914 |
-| Symbols for Legacy Computing Supplement | 695 of 695 |
 | Archaic Cuneiform Numerals | 311 of 311 |
-| Latin Extended-G | 151 of 188 |
 | Tangut Components Supplement | 115 of 115 |
 | Tulu-Tigalari | 80 of 80 |
-| Symbols and Pictographs Extended-A | 71 of 128 |
 | Garay | 69 of 69 |
 | Gurung Khema | 58 of 58 |
 | Kirat Rai | 58 of 58 |
 | Arabic Extended-C | 57 of 60 |
 | Tai Yo | 55 of 55 |
 | Tolong Siki | 54 of 54 |
-| Miscellaneous Symbols Supplement | 53 of 53 |
 | Jurchen Radicals | 51 of 51 |
 | Beria Erfe | 50 of 50 |
 | Musical Symbols Supplement | 50 of 50 |
 | Ol Onal | 44 of 44 |
-| Supplemental Symbols and Pictographs | 43 of 256 |
-| Symbols for Legacy Computing | 38 of 250 |
-| Miscellaneous Symbols and Arrows Extended | 29 of 29 |
 | Sidetic | 26 of 26 |
 | Tangut Supplement | 24 of 33 |
 | Dives Akuru | 23 of 72 |
+| Musical Symbols | 23 of 248 |
+| Myanmar Extended-C | 20 of 20 |
+| Symbols and Pictographs Extended-A | 20 of 128 |
+| Cuneiform Numbers and Punctuation | 12 of 128 |
+| Devanagari Extended-A | 11 of 11 |
+| Sharada Supplement | 8 of 8 |
+| Tangut | 8 of 6,144 |
 
 ## Candidate fonts not shipped
 
