@@ -1,0 +1,1458 @@
+{
+ "generated": "2026-10-09",
+ "unicode": "18.0.0",
+ "app": "2.2.2.0",
+ "data": "2.0.2.0",
+ "editions": {
+  "standard": {
+   "covered": 78224,
+   "of": 172382
+  },
+  "complete": {
+   "covered": 154514,
+   "of": 172382
+  },
+  "complete-hieroglyphs": {
+   "covered": 159580,
+   "of": 172382
+  },
+  "web": {
+   "covered": 154892,
+   "of": 172382
+  }
+ },
+ "blocks": [
+  {
+   "block": "Armenian",
+   "start": "0530",
+   "visible": 94,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 3
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Hebrew",
+   "start": "0590",
+   "visible": 90,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Oriya",
+   "start": "0B00",
+   "visible": 93,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Combining Diacritical Marks Extended",
+   "start": "1AB0",
+   "visible": 65,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 7
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Superscripts and Subscripts",
+   "start": "2070",
+   "visible": 46,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 4
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Currency Symbols",
+   "start": "20A0",
+   "visible": 37,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 3
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Supplemental Punctuation",
+   "start": "2E00",
+   "visible": 98,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 4
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Latin Extended-D",
+   "start": "A720",
+   "visible": 206,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Latin Extended-E",
+   "start": "AB30",
+   "visible": 62,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Vithkuqi",
+   "start": "10570",
+   "visible": 70,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 70
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Todhri",
+   "start": "105C0",
+   "visible": 52,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 52
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Latin Extended-F",
+   "start": "10780",
+   "visible": 62,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 5
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Sidetic",
+   "start": "10940",
+   "visible": 26,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 26
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Garay",
+   "start": "10D40",
+   "visible": 69,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 69
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Yezidi",
+   "start": "10E80",
+   "visible": 47,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 47
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Arabic Extended-C",
+   "start": "10EC0",
+   "visible": 60,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 60
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Old Uyghur",
+   "start": "10F70",
+   "visible": 26,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 26
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Chorasmian",
+   "start": "10FB0",
+   "visible": 28,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 28
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Elymaic",
+   "start": "10FE0",
+   "visible": 23,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 23
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Brahmi",
+   "start": "11000",
+   "visible": 115,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 6
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Kaithi",
+   "start": "11080",
+   "visible": 68,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Chakma",
+   "start": "11100",
+   "visible": 71,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Sharada",
+   "start": "11180",
+   "visible": 96,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Khojki",
+   "start": "11200",
+   "visible": 65,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 3
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tulu-Tigalari",
+   "start": "11380",
+   "visible": 80,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 80
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Newa",
+   "start": "11400",
+   "visible": 97,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 4
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Takri",
+   "start": "11680",
+   "visible": 68,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Myanmar Extended-C",
+   "start": "116D0",
+   "visible": 20,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 20
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Ahom",
+   "start": "11700",
+   "visible": 65,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 7
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Dives Akuru",
+   "start": "11900",
+   "visible": 72,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 72
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Nandinagari",
+   "start": "119A0",
+   "visible": 65,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 65
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Soyombo",
+   "start": "11A50",
+   "visible": 83,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Unified Canadian Aboriginal Syllabics Extended-A",
+   "start": "11AB0",
+   "visible": 16,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 16
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Devanagari Extended-A",
+   "start": "11B00",
+   "visible": 11,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 11
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Sharada Supplement",
+   "start": "11B60",
+   "visible": 8,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 8
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Sunuwar",
+   "start": "11BC0",
+   "visible": 44,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 44
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tolong Siki",
+   "start": "11DB0",
+   "visible": 54,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 54
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Bengali Supplement",
+   "start": "11DF0",
+   "visible": 2,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Kawi",
+   "start": "11F00",
+   "visible": 87,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 87
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Lisu Supplement",
+   "start": "11FB0",
+   "visible": 1,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tamil Supplement",
+   "start": "11FC0",
+   "visible": 51,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 51
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Cuneiform",
+   "start": "12000",
+   "visible": 922,
+   "missing": {
+    "standard": 922,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Cuneiform Numbers and Punctuation",
+   "start": "12400",
+   "visible": 128,
+   "missing": {
+    "standard": 116,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 12
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Early Dynastic Cuneiform",
+   "start": "12480",
+   "visible": 196,
+   "missing": {
+    "standard": 196,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Archaic Cuneiform Numerals",
+   "start": "12550",
+   "visible": 311,
+   "missing": {
+    "standard": 311,
+    "complete": 311,
+    "complete-hieroglyphs": 311,
+    "web": 311
+   },
+   "ranges": [
+    "12550..12686"
+   ],
+   "added_in": {
+    "18.0": 311
+   },
+   "issue": 12
+  },
+  {
+   "block": "Cypro-Minoan",
+   "start": "12F90",
+   "visible": 99,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 99
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Egyptian Hieroglyphs",
+   "start": "13000",
+   "visible": 1072,
+   "missing": {
+    "standard": 1071,
+    "complete": 1071,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Egyptian Hieroglyphs Extended-A",
+   "start": "13460",
+   "visible": 3995,
+   "missing": {
+    "standard": 3995,
+    "complete": 3995,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Anatolian Hieroglyphs",
+   "start": "14400",
+   "visible": 583,
+   "missing": {
+    "standard": 583,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Gurung Khema",
+   "start": "16100",
+   "visible": 58,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 58
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Bamum Supplement",
+   "start": "16800",
+   "visible": 569,
+   "missing": {
+    "standard": 569,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tangsa",
+   "start": "16A70",
+   "visible": 89,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 89
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Kirat Rai",
+   "start": "16D40",
+   "visible": 58,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 58
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Beria Erfe",
+   "start": "16EA0",
+   "visible": 50,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 50
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Miao",
+   "start": "16F00",
+   "visible": 149,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 16
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Ideographic Symbols and Punctuation",
+   "start": "16FE0",
+   "visible": 12,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 8
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tangut",
+   "start": "17000",
+   "visible": 6144,
+   "missing": {
+    "standard": 6144,
+    "complete": 8,
+    "complete-hieroglyphs": 8,
+    "web": 8
+   },
+   "ranges": [
+    "187F8..187FF"
+   ],
+   "added_in": {
+    "17.0": 8
+   },
+   "issue": 13
+  },
+  {
+   "block": "Tangut Components",
+   "start": "18800",
+   "visible": 768,
+   "missing": {
+    "standard": 512,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Khitan Small Script",
+   "start": "18B00",
+   "visible": 476,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 476
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tangut Supplement",
+   "start": "18D00",
+   "visible": 33,
+   "missing": {
+    "standard": 33,
+    "complete": 24,
+    "complete-hieroglyphs": 24,
+    "web": 24
+   },
+   "ranges": [
+    "18D09..18D20"
+   ],
+   "added_in": {
+    "17.0": 22,
+    "18.0": 2
+   },
+   "issue": 13
+  },
+  {
+   "block": "Tangut Components Supplement",
+   "start": "18D80",
+   "visible": 115,
+   "missing": {
+    "standard": 115,
+    "complete": 115,
+    "complete-hieroglyphs": 115,
+    "web": 115
+   },
+   "ranges": [
+    "18D80..18DF2"
+   ],
+   "added_in": {
+    "17.0": 115
+   },
+   "issue": 13
+  },
+  {
+   "block": "Jurchen",
+   "start": "18E00",
+   "visible": 914,
+   "missing": {
+    "standard": 914,
+    "complete": 914,
+    "complete-hieroglyphs": 914,
+    "web": 914
+   },
+   "ranges": [
+    "18E00..19191"
+   ],
+   "added_in": {
+    "18.0": 914
+   },
+   "issue": 11
+  },
+  {
+   "block": "Jurchen Radicals",
+   "start": "191A0",
+   "visible": 51,
+   "missing": {
+    "standard": 51,
+    "complete": 51,
+    "complete-hieroglyphs": 51,
+    "web": 51
+   },
+   "ranges": [
+    "191A0..191D2"
+   ],
+   "added_in": {
+    "18.0": 51
+   },
+   "issue": 11
+  },
+  {
+   "block": "Kana Extended-A",
+   "start": "1B100",
+   "visible": 41,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 6
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Small Kana Extension",
+   "start": "1B130",
+   "visible": 10,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Nushu",
+   "start": "1B170",
+   "visible": 396,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 396
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Symbols for Legacy Computing Supplement",
+   "start": "1CC00",
+   "visible": 695,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 695
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Miscellaneous Symbols Supplement",
+   "start": "1CEC0",
+   "visible": 53,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 53
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Znamenny Musical Notation",
+   "start": "1CF00",
+   "visible": 185,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 185
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Musical Symbols",
+   "start": "1D100",
+   "visible": 248,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 25
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Musical Symbols Supplement",
+   "start": "1D250",
+   "visible": 50,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 50
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Kaktovik Numerals",
+   "start": "1D2C0",
+   "visible": 20,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 20
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Mathematical Alphanumeric Symbols",
+   "start": "1D400",
+   "visible": 997,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Sutton SignWriting",
+   "start": "1D800",
+   "visible": 672,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 672
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Miscellaneous Symbols and Arrows Extended",
+   "start": "1DB00",
+   "visible": 29,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 29
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Latin Extended-G",
+   "start": "1DF00",
+   "visible": 188,
+   "missing": {
+    "standard": 51,
+    "complete": 51,
+    "complete-hieroglyphs": 51,
+    "web": 151
+   },
+   "ranges": [
+    "1DFCD..1DFFF"
+   ],
+   "added_in": {
+    "18.0": 51
+   },
+   "issue": 14
+  },
+  {
+   "block": "Cyrillic Extended-D",
+   "start": "1E030",
+   "visible": 63,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 2
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Nyiakeng Puachue Hmong",
+   "start": "1E100",
+   "visible": 71,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 71
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Toto",
+   "start": "1E290",
+   "visible": 31,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 31
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Wancho",
+   "start": "1E2C0",
+   "visible": 59,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 59
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Nag Mundari",
+   "start": "1E4D0",
+   "visible": 42,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 42
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Ol Onal",
+   "start": "1E5D0",
+   "visible": 44,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 44
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Tai Yo",
+   "start": "1E6C0",
+   "visible": 55,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 55
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Ethiopic Extended-B",
+   "start": "1E7E0",
+   "visible": 28,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 28
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Adlam",
+   "start": "1E900",
+   "visible": 88,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Ottoman Siyaq Numbers",
+   "start": "1ED00",
+   "visible": 61,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 61
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Enclosed Alphanumeric Supplement",
+   "start": "1F100",
+   "visible": 201,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 8
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Transport and Map Symbols",
+   "start": "1F680",
+   "visible": 120,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 6
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Alchemical Symbols",
+   "start": "1F700",
+   "visible": 128,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 12
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Geometric Shapes Extended",
+   "start": "1F780",
+   "visible": 120,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 19
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Supplemental Arrows-C",
+   "start": "1F800",
+   "visible": 171,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 19
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Supplemental Symbols and Pictographs",
+   "start": "1F900",
+   "visible": 256,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 43
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Chess Symbols",
+   "start": "1FA00",
+   "visible": 102,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 4
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Symbols and Pictographs Extended-A",
+   "start": "1FA70",
+   "visible": 128,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 71
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Symbols for Legacy Computing",
+   "start": "1FB00",
+   "visible": 250,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 38
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension B",
+   "start": "20000",
+   "visible": 42720,
+   "missing": {
+    "standard": 37332,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension C",
+   "start": "2A700",
+   "visible": 4160,
+   "missing": {
+    "standard": 4049,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension D",
+   "start": "2B740",
+   "visible": 223,
+   "missing": {
+    "standard": 0,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 1
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension E",
+   "start": "2B820",
+   "visible": 5774,
+   "missing": {
+    "standard": 5581,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension F",
+   "start": "2CEB0",
+   "visible": 7473,
+   "missing": {
+    "standard": 7426,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Compatibility Ideographs Supplement",
+   "start": "2F800",
+   "visible": 542,
+   "missing": {
+    "standard": 540,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension G",
+   "start": "30000",
+   "visible": 4939,
+   "missing": {
+    "standard": 4297,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension H",
+   "start": "31350",
+   "visible": 4192,
+   "missing": {
+    "standard": 4170,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "CJK Unified Ideographs Extension J",
+   "start": "323B0",
+   "visible": 4298,
+   "missing": {
+    "standard": 3852,
+    "complete": 0,
+    "complete-hieroglyphs": 0,
+    "web": 0
+   },
+   "ranges": [],
+   "added_in": {}
+  },
+  {
+   "block": "Seal",
+   "start": "3D000",
+   "visible": 11328,
+   "missing": {
+    "standard": 11328,
+    "complete": 11328,
+    "complete-hieroglyphs": 11328,
+    "web": 11328
+   },
+   "ranges": [
+    "3D000..3FC3F"
+   ],
+   "added_in": {
+    "18.0": 11328
+   },
+   "issue": 10
+  }
+ ],
+ "candidates": [
+  {
+   "id": "newgardiner",
+   "family": "NewGardiner",
+   "version": "3.09",
+   "note": "Lighter Egyptian option: 4,498 of the 5,066 Egyptian characters at 1.1 MiB WOFF2 (non-core Extended-A signs are placeholders; a companion NewGardinerNonCore font exists). Kept aside per PLAN.md D-4."
+  },
+  {
+   "id": "NotoSansEgyptianHieroglyphs",
+   "family": "Noto Sans Egyptian Hieroglyphs",
+   "version": "Version 2.002",
+   "note": "Basic Egyptian block only (1,071). Kept aside per PLAN.md D-4."
+  },
+  {
+   "id": "last-resort-he",
+   "family": "LastResort HE",
+   "version": "18.000",
+   "note": "136 KB as WOFF2 but its cmap format 13 subtable yields no glyphs in Chromium (measured 2026-10-08); revisit if browsers gain support."
+  },
+  {
+   "id": "lxgw-seal",
+   "family": "LXGW Seal",
+   "version": "0.001-alpha.10.8",
+   "note": "First free font for the Unicode 18 Seal block (OFL-1.1, alpha 2026-10-08). Measured 511 of 11,328 Seal characters (4.5%), below the D-13 pack rule (25% of a block), so not shipped; re-measure on each release."
+  }
+ ]
+}
