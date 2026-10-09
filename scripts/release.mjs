@@ -6,7 +6,8 @@
  *   npm run release -- app  1.2.0.0
  *   npm run release -- data 1.0.0.0
  *
- * Refuses a dirty tree, validates the four-part format, requires a matching
+ * Refuses an app release while data/ or fonts/manifest.json has changes
+ * since the last data tag (CP4-05), so release data first. Refuses a dirty tree, validates the four-part format, requires a matching
  * CHANGELOG section (the number carries no meaning by itself; the changelog
  * does), writes the version into package.json / data/version.json, rebuilds
  * so the artifact stamp agrees, runs verify:build, commits, and creates an
@@ -16,6 +17,7 @@
 import { execFileSync } from "node:child_process";
 import { readFileSync, writeFileSync } from "node:fs";
 import { resolve } from "node:path";
+import { unreleasedDataChanges } from "./release-guard.mjs";
 
 const root = resolve(import.meta.dirname, "..");
 const [track, version] = process.argv.slice(2);
@@ -27,6 +29,12 @@ if (!/^\d+\.\d+\.\d+\.\d+$/.test(version ?? "")) die(`"${version}" is not a four
 if (git("status", "--porcelain")) die("working tree is dirty; commit or stash first");
 const tag = `${version}-${track}`;
 if (git("tag", "--list", tag)) die(`tag ${tag} already exists`);
+
+if (track === "app") {
+  const lastData = git("tag", "--list", "*-data", "--sort=-v:refname").split("\n")[0];
+  const pending = lastData ? unreleasedDataChanges(git("diff", "--name-only", lastData, "HEAD").split("\n").filter(Boolean)) : [];
+  if (pending.length) die(`data changed since ${lastData} without a data release (CP4-05): ${pending.join(", ")}. Release the data track first: npm run release -- data <version>`);
+}
 
 const changelogPath = resolve(root, track === "app" ? "CHANGELOG.md" : "data/CHANGELOG.md");
 const changelog = readFileSync(changelogPath, "utf-8");
