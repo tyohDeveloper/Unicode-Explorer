@@ -1,6 +1,6 @@
 {
   "name": "unicode-explorer",
-  "version": "2.2.5.0",
+  "version": "2.3.0.0",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -26,7 +26,8 @@
     "verify:regenerated": "node scripts/verify-regenerated.mjs",
     "build": "npm run check && npm run check:standards && npm run test:run && npm run build:bundle && npm run verify:build",
     "release": "node scripts/release.mjs",
-    "report:gaps": "tsx tools/fonts/reportGaps.ts"
+    "report:gaps": "tsx tools/fonts/reportGaps.ts",
+    "plan:outline": "tsx tools/fonts/planOutlinePacks.ts"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
