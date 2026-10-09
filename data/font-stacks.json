@@ -1,5 +1,5 @@
 {
-  "_doc": "Glyph font selector. 'stack' is a CSS font-family list; 'id' feeds data-testid radio-font-<id> and the URL hash. Edit here, never in markup.",
+  "_doc": "Glyph font selector. 'stack' is a CSS font-family list; 'id' feeds data-testid radio-font-<id> and the URL hash. Edit here, never in markup. Order: Latin/Greek/Cyrillic families first, then CJK families with region-suffixed names (GLY-03), then the generic.",
   "fonts": [
     {
       "label": "System",
@@ -11,37 +11,37 @@
     {
       "label": "Serif",
       "title": "Serif",
-      "stack": "'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Georgia,'Times New Roman',serif",
+      "stack": "Georgia,'Times New Roman','Noto Serif','DejaVu Serif','Liberation Serif','Source Han Serif SC','Source Han Serif TC','Source Han Serif HC','Source Han Serif JP','Source Han Serif K','Source Han Serif','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK HK','Noto Serif CJK JP','Noto Serif CJK KR','Noto Serif SC','Noto Serif TC','Noto Serif JP','Noto Serif KR','Adobe Song Std',serif",
       "id": "serif"
     },
     {
       "label": "Sans",
       "title": "Sans-serif",
-      "stack": "'Source Han Sans SC', 'Source Han Sans TC', 'Source Han Sans HC', 'Source Han Sans JP', 'Source Han Sans K','Source Han Sans','Heisei Kaku Gothic','Noto Sans JP', 'Noto Sans SC', 'Noto Sans TC', 'Noto Sans HK', 'Noto Sans KR', 'Noto Sans','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro',Meiryo,'Malgun Gothic',Arial,Helvetica,sans-serif",
+      "stack": "Arial,Helvetica,'Noto Sans','DejaVu Sans','Liberation Sans','Source Han Sans SC','Source Han Sans TC','Source Han Sans HC','Source Han Sans JP','Source Han Sans K','Source Han Sans','Noto Sans CJK SC','Noto Sans CJK TC','Noto Sans CJK HK','Noto Sans CJK JP','Noto Sans CJK KR','Noto Sans SC','Noto Sans TC','Noto Sans HK','Noto Sans JP','Noto Sans KR','Microsoft YaHei','Microsoft JhengHei','Hiragino Kaku Gothic Pro','Heisei Kaku Gothic',Meiryo,'Malgun Gothic',sans-serif",
       "id": "sans-serif"
     },
     {
       "label": "Mono",
       "title": "Monospace",
-      "stack": "'Source Han Mono','Sarasa Mono SC','Sarasa Mono TC','Sarasa Mono J','Sarasa Mono K','Noto Sans Mono CJK','Maple Mono','MS Gothic',NSimSun,MingLiU,'Cascadia Code','Fira Code',Consolas,'DejaVu Sans Mono',monospace",
+      "stack": "'Cascadia Code','Fira Code',Consolas,'Maple Mono','DejaVu Sans Mono','Liberation Mono','Source Han Mono','Sarasa Mono SC','Sarasa Mono TC','Sarasa Mono J','Sarasa Mono K','Noto Sans Mono CJK SC','Noto Sans Mono CJK TC','Noto Sans Mono CJK HK','Noto Sans Mono CJK JP','Noto Sans Mono CJK KR','MS Gothic',NSimSun,MingLiU,monospace",
       "id": "monospace"
     },
     {
       "label": "Cursive",
       "title": "Cursive",
-      "stack": "'Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK','Segoe Script','Brush Script MT','Comic Sans MS',cursive",
+      "stack": "'Segoe Script','Brush Script MT','Comic Sans MS','Adobe Kaiti Std',KaiTi,SimKai,STKaiti,'DFKai-SB',KaiU,'TW-Kai','TW-Kai-Plus',kai,'Source Han Serif SC','Source Han Serif TC','Source Han Serif HC','Source Han Serif JP','Source Han Serif K','Source Han Serif','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK HK','Noto Serif CJK JP','Noto Serif CJK KR','Noto Serif SC','Noto Serif TC','Noto Serif JP','Noto Serif KR','Adobe Song Std',cursive",
       "id": "cursive"
     },
     {
       "label": "Fantasy",
       "title": "Fantasy",
-      "stack": "'Adobe Kaiti Std','Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',Papyrus,Impact,fantasy",
+      "stack": "Papyrus,Impact,'Adobe Kaiti Std','Source Han Serif SC','Source Han Serif TC','Source Han Serif HC','Source Han Serif JP','Source Han Serif K','Source Han Serif','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK HK','Noto Serif CJK JP','Noto Serif CJK KR','Noto Serif SC','Noto Serif TC','Noto Serif JP','Noto Serif KR','Adobe Song Std',fantasy",
       "id": "fantasy"
     },
     {
       "label": "仿宋",
       "title": "仿宋 (FangSong)",
-      "stack": "'Adobe Fangsong Std',FangSong,SimFang,cwTeXFangSong,fangsong,'Source Han Serif SC', 'Source Han Serif TC', 'Source Han Serif HC', 'Source Han Serif JP', 'Source Han Serif K','Source Han Serif','Adobe Song Std','Noto Serif SC', 'Noto Serif TC', 'Noto Serif JP', 'Noto Serif KR','Noto Serif CJK',serif",
+      "stack": "Georgia,'Times New Roman','Adobe Fangsong Std',FangSong,SimFang,cwTeXFangSong,'Source Han Serif SC','Source Han Serif TC','Source Han Serif HC','Source Han Serif JP','Source Han Serif K','Source Han Serif','Noto Serif CJK SC','Noto Serif CJK TC','Noto Serif CJK HK','Noto Serif CJK JP','Noto Serif CJK KR','Noto Serif SC','Noto Serif TC','Noto Serif JP','Noto Serif KR','Adobe Song Std',fangsong,serif",
       "id": "fangsong"
     },
     {
