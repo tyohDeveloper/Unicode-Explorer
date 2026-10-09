@@ -5,6 +5,8 @@ import { resolve } from "node:path";
 export interface FontSource { url: string; format: string; member?: string; sha256: string | null; bytes: number | null; note?: string }
 
 export interface FontEntry {
+  /** D-27: copy these code points' glyphs from another manifest font (by id) when this font lacks them. */
+  borrow?: { from: string; code_points: string[] };
   /** Outline or bitmap-style glyph design (D-22). */
   design?: "outline" | "bitmap";
   note?: string;
