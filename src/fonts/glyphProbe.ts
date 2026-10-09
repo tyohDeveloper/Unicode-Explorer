@@ -8,9 +8,14 @@
  * candidate families that render at least one sample of the character's
  * block. Fonts that serve none of a block's samples are skipped for that
  * block, which can only under-report. Results are cached per stack.
+ *
+ * Combining marks are shown on U+25CC (displayForm), and browsers draw a
+ * cluster from one font, so a mark counts as verified only when one listed
+ * family has both the mark and the dotted circle (Phase 10, R-0).
  */
 import { sampleBlock } from "../coverage/sampleBlock.js";
 import { blockOf } from "../ucd/blockOf.js";
+import { isCombiningMark } from "../ucd/isCombiningMark.js";
 import { isGenericFamily } from "./isGenericFamily.js";
 
 export interface GlyphProbe {
@@ -46,6 +51,10 @@ interface ProbeState {
   candidates: readonly string[];
   embeddedFont: string;
   embedded: string[];
+  /** Per family: does it draw U+25CC (R-0)? Fonts don't change within a stack. */
+  circle: Map<string, boolean>;
+  /** Per block: a font list of only the families that have U+25CC, for one-measure mark checks. */
+  circleFonts: Map<number, string>;
   key: string;
 }
 
@@ -90,29 +99,69 @@ function setStack(st: ProbeState, next: readonly string[], embedded: readonly st
   st.cache.clear();
   st.blockFonts.clear();
   st.blockFamilies.clear();
+  st.circle.clear();
+  st.circleFonts.clear();
 }
 
 /** Block-serving families first (they precede the embedded fonts in the stack), then each embedded font. */
 function drawnBy(st: ProbeState, cp: number, text: string): string | null {
   if (!st.context) return null;
+  return orderedFamilies(st, cp).find((f) => drawsCluster(st, f, cp, text)) ?? null;
+}
+
+const DOTTED_CIRCLE = "\u25CC";
+
+/** Families that could draw the character, in stack order: block-serving candidates, then each embedded font. */
+function orderedFamilies(st: ProbeState, cp: number): string[] {
   blockFont(st, cp);
   const block = blockOf(cp);
-  const serving = (block && st.blockFamilies.get(block.start)) || [];
-  return [...serving, ...st.embedded].find((f) => draws(st, fontFor(st, [f]), text)) ?? null;
+  return [...((block && st.blockFamilies.get(block.start)) || []), ...st.embedded];
+}
+
+/** One family draws the text, and for a combining mark also the dotted circle it sits on. */
+function drawsCluster(st: ProbeState, family: string, cp: number, text: string): boolean {
+  if (isCombiningMark(cp) && !hasCircle(st, family)) return false;
+  return draws(st, fontFor(st, [family]), text);
+}
+
+function hasCircle(st: ProbeState, family: string): boolean {
+  let circle = st.circle.get(family);
+  if (circle === undefined) { circle = draws(st, fontFor(st, [family]), DOTTED_CIRCLE); st.circle.set(family, circle); }
+  return circle;
+}
+
+/** A mark is drawn as a cluster when a family that has U+25CC also draws the mark: one measurement per mark. */
+function markVerified(st: ProbeState, cp: number, text: string): boolean {
+  // Tier 1, like the main probe: embedded families with U+25CC, without sampling the block's candidates.
+  let embedded = st.circleFonts.get(-1);
+  if (embedded === undefined) { const fams = st.embedded.filter((f) => hasCircle(st, f)); embedded = fams.length ? fontFor(st, fams) : ""; st.circleFonts.set(-1, embedded); }
+  if (embedded !== "" && draws(st, embedded, text)) return true;
+  const start = blockOf(cp)?.start ?? -2;
+  let font = st.circleFonts.get(start);
+  if (font === undefined) {
+    const families = orderedFamilies(st, cp).filter((f) => hasCircle(st, f));
+    font = families.length ? fontFor(st, families) : "";
+    st.circleFonts.set(start, font);
+  }
+  return font !== "" && draws(st, font, text);
 }
 
 function verified(st: ProbeState, cp: number, text: string): boolean {
   if (!st.context) return true;
   const hit = st.cache.get(cp);
   if (hit !== undefined) return hit;
-  let result = draws(st, st.embeddedFont, text);
-  if (!result) { const font = blockFont(st, cp); result = font !== null && draws(st, font, text); }
+  let result: boolean;
+  if (isCombiningMark(cp)) result = markVerified(st, cp, text);
+  else {
+    result = draws(st, st.embeddedFont, text);
+    if (!result) { const font = blockFont(st, cp); result = font !== null && draws(st, font, text); }
+  }
   st.cache.set(cp, result);
   return result;
 }
 
 export function createGlyphProbe(blankFamily: string): GlyphProbe {
-  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", embedded: [], key: "" };
+  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", embedded: [], circle: new Map(), circleFonts: new Map(), key: "" };
   return {
     familyPresent: (family) => familyPresent(st, family),
     setStack: (next, embedded) => setStack(st, next, embedded),

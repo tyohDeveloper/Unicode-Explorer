@@ -12,7 +12,7 @@
    "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
    "role": "coverage",
    "design": "outline",
-   "assigned_visible_cmap_count": 1853
+   "assigned_visible_cmap_count": 1854
   },
   {
    "id": "unifont",
@@ -34,7 +34,7 @@
    "license_url": "https://www.unifoundry.com/LICENSE.txt",
    "role": "coverage",
    "design": "bitmap",
-   "assigned_visible_cmap_count": 22604
+   "assigned_visible_cmap_count": 22605
   },
   {
    "id": "fairfax-hd-latin-ext-g",
@@ -45,7 +45,7 @@
    "license_url": "https://github.com/kreativekorp/open-relay/blob/e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/OFL.txt",
    "role": "coverage",
    "design": "bitmap",
-   "assigned_visible_cmap_count": 188
+   "assigned_visible_cmap_count": 190
   },
   {
    "id": "last-resort",
