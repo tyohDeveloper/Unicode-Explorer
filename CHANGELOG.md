@@ -9,6 +9,27 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.2.0] — 2026-10-09
+
+Phase 10, R-0 (#22).
+
+### Fixed
+
+- **Combining marks drew as boxes or bitmaps on devices without matching fonts.** The app shows
+  each mark on U+25CC DOTTED CIRCLE, and browsers draw that pair from one font. The subset
+  fonts (Charis Latin and the 159 outline fonts) had lost U+25CC, and Unifont Upper never had
+  it. On a device with only a Latin font:
+  - Chakma U+11127 showed two empty boxes;
+  - U+0941 and U+0301 fell back to bitmap Unifont;
+  - 113 marks in Garay, Tulu-Tigalari, Gurung Khema, Arabic Extended-C and other
+    supplementary-plane blocks showed boxes.
+
+  Every subset now keeps U+25CC and U+00A0 (D-26), and Unifont Upper borrows U+25CC from
+  Unifont (D-27).
+- **Glyph detection for marks** now requires one listed font that has both the mark and the
+  circle, as the browser does; it no longer counts boxed marks as verified. Scan time unchanged.
+- The Unifont licence header in the About dialog named 17.0.05; it now says 18.0.01.
+
 ## [2.3.1.1] — 2026-10-09
 
 Tooling and documentation only; the artifact differs only in its version stamp.

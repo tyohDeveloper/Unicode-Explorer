@@ -41,6 +41,8 @@ repository under the same standards, build chain, and release discipline as
 | D-22 | The details strip says which font draws a glyph and whether it is outline or bitmap. | Phase 8 checkpoint, 2026-10-09. |
 | D-23 | Complete editions carry outline packs chosen by measured gain over the bitmap-drawn set, subset to whole blocks and grouped by category (≤ 8 MiB each). | Phase 8 checkpoint, 2026-10-09. |
 | D-24 | Standard embeds a Charis subset for the Latin/IPA/phonetic blocks ahead of Unifont (~280 KB). | Phase 8 checkpoint, 2026-10-09; owner accepted the recommended path. |
+| D-26 | Every subset font keeps U+00A0 and U+25CC when the font has them (`tools/fonts/subsetSfnt.ts`): marks are drawn on U+25CC and browsers draw a cluster from one font. | Phase 10 R-0, 2026-10-09. |
+| D-27 | A font may borrow glyphs it lacks from another manifest font (`borrow`, `tools/fonts/borrow_glyphs.py`). Unifont Upper borrows U+25CC from Unifont; Unifont declares no Reserved Font Name, so the OFL permits the modified font to keep its name. | Phase 10 R-0, 2026-10-09. |
 | D-25 | CJK/Hangul glyphs come from installed fonts, named per platform in `data/device-fonts.json` (CP4-01); no outline CJK pack ships. Unifont stays the fallback only on devices with no CJK font (42,318 characters). Revisit if a size-acceptable outline CJK source appears or users report bitmap CJK. | Owner kept Q-15 deferred, 2026-10-09. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
@@ -519,6 +521,14 @@ Work items, in order:
 - **R-5, Hangul:** precomposed syllables against conjoining jamo L+V+T sequences, per edition.
 - **R-6, style faces:** per style pack, count characters with genuine Bold, Italic and Bold
   Italic faces against those left to synthesis or upright (D-15).
+
+Status 2.3.2.0: **R-0 done.** D-26 keeps U+25CC/U+00A0 in every subset, and D-27 gives Unifont
+Upper the circle. The probe verifies a mark only when one listed family has both the mark and
+U+25CC, in two tiers so the scan time is unchanged (minimal device, all blocks, Complete: 8.2 s).
+On the minimal device, U+11127, U+0941 and U+0301 draw from one outline font with the circle,
+and the 113 supplementary-plane marks only Unifont Upper covers (Garay, Tulu-Tigalari, Gurung
+Khema and others) no longer show as two boxes. Verified counts are unchanged; before, those
+marks were counted while drawn as boxes. Evidence: `docs/audit/rendering/evidence/`.
 
 Deliverables: `docs/audit/rendering/report.md` with findings `RND-*`, fixes for anything
 broken, and the `verify:shaping` check. Acceptance: on the minimal device, U+11127, U+0941 and

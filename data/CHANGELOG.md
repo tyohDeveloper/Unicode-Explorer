@@ -4,6 +4,14 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.7.0] — 2026-10-09
+
+### Changed
+
+- `fonts/manifest.json`: `unifont_upper` gains `borrow: { from: "unifont", code_points: ["25CC"] }`
+  (D-27). Every subset font's WOFF2 hash and counts change, because subsets now keep U+25CC and
+  U+00A0 (D-26).
+
 ## [2.0.6.0] — 2026-10-09
 
 ### Added
