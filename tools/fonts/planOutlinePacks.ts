@@ -4,16 +4,19 @@
  * bitmap-style fonts (Unifont, Unifont Upper, Fairfax HD), subset each to the
  * whole blocks where it adds glyphs, group them by block category into packs
  * under the D-20 size limit, and write the font and pack entries into
- * fonts/manifest.json. A one-off planning step, like buildWebFontTable: it
- * reads a local directory of Noto Regular TTFs from the pinned commit below;
- * fetch:fonts and build:packs then reproduce everything from the manifest.
+ * fonts/manifest.json. A planning step: it reads the Noto Regular TTFs of the
+ * pinned commit below, downloading them into fonts/cache/noto-src/ with
+ * --fetch (CP4-06), or from a local directory with --noto; fetch:fonts and
+ * build:packs then reproduce everything from the manifest.
  *
- *   npx tsx tools/fonts/planOutlinePacks.ts --noto /tmp/noto
+ *   npm run plan:outline -- --fetch
+ *   npm run plan:outline -- --noto <dir of Noto *-Regular.ttf>
  */
-import { readdirSync, readFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { resolve, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { readFontManifest, writeFontManifest, type FontEntry, type FontManifest, type PackEntry } from "./fontManifest.js";
+import { downloadBytes } from "./downloadBytes.js";
 import { readCmap } from "./readCmap.js";
 import { sha256Hex } from "./sha256Hex.js";
 import { subsetSfnt } from "./subsetSfnt.js";
@@ -155,9 +158,33 @@ async function plan(notoDir: string): Promise<void> {
   console.log(`plan:outline — target ${target.size} bitmap-drawn; ${chosen.length} fonts gain ${gain}; ${packs.length} packs, ${(chosen.reduce((s, c) => s + c.woff2, 0) / 1048576).toFixed(1)} MB WOFF2`);
 }
 
+/** GitHub API JSON; a token (GITHUB_TOKEN or GH_TOKEN) lifts the anonymous rate limit. */
+async function githubJson<T>(path: string): Promise<T> {
+  const token = process.env.GITHUB_TOKEN ?? process.env.GH_TOKEN;
+  const headers: Record<string, string> = { Accept: "application/vnd.github+json", "User-Agent": "unicode-explorer-tools", ...(token ? { Authorization: `Bearer ${token}` } : {}) };
+  return JSON.parse(new TextDecoder().decode(await downloadBytes(`https://api.github.com/repos/notofonts/notofonts.github.io/${path}`, headers))) as T;
+}
+
+/** CP4-06: the Regular TTFs at the pinned commit (listed with the GitHub tree API), cached by name. */
+async function fetchNoto(): Promise<string> {
+  const dir = resolve(repoRoot, "fonts/cache/noto-src");
+  mkdirSync(dir, { recursive: true });
+  type Tree = { tree: { path: string; sha: string }[]; truncated: boolean };
+  const root = await githubJson<Tree>(`git/trees/${NOTO_COMMIT}`);
+  const fonts = await githubJson<Tree>(`git/trees/${root.tree.find((t) => t.path === "fonts")!.sha}?recursive=1`);
+  if (fonts.truncated) throw new Error("GitHub tree listing truncated");
+  const files = fonts.tree.map((t) => t.path).filter((n) => /^[^/]+\/unhinted\/ttf\/[^/]+-Regular\.ttf$/.test(n));
+  for (const name of files) {
+    const path = resolve(dir, name.split("/").pop()!);
+    if (!existsSync(path)) writeFileSync(path, await downloadBytes(`https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@${NOTO_COMMIT}/fonts/${name}`));
+  }
+  console.log(`plan:outline — ${files.length} Noto Regular TTFs in fonts/cache/noto-src`);
+  return dir;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  const dir = args.includes("--noto") ? args[args.indexOf("--noto") + 1] : "";
-  if (!dir) { console.error("usage: planOutlinePacks.ts --noto <dir of Noto *-Regular.ttf>"); process.exit(1); }
-  plan(dir).catch((e: Error) => { console.error(`plan:outline FAILED — ${e.message}`); process.exit(1); });
+  const local = args.includes("--noto") ? args[args.indexOf("--noto") + 1] : "";
+  if (!local && !args.includes("--fetch")) { console.error("usage: plan:outline -- --fetch | --noto <dir of Noto *-Regular.ttf>"); process.exit(1); }
+  (local ? Promise.resolve(local) : fetchNoto()).then(plan).catch((e: Error) => { console.error(`plan:outline FAILED — ${e.message}`); process.exit(1); });
 }
