@@ -4,6 +4,17 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.6.0] — 2026-10-09
+
+### Added
+
+- `fonts/manifest.json` (shipped with app 2.3.0.0, versioned here late; CP4-05): `charis-latin`
+  embedded ahead of Unifont (D-24); 159 `outline-*` Noto fonts at notofonts.github.io
+  `578d18e1` in 13 `outline-*` packs with `attach: "planned"` (D-23); `design` on the bitmap fonts
+  (D-22).
+- `data/device-fonts.json`: Microsoft YaHei, Microsoft JhengHei, Malgun Gothic, and Noto Sans CJK
+  SC/TC/HK/JP/KR (CP4-01).
+
 ## [2.0.5.0] — 2026-10-09
 
 ### Added

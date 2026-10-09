@@ -9,6 +9,20 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.1.0] — 2026-10-09
+
+Fixes from Audit Checkpoint 4.
+
+### Fixed
+
+- **CJK and Hangul no longer fall to Unifont in System mode** when the device has a CJK font
+  (CP4-01). The installed-font list now names Microsoft YaHei, Microsoft JhengHei and Malgun
+  Gothic (Windows) and Noto Sans CJK SC/TC/HK/JP/KR (Linux). Before, U+4E2D was drawn by Unifont
+  on a machine with Noto Sans CJK, because the embedded fonts come before the browser's own
+  fallback. Verified in the sandbox: 88,366 → 88,806 characters; start-up unchanged (~600 ms).
+- **The details strip no longer calls a generic family an installed font** (CP4-02). For
+  example: "the browser's system-ui font (a generic family; the face is chosen by the browser)".
+
 ## [2.3.0.0] — 2026-10-09
 
 Phase 8: outline glyphs before bitmaps (#16, #18).
