@@ -5,6 +5,7 @@ import { resolve } from "node:path";
 export interface FontSource { url: string; format: string; member?: string; sha256: string | null; bytes: number | null; note?: string }
 
 export interface FontEntry {
+  note?: string;
   id: string;
   family: string;
   css_family: string;
