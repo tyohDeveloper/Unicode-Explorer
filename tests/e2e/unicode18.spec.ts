@@ -30,3 +30,12 @@ test("Latin Extended-G is fully drawn by the embedded fonts, including the Unico
   await page.goto(`${artifactUrl("standard")}#b=1DF00`);
   await expect(page.getByTestId("text-status-chars")).toHaveText("188 characters · 188 verified", { timeout: 30_000 });
 });
+
+test("the details strip names the drawing font: outline Charis, bitmap Fairfax HD (D-22, D-24, #16)", async ({ page }) => {
+  await page.goto(`${artifactUrl("standard")}#b=1DF00`);
+  await expect(page.getByTestId("text-status-chars")).toHaveText("188 characters · 188 verified", { timeout: 30_000 });
+  await page.getByTestId("button-grid-cell-1DF12").hover();
+  await expect(page.getByTestId("text-details-glyph")).toHaveText("Charis (outline, embedded)");
+  await page.getByTestId("button-grid-cell-1DFCD").hover();
+  await expect(page.getByTestId("text-details-glyph")).toHaveText("Fairfax HD (bitmap, embedded)");
+});

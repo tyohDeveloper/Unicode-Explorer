@@ -60,4 +60,11 @@ describe("character details (D-19, DAT-05)", () => {
     expect(f[1]).toEqual(["Aliases", "ZWJ"]);
     expect(f[f.length - 1]).toEqual(["Glyph", "no font found: block placeholder"]);
   });
+  it("names the drawing font and its design (D-22)", () => {
+    const glyph = (drawnBy: Parameters<typeof describeCharacter>[0]["drawnBy"]) => describeCharacter({ cp: 0x1df12, props, nameOf, aliases: [], block: "Latin Extended-G", rendered: true, drawnBy }).at(-1);
+    expect(glyph({ family: "Charis", design: "outline", source: "embedded" })).toEqual(["Glyph", "Charis (outline, embedded)"]);
+    expect(glyph({ family: "Unifont", design: "bitmap", source: "embedded" })).toEqual(["Glyph", "Unifont (bitmap, embedded)"]);
+    expect(glyph({ family: "Noto Sans", design: "unknown", source: "installed" })).toEqual(["Glyph", "Noto Sans (installed on this device)"]);
+    expect(glyph(null)).toEqual(["Glyph", "drawn by a system fallback font (not identifiable, D-12)"]);
+  });
 });

@@ -1,4 +1,6 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
+import { resolve } from "node:path";
 import { composeFontStack } from "../src/fonts/composeFontStack.js";
 import { isGenericFamily } from "../src/fonts/isGenericFamily.js";
 import { splitFontFamilies } from "../src/fonts/splitFontFamilies.js";
@@ -75,7 +77,7 @@ describe("pack size and subsetting (D-20)", () => {
 describe("standardFonts", () => {
   it("exposes the embedded fonts by role from fonts/manifest.json", () => {
     const s = standardFonts();
-    expect(s.coverage).toEqual(["UE Unifont", "UE Unifont Upper", "UE Fairfax HD"]);
+    expect(s.coverage).toEqual(["UE Charis Latin", "UE Unifont", "UE Unifont Upper", "UE Fairfax HD"]);
     expect(s.placeholder).toBe("UE LastResort");
     expect(s.detection).toBe("UE Blank");
     expect(s.guaranteed).toBeGreaterThan(70000);
@@ -157,5 +159,30 @@ describe("blockOf / sampleBlock", () => {
     expect(samples).not.toContain(0x378); // reserved
     expect(samples[samples.length - 1]).toBe(0x3ff);
     expect(sampleBlock(blockOf(0x41)!, 4)).toEqual([0x20, 0x40, 0x60, 0x7e]);
+  });
+});
+
+describe("outline packs (D-23, #16)", () => {
+  const m = JSON.parse(readFileSync(resolve(__dirname, "../fonts/manifest.json"), "utf-8"));
+  const packs = m.packs.filter((p: { id: string }) => p.id.startsWith("outline-"));
+  const fonts = new Map(m.fonts.map((f: { id: string }) => [f.id, f]));
+  it("ship in both Complete editions with planned blocks, under the D-20 limit", () => {
+    expect(packs.length).toBeGreaterThan(0);
+    for (const p of packs) {
+      expect(p.attach).toBe("planned");
+      expect(p.blocks.length).toBeGreaterThan(0);
+      expect(p.bytes).toBeLessThanOrEqual(8 * 1024 * 1024);
+      for (const e of ["complete", "complete-hieroglyphs"]) expect(m.editions.find((x: { id: string }) => x.id === e).packs).toContain(p.id);
+    }
+  });
+  it("use pinned OFL outline fonts subset to whole blocks", () => {
+    for (const id of packs.flatMap((p: { fonts: string[] }) => p.fonts)) {
+      const f = fonts.get(id) as { design: string; license: string; source: { url: string; sha256: string }; subset: unknown[] };
+      expect(f.design).toBe("outline");
+      expect(f.license).toBe("OFL-1.1");
+      expect(f.source.url).toMatch(/^https:\/\/cdn\.jsdelivr\.net\/gh\/notofonts\/notofonts\.github\.io@[0-9a-f]{40}\//);
+      expect(f.source.sha256).toMatch(/^[0-9a-f]{64}$/);
+      expect(f.subset.length).toBeGreaterThan(0);
+    }
   });
 });
