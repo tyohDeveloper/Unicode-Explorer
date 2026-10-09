@@ -6,6 +6,8 @@ export interface FontSource { url: string; format: string; member?: string; sha2
 
 export interface FontEntry {
   note?: string;
+  /** Ship only these code-point ranges (hex, inclusive) of the upstream font, subset with fontTools (D-20). */
+  subset?: [string, string][];
   id: string;
   family: string;
   css_family: string;

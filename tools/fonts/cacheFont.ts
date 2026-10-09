@@ -12,6 +12,7 @@ import { downloadBytes } from "./downloadBytes.js";
 import { sha256Hex } from "./sha256Hex.js";
 import { toWoff2 } from "./toWoff2.js";
 import { readCmap } from "./readCmap.js";
+import { subsetSfnt } from "./subsetSfnt.js";
 
 async function sourceBytes(cacheDir: string, font: FontEntry): Promise<Uint8Array> {
   const path = resolve(cacheDir, `${font.id}.source.${font.source.format.split("/")[0]}`);
@@ -33,7 +34,8 @@ function extractMember(bytes: Uint8Array, member: string): Uint8Array {
 }
 
 async function convert(font: FontEntry, source: Uint8Array): Promise<Uint8Array> {
-  const sfnt = font.source.member ? extractMember(source, font.source.member) : source;
+  const whole = font.source.member ? extractMember(source, font.source.member) : source;
+  const sfnt = font.subset ? subsetSfnt(whole, font.subset) : whole;
   const format = font.source.format.split("/").pop();
   return format === "woff" || format === "woff2" ? sfnt : toWoff2(sfnt);
 }
