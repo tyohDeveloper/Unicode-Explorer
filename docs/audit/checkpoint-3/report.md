@@ -110,6 +110,26 @@ In priority order:
 Q-10 (`local()`-composed script-aware stacks) stays deferred: the style packs and the CSS dialog
 cover its purpose for the Complete editions and for other programmers.
 
+## Corrections after the checkpoint (Phase 7, 2026-10-08)
+
+Two findings were wrong as first written. The register above is left as it was at the tag.
+
+- **CP3-02 was not a regression.** All 53 glyphs that Unifont Upper 18.0.01 "dropped" are
+  for characters new in Unicode 18.0: 51 Latin Extended-G (U+1DFCD..1DFFF) and 2 Tangut
+  Supplement (U+18D1F, U+18D20). Unifont 17.0.05 had drawn them before the repertoire was
+  final, and they are absent from Unifont's own 18.0.01 source (`unifont_all-18.0.01.hex`). The
+  withdrawal was deliberate, so they are not restored. Tracked as font gaps in
+  [#14](https://github.com/tyohDeveloper/Unicode-Explorer/issues/14) and
+  [#13](https://github.com/tyohDeveloper/Unicode-Explorer/issues/13).
+- **CP3-04 had the wrong cause.** Parsing the web-font and alias tables on first use changed
+  nothing measurable (about 595 ms both ways). A CPU profile attributes 183 ms of start-up to
+  the device-font presence test, about 137 `measureText` calls. That test is the CP2-01 fix,
+  which cut the full scan from 35 s to 4 s. Accepted as that trade-off. Deferring the test until
+  after first paint is possible but not scheduled.
+
+The missing glyphs are now tracked in [`../../coverage/missing-glyphs.md`](../../coverage/missing-glyphs.md)
+(`npm run report:gaps`) and the `font-gap` issues #10–#15 (milestone "Font watch 2027-01").
+
 ## Sources
 
 - Measurements: [`evidence/measure-checkpoint-3.js`](evidence/measure-checkpoint-3.js), run

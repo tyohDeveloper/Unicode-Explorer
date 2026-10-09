@@ -4,6 +4,12 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.2.0] — 2026-10-08
+
+### Changed
+
+- `data/font-stacks.json`: Latin-first order; region-suffixed CJK family names (GLY-03).
+
 ## [2.0.1.0] — 2026-10-08
 
 ### Changed

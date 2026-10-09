@@ -296,6 +296,25 @@ CP3-08, CP3-01, CP2-04, CP3-07.
 Acceptance: Latin in Serif/Sans on Standard resolves to a Latin family first; Standard covers all
 188 Latin Extended-G characters; warm start-up back to about 530 ms.
 
+Status 2026-10-08: delivered as app 2.2.2.0 / data 2.0.2.0.
+
+- GLY-03 fixed: every stack in `data/font-stacks.json` is Latin-first with region-suffixed CJK
+  names, guarded by a data test that fails on the old file. Measured in the sandbox with the
+  Standard edition: U+4E2D in Serif and Sans was drawn by embedded Unifont, because no listed CJK
+  name matched an installed font; it is now drawn by Noto Serif CJK SC and Noto Sans CJK SC.
+  Latin stays on Liberation Serif / Liberation Sans.
+- CP3-02 reclassified: the 53 glyphs were Unicode 18 drafts withdrawn upstream, so nothing is
+  restored. The Latin Extended-G acceptance item is dropped and tracked in #14.
+- CP3-04 accepted: profiled. The 183 ms is the device-font presence test, the CP2-01 fix.
+  Lazy table parsing measured no gain and was not kept.
+- CP3-08 fixed: the CSS comment says "File size, before any HTTP compression".
+- Font watch: `npm run report:gaps` writes `docs/coverage/missing-glyphs.{md,json}` (per
+  edition, per block, code-point runs, Unicode version added; web-font gaps) and prints the
+  change against the committed snapshot. Issues #10–#15 (label `font-gap`, milestone "Font
+  watch 2027-01", due 2027-01-08), and a reminder for that date.
+- CP3-07: an erratum report is drafted in `docs/upstream/unicode-18-seal-name-erratum.md`; it is
+  submitted by the owner.
+
 ## Out of scope
 
 - Hieroglyph-specific features (format controls, quadrat layout). See D-4.

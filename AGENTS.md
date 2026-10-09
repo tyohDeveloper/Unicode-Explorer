@@ -25,7 +25,9 @@ The six rules most likely to be violated by accident:
    `unicode-fonts/` are never committed; `fonts/standard/*.woff2` are vendored and must equal the
    converter's output from the pinned upstream bytes. `data/web-fonts.json` is measured by
    `tools/fonts/buildWebFontTable.ts` from the Unicode Font Kit checkout and committed; rerun it
-   when fonts or the Unicode version change. No Egyptian-hieroglyph font ships in
+   when fonts or the Unicode version change. `npm run report:gaps` (after `fetch:fonts`) rewrites
+   `docs/coverage/missing-glyphs.{md,json}` and prints what changed; update the `font-gap`
+   issues from it. No Egyptian-hieroglyph font ships in
    Standard or Complete (`PLAN.md` D-4).
 6. **Never put a full-coverage font (Last Resort, Adobe Blank) in the global font stack.** It
    is applied per cell by detection (`PLAN.md` D-6). Detection says verified or unverified,

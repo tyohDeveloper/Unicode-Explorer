@@ -4,7 +4,7 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.2.1.0** ([changelog](CHANGELOG.md)), data **2.0.1.0** (Unicode 18.0.0,
+> **Status:** app **2.2.2.0** ([changelog](CHANGELOG.md)), data **2.0.2.0** (Unicode 18.0.0,
 > [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
@@ -97,7 +97,9 @@ Unzip one and open its `Unicode.html`: the packs live in the sibling `unicode-fo
 and load only when you select a block they cover (no pack is over 8 MB; Extension B is split in two; the
 status bar shows progress). Without the directory the same file runs as Standard
 ([ADR-0001](docs/adr/0001-sidecar-font-packs.md)). Measured against the 172,382 visible assigned
-Unicode 18 characters; most of the gap is the 11,328 Seal and 965 Jurchen characters. Coverage is a character-map measurement, not a guarantee of shaping or
+Unicode 18 characters; most of the gap is the 11,328 Seal and 965 Jurchen characters. What is
+still missing, block by block, is in [`docs/coverage/missing-glyphs.md`](docs/coverage/missing-glyphs.md)
+(`npm run report:gaps`), tracked by the [`font-gap` issues](https://github.com/tyohDeveloper/Unicode-Explorer/issues?q=label%3Afont-gap). Coverage is a character-map measurement, not a guarantee of shaping or
 style. See [`fonts/manifest.json`](fonts/manifest.json) for provenance, hashes and licenses; every
 font is under the SIL Open Font License or CC0, and the application code is MIT.
 

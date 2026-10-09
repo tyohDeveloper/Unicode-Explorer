@@ -9,6 +9,24 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.2.2.0] — 2026-10-08
+
+Phase 7 of `docs/PLAN.md`.
+
+### Fixed
+
+- **Built-in font lists** (GLY-03): Latin, Greek and Cyrillic families now come before CJK
+  families in every Serif, Sans, Mono, Cursive, Fantasy and FangSong list, and the CJK names are
+  real region-suffixed families (`Noto Serif CJK SC`…). In the Standard edition, Latin no longer
+  picks up a CJK font's Latin, and CJK ideographs reach installed CJK fonts instead of the
+  embedded Unifont bitmaps.
+- The CSS dialog's size comment says the size is before HTTP compression (CP3-08).
+
+### Added
+
+- `npm run report:gaps`: missing-glyph report per edition and block
+  (`docs/coverage/missing-glyphs.md`), compared against the previous snapshot on each run.
+
 ## [2.2.1.0] — 2026-10-08
 
 ### Fixed
