@@ -1,8 +1,8 @@
 {
  "generated": "2026-10-09",
  "unicode": "18.0.0",
- "app": "2.2.2.0",
- "data": "2.0.2.0",
+ "app": "2.2.3.0",
+ "data": "2.0.3.0",
  "editions": {
   "standard": {
    "covered": 78224,
@@ -17,7 +17,7 @@
    "of": 172382
   },
   "web": {
-   "covered": 154892,
+   "covered": 157704,
    "of": 172382
   }
  },
@@ -140,32 +140,6 @@
    "added_in": {}
   },
   {
-   "block": "Vithkuqi",
-   "start": "10570",
-   "visible": 70,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 70
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Todhri",
-   "start": "105C0",
-   "visible": 52,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 52
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Latin Extended-F",
    "start": "10780",
    "visible": 62,
@@ -205,19 +179,6 @@
    "added_in": {}
   },
   {
-   "block": "Yezidi",
-   "start": "10E80",
-   "visible": 47,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 47
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Arabic Extended-C",
    "start": "10EC0",
    "visible": 60,
@@ -225,111 +186,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 60
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Old Uyghur",
-   "start": "10F70",
-   "visible": 26,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 26
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Chorasmian",
-   "start": "10FB0",
-   "visible": 28,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 28
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Elymaic",
-   "start": "10FE0",
-   "visible": 23,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 23
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Brahmi",
-   "start": "11000",
-   "visible": 115,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 6
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Kaithi",
-   "start": "11080",
-   "visible": 68,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Chakma",
-   "start": "11100",
-   "visible": 71,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Sharada",
-   "start": "11180",
-   "visible": 96,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Khojki",
-   "start": "11200",
-   "visible": 65,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 3
+    "web": 57
    },
    "ranges": [],
    "added_in": {}
@@ -348,32 +205,6 @@
    "added_in": {}
   },
   {
-   "block": "Newa",
-   "start": "11400",
-   "visible": 97,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 4
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Takri",
-   "start": "11680",
-   "visible": 68,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Myanmar Extended-C",
    "start": "116D0",
    "visible": 20,
@@ -387,19 +218,6 @@
    "added_in": {}
   },
   {
-   "block": "Ahom",
-   "start": "11700",
-   "visible": 65,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 7
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Dives Akuru",
    "start": "11900",
    "visible": 72,
@@ -407,46 +225,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 72
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Nandinagari",
-   "start": "119A0",
-   "visible": 65,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 65
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Soyombo",
-   "start": "11A50",
-   "visible": 83,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 2
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Unified Canadian Aboriginal Syllabics Extended-A",
-   "start": "11AB0",
-   "visible": 16,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 16
+    "web": 23
    },
    "ranges": [],
    "added_in": {}
@@ -473,19 +252,6 @@
     "complete": 0,
     "complete-hieroglyphs": 0,
     "web": 8
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Sunuwar",
-   "start": "11BC0",
-   "visible": 44,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 44
    },
    "ranges": [],
    "added_in": {}
@@ -524,33 +290,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 87
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Lisu Supplement",
-   "start": "11FB0",
-   "visible": 1,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
     "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Tamil Supplement",
-   "start": "11FC0",
-   "visible": 51,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 51
    },
    "ranges": [],
    "added_in": {}
@@ -611,19 +351,6 @@
     "18.0": 311
    },
    "issue": 12
-  },
-  {
-   "block": "Cypro-Minoan",
-   "start": "12F90",
-   "visible": 99,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 99
-   },
-   "ranges": [],
-   "added_in": {}
   },
   {
    "block": "Egyptian Hieroglyphs",
@@ -691,19 +418,6 @@
    "added_in": {}
   },
   {
-   "block": "Tangsa",
-   "start": "16A70",
-   "visible": 89,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 89
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Kirat Rai",
    "start": "16D40",
    "visible": 58,
@@ -730,19 +444,6 @@
    "added_in": {}
   },
   {
-   "block": "Miao",
-   "start": "16F00",
-   "visible": 149,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 16
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Ideographic Symbols and Punctuation",
    "start": "16FE0",
    "visible": 12,
@@ -750,7 +451,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 8
+    "web": 7
    },
    "ranges": [],
    "added_in": {}
@@ -794,7 +495,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 476
+    "web": 6
    },
    "ranges": [],
    "added_in": {}
@@ -899,19 +600,6 @@
    "added_in": {}
   },
   {
-   "block": "Nushu",
-   "start": "1B170",
-   "visible": 396,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 396
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Symbols for Legacy Computing Supplement",
    "start": "1CC00",
    "visible": 695,
@@ -938,19 +626,6 @@
    "added_in": {}
   },
   {
-   "block": "Znamenny Musical Notation",
-   "start": "1CF00",
-   "visible": 185,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 185
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Musical Symbols",
    "start": "1D100",
    "visible": 248,
@@ -958,7 +633,7 @@
     "standard": 0,
     "complete": 0,
     "complete-hieroglyphs": 0,
-    "web": 25
+    "web": 23
    },
    "ranges": [],
    "added_in": {}
@@ -998,19 +673,6 @@
     "complete": 0,
     "complete-hieroglyphs": 0,
     "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Sutton SignWriting",
-   "start": "1D800",
-   "visible": 672,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 672
    },
    "ranges": [],
    "added_in": {}
@@ -1060,58 +722,6 @@
    "added_in": {}
   },
   {
-   "block": "Nyiakeng Puachue Hmong",
-   "start": "1E100",
-   "visible": 71,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 71
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Toto",
-   "start": "1E290",
-   "visible": 31,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 31
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Wancho",
-   "start": "1E2C0",
-   "visible": 59,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 59
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Nag Mundari",
-   "start": "1E4D0",
-   "visible": 42,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 42
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
    "block": "Ol Onal",
    "start": "1E5D0",
    "visible": 44,
@@ -1133,45 +743,6 @@
     "complete": 0,
     "complete-hieroglyphs": 0,
     "web": 55
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Ethiopic Extended-B",
-   "start": "1E7E0",
-   "visible": 28,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 28
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Adlam",
-   "start": "1E900",
-   "visible": 88,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 1
-   },
-   "ranges": [],
-   "added_in": {}
-  },
-  {
-   "block": "Ottoman Siyaq Numbers",
-   "start": "1ED00",
-   "visible": 61,
-   "missing": {
-    "standard": 0,
-    "complete": 0,
-    "complete-hieroglyphs": 0,
-    "web": 61
    },
    "ranges": [],
    "added_in": {}

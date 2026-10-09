@@ -1,13 +1,13 @@
 # Missing glyphs
 
-Generated 2026-10-09 by `npm run report:gaps` for app 2.2.2.0, data 2.0.2.0, Unicode 18.0.0. Counts are visible assigned characters that no font in the edition maps (character-map measurement). Machine-readable: [missing-glyphs.json](missing-glyphs.json). Re-run after `npm run fetch:fonts` to see what new font releases close; the command prints the change against this snapshot.
+Generated 2026-10-09 by `npm run report:gaps` for app 2.2.3.0, data 2.0.3.0, Unicode 18.0.0. Counts are visible assigned characters that no font in the edition maps (character-map measurement). Machine-readable: [missing-glyphs.json](missing-glyphs.json). Re-run after `npm run fetch:fonts` to see what new font releases close; the command prints the change against this snapshot.
 
 | Edition | With a font | Missing | Coverage |
 |---|---:|---:|---:|
 | standard | 78,224 | 94,158 | 45.4% |
 | complete | 154,514 | 17,868 | 89.6% |
 | complete-hieroglyphs | 159,580 | 12,802 | 92.6% |
-| Public web fonts (CSS dialog) | 154,892 | 17,490 | 89.9% |
+| Public web fonts (CSS dialog) | 157,704 | 14,678 | 91.5% |
 
 ## Missing from every edition
 
@@ -54,28 +54,28 @@ What the CSS dialog cannot offer another programmer.
 | Seal | 11,328 of 11,328 |
 | Jurchen | 914 of 914 |
 | Symbols for Legacy Computing Supplement | 695 of 695 |
-| Sutton SignWriting | 672 of 672 |
-| Khitan Small Script | 476 of 476 |
-| Nushu | 396 of 396 |
 | Archaic Cuneiform Numerals | 311 of 311 |
-| Znamenny Musical Notation | 185 of 185 |
 | Latin Extended-G | 151 of 188 |
 | Tangut Components Supplement | 115 of 115 |
-| Cypro-Minoan | 99 of 99 |
-| Tangsa | 89 of 89 |
-| Kawi | 87 of 87 |
 | Tulu-Tigalari | 80 of 80 |
-| Dives Akuru | 72 of 72 |
-| Nyiakeng Puachue Hmong | 71 of 71 |
 | Symbols and Pictographs Extended-A | 71 of 128 |
-| Vithkuqi | 70 of 70 |
 | Garay | 69 of 69 |
-| Nandinagari | 65 of 65 |
-| Ottoman Siyaq Numbers | 61 of 61 |
-| Arabic Extended-C | 60 of 60 |
-| Wancho | 59 of 59 |
 | Gurung Khema | 58 of 58 |
 | Kirat Rai | 58 of 58 |
+| Arabic Extended-C | 57 of 60 |
+| Tai Yo | 55 of 55 |
+| Tolong Siki | 54 of 54 |
+| Miscellaneous Symbols Supplement | 53 of 53 |
+| Jurchen Radicals | 51 of 51 |
+| Beria Erfe | 50 of 50 |
+| Musical Symbols Supplement | 50 of 50 |
+| Ol Onal | 44 of 44 |
+| Supplemental Symbols and Pictographs | 43 of 256 |
+| Symbols for Legacy Computing | 38 of 250 |
+| Miscellaneous Symbols and Arrows Extended | 29 of 29 |
+| Sidetic | 26 of 26 |
+| Tangut Supplement | 24 of 33 |
+| Dives Akuru | 23 of 72 |
 
 ## Candidate fonts not shipped
 
