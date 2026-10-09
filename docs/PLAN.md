@@ -365,6 +365,11 @@ draw 70,027; 67,201 of those exist in OFL or CC0 outline fonts, 42,318 of them C
   16 MB, three or more packs. **Recommended: defer.** Desktop and mobile systems ship CJK fonts,
   so the bitmap fallback is rare there.
 
+Status 2.3.0.0: D-22, D-23 and D-24 done. Without installed fonts, the Complete editions drew
+68,360 characters with bitmap fonts after D-24. The outline packs replace 24,229 of them, which
+leaves 44,131: 42,318 CJK/Hangul (Q-15) and about 1,800 that only Unifont or Fairfax HD cover.
+U+1DF12 is drawn by Charis (CDP platform font); U+11103 and U+1D11E by pack fonts.
+
 Acceptance: U+1DF12 is drawn by Charis in Standard (CDP platform font); the details strip names
 the drawing font and says bitmap or outline; Complete bitmap-drawn count measured before and
 after; no pack over 8 MiB; Audit Checkpoint 4 after the release.

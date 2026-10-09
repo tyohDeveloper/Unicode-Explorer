@@ -9,6 +9,29 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.0.0] — 2026-10-09
+
+Phase 8: outline glyphs before bitmaps (#16, #18).
+
+### Added
+
+- **Details strip names the drawing font** (D-22): for example "Charis (outline, embedded)",
+  "Fairfax HD (bitmap, embedded)", "Noto Sans Chakma (outline, font pack)", or the installed font.
+  It says "system fallback" when the browser picked a font the app cannot identify (D-12).
+- **Charis Latin subset embedded in every edition** (D-24, 209 KB WOFF2), ahead of Unifont:
+  1,853 Latin, IPA, phonetic, modifier, combining-mark and punctuation characters get outline
+  glyphs when the device has none, including U+1DF12.
+- **Outline packs in the Complete editions** (D-23): 13 packs, 159 Noto fonts pinned to
+  notofonts.github.io `578d18e1`, each subset to the whole blocks where it replaces a bitmap
+  glyph. They give 24,229 characters outline glyphs with no installed fonts, for 5.7 MB
+  (largest pack 1.9 MB). Chosen by `npm run plan:outline`.
+
+### Changed
+
+- `Unicode.html` grows by 243 KB (Charis; the app now reads a generated `src/data/embedded-fonts.json` instead of bundling the whole font manifest). The Complete zips grow by about 4.6 MB.
+- Still drawn by bitmap fonts with no installed fonts: CJK and Hangul (42,318; Q-15, deferred)
+  and about 1,800 characters only Unifont or Fairfax HD cover.
+
 ## [2.2.5.0] — 2026-10-09
 
 ### Added
