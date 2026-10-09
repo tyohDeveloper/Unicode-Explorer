@@ -38,6 +38,9 @@ repository under the same standards, build chain, and release discipline as
 | D-19 | Character details (DAT-05) as a strip that follows focus and hover (option A of three). | Recommended at the Phase 6 checkpoint 2026-10-08; owner may revise. |
 | D-20 | No sidecar pack exceeds 8 MiB. Larger fonts are split by code-point ranges (`subset` in `fonts/manifest.json`) with fontTools `pyftsubset`, keeping all layout features, and each piece registers with a `unicode-range`. CJK Ext B–F (17.3 MB) became Ext B part 1 (5.8 MB), part 2 (6.3 MB) and C–F, I + Compatibility Supplement (5.4 MB); Egyptian, restricted to its three blocks, fell from 8.5 to 4.5 MB (the font's private-use glyphs are dropped). harfbuzzjs (subset-font) was rejected: it truncated the glyph table for ~20,000-glyph subsets. | Owner accepted the recommendation 2026-10-08. The hosted test build redirects files over ~10 MB to another origin, and the CSP (`script-src 'self'`) correctly blocks the redirected script; smaller packs also mean smaller downloads. Coverage unchanged; subset Egyptian renders pixel-identically to the full font on format-control sequences. |
 | D-21 | Characters that only GNU Unifont 18 covers get a **commented self-host template** in the CSS dialog: one `@font-face` per Unifont file with the exact `unicode-range`, the unifoundry.com download link, the licence, and a note that Unifont is bitmap-style. Nothing points at this project's files (D-16 unchanged). | Owner chose option B of Q-14, 2026-10-09. |
+| D-22 | The details strip says which font draws a glyph and whether it is outline or bitmap. | Phase 8 checkpoint, 2026-10-09. |
+| D-23 | Complete editions carry outline packs chosen by measured gain over the bitmap-drawn set, subset to whole blocks and grouped by category (≤ 8 MiB each). | Phase 8 checkpoint, 2026-10-09. |
+| D-24 | Standard embeds a Charis subset for the Latin/IPA/phonetic blocks ahead of Unifont (~280 KB). | Phase 8 checkpoint, 2026-10-09; owner accepted the recommended path. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
@@ -337,6 +340,34 @@ Status 2026-10-08: delivered as app 2.2.2.0 / data 2.0.2.0.
   Complete editions. Measured: of the 78,224 characters Unifont draws, 76,407 exist in an OFL
   or CC0 outline font (39,228 of them CJK or Hangul in the BMP); 1,817 are Unifont-only.
   Fairfax HD is pixel-style too. Tracked for Phase 8.
+
+### Phase 8: Outline glyphs before bitmaps
+
+Finding: issue #16 (owner observation: U+1DF12 scales as a bitmap). Checkpointed 2026-10-09
+before the build. Measured with no device fonts helping: the Standard edition draws 78,275
+visible characters with bitmap-style fonts (GNU Unifont, Fairfax HD); the Complete editions
+draw 70,027; 67,201 of those exist in OFL or CC0 outline fonts, 42,318 of them CJK or Hangul.
+
+- D-22, **"Drawn by" in the details strip**: the font family that draws the character,
+  labelled outline or bitmap (`design: "bitmap"` in `fonts/manifest.json` for Unifont, Unifont
+  Upper and Fairfax HD), or "system fallback (not identifiable)" (D-12). The probe tests the
+  embedded and block-serving families in stack order.
+- D-23, **outline packs in the Complete editions**: OFL outline fonts chosen by measured gain
+  over the bitmap-drawn set (per-script Noto, Noto Symbols 2, Math, Music, Mono and others;
+  about 159 fonts, 24,444 characters, ~7.5 MB before subsetting). Each font is subset (D-20) to
+  the blocks where it adds glyphs, keeping whole blocks so shaping clusters stay in one font;
+  fonts are grouped by block category into packs of at most 8 MiB. A pack attaches to the blocks
+  it was chosen for; block packs already precede the embedded fonts in the stack.
+- D-24, **Charis Latin subset embedded in Standard**: 26 Latin, IPA, phonetic, modifier,
+  combining-mark and punctuation blocks, 209 KB WOFF2 (+~280 KB to `Unicode.html`), placed
+  before Unifont. 1,853 characters, including U+1DF12, get outline glyphs when the device lacks them.
+- Q-15, CJK and Hangul in outline (42,318 characters): a Noto Sans or Serif CJK subset is about
+  16 MB, three or more packs. **Recommended: defer.** Desktop and mobile systems ship CJK fonts,
+  so the bitmap fallback is rare there.
+
+Acceptance: U+1DF12 is drawn by Charis in Standard (CDP platform font); the details strip names
+the drawing font and says bitmap or outline; Complete bitmap-drawn count measured before and
+after; no pack over 8 MiB; Audit Checkpoint 4 after the release.
 
 ## Out of scope
 
