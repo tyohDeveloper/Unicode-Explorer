@@ -194,3 +194,17 @@ describe("device font names (GLY-03, CP4-01)", () => {
     for (const f of ["Microsoft YaHei", "Microsoft JhengHei", "Malgun Gothic", "Yu Gothic", "PingFang SC", "Apple SD Gothic Neo", "Noto Sans CJK SC", "Noto Sans CJK KR"]) expect(all).toContain(f);
   });
 });
+
+describe("dotted circle for mark clusters (Phase 10 R-0, D-26, D-27)", () => {
+  it("every vendored coverage font that draws combining marks also maps U+25CC", async () => {
+    const { readCmap } = await import("../tools/fonts/readCmap.js");
+    for (const file of ["Charis-Latin-7.000.woff2", "unifont-18.0.01.woff2", "unifont_upper-18.0.01.woff2"]) {
+      const cmap = new Set(readCmap(new Uint8Array(readFileSync(resolve(__dirname, "../fonts/standard", file)))));
+      expect(cmap.has(0x25cc), file).toBe(true);
+    }
+  });
+  it("Unifont Upper borrows U+25CC from Unifont, declared in the manifest", () => {
+    const m = JSON.parse(readFileSync(resolve(__dirname, "../fonts/manifest.json"), "utf-8"));
+    expect(m.fonts.find((f: { id: string }) => f.id === "unifont_upper").borrow).toEqual({ from: "unifont", code_points: ["25CC"] });
+  });
+});
