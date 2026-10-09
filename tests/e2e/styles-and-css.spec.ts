@@ -32,6 +32,13 @@ test("CSS for this selection writes web-font CSS from public URLs and a device f
   await page.getByTestId("radio-css-sans").check();
   await expect(web).toHaveValue(/font-family: "Andika"/);
   await page.getByTestId("button-css-close").click();
+  // Q-14 option B: Garay (Unicode 16) has no public web font; a commented Unifont self-host rule follows.
+  await page.goto(`${artifactUrl("standard")}#b=10D40`);
+  await expect(page.getByTestId("button-grid-cell-10D40")).toBeVisible();
+  await page.getByTestId("button-controls-css").click();
+  await expect(web).toHaveValue(/have no public web font\. GNU Unifont 18\.0\.01 covers [\d,]+ of them[\s\S]*\*   unicode-range: U\+10D40-/);
+  await expect(page.getByTestId("text-css-summary")).toContainText("self-host template");
+  await page.getByTestId("button-css-close").click();
   await expect(page.getByTestId("dialog-css-main")).toBeHidden();
   expect(requests).toEqual([]);
 });

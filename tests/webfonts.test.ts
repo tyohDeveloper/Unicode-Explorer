@@ -79,3 +79,26 @@ describe("packsForStyle", () => {
     expect(packsForStyle(packs, "monospace", true)).toEqual([]);
   });
 });
+
+import { selfHostCss } from "../src/webfonts/selfHostCss.js";
+
+describe("self-host template (Q-14 option B)", () => {
+  const fonts = [
+    { family: "Unifont", key: "self-host:unifont", file: "unifont-18.0.01.otf", download: "https://www.unifoundry.com/a.otf", format: "opentype", version: "18.0.01", license: "OFL-1.1", license_url: "https://unifoundry.com/LICENSE.txt" },
+    { family: "Unifont", key: "self-host:unifont_upper", file: "unifont_upper-18.0.01.otf", download: "https://www.unifoundry.com/b.otf", format: "opentype", version: "18.0.01", license: "OFL-1.1", license_url: "https://unifoundry.com/LICENSE.txt" },
+  ];
+  const ranges = { "self-host:unifont": [[0x0, 0xffff], [0x10d40]], "self-host:unifont_upper": [[0x10d40, 0x10d65]] };
+  it("writes a commented rule per file, each character once, never pointing at this app", () => {
+    const css = selfHostCss({ uncovered: [0x10d40, 0x10d41, 0x10d42, 0x3d000], fonts, ranges });
+    expect(css).toContain("4 selected characters have no public web font. GNU Unifont 18.0.01 covers 3 of them");
+    expect(css).toContain(" *   unicode-range: U+10D40;");
+    expect(css).toContain(" *   unicode-range: U+10D41-10D42;");
+    expect(css).toContain("Download: https://www.unifoundry.com/b.otf");
+    expect(css.match(/\*\//g)).toHaveLength(1);
+    expect(css).not.toMatch(/unicode-fonts|jsdelivr.net\/gh\/tyohDeveloper/);
+  });
+  it("is empty when nothing is left or Unifont does not cover it", () => {
+    expect(selfHostCss({ uncovered: [], fonts, ranges })).toBe("");
+    expect(selfHostCss({ uncovered: [0x3d000], fonts, ranges })).toBe("");
+  });
+});
