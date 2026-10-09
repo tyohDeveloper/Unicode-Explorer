@@ -1,7 +1,7 @@
 {
   "_doc": "Size baseline for scripts/verify-build.mjs (CODING-STANDARDS §7.6). Update only in a reviewed commit that says what moved it.",
-  "appVersion": "2.2.1.0",
-  "bytes": 2940385,
-  "gzipBytes": 2054061,
-  "note": "2.2.1.0: unicode-range support for split packs (D-20). Phase 6 baseline: Unicode 18 data (353 blocks), properties table (42 KB) for the details strip, Unifont 18.0.01; prefix-range names no longer stored. Up from 2,914,679 bytes / 2,027,955 gzip at 2.1.0.0."
+  "appVersion": "2.2.2.0",
+  "bytes": 2941190,
+  "gzipBytes": 2054227,
+  "note": "2.2.2.0: Latin-first font stacks (GLY-03). 2.2.1.0: unicode-range support for split packs (D-20). Phase 6 baseline: Unicode 18 data (353 blocks), properties table (42 KB) for the details strip, Unifont 18.0.01; prefix-range names no longer stored. Up from 2,914,679 bytes / 2,027,955 gzip at 2.1.0.0."
 }
