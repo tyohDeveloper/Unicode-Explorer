@@ -370,6 +370,11 @@ Status 2.3.0.0: D-22, D-23 and D-24 done. Without installed fonts, the Complete 
 leaves 44,131: 42,318 CJK/Hangul (Q-15) and about 1,800 that only Unifont or Fairfax HD cover.
 U+1DF12 is drawn by Charis (CDP platform font); U+11103 and U+1D11E by pack fonts.
 
+Audit Checkpoint 4 (2026-10-09, `docs/audit/checkpoint-4/report.md`) found that System mode
+drew installed CJK and Hangul with Unifont, because the device-font list lacked their names
+(CP4-01). Fixed in 2.3.1.0. Next, in order: release guard for data bumps (CP4-05);
+`plan:outline --fetch` (CP4-06); performance review parked with #17 (CP4-03); Q-15 stays deferred.
+
 Acceptance: U+1DF12 is drawn by Charis in Standard (CDP platform font); the details strip names
 the drawing font and says bitmap or outline; Complete bitmap-drawn count measured before and
 after; no pack over 8 MiB; Audit Checkpoint 4 after the release.
