@@ -11,7 +11,7 @@ export interface DescribeInput {
   block: string | null;
   rendered: boolean | null;
   /** D-22: the drawing font, when the probe can name it. */
-  drawnBy?: { family: string; design: "outline" | "bitmap" | "unknown"; source: "embedded" | "pack" | "installed" } | null;
+  drawnBy?: { family: string; design: "outline" | "bitmap" | "unknown"; source: "embedded" | "pack" | "installed" | "generic" } | null;
 }
 
 export type DetailField = [label: string, value: string];
@@ -34,6 +34,7 @@ function glyph(i: DescribeInput): string {
   if (!i.rendered) return "no font found: block placeholder";
   const d = i.drawnBy;
   if (!d) return "drawn by a system fallback font (not identifiable, D-12)";
+  if (d.source === "generic") return `the browser's ${d.family} font (a generic family; the face is chosen by the browser)`;
   const design = d.design === "unknown" ? "" : `${d.design}, `;
   return `${d.family} (${design}${d.source === "installed" ? "installed on this device" : d.source === "pack" ? "font pack" : "embedded"})`;
 }

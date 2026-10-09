@@ -14,6 +14,7 @@ import { wireCopyOutput } from "./copyOutput.js";
 import { buildFontButtons, reflectFont } from "./fontButtons.js";
 import { createFontPackLoader, type FontPackLoader } from "./fonts/fontPacks.js";
 import { createGlyphProbe } from "./fonts/glyphProbe.js";
+import { isGenericFamily } from "./fonts/isGenericFamily.js";
 import { packStatusText } from "./fonts/packStatusText.js";
 import { standardFonts } from "./fonts/standardFonts.js";
 import { createGlyphFonts } from "./glyphFonts.js";
@@ -128,6 +129,7 @@ function drawnByResolver(probe: GlyphProbe, packs: FontPackLoader): NonNullable<
   return (cp, text) => {
     const family = probe.drawnBy(cp, text);
     if (!family) return null;
+    if (isGenericFamily(family)) return { family, design: "unknown", source: "generic" };
     const embedded = standardFonts().all.find((f) => f.css_family === family);
     if (embedded) return { family: embedded.family, design: embedded.design ?? "outline", source: "embedded" };
     const packed = [...packs.families(), ...packs.styleFamilies("serif"), ...packs.styleFamilies("sans-serif")].includes(family);
