@@ -1,6 +1,6 @@
 {
   "schema": "unicode-explorer-font-manifest/1",
-  "generated": "2026-10-08",
+  "generated": "2026-10-09",
   "unicode_reference": "18.0.0",
   "measurement_note": "assigned_visible_cmap_count = code points in the font's cmap that are assigned in Unicode 18.0.0 and visible (General Category not Cc/Cf/Cs/Co/Cn/Zl/Zp, not Default_Ignorable_Code_Point, plus Prepended_Concatenation_Mark). Out of 159,375. A cmap entry is not proof of correct shaping, mark positioning, or style design.",
   "policy": {
@@ -21,12 +21,13 @@
       "fonts": [
         "unifont",
         "unifont_upper",
+        "fairfax-hd-latin-ext-g",
         "last-resort",
         "adobe-blank-2"
       ],
-      "guaranteed_visible_code_points": 78224,
+      "guaranteed_visible_code_points": 78275,
       "of": 172382,
-      "embedded_font_bytes": 1763916,
+      "embedded_font_bytes": 1775424,
       "delivery": "embedded in Unicode.html",
       "packs": []
     },
@@ -36,6 +37,7 @@
       "fonts": [
         "unifont",
         "unifont_upper",
+        "fairfax-hd-latin-ext-g",
         "last-resort",
         "adobe-blank-2",
         "jigmo2",
@@ -45,9 +47,9 @@
         "NotoSansBamum",
         "NotoSerifTangut"
       ],
-      "guaranteed_visible_code_points": 154514,
+      "guaranteed_visible_code_points": 154565,
       "of": 172382,
-      "embedded_font_bytes": 19295588,
+      "embedded_font_bytes": 19307096,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",
@@ -71,6 +73,7 @@
       "fonts": [
         "unifont",
         "unifont_upper",
+        "fairfax-hd-latin-ext-g",
         "last-resort",
         "adobe-blank-2",
         "jigmo2",
@@ -81,9 +84,9 @@
         "NotoSerifTangut",
         "unihieroglyphica"
       ],
-      "guaranteed_visible_code_points": 159580,
+      "guaranteed_visible_code_points": 159631,
       "of": 172382,
-      "embedded_font_bytes": 25681924,
+      "embedded_font_bytes": 25693432,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",
@@ -529,6 +532,33 @@
       "vendored": "fonts/standard/unifont_upper-18.0.01.woff2",
       "woff2_sha256": "2691ec65e9b74ded923e77ac9a69ebc3804bf0a520ec15f497d60c6a2dd3e75e",
       "woff2_bytes": 607496
+    },
+    {
+      "id": "fairfax-hd-latin-ext-g",
+      "family": "Fairfax HD",
+      "css_family": "UE Fairfax HD",
+      "version": "2026.09.21",
+      "license": "OFL-1.1",
+      "license_url": "https://github.com/kreativekorp/open-relay/blob/e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/OFL.txt",
+      "source": {
+        "url": "https://raw.githubusercontent.com/kreativekorp/open-relay/e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/FairfaxHD.ttf",
+        "format": "ttf",
+        "sha256": "8ed5c84fa50fd02f145026da522b30519b1637222372d1b47b721cd021fc79ce",
+        "bytes": 3190724
+      },
+      "subset": [
+        [
+          "1DF00",
+          "1DFFF"
+        ]
+      ],
+      "role": "coverage",
+      "vendored": "fonts/standard/FairfaxHD-LatinExtG-2026.09.21.woff2",
+      "note": "Latin Extended-G only (subset, D-20), after Unifont in the stack: fills the 51 Unicode 18 additions (U+1DFCD..1DFFF) that Unifont 18.0.01 does not have (issue #14).",
+      "woff2_sha256": "0bb5098766a13fd246f0bbfd028e6c3268930e58ae974d9cfe4829444677854e",
+      "woff2_bytes": 11508,
+      "cmap_code_points": 224,
+      "assigned_visible_cmap_count": 188
     },
     {
       "id": "last-resort",
