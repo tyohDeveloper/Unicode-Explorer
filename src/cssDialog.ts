@@ -20,6 +20,8 @@ import { chooseWebFonts } from "./webfonts/chooseWebFonts.js";
 import { deviceFontCss } from "./webfonts/deviceFontCss.js";
 import { loadWebFontRanges } from "./webfonts/loadWebFontRanges.js";
 import { webFontCss, type WebFontFace } from "./webfonts/webFontCss.js";
+import { selfHostCss, type SelfHostFont } from "./webfonts/selfHostCss.js";
+import { isInSortedRanges } from "./codepoint/isInSortedRanges.js";
 import { copyText } from "./clipboard/copyText.js";
 import { flashLabel } from "./flashLabel.js";
 
@@ -42,8 +44,11 @@ async function fillWeb(parts: Parts, src: CssDialogSource): Promise<void> {
   const regularBytes = Object.fromEntries(webFonts.fonts.filter((f) => f.face === "Regular").map((f) => [f.family, f.bytes]));
   const choice = chooseWebFonts(serif ? webFonts.order.serif : webFonts.order.sans, ranges, cps, regularBytes);
   const spans = Object.fromEntries(choice.chosen.map((c) => [c.family, blockSpansFor(ranges[c.family], blocks, cps)]));
-  parts.web.value = webFontCss({ app: appVersion(), blocks: blocks.map((b) => b.name), choice, faces: webFonts.fonts as WebFontFace[], spans, generic: serif ? "serif" : "sans-serif" });
-  parts.summary.textContent = `Web fonts: ${choice.covered.toLocaleString("en-US")} of ${choice.total.toLocaleString("en-US")} visible characters with ${choice.chosen.length} famil${choice.chosen.length === 1 ? "y" : "ies"}.`;
+  const css = webFontCss({ app: appVersion(), blocks: blocks.map((b) => b.name), choice, faces: webFonts.fonts as WebFontFace[], spans, generic: serif ? "serif" : "sans-serif" });
+  const uncovered = cps.filter((cp) => !choice.chosen.some((c) => isInSortedRanges(cp, ranges[c.family])));
+  const selfHost = selfHostCss({ uncovered, fonts: webFonts.self_host as SelfHostFont[], ranges });
+  parts.web.value = selfHost ? `${css}\n${selfHost}` : css;
+  parts.summary.textContent = `Web fonts: ${choice.covered.toLocaleString("en-US")} of ${choice.total.toLocaleString("en-US")} visible characters with ${choice.chosen.length} famil${choice.chosen.length === 1 ? "y" : "ies"}.${selfHost ? " A self-host template for GNU Unifont follows for the rest." : ""}`;
 }
 
 function deviceFamilies(src: CssDialogSource, blocks: readonly { start: number }[]): Map<number, readonly string[]> {
