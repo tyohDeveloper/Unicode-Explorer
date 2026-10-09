@@ -67,7 +67,7 @@ async function buildPack(ctx: Ctx, pack: PackEntry): Promise<PackCatalogueEntry>
   writeFileSync(resolve(outDir, `${pack.id}.js`), script);
   const cmap = new Set(parts.flatMap((p) => p.cmap));
   ctx.packCmaps.set(pack.id, cmap);
-  if (pack.kind === "blocks") pack.blocks = packBlocks(ctx.blocks, pack.categories ?? [], cmap, ctx.visible);
+  if (pack.kind === "blocks" && pack.attach !== "planned") pack.blocks = packBlocks(ctx.blocks, pack.categories ?? [], cmap, ctx.visible);
   pack.bytes = Buffer.byteLength(script);
   const families = [...new Set(fonts.map((f) => f.css_family))];
   const meta = pack.kind === "style" ? { kind: "style" as const, styles: pack.styles, faces: pack.faces } : { kind: "blocks" as const };

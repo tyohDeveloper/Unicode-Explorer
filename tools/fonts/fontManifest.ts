@@ -5,6 +5,8 @@ import { resolve } from "node:path";
 export interface FontSource { url: string; format: string; member?: string; sha256: string | null; bytes: number | null; note?: string }
 
 export interface FontEntry {
+  /** Outline or bitmap-style glyph design (D-22). */
+  design?: "outline" | "bitmap";
   note?: string;
   /** Ship only these code-point ranges (hex, inclusive) of the upstream font, subset with fontTools (D-20). */
   subset?: [string, string][];
@@ -41,6 +43,8 @@ export interface PackEntry {
   bytes?: number;
   /** D-20: ship only these code-point ranges (hex, inclusive) of the pack's fonts, subset at build time. */
   subset?: [string, string][];
+  /** "planned": keep the recorded blocks (D-23 outline packs, chosen by tools/fonts/planOutlinePacks.ts) instead of the pack_rule. */
+  attach?: "planned";
 }
 
 export interface Edition { id: string; default: boolean; fonts: string[]; packs?: string[]; guaranteed_visible_code_points?: number; of?: number; embedded_font_bytes?: number; delivery: string }
