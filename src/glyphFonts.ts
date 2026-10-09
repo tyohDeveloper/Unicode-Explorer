@@ -22,7 +22,10 @@ const device = Object.values(deviceFonts.families).flat();
 export function createGlyphFonts(probe: GlyphProbe, packs: FontPackLoader): GlyphFonts {
   const standard = standardFonts();
   const toLoad = [...standard.coverage, standard.placeholder, standard.detection].filter(Boolean);
-  const ready = Promise.all(toLoad.map((family) => document.fonts.load(`16px "${family}"`))).then(() => undefined, () => undefined);
+  // Load every embedded face directly: fonts.load() tests U+0020 by default and skips faces whose
+  // unicode-range excludes it (the Latin Extended-G subset), which detection would then miss.
+  const faces = [...document.fonts].filter((f) => toLoad.includes(f.family.replace(/^["']|["']$/g, "")));
+  const ready = Promise.all([...toLoad.map((family) => document.fonts.load(`16px "${family}"`)), ...faces.map((f) => f.load())]).then(() => undefined, () => undefined);
   const present = (names: readonly string[]) => names.filter((n) => isGenericFamily(n) || probe.familyPresent(n));
   let current = "";
   return {
