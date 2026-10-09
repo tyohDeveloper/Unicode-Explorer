@@ -41,6 +41,7 @@ repository under the same standards, build chain, and release discipline as
 | D-22 | The details strip says which font draws a glyph and whether it is outline or bitmap. | Phase 8 checkpoint, 2026-10-09. |
 | D-23 | Complete editions carry outline packs chosen by measured gain over the bitmap-drawn set, subset to whole blocks and grouped by category (≤ 8 MiB each). | Phase 8 checkpoint, 2026-10-09. |
 | D-24 | Standard embeds a Charis subset for the Latin/IPA/phonetic blocks ahead of Unifont (~280 KB). | Phase 8 checkpoint, 2026-10-09; owner accepted the recommended path. |
+| D-25 | CJK/Hangul glyphs come from installed fonts, named per platform in `data/device-fonts.json` (CP4-01); no outline CJK pack ships. Unifont stays the fallback only on devices with no CJK font (42,318 characters). Revisit if a size-acceptable outline CJK source appears or users report bitmap CJK. | Owner kept Q-15 deferred, 2026-10-09. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
 
@@ -362,8 +363,8 @@ draw 70,027; 67,201 of those exist in OFL or CC0 outline fonts, 42,318 of them C
   combining-mark and punctuation blocks, 209 KB WOFF2 (+~280 KB to `Unicode.html`), placed
   before Unifont. 1,853 characters, including U+1DF12, get outline glyphs when the device lacks them.
 - Q-15, CJK and Hangul in outline (42,318 characters): a Noto Sans or Serif CJK subset is about
-  16 MB, three or more packs. **Recommended: defer.** Desktop and mobile systems ship CJK fonts,
-  so the bitmap fallback is rare there.
+  16 MB, three or more packs. **Decided: deferred (D-25).** Desktop and mobile systems ship CJK
+  fonts, so the bitmap fallback is rare there.
 
 Status 2.3.0.0: D-22, D-23 and D-24 done. Without installed fonts, the Complete editions drew
 68,360 characters with bitmap fonts after D-24. The outline packs replace 24,229 of them, which
