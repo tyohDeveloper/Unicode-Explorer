@@ -381,6 +381,101 @@ Acceptance: U+1DF12 is drawn by Charis in Standard (CDP platform font); the deta
 the drawing font and says bitmap or outline; Complete bitmap-drawn count measured before and
 after; no pack over 8 MiB; Audit Checkpoint 4 after the release.
 
+### Phase 9 (future, not scheduled): Runtime font-source switch and CSS-panel behaviour
+
+Planned 2026-10-09 at the owner's request; not started. Revisit before an iOS wrapper or when
+CP4-03 is taken up. A checkpoint issue tracks it.
+
+**Goal.** Start fast with the fonts inside the file, and let the user switch to the full font
+set while the app runs. Measured at Checkpoint 4, all blocks take 0.38 s to first cells and
+4.3 s to finish detection with the embedded fonts, against 1.65 s and 12.3 s with every pack
+(CP4-03). Single-block start-up is the same in both, because packs already load per block.
+The saving is in all-block views, memory and, for online fonts, download size.
+
+**Font sources.** One new setting, `fontSource`, saved in the URL fragment like the others:
+
+| Source | Fonts used | Available in |
+|---|---|---|
+| `embedded` | The fonts inside `Unicode.html` only; packs are not loaded even when present | Every edition and target |
+| `packs` | Embedded fonts plus the sidecar packs, loaded per selected block (today's Complete behaviour) | Complete editions; native wrapper with bundled packs |
+| `online` | Embedded fonts plus fonts fetched from the network at run time | Only targets that permit network (native wrapper, hosted); never the standalone file |
+
+**Mechanics.** On a switch the app:
+
+1. Recomposes the stack (`composeFontStack` gains a source input).
+2. Clears the probe caches (`setStack` already does).
+3. Loads what the new source needs for the selected blocks.
+4. Re-runs the background scan.
+5. Redraws.
+
+Packs that are already loaded stay registered but drop out of the stack, so switching back
+is instant. Online faces are registered through the FontFace API with the measured
+`unicode-range`s, loaded per selected block like packs, and awaited before detection. Any
+font that fails to load is marked in the status line, and the app keeps drawing with the
+embedded fonts, the same soft fail as a missing pack.
+
+**Control.** A three-way "Fonts" selector in the controls bar ("Built-in", "Full (packs)",
+"Full (online)"), with test ids in `scripts/testid-manifest.json`. Unavailable choices are
+disabled with the reason as text: "No font packs beside this file", or "Online fonts are not
+allowed in the standalone file". The About dialog's pack-status line shows the active source.
+
+**CSS panel.** The generated CSS does not change with the source: it always uses public pinned
+URLs and never this app's files (D-16), so another programmer gets the same answer in every
+mode. New: one status line above the CSS saying what the app is drawing with now, and how that
+compares for the selection:
+
+- `online` with the public table (Q-18 option B): "The app is using these same web fonts."
+- `embedded` / `packs`: "The app is drawing with its built-in fonts (or packs): N of M
+  characters verified here; this CSS covers K." N is the probe's verified count; K comes from
+  the web-font table.
+
+The "Fonts on this device" form is unchanged in every mode.
+
+**Standards.** The standalone target keeps zero runtime network (§17): its CSP stays
+`font-src data:`, and `online` is compiled out. A native-wrapper or hosted build gets its own
+CSP (`font-src data:` plus the chosen font host) and enables `online`. The build flag and the
+target's rules go in `docs/CODING-STANDARDS.md` §17 before any online code lands.
+
+**Open questions (options; recommendations in bold):**
+
+- Q-16, default source.
+  - (A) `packs` wherever packs exist, as today, with `embedded` as the opt-in fast mode.
+  - (B) `embedded` everywhere, with full fonts opt-in.
+  - (C) Per target: `packs` for the standalone Complete zips; `embedded` for a native or hosted
+    build, with `online` one tap away.
+  - **Recommend C.** It doesn't change what Complete users downloaded the packs for, and gives
+    the iOS app the quick start the owner described.
+- Q-17, the "switch" after the first switch.
+  - (A) Per session only.
+  - (B) **Saved in the URL fragment, like every other setting.**
+  - (C) Platform storage in a native wrapper.
+  - **Recommend B**, with C added only in the native target.
+- Q-18, source of `online` fonts.
+  - (A) **This project's own packs, published per release** (GitHub Pages or release assets):
+    the same bytes and coverage as `packs` (159,631 in Complete + Hieroglyphs), versioned with
+    the app. D-16 governs the CSS panel, not the app's own downloads.
+  - (B) The public web-font table: 158,883 characters, no hosting, but different fonts from
+    `packs`.
+  - **Recommend A** for the app, while the CSS panel keeps using B.
+
+**Work items:** the `fontSource` setting, reducer, hash key and tests; source-aware stack
+composition (PURE) and tests; loader gating so `embedded` never injects pack scripts; online
+FontFace registration behind the target flag; the selector with availability states and test
+ids; the CSS-panel status line; re-scan on switch; About status.
+
+**Acceptance:**
+
+- Switching sources changes verified counts as expected on the e2e packs fixture: the test pack
+  is unverified in `embedded` and verified in `packs`.
+- `embedded` loads no pack script (network and script trace).
+- The source survives a reload via the fragment.
+- The standalone build contains no online code (grep plus CSP check).
+- The CSS text is byte-identical across sources; only the status line differs.
+- All-blocks timings are re-measured per source with `measure-checkpoint-4.cjs`.
+
+**Size and version.** About 300–500 lines with tests. App MAJORFIX bump (a new user-facing
+setting); no data change unless Q-18 option A adds a published-pack URL to the manifest.
+
 ## Out of scope
 
 - Hieroglyph-specific features (format controls, quadrat layout). See D-4.
