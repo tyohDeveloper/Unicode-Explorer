@@ -50,7 +50,7 @@ describe("CSS text", () => {
   it("writes @font-face rules with block unicode-ranges and the stack, with coverage and size in a comment", () => {
     const css = webFontCss({ app: "9.9.9.9", blocks: ["Basic Latin"], choice: { chosen: [{ family: "A", gain: 26 }], covered: 26, total: 95 }, faces, spans: { A: [{ start: 0, end: 0x7f }] }, generic: "serif" });
     expect(css).toContain("Covers 26 of 95 visible characters (27.4%) with 1 web font family.");
-    expect(css).toContain("1.0 MB for the regular faces, 2.0 MB with bold and italic");
+    expect(css).toContain("File size, before any HTTP compression: 1.0 MB for the regular faces, 2.0 MB with bold and italic");
     expect(css).toContain('src: url("https://x/a-b.ttf") format("truetype");\n  font-weight: 700;');
     expect(css).toContain("unicode-range: U+0000-007F;");
     expect(css).toContain('font-family: "A", serif;');
