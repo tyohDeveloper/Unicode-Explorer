@@ -1,2 +1,4 @@
 fonttools==4.66.1
 uharfbuzz==0.56.3
+# WOFF2 decoding for verify:shaping (fontTools needs it to read the shipped fonts)
+brotli==1.2.0

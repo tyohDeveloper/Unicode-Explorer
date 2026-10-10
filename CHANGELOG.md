@@ -9,6 +9,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.3.1] — 2026-10-09
+
+Republishes 2.3.3.0, whose release build failed before publishing assets.
+
+### Fixed
+
+- `tools/fonts/requirements.txt` pins `brotli`, which fontTools needs to read WOFF2 in
+  `verify:shaping`. Checked in a clean virtual environment with only the pinned requirements.
+
 ## [2.3.3.0] — 2026-10-09
 
 Phase 10 complete (#22). Report: `docs/audit/rendering/report.md`.
