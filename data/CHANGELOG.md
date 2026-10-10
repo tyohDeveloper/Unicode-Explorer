@@ -4,6 +4,13 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.7.2] — 2026-10-09
+
+### Changed
+
+- `fonts/manifest.json`: edition `embedded_font_bytes` re-measured by `build:packs` after the
+  2.0.7.1 Unifont Upper conversion.
+
 ## [2.0.7.1] — 2026-10-09
 
 ### Changed

@@ -28,7 +28,7 @@
       ],
       "guaranteed_visible_code_points": 78275,
       "of": 172382,
-      "embedded_font_bytes": 1985040,
+      "embedded_font_bytes": 1986116,
       "delivery": "embedded in Unicode.html",
       "packs": []
     },
@@ -51,7 +51,7 @@
       ],
       "guaranteed_visible_code_points": 154565,
       "of": 172382,
-      "embedded_font_bytes": 19516712,
+      "embedded_font_bytes": 19517788,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",
@@ -102,7 +102,7 @@
       ],
       "guaranteed_visible_code_points": 159631,
       "of": 172382,
-      "embedded_font_bytes": 25903048,
+      "embedded_font_bytes": 25904124,
       "delivery": "Unicode.html + unicode-fonts/ sidecar packs (zip release asset)",
       "packs": [
         "cjk-ext-b-1",

@@ -9,6 +9,15 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.2.2] — 2026-10-09
+
+Republishes 2.3.2.0 and 2.3.2.1; neither release build published assets.
+
+### Fixed
+
+- `fonts/manifest.json` edition totals (`embedded_font_bytes`) recorded for the reproducible
+  Unifont Upper, so the release workflow's "pack blocks unchanged" check passes.
+
 ## [2.3.2.1] — 2026-10-09
 
 Republishes 2.3.2.0, whose release build failed (no assets were published).

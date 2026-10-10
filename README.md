@@ -4,7 +4,7 @@ Browse every Unicode block, inspect characters by name and code point, and compo
 them. Ships as **one HTML file** that runs offline from `file://`, stores nothing, and makes no
 network requests.
 
-> **Status:** app **2.3.2.1** ([changelog](CHANGELOG.md)), data **2.0.7.1** (Unicode 18.0.0,
+> **Status:** app **2.3.2.2** ([changelog](CHANGELOG.md)), data **2.0.7.2** (Unicode 18.0.0,
 > [data changelog](data/CHANGELOG.md)), 353 blocks, 172,808 characters, 2.9 MB. The Standard edition embeds GNU
 > Unifont and Last Resort, so every Basic Multilingual Plane character has a glyph and every other
 > character has at least a labelled placeholder; the Complete editions add font packs for the
