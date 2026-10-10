@@ -12,7 +12,7 @@
    "license_url": "https://github.com/silnrsi/font-charis/blob/master/OFL.txt",
    "role": "coverage",
    "design": "outline",
-   "assigned_visible_cmap_count": 1854
+   "assigned_visible_cmap_count": 2210
   },
   {
    "id": "unifont",
@@ -45,7 +45,7 @@
    "license_url": "https://github.com/kreativekorp/open-relay/blob/e4b81241e8c7269a91c0bd865cf5c9e7208fbada/FairfaxHD/OFL.txt",
    "role": "coverage",
    "design": "bitmap",
-   "assigned_visible_cmap_count": 190
+   "assigned_visible_cmap_count": 191
   },
   {
    "id": "last-resort",
