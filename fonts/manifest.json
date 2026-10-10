@@ -1,6 +1,6 @@
 {
   "schema": "unicode-explorer-font-manifest/1",
-  "generated": "2026-10-09",
+  "generated": "2026-10-10",
   "unicode_reference": "18.0.0",
   "measurement_note": "assigned_visible_cmap_count = code points in the font's cmap that are assigned in Unicode 18.0.0 and visible (General Category not Cc/Cf/Cs/Co/Cn/Zl/Zp, not Default_Ignorable_Code_Point, plus Prepended_Concatenation_Mark). Out of 159,375. A cmap entry is not proof of correct shaping, mark positioning, or style design.",
   "policy": {
@@ -1441,8 +1441,8 @@
       "assigned_visible_cmap_count": 22605,
       "role": "coverage",
       "vendored": "fonts/standard/unifont_upper-18.0.01.woff2",
-      "woff2_sha256": "5d808ef4bfd6247a7ceb2fff78d2d5a2a9f885cc24c1bf21627beabf615ad085",
-      "woff2_bytes": 607376,
+      "woff2_sha256": "93ecb3668c264eb25f5d68df8d1e95fa558263925fe99c3ece33627379c3fa7b",
+      "woff2_bytes": 608452,
       "design": "bitmap",
       "borrow": {
         "from": "unifont",
