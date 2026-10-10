@@ -1,0 +1,102 @@
+{
+ "totals": {
+  "marks": 2580,
+  "cluster": 2317,
+  "split": 0,
+  "none": 263,
+  "spacing": 4
+ },
+ "fonts": {
+  "\"UE Charis Latin\"": 151,
+  "\"UE Unifont\"": 1204,
+  "\"UE Unifont Upper\"": 962
+ },
+ "examples": {
+  "split": [],
+  "none": [
+   "34F",
+   "17B4",
+   "17B5",
+   "180B",
+   "180C",
+   "180D",
+   "180F",
+   "FE00",
+   "FE01",
+   "FE02",
+   "FE03",
+   "FE04",
+   "FE05",
+   "FE06",
+   "FE07",
+   "FE08",
+   "FE09",
+   "FE0A",
+   "FE0B",
+   "FE0C",
+   "FE0D",
+   "FE0E",
+   "FE0F",
+   "E0100",
+   "E0101",
+   "E0102",
+   "E0103",
+   "E0104",
+   "E0105",
+   "E0106",
+   "E0107",
+   "E0108",
+   "E0109",
+   "E010A",
+   "E010B",
+   "E010C",
+   "E010D",
+   "E010E",
+   "E010F",
+   "E0110"
+  ],
+  "spacing": [
+   "315 \"UE Charis Latin\"",
+   "31A \"UE Charis Latin\"",
+   "31B \"UE Charis Latin\"",
+   "358 \"UE Charis Latin\""
+  ]
+ },
+ "byBlock": {
+  "Combining Diacritical Marks": {
+   "marks": 112,
+   "cluster": 111,
+   "split": 0,
+   "none": 1,
+   "spacing": 4
+  },
+  "Khmer": {
+   "marks": 33,
+   "cluster": 31,
+   "split": 0,
+   "none": 2,
+   "spacing": 0
+  },
+  "Mongolian": {
+   "marks": 7,
+   "cluster": 3,
+   "split": 0,
+   "none": 4,
+   "spacing": 0
+  },
+  "Variation Selectors": {
+   "marks": 16,
+   "cluster": 0,
+   "split": 0,
+   "none": 16,
+   "spacing": 0
+  },
+  "Variation Selectors Supplement": {
+   "marks": 240,
+   "cluster": 0,
+   "split": 0,
+   "none": 240,
+   "spacing": 0
+  }
+ }
+}

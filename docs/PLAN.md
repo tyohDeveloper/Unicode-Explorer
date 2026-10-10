@@ -43,6 +43,7 @@ repository under the same standards, build chain, and release discipline as
 | D-24 | Standard embeds a Charis subset for the Latin/IPA/phonetic blocks ahead of Unifont (~280 KB). | Phase 8 checkpoint, 2026-10-09; owner accepted the recommended path. |
 | D-26 | Every subset font keeps U+00A0 and U+25CC when the font has them (`tools/fonts/subsetSfnt.ts`): marks are drawn on U+25CC and browsers draw a cluster from one font. | Phase 10 R-0, 2026-10-09. |
 | D-27 | A font may borrow glyphs it lacks from another manifest font (`borrow`, `tools/fonts/borrow_glyphs.py`). Unifont Upper borrows U+25CC from Unifont; Unifont declares no Reserved Font Name, so the OFL permits the modified font to keep its name. | Phase 10 R-0, 2026-10-09. |
+| D-28 | Stack order: style packs, style, device fonts, embedded outline fonts (Charis Latin), block packs, embedded bitmap fonts. Outline packs own whole blocks one font each; other fonts keep only characters the owner lacks. | Phase 10 R-2/R-3, 2026-10-09. |
 | D-25 | CJK/Hangul glyphs come from installed fonts, named per platform in `data/device-fonts.json` (CP4-01); no outline CJK pack ships. Unifont stays the fallback only on devices with no CJK font (42,318 characters). Revisit if a size-acceptable outline CJK source appears or users report bitmap CJK. | Owner kept Q-15 deferred, 2026-10-09. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
@@ -529,6 +530,17 @@ On the minimal device, U+11127, U+0941 and U+0301 draw from one outline font wit
 and the 113 supplementary-plane marks only Unifont Upper covers (Garay, Tulu-Tigalari, Gurung
 Khema and others) no longer show as two boxes. Verified counts are unchanged; before, those
 marks were counted while drawn as boxes. Evidence: `docs/audit/rendering/evidence/`.
+
+Status 2.3.3.0: **Phase 10 complete.** R-1 to R-6 were measured, and the report is
+`docs/audit/rendering/report.md` (RND-01 to RND-13). Fixes:
+
+- subsets keep U+0020 and canonical decompositions;
+- `verify:shaping` runs in the release workflow;
+- one owner per block in `plan:outline` (Noto Sans Math no longer draws Arabic);
+- embedded outline fonts precede the packs (D-28);
+- the Charis subset adds basic Greek and Cyrillic.
+
+Open: RND-08, emoji sequences without an emoji font.
 
 Deliverables: `docs/audit/rendering/report.md` with findings `RND-*`, fixes for anything
 broken, and the `verify:shaping` check. Acceptance: on the minimal device, U+11127, U+0941 and

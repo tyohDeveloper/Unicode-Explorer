@@ -1,0 +1,14 @@
+{
+ "serif": {
+  "regular": 10174,
+  "bold": 4804,
+  "italic": 3190,
+  "bold-italic": 3190
+ },
+ "sans": {
+  "regular": 10208,
+  "bold": 5533,
+  "italic": 3190,
+  "bold-italic": 3190
+ }
+}

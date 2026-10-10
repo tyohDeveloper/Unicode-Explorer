@@ -1,0 +1,12 @@
+{
+ "fonts": 213,
+ "strings": 24731,
+ "mismatches": 0,
+ "skipped_at_harfbuzz_limits": [
+  {
+   "font": "outline-other-scripts-supplements/outline-notosansduployan",
+   "codepoints": "U+1BC80 U+1BC81 U+1BC82 U+1BC83 U+1BC84 U+1BC85 U+1BC86 U+1BC87 U+1BC88 U+1BC90 U+1BC91 U+1BC92"
+  }
+ ],
+ "examples": []
+}

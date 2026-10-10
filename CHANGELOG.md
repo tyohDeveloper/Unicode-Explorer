@@ -9,6 +9,32 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.3.0] — 2026-10-09
+
+Phase 10 complete (#22). Report: `docs/audit/rendering/report.md`.
+
+### Added
+
+- **`npm run verify:shaping`** (R-1): every shipped font, as the bytes that ship, is shaped with
+  HarfBuzz against its full source: 213 fonts, 24,731 strings, 0 mismatches. It runs in the
+  release workflow (`uharfbuzz` pinned in `tools/fonts/requirements.txt`).
+- `data/script-samples.json`: short per-script samples for shaping tests and the rendered sheet.
+- Evidence scripts for the marks census, script samples and emoji/Hangul sequences, run on a
+  one-font "minimal device" and on a full font set.
+- `scripts/release.mjs` re-runs `build:packs` and refuses an app tag if it re-measures the
+  manifest (`--skip-packs` to bypass).
+
+### Fixed
+
+- **Arabic in the Complete editions was drawn by Noto Sans Math** where no Arabic font was
+  installed. Outline packs claimed every block they touched, so 29 blocks had several owners
+  (RND-05). Each block now has one owner; other fonts keep only characters the owner lacks.
+- **Latin combining marks in Complete came from Noto Sans Mono**: the embedded Charis now
+  precedes the packs (D-28, RND-06).
+- Subsets keep the space glyph and canonical decompositions, so invisible characters and
+  decomposable letters shape as in the full font (RND-04).
+- The Charis subset adds basic Greek and Cyrillic: +355 outline characters, +48 KB (RND-07).
+
 ## [2.3.2.2] — 2026-10-09
 
 Republishes 2.3.2.0 and 2.3.2.1; neither release build published assets.

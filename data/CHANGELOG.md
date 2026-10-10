@@ -4,6 +4,19 @@ The data track covers the vendored Unicode Character Database snapshot and `font
 It is versioned independently of the app (`docs/PLAN.md` Q-7; four-part, not semver). Tags are
 `<version>-data`.
 
+## [2.0.8.0] — 2026-10-09
+
+### Added
+
+- `data/script-samples.json` (Phase 10 R-1/R-3).
+
+### Changed
+
+- `fonts/manifest.json`:
+  - outline packs re-planned with one owner per block (14 packs, 159 fonts);
+  - `charis-latin` subset adds the Greek and Cyrillic blocks;
+  - every subset font re-cut keeping U+0020 and canonical decompositions (D-26).
+
 ## [2.0.7.2] — 2026-10-09
 
 ### Changed

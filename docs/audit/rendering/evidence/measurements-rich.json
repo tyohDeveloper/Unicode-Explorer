@@ -1,0 +1,38 @@
+{
+ "startupStandard": [
+  833,
+  600,
+  607,
+  595,
+  628
+ ],
+ "embedded": {
+  "total": 172382,
+  "byFamily": {
+   "UE Charis Latin": 2211,
+   "UE Unifont": 55404,
+   "UE Unifont Upper": 20608,
+   "UE Fairfax HD": 51
+  },
+  "outline": 2211,
+  "bitmap": 76063,
+  "none": 94108,
+  "ms": 3761
+ },
+ "allBlocksStandard": {
+  "firstCellsMs": 376,
+  "scanMs": 4632,
+  "chars": "172,382 characters · 88,806 verified · 83,576 unverified",
+  "fontFaces": 6,
+  "requests": [],
+  "errors": []
+ },
+ "allBlocksComplete": {
+  "firstCellsMs": 1725,
+  "scanMs": 12525,
+  "chars": "172,382 characters · 155,635 verified · 16,747 unverified",
+  "fontFaces": 173,
+  "requests": [],
+  "errors": []
+ }
+}
