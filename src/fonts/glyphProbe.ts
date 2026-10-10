@@ -55,6 +55,8 @@ interface ProbeState {
   circle: Map<string, boolean>;
   /** Per block: a font list of only the families that have U+25CC, for one-measure mark checks. */
   circleFonts: Map<number, string>;
+  /** Index of each family in the full stack, so serving and embedded families merge in stack order (D-28). */
+  position: Map<string, number>;
   key: string;
 }
 
@@ -96,6 +98,7 @@ function setStack(st: ProbeState, next: readonly string[], embedded: readonly st
   st.candidates = next.filter((f) => !embedded.includes(f));
   st.embeddedFont = fontFor(st, embedded);
   st.embedded = [...embedded];
+  st.position = new Map(next.map((f, i) => [f, i]));
   st.cache.clear();
   st.blockFonts.clear();
   st.blockFamilies.clear();
@@ -103,7 +106,7 @@ function setStack(st: ProbeState, next: readonly string[], embedded: readonly st
   st.circleFonts.clear();
 }
 
-/** Block-serving families first (they precede the embedded fonts in the stack), then each embedded font. */
+/** Block-serving and embedded families, merged in stack order (D-28: embedded outline fonts precede the packs). */
 function drawnBy(st: ProbeState, cp: number, text: string): string | null {
   if (!st.context) return null;
   return orderedFamilies(st, cp).find((f) => drawsCluster(st, f, cp, text)) ?? null;
@@ -115,7 +118,8 @@ const DOTTED_CIRCLE = "\u25CC";
 function orderedFamilies(st: ProbeState, cp: number): string[] {
   blockFont(st, cp);
   const block = blockOf(cp);
-  return [...((block && st.blockFamilies.get(block.start)) || []), ...st.embedded];
+  const at = (f: string) => st.position.get(f) ?? Number.MAX_SAFE_INTEGER;
+  return [...((block && st.blockFamilies.get(block.start)) || []), ...st.embedded].sort((a, b) => at(a) - at(b));
 }
 
 /** One family draws the text, and for a combining mark also the dotted circle it sits on. */
@@ -161,7 +165,7 @@ function verified(st: ProbeState, cp: number, text: string): boolean {
 }
 
 export function createGlyphProbe(blankFamily: string): GlyphProbe {
-  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", embedded: [], circle: new Map(), circleFonts: new Map(), key: "" };
+  const st: ProbeState = { context: document.createElement("canvas").getContext("2d"), blank: blankFamily, cache: new Map(), presence: new Map(), blockFonts: new Map(), blockFamilies: new Map(), candidates: [], embeddedFont: "", embedded: [], circle: new Map(), circleFonts: new Map(), position: new Map(), key: "" };
   return {
     familyPresent: (family) => familyPresent(st, family),
     setStack: (next, embedded) => setStack(st, next, embedded),

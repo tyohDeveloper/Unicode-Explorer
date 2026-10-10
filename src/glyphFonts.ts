@@ -19,6 +19,12 @@ export interface GlyphFonts { apply(fontId: string): void; ready: Promise<void>;
 
 const device = Object.values(deviceFonts.families).flat();
 
+/** D-28: embedded outline fonts (Charis Latin) precede the block packs; bitmap ones stay last. */
+function embeddedByDesign(standard: ReturnType<typeof standardFonts>): { outline: string[]; bitmap: string[] } {
+  const outline = standard.all.filter((f) => f.role === "coverage" && f.design !== "bitmap").map((f) => f.css_family);
+  return { outline, bitmap: standard.coverage.filter((f) => !outline.includes(f)) };
+}
+
 export function createGlyphFonts(probe: GlyphProbe, packs: FontPackLoader): GlyphFonts {
   const standard = standardFonts();
   const toLoad = [...standard.coverage, standard.placeholder, standard.detection].filter(Boolean);
@@ -27,13 +33,14 @@ export function createGlyphFonts(probe: GlyphProbe, packs: FontPackLoader): Glyp
   const faces = [...document.fonts].filter((f) => toLoad.includes(f.family.replace(/^["']|["']$/g, "")));
   const ready = Promise.all([...toLoad.map((family) => document.fonts.load(`16px "${family}"`)), ...faces.map((f) => f.load())]).then(() => undefined, () => undefined);
   const present = (names: readonly string[]) => names.filter((n) => isGenericFamily(n) || probe.familyPresent(n));
+  const { outline, bitmap } = embeddedByDesign(standard);
   let current = "";
   return {
     ready,
     stack: () => current,
     presentDevice: () => present(device),
     apply(fontId: string): void {
-      current = composeFontStack({ stylePacks: packs.styleFamilies(fontId), style: present(splitFontFamilies(fontStackFor(fontId))), device: present(device), blockPacks: packs.families(), embedded: standard.coverage });
+      current = composeFontStack({ stylePacks: packs.styleFamilies(fontId), style: present(splitFontFamilies(fontStackFor(fontId))), device: present(device), embeddedOutline: outline, blockPacks: packs.families(), embedded: bitmap });
       document.documentElement.style.setProperty("--glyph-font", current);
       document.documentElement.style.setProperty("--placeholder-font", `"${standard.placeholder}"`);
       probe.setStack(splitFontFamilies(current), standard.coverage);
