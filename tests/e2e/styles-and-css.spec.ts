@@ -10,7 +10,7 @@ test("Serif loads its style pack first in the stack; Bold adds the styled faces 
   await expect.poll(() => page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue("--glyph-font"))).toMatch(/^"UE TestSerif",/);
   await page.getByTestId("checkbox-controls-bold").check();
   await expect(page.getByTestId("text-status-fonts")).toContainText("Test serif bold");
-  expect(await page.evaluate(() => [...document.fonts].some((f) => f.family === "UE TestSerif" && f.weight === "700" && f.status === "loaded"))).toBe(true);
+  await expect.poll(() => page.evaluate(() => [...document.fonts].some((f) => f.family === "UE TestSerif" && f.weight === "700" && f.status === "loaded"))).toBe(true);
   // The pack arriving re-renders the output, so poll rather than read a cell that may be replaced mid-read.
   await expect.poll(() => page.evaluate(() => { const g = document.querySelector('[data-cp="0041"] .glyph'); return g ? getComputedStyle(g).fontWeight : ""; })).toBe("700");
   await expect.poll(() => page.evaluate(() => location.hash)).toBe("#b=0000&f=serif&bold=1");
