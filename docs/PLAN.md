@@ -583,6 +583,12 @@ Items deliberately not part of any phase definition. Revisit only on a trigger.
   **Recommended: C**, and A if bare-device emoji matter, for example for a platform-specific
   app (see "Platform-specific apps").
 
+- **#25: whether to keep emoji-specific support at all.** Owner view (2026-10-10): emoji are the
+  least important part of the app, because every environment that uses them has its own picker.
+  The issue lists what emoji support consists of (presentation control, device emoji fonts, Noto
+  Emoji in the CSS table, Q-19) and the options. Initial lean: decide per target, dropping
+  emoji-only features from the web app while keeping the characters. Supersedes Q-19 if
+  emoji-only features go.
 - **#17 / CP4-03: start-up and all-blocks speed.** Parked as optional for a later review.
 
 ## Platform-specific apps (not scheduled)
@@ -629,6 +635,7 @@ this web app in a web view. Collected 2026-10-10 from the owner's iOS questions 
 
 - Q-19 option A (a monochrome Noto Emoji pack) becomes worth it if the app must show emoji
   sequences on devices without an emoji font.
+- #25: emoji may matter more to a ChromeOS or iOS app than to the web app; decide there.
 
 ## Out of scope
 
