@@ -1,7 +1,8 @@
 # Unicode Explorer: Rendering and Style Correctness (Phase 10)
 
-**Status: closed 2026-10-10.** One finding remains open, RND-08 (emoji sequences), tracked as
-[#23](https://github.com/tyohDeveloper/Unicode-Explorer/issues/23) and PLAN Q-19.
+**Status: closed 2026-10-10.** Open after closing: RND-07 (Greek, corrected below; planned for the next build). RND-08
+(emoji sequences) is parked outside any phase, as PLAN Q-19 and
+[#23](https://github.com/tyohDeveloper/Unicode-Explorer/issues/23).
 
 Audit date: 2026-10-09. Covers **app 2.3.3.0 / data 2.0.8.0** against 2.3.1.1 (the build before
 Phase 10). Earlier audits measured whether each character draws. This one measures whether it
@@ -79,13 +80,23 @@ Italic exists only where the fonts' scripts use it: Latin, Greek and Cyrillic. "
 | RND-04 | P3 | Subsets dropped the space glyph and decomposition targets: 9 strings shaped differently (U+034F, Khmer U+17B4/17B5, Todhri dotted letters) | Closed in 2.3.3.0: subsets keep U+0020 and canonical decompositions; `verify:shaping` in the release workflow |
 | RND-05 | P2 | 29 blocks were claimed by several outline fonts, and the earliest won. Noto Sans Math drew ordinary Arabic text in Complete | Closed in 2.3.3.0: one owner per block; other fonts keep only characters the owner lacks |
 | RND-06 | P3 | In Complete, Latin combining marks came from Noto Sans Mono, because packs preceded the embedded Charis | Closed in 2.3.3.0: embedded outline fonts precede the packs (D-28) |
-| RND-07 | P3 | Charis has no polytonic Greek. Ἑ is bitmap in Standard and Noto Sans Mono in Complete | Partly fixed: the Charis subset now adds basic Greek and Cyrillic (+355 characters, +48 KB). Polytonic accepted |
+| RND-07 | P3 | Charis has almost no Greek: 23 of 368 visible characters, none of Greek Extended. 345 Greek characters, including polytonic Ἑ, are bitmap in Standard; Complete uses Noto Sans Mono | Open (corrected 2026-10-10; see below). The 2.3.3.0 subset change added Cyrillic (+332) and 23 Greek. Next build: a Noto Serif Greek subset, 27.8 KB WOFF2, covering 354 of 368 |
 | RND-08 | P3 | Without an emoji font, ZWJ sequences, flags, keycaps and skin tones fall apart | Open as Q-19 (#23). Measured candidate: monochrome Noto Emoji, 1.0 MB WOFF2, 1,489 code points, 4 of 6 test sequences joined. Recommended: accept, as for CJK (D-25), and add the pack if bare-device emoji matter |
 | RND-09 | P3 | Old-Hangul extended jamo don't compose, even with Noto Sans CJK SC | Accepted: needs a Korean font with old-Hangul shaping |
 | RND-10 | P3 | Some marks take width on U+25CC (Sutton SignWriting 127; some Indic vowel signs) | Accepted: font design, the same with the full installed fonts |
 | RND-11 | P3 | On a minimal device, a Latin word mixes the device font with Charis where the device font lacks letters | Accepted: inherent to fallback; the Serif and Sans style packs give one family in Complete |
 | RND-12 | P3 | One Noto Sans Duployan test string exceeds HarfBuzz's operation limit in both fonts | Accepted: recorded as skipped by `verify:shaping` |
 | RND-13 | P3 | The release workflow failed twice (2.3.2.0, 2.3.2.1): the borrowed-glyph conversion embedded a timestamp, and manifest totals weren't re-measured | Closed in 2.3.2.2: reproducible conversion, and `release.mjs` re-runs `build:packs` |
+
+## Corrections after closing (2026-10-10)
+
+- **RND-07 was overstated.** The report and the 2.3.3.0 changelog said the Charis subset
+  "adds basic Greek and Cyrillic". Measured afterwards, Charis 7 maps only 23 of the 368
+  visible Greek characters and none of Greek Extended. Of the +355 outline characters, 332 are
+  Cyrillic. 345 Greek characters still fall to bitmap Unifont in Standard on devices without a
+  Greek font. A Noto Serif subset of both Greek blocks (27.8 KB WOFF2, 354 of 368 characters,
+  all 233 polytonic) is planned for the next build (PLAN "Next build").
+- **RND-08 (emoji sequences) is parked** outside any phase (PLAN "Parked", Q-19, #23).
 
 ## Verdict
 

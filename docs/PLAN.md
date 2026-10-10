@@ -386,8 +386,10 @@ after; no pack over 8 MiB; Audit Checkpoint 4 after the release.
 
 ### Phase 9 (future, not scheduled): Runtime font-source switch and CSS-panel behaviour
 
-Planned 2026-10-09 at the owner's request; not started. Revisit before an iOS wrapper or when
-CP4-03 is taken up. A checkpoint issue tracks it.
+Planned 2026-10-09 at the owner's request; not started (#20). Revisit when CP4-03 is taken up.
+The parts that only matter for a platform-specific app (the `online` source, its host, and
+per-target defaults and storage) are in "Platform-specific apps" below. For the standalone
+file the default stays `packs` where packs exist, saved in the URL fragment.
 
 **Goal.** Start fast with the fonts inside the file, and let the user switch to the full font
 set while the app runs. Measured at Checkpoint 4, all blocks take 0.38 s to first cells and
@@ -401,7 +403,7 @@ The saving is in all-block views, memory and, for online fonts, download size.
 |---|---|---|
 | `embedded` | The fonts inside `Unicode.html` only; packs are not loaded even when present | Every edition and target |
 | `packs` | Embedded fonts plus the sidecar packs, loaded per selected block (today's Complete behaviour) | Complete editions; native wrapper with bundled packs |
-| `online` | Embedded fonts plus fonts fetched from the network at run time | Only targets that permit network (native wrapper, hosted); never the standalone file |
+| `online` | Embedded fonts plus fonts fetched from the network at run time | Platform-specific apps and hosted builds only; never the standalone file. See "Platform-specific apps" |
 
 **Mechanics.** On a switch the app:
 
@@ -427,7 +429,8 @@ URLs and never this app's files (D-16), so another programmer gets the same answ
 mode. New: one status line above the CSS saying what the app is drawing with now, and how that
 compares for the selection:
 
-- `online` with the public table (Q-18 option B): "The app is using these same web fonts."
+- `online` (platform-specific apps only; Q-18): "The app is using these same web fonts" when the
+  host is the public table.
 - `embedded` / `packs`: "The app is drawing with its built-in fonts (or packs): N of M
   characters verified here; this CSS covers K." N is the probe's verified count; K comes from
   the web-font table.
@@ -438,28 +441,6 @@ The "Fonts on this device" form is unchanged in every mode.
 `font-src data:`, and `online` is compiled out. A native-wrapper or hosted build gets its own
 CSP (`font-src data:` plus the chosen font host) and enables `online`. The build flag and the
 target's rules go in `docs/CODING-STANDARDS.md` §17 before any online code lands.
-
-**Open questions (options; recommendations in bold):**
-
-- Q-16, default source.
-  - (A) `packs` wherever packs exist, as today, with `embedded` as the opt-in fast mode.
-  - (B) `embedded` everywhere, with full fonts opt-in.
-  - (C) Per target: `packs` for the standalone Complete zips; `embedded` for a native or hosted
-    build, with `online` one tap away.
-  - **Recommend C.** It doesn't change what Complete users downloaded the packs for, and gives
-    the iOS app the quick start the owner described.
-- Q-17, the "switch" after the first switch.
-  - (A) Per session only.
-  - (B) **Saved in the URL fragment, like every other setting.**
-  - (C) Platform storage in a native wrapper.
-  - **Recommend B**, with C added only in the native target.
-- Q-18, source of `online` fonts.
-  - (A) **This project's own packs, published per release** (GitHub Pages or release assets):
-    the same bytes and coverage as `packs` (159,631 in Complete + Hieroglyphs), versioned with
-    the app. D-16 governs the CSS panel, not the app's own downloads.
-  - (B) The public web-font table: 158,883 characters, no hosting, but different fonts from
-    `packs`.
-  - **Recommend A** for the app, while the CSS panel keeps using B.
 
 **Work items:** the `fontSource` setting, reducer, hash key and tests; source-aware stack
 composition (PURE) and tests; loader gating so `embedded` never injects pack scripts; online
@@ -538,45 +519,116 @@ Status 2.3.3.0: **Phase 10 complete.** R-1 to R-6 were measured, and the report 
 - `verify:shaping` runs in the release workflow;
 - one owner per block in `plan:outline` (Noto Sans Math no longer draws Arabic);
 - embedded outline fonts precede the packs (D-28);
-- the Charis subset adds basic Greek and Cyrillic.
+- the Charis subset adds the Cyrillic blocks (and 23 Greek characters; see "Next build" for Greek).
 
-**Phase 10 closed 2026-10-10** (issue #22). One item stays open, tracked as #23 and Q-19.
+**Phase 10 closed 2026-10-10** (issue #22). RND-08 (emoji sequences) is parked outside any
+phase: see "Parked" (Q-19, #23).
 
-**Known limitation: emoji sequences without an emoji font (RND-08).** Many emoji are sequences
-of several code points that an emoji font joins into one picture:
-
-- ZWJ sequences, for example 👩‍💻 = U+1F469 U+200D U+1F4BB;
-- flags (two regional indicators);
-- keycaps (digit U+FE0F U+20E3);
-- skin tones (emoji + modifier).
-
-With an emoji font installed (Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji), all of
-them draw as one glyph in both editions. On a device without one, which in testing meant a
-one-font Linux fixture, they fall apart into their components drawn by Unifont: 👩‍💻 shows
-as a woman, an invisible joiner and a laptop. No embedded font or pack joins them. This
-affects plain mode, the compose pad and the CSS dialog's preview; single-code-point emoji
-cells are unaffected.
-
-Q-19, options:
-
-- (A) Add a pack with the monochrome Noto Emoji variable font (OFL, already pinned for the
-  CSS dialog at google/fonts `51303ca9`). Measured: 1.0 MB WOFF2, 1,489 code points, and 4 of 6
-  test sequences joined as one glyph (woman technologist, US flag, skin tone, family; the
-  rainbow flag and keycap 1 did not). Outline, no colour, within the 8 MiB limit.
-- (B) A colour emoji font pack (Noto Color Emoji, COLRv1). Not measured; several megabytes;
-  colour rendering support varies by browser.
-- (C) Accept. Every major desktop and mobile system ships a colour emoji font, as with CJK
-  (D-25).
-
-**Recommended: C now**, and A if bare-device emoji matter, for example for a native wrapper
-(Phase 9).
-
-Open: RND-08, emoji sequences without an emoji font.
 
 Deliverables: `docs/audit/rendering/report.md` with findings `RND-*`, fixes for anything
 broken, and the `verify:shaping` check. Acceptance: on the minimal device, U+11127, U+0941 and
 U+0301 draw from one outline font with the circle; `verify:shaping` passes in CI; every
 `RND-*` finding is closed, accepted or tracked.
+
+## Next build (on hold)
+
+Agreed 2026-10-10; not started. When the next build begins:
+
+1. **Bare-device tests (do not forget).** Turn the Phase 10 evidence scripts into e2e tests
+   that run in CI with a one-font fontconfig: `docs/audit/rendering/evidence/marks-census.cjs`
+   (no mark split across fonts) and `script-samples.cjs` (each sample drawn by one font; Arabic
+   from Noto Naskh Arabic, Latin marks from Charis). Tracked as #24.
+2. **Polytonic Greek in Standard (measured 2026-10-10).** Charis has only 23 of the 368 visible
+   Greek characters and none of Greek Extended, so 345 Greek characters fall to bitmap Unifont on
+   devices without a Greek font. The 2.3.3.0 "Charis adds Greek and Cyrillic" change added almost
+   only Cyrillic. Option: embed a Noto Serif subset of Greek and Coptic plus Greek Extended:
+   27.8 KB WOFF2 (~36 KB in `Unicode.html`), covering 354 of 368, including all 233 polytonic
+   characters. It would own both Greek blocks; the Greek blocks come out of the Charis subset so
+   a word isn't split between two fonts. Noto Sans is 25.4 KB with the same coverage.
+   **Recommended: Noto Serif**, to match Charis.
+3. **Audit Checkpoint 5 as part of the build.** Re-measure on both devices (minimal and rich),
+   fold the Phase 10 measures into the standard set, and re-examine every open finding.
+
+## Parked (outside any phase)
+
+Items deliberately not part of any phase definition. Revisit only on a trigger.
+
+- **Q-19 / RND-08 / #23: emoji sequences without an emoji font.** Parked 2026-10-10.
+
+  Many emoji are sequences of several code points that an emoji font joins into one picture:
+
+  - ZWJ sequences, for example 👩‍💻 = U+1F469 U+200D U+1F4BB;
+  - flags (two regional indicators);
+  - keycaps (digit U+FE0F U+20E3);
+  - skin tones (emoji + modifier).
+
+  With an emoji font installed (Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji), all of
+  them draw as one glyph in both editions. On a device without one, which in testing meant a
+  one-font Linux fixture, they fall apart into their components drawn by Unifont: 👩‍💻 shows
+  as a woman, an invisible joiner and a laptop. No embedded font or pack joins them. This
+  affects plain mode, the compose pad and the CSS dialog's preview; single-code-point emoji
+  cells are unaffected.
+
+  Q-19, options:
+
+  - (A) Add a pack with the monochrome Noto Emoji variable font (OFL, already pinned for the
+    CSS dialog at google/fonts `51303ca9`). Measured: 1.0 MB WOFF2, 1,489 code points, and 4 of 6
+    test sequences joined as one glyph (woman technologist, US flag, skin tone, family; the
+    rainbow flag and keycap 1 did not). Outline, no colour, within the 8 MiB limit.
+  - (B) A colour emoji font pack (Noto Color Emoji, COLRv1). Not measured; several megabytes;
+    colour rendering support varies by browser.
+  - (C) Accept. Every major desktop and mobile system ships a colour emoji font, as with CJK
+    (D-25).
+
+  **Recommended: C**, and A if bare-device emoji matter, for example for a platform-specific
+  app (see "Platform-specific apps").
+
+- **#17 / CP4-03: start-up and all-blocks speed.** Parked as optional for a later review.
+
+## Platform-specific apps (not scheduled)
+
+Relevant only if and when a platform-specific app is built, for example an iOS app that hosts
+this web app in a web view. Collected 2026-10-10 from the owner's iOS questions and Phase 9.
+
+- **Packaging.** Bundle the Complete + Hieroglyphs folder (`Unicode.html` + `unicode-fonts/`,
+  ~35 MB) in the app. Serve it through a custom URL scheme handler rather than `file://`, so
+  the CSP's `'self'` works in WebKit. Packs load as classic scripts, so no other change is
+  needed.
+- **Checks before building:**
+  - the minimum OS version (the name table needs `DecompressionStream`; believed iOS 16.4,
+    unverified);
+  - canvas glyph detection in WebKit;
+  - App Store review of web-wrapper apps (guideline 4.2).
+- **Rules first.** The target's rules (CSP with a font host, build flag that enables `online`,
+  platform storage) go in `docs/CODING-STANDARDS.md` §17 before any code.
+- **The `online` font source** (from Phase 9): embedded fonts plus fonts fetched at run time,
+  registered through the FontFace API with measured `unicode-range`s and loaded per block,
+  soft-failing to the embedded fonts.
+
+**Open questions (options; recommendations in bold):**
+
+- Q-16, default source.
+  - (A) `packs` wherever packs exist, as today, with `embedded` as the opt-in fast mode.
+  - (B) `embedded` everywhere, with full fonts opt-in.
+  - (C) Per target: `packs` for the standalone Complete zips; `embedded` for a native or hosted
+    build, with `online` one tap away.
+  - **Recommend C.** It doesn't change what Complete users downloaded the packs for, and gives
+    the iOS app the quick start the owner described.
+- Q-17, the "switch" after the first switch.
+  - (A) Per session only.
+  - (B) **Saved in the URL fragment, like every other setting.**
+  - (C) Platform storage in a native wrapper.
+  - **Recommend B**, with C added only in the native target.
+- Q-18, source of `online` fonts.
+  - (A) **This project's own packs, published per release** (GitHub Pages or release assets):
+    the same bytes and coverage as `packs` (159,631 in Complete + Hieroglyphs), versioned with
+    the app. D-16 governs the CSS panel, not the app's own downloads.
+  - (B) The public web-font table: 158,883 characters, no hosting, but different fonts from
+    `packs`.
+  - **Recommend A** for the app, while the CSS panel keeps using B.
+
+- Q-19 option A (a monochrome Noto Emoji pack) becomes worth it if the app must show emoji
+  sequences on devices without an emoji font.
 
 ## Out of scope
 
