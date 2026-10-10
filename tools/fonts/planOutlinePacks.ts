@@ -34,7 +34,7 @@ const EXCLUDE = /KSSRotated|KSSVertical/;
 
 type Block = { name: string; start: number; end: number; category: string };
 interface Candidate { stem: string; family: string; ttf: Uint8Array; cps: Set<number> }
-interface Chosen { c: Candidate; blocks: Block[]; gain: number; woff2: number }
+interface Chosen { c: Candidate; blocks: Block[]; gain: number; woff2: number; extra?: number[] }
 
 const hex = (cp: number) => cp.toString(16).toUpperCase().padStart(4, "0");
 const kebab = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
@@ -91,19 +91,43 @@ function gainOf(c: Candidate, open: Set<number>): number {
 }
 
 /** Greedy by new characters covered; each pick claims whole blocks where it adds any. */
-function choose(cands: Candidate[], target: Set<number>, blocks: Block[]): Omit<Chosen, "woff2">[] {
-  const open = new Set(target), picked: Omit<Chosen, "woff2">[] = [];
+type Pick = Omit<Chosen, "woff2"> & { gained: number[] };
+
+function choose(cands: Candidate[], target: Set<number>, blocks: Block[]): Pick[] {
+  const open = new Set(target), picked: Pick[] = [];
   for (;;) {
     const best = cands.map((c) => ({ c, gain: gainOf(c, open) })).sort((a, b) => b.gain - a.gain || a.c.stem.localeCompare(b.c.stem))[0];
     if (!best || best.gain < MIN_GAIN) return picked;
-    const mine = blocks.filter((b) => [...best.c.cps].some((cp) => cp >= b.start && cp <= b.end && open.has(cp)));
-    for (const cp of best.c.cps) open.delete(cp);
-    picked.push({ c: best.c, blocks: mine, gain: best.gain });
+    const gained = [...best.c.cps].filter((cp) => open.has(cp));
+    const mine = blocks.filter((b) => gained.some((cp) => cp >= b.start && cp <= b.end));
+    for (const cp of gained) open.delete(cp);
+    picked.push({ c: best.c, blocks: mine, gain: best.gain, gained });
     cands = cands.filter((c) => c !== best.c);
   }
 }
 
-function subsetRanges(blocks: Block[]): [string, string][] { return blocks.map((b) => [hex(b.start), hex(b.end)]); }
+function subsetRanges(blocks: Block[], extra: number[] = []): [string, string][] {
+  return [...blocks.map((b): [string, string] => [hex(b.start), hex(b.end)]), ...extra.map((cp): [string, string] => [hex(cp), hex(cp)])];
+}
+
+/**
+ * Phase 10 R-3: one owner per block. The pick that gained most characters in a block gets
+ * the whole block (shaping stays within one font); every other pick keeps only the
+ * characters it gained there that the owner lacks. Before, every pick took every block it
+ * touched, so Noto Sans Math (earlier in the stack) drew ordinary Arabic text.
+ */
+function assignBlocks(picks: Pick[], blocks: Block[]): Omit<Chosen, "woff2">[] {
+  const inBlock = (cp: number, b: Block) => cp >= b.start && cp <= b.end;
+  const owned = new Map<Pick, Block[]>(), extra = new Map<Pick, number[]>();
+  for (const b of blocks) {
+    const gains = picks.map((p) => ({ p, n: p.gained.filter((cp) => inBlock(cp, b)).length })).filter((x) => x.n > 0);
+    if (!gains.length) continue;
+    const owner = gains.sort((x, y) => y.n - x.n)[0].p;
+    owned.set(owner, [...(owned.get(owner) ?? []), b]);
+    for (const { p } of gains) if (p !== owner) extra.set(p, [...(extra.get(p) ?? []), ...p.gained.filter((cp) => inBlock(cp, b) && !owner.c.cps.has(cp))]);
+  }
+  return picks.map((p) => ({ c: p.c, gain: p.gain, blocks: owned.get(p) ?? [], extra: extra.get(p) ?? [] })).filter((p) => p.blocks.length || p.extra.length);
+}
 
 function fontEntry(ch: Chosen): FontEntry {
   const base = `https://cdn.jsdelivr.net/gh/notofonts/notofonts.github.io@${NOTO_COMMIT}`;
@@ -111,7 +135,7 @@ function fontEntry(ch: Chosen): FontEntry {
     id: `outline-${kebab(ch.c.stem)}`, family: ch.c.family, css_family: `UE Outline ${ch.c.family}`, version: `notofonts.github.io@${NOTO_COMMIT.slice(0, 8)}`,
     license: "OFL-1.1", license_url: `https://github.com/notofonts/notofonts.github.io/blob/${NOTO_COMMIT}/fonts/LICENSE`,
     source: { url: `${base}/fonts/${ch.c.stem}/unhinted/ttf/${ch.c.stem}-Regular.ttf`, format: "ttf", sha256: sha256Hex(ch.c.ttf), bytes: ch.c.ttf.length },
-    subset: subsetRanges(ch.blocks), role: "coverage", design: "outline",
+    subset: subsetRanges(ch.blocks, ch.extra), role: "coverage", design: "outline",
     note: `D-23 outline pack font: ${ch.gain} characters otherwise drawn by a bitmap font in the Complete editions.`,
   };
 }
@@ -120,7 +144,8 @@ function fontEntry(ch: Chosen): FontEntry {
 function groupPacks(chosen: Chosen[]): { id: string; label: string; fonts: Chosen[] }[] {
   const byCat = new Map<string, Chosen[]>();
   for (const ch of chosen) {
-    const top = [...ch.blocks].sort((a, b) => b.end - b.start - (a.end - a.start))[0].category;
+    const home = ch.blocks.length ? ch.blocks : blocksOfExtra(ch);
+    const top = [...home].sort((a, b) => b.end - b.start - (a.end - a.start))[0].category;
     byCat.set(top, [...(byCat.get(top) ?? []), ch]);
   }
   const packs: { id: string; label: string; fonts: Chosen[] }[] = [];
@@ -132,8 +157,11 @@ function groupPacks(chosen: Chosen[]): { id: string; label: string; fonts: Chose
   return packs;
 }
 
+let ALL_BLOCKS: Block[] = [];
+const blocksOfExtra = (ch: Chosen) => ALL_BLOCKS.filter((b) => (ch.extra ?? []).some((cp) => cp >= b.start && cp <= b.end));
+
 function packEntry(p: { id: string; label: string; fonts: Chosen[] }, cats: string[]): PackEntry {
-  const blocks = [...new Set(p.fonts.flatMap((ch) => ch.blocks.map((b) => hex(b.start))))];
+  const blocks = [...new Set(p.fonts.flatMap((ch) => [...ch.blocks, ...blocksOfExtra(ch)].map((b) => hex(b.start))))];
   return { id: p.id, label: p.label, kind: "blocks", fonts: p.fonts.map((ch) => `outline-${kebab(ch.c.stem)}`), categories: cats, attach: "planned", blocks, license_files: ["fonts/licenses/Noto-OFL-1.1.txt"], editions: ["complete", "complete-hieroglyphs"] };
 }
 
@@ -142,16 +170,17 @@ async function plan(notoDir: string): Promise<void> {
   const visible = visibleAssignedSet(repoRoot);
   const raw = JSON.parse(readFileSync(resolve(repoRoot, "src/data/blocks.json"), "utf-8")) as { blocks: [string, number, number, string][] };
   const blocks = raw.blocks.map(([name, start, end, category]) => ({ name, start, end, category }));
+  ALL_BLOCKS = blocks;
   m.fonts = m.fonts.filter((f) => !f.id.startsWith("outline-"));
   m.packs = m.packs.filter((p) => !p.id.startsWith("outline-"));
   const target = bitmapTarget(m, visible, blocks);
-  const picks = choose(candidates(notoDir, visible), target, blocks);
+  const picks = assignBlocks(choose(candidates(notoDir, visible), target, blocks), blocks);
   const chosen: Chosen[] = [];
-  for (const p of picks) chosen.push({ ...p, woff2: (await toWoff2(subsetSfnt(p.c.ttf, subsetRanges(p.blocks)))).length });
+  for (const p of picks) chosen.push({ ...p, woff2: (await toWoff2(subsetSfnt(p.c.ttf, subsetRanges(p.blocks, p.extra)))).length });
   const packs = groupPacks(chosen);
   m.fonts.push(...chosen.map(fontEntry));
   const firstStyle = m.packs.findIndex((p) => p.kind === "style");
-  m.packs.splice(firstStyle, 0, ...packs.map((p) => packEntry(p, [...new Set(p.fonts.flatMap((ch) => ch.blocks.map((b) => b.category)))])));
+  m.packs.splice(firstStyle, 0, ...packs.map((p) => packEntry(p, [...new Set(p.fonts.flatMap((ch) => [...ch.blocks, ...blocksOfExtra(ch)].map((b) => b.category)))])));
   for (const e of m.editions.filter((e) => e.packs?.length)) e.packs = [...e.packs!.filter((id) => !id.startsWith("outline-")), ...packs.map((p) => p.id)];
   writeFontManifest(repoRoot, m);
   const gain = chosen.reduce((s, c) => s + c.gain, 0);
