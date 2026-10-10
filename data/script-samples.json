@@ -1,0 +1,165 @@
+{
+ "_doc": "Short shaping samples per script: autonyms or common words, used as test strings for verify:shaping (Phase 10 R-1) and the rendered sample sheet (R-3). Not linguistic references. Authored; edit freely.",
+ "samples": [
+  {
+   "script": "Latin (decomposed marks)",
+   "text": "Tiếng Việt, ậ"
+  },
+  {
+   "script": "Latin (precomposed)",
+   "text": "Tiếng Việt"
+  },
+  {
+   "script": "Greek (polytonic)",
+   "text": "Ἑλληνικά"
+  },
+  {
+   "script": "Cyrillic",
+   "text": "Русский язык"
+  },
+  {
+   "script": "Armenian",
+   "text": "Հայերեն"
+  },
+  {
+   "script": "Georgian",
+   "text": "ქართული"
+  },
+  {
+   "script": "Hebrew (pointed)",
+   "text": "שָׁלוֹם"
+  },
+  {
+   "script": "Arabic",
+   "text": "العربية"
+  },
+  {
+   "script": "Syriac",
+   "text": "ܠܫܢܐ ܣܘܪܝܝܐ"
+  },
+  {
+   "script": "Thaana",
+   "text": "ދިވެހި"
+  },
+  {
+   "script": "N'Ko",
+   "text": "ߒߞߏ"
+  },
+  {
+   "script": "Devanagari",
+   "text": "क्षत्रिय हिन्दी"
+  },
+  {
+   "script": "Bengali",
+   "text": "বাংলা"
+  },
+  {
+   "script": "Gurmukhi",
+   "text": "ਪੰਜਾਬੀ"
+  },
+  {
+   "script": "Gujarati",
+   "text": "ગુજરાતી"
+  },
+  {
+   "script": "Odia",
+   "text": "ଓଡ଼ିଆ"
+  },
+  {
+   "script": "Tamil",
+   "text": "தமிழ்"
+  },
+  {
+   "script": "Telugu",
+   "text": "తెలుగు"
+  },
+  {
+   "script": "Kannada",
+   "text": "ಕನ್ನಡ"
+  },
+  {
+   "script": "Malayalam",
+   "text": "മലയാളം"
+  },
+  {
+   "script": "Sinhala",
+   "text": "සිංහල"
+  },
+  {
+   "script": "Thai",
+   "text": "ภาษาไทย"
+  },
+  {
+   "script": "Lao",
+   "text": "ພາສາລາວ"
+  },
+  {
+   "script": "Tibetan",
+   "text": "བོད་ཡིག"
+  },
+  {
+   "script": "Myanmar",
+   "text": "မြန်မာ"
+  },
+  {
+   "script": "Khmer",
+   "text": "ភាសាខ្មែរ"
+  },
+  {
+   "script": "Mongolian",
+   "text": "ᠮᠣᠩᠭᠣᠯ"
+  },
+  {
+   "script": "Ethiopic",
+   "text": "አማርኛ"
+  },
+  {
+   "script": "Cherokee",
+   "text": "ᏣᎳᎩ"
+  },
+  {
+   "script": "Canadian Aboriginal Syllabics",
+   "text": "ᓀᐦᐃᔭᐍᐏᐣ"
+  },
+  {
+   "script": "Tifinagh",
+   "text": "ⵜⴰⵎⴰⵣⵉⵖⵜ"
+  },
+  {
+   "script": "Yi",
+   "text": "ꆈꌠꁱꂷ"
+  },
+  {
+   "script": "Ol Chiki",
+   "text": "ᱚᱞ ᱪᱤᱠᱤ"
+  },
+  {
+   "script": "Javanese",
+   "text": "ꦧꦱꦗꦮ"
+  },
+  {
+   "script": "Balinese",
+   "text": "ᬩᬲᬩᬮᬶ"
+  },
+  {
+   "script": "Chakma",
+   "text": "𑄌𑄋𑄴𑄟𑄳𑄦"
+  },
+  {
+   "script": "Adlam",
+   "text": "𞤀𞤣𞤤𞤢𞤥"
+  },
+  {
+   "script": "Hangul (precomposed)",
+   "text": "한국어"
+  },
+  {
+   "script": "Hangul (conjoining jamo)",
+   "text": "한국"
+  },
+  {
+   "script": "Han",
+   "text": "中文 日本語"
+  }
+ ]
+}
