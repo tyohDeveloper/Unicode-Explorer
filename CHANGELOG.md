@@ -9,6 +9,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.3.2] — 2026-10-10
+
+Documentation only; the app's behaviour is unchanged from 2.3.3.1. Published to the test site.
+
+### Changed
+
+- `docs/PLAN.md`: Phase 10 closed. New sections:
+  - "Next build (on hold)": bare-device CI tests (#24), a polytonic Greek subset, Audit
+    Checkpoint 5;
+  - "Parked: for later consideration": Q-19 emoji sequences (#23), emoji cost/benefit (#25),
+    #17 and CP4-03;
+  - "Platform-specific apps (not scheduled)": iOS packaging, the online font source, Q-16 to Q-18.
+- Decision D-29: speed-ups that would save less than half a second are not scheduled.
+
+### Fixed
+
+- `docs/audit/rendering/report.md`: RND-07 corrected. The 2.3.3.0 Charis subset added Cyrillic
+  (332 characters) and only 23 Greek; Charis has no Greek Extended. A Noto Serif Greek subset
+  (27.8 KB WOFF2, 354 of 368 Greek characters) is planned for the next build.
+
 ## [2.3.3.1] — 2026-10-09
 
 Republishes 2.3.3.0, whose release build failed before publishing assets.
