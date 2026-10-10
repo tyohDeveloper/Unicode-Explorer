@@ -547,7 +547,12 @@ Agreed 2026-10-10; not started. When the next build begins:
    characters. It would own both Greek blocks; the Greek blocks come out of the Charis subset so
    a word isn't split between two fonts. Noto Sans is 25.4 KB with the same coverage.
    **Recommended: Noto Serif**, to match Charis.
-3. **Audit Checkpoint 5 as part of the build.** Re-measure on both devices (minimal and rich),
+3. **Refresh the style-pack Noto fonts (#26).** The 32 style fonts are pinned to the archived
+   notofonts/noto-fonts repository (frozen January 2023; for example Noto Sans 2.008 against the
+   current 2.015). Re-pin them to current notofonts releases, measure, and take the Greek subset
+   (item 2) from the refreshed Noto Serif. Fonts come from their source of record, not a
+   redistribution site such as fonts.google.com (see #26).
+4. **Audit Checkpoint 5 as part of the build.** Re-measure on both devices (minimal and rich),
    fold the Phase 10 measures into the standard set, and re-examine every open finding.
 
 ## Parked (outside any phase): for later consideration
