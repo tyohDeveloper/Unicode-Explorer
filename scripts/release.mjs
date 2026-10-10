@@ -7,7 +7,9 @@
  *   npm run release -- data 1.0.0.0
  *
  * Refuses an app release while data/ or fonts/manifest.json has changes
- * since the last data tag (CP4-05), so release data first. Refuses a dirty tree, validates the four-part format, requires a matching
+ * since the last data tag (CP4-05), so release data first; and, for the app
+ * track, re-runs build:packs and refuses if it re-measures fonts/manifest.json
+ * (needs fonts/cache from fetch:fonts; --skip-packs to bypass). Refuses a dirty tree, validates the four-part format, requires a matching
  * CHANGELOG section (the number carries no meaning by itself; the changelog
  * does), writes the version into package.json / data/version.json, rebuilds
  * so the artifact stamp agrees, runs verify:build, commits, and creates an
@@ -34,6 +36,12 @@ if (track === "app") {
   const lastData = git("tag", "--list", "*-data", "--sort=-v:refname").split("\n")[0];
   const pending = lastData ? unreleasedDataChanges(git("diff", "--name-only", lastData, "HEAD").split("\n").filter(Boolean)) : [];
   if (pending.length) die(`data changed since ${lastData} without a data release (CP4-05): ${pending.join(", ")}. Release the data track first: npm run release -- data <version>`);
+}
+
+if (track === "app" && !process.argv.includes("--skip-packs")) {
+  // Lesson from 2.3.2.0/2.3.2.1: the release workflow fails if build:packs re-measures the manifest.
+  execFileSync("npm", ["run", "-s", "build:packs"], { cwd: root, stdio: "inherit" });
+  if (git("status", "--porcelain", "--", "fonts/manifest.json")) die("build:packs changed fonts/manifest.json; commit it (with a data release) before tagging the app");
 }
 
 const changelogPath = resolve(root, track === "app" ? "CHANGELOG.md" : "data/CHANGELOG.md");
