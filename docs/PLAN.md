@@ -586,9 +586,10 @@ Items deliberately not part of any phase definition. Revisit only on a trigger.
 - **#25: whether to keep emoji-specific support at all.** Owner view (2026-10-10): emoji are the
   least important part of the app, because every environment that uses them has its own picker.
   The issue lists what emoji support consists of (presentation control, device emoji fonts, Noto
-  Emoji in the CSS table, Q-19) and the options. Initial lean: decide per target, dropping
-  emoji-only features from the web app while keeping the characters. Supersedes Q-19 if
-  emoji-only features go.
+  Emoji in the CSS table, Q-19) and the options. **Tabled 2026-10-10; owner and recommendation
+  both lean to (D), decide per target.** Many emoji sit in ordinary blocks (digits, © ®, ™, ☀ ☺,
+  ❤ ✂, ⬆ ⭐ …) with text and emoji forms, so the question is presentation, not which characters
+  exist. Supersedes Q-19 if emoji-only features go.
 - **#17 / CP4-03: start-up and all-blocks speed.** Parked as optional for a later review.
 
 ## Platform-specific apps (not scheduled)
