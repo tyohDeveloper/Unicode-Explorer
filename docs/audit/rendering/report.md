@@ -1,5 +1,8 @@
 # Unicode Explorer: Rendering and Style Correctness (Phase 10)
 
+**Status: closed 2026-10-10.** One finding remains open, RND-08 (emoji sequences), tracked as
+[#23](https://github.com/tyohDeveloper/Unicode-Explorer/issues/23) and PLAN Q-19.
+
 Audit date: 2026-10-09. Covers **app 2.3.3.0 / data 2.0.8.0** against 2.3.1.1 (the build before
 Phase 10). Earlier audits measured whether each character draws. This one measures whether it
 draws **correctly**:
@@ -77,7 +80,7 @@ Italic exists only where the fonts' scripts use it: Latin, Greek and Cyrillic. "
 | RND-05 | P2 | 29 blocks were claimed by several outline fonts, and the earliest won. Noto Sans Math drew ordinary Arabic text in Complete | Closed in 2.3.3.0: one owner per block; other fonts keep only characters the owner lacks |
 | RND-06 | P3 | In Complete, Latin combining marks came from Noto Sans Mono, because packs preceded the embedded Charis | Closed in 2.3.3.0: embedded outline fonts precede the packs (D-28) |
 | RND-07 | P3 | Charis has no polytonic Greek. Ἑ is bitmap in Standard and Noto Sans Mono in Complete | Partly fixed: the Charis subset now adds basic Greek and Cyrillic (+355 characters, +48 KB). Polytonic accepted |
-| RND-08 | P3 | Without an emoji font, ZWJ sequences, flags, keycaps and skin tones fall apart | Open: a monochrome Noto Emoji pack (OFL, sequence-capable) for the Complete editions is the candidate; measure size first |
+| RND-08 | P3 | Without an emoji font, ZWJ sequences, flags, keycaps and skin tones fall apart | Open as Q-19 (#23). Measured candidate: monochrome Noto Emoji, 1.0 MB WOFF2, 1,489 code points, 4 of 6 test sequences joined. Recommended: accept, as for CJK (D-25), and add the pack if bare-device emoji matter |
 | RND-09 | P3 | Old-Hangul extended jamo don't compose, even with Noto Sans CJK SC | Accepted: needs a Korean font with old-Hangul shaping |
 | RND-10 | P3 | Some marks take width on U+25CC (Sutton SignWriting 127; some Indic vowel signs) | Accepted: font design, the same with the full installed fonts |
 | RND-11 | P3 | On a minimal device, a Latin word mixes the device font with Charis where the device font lacks letters | Accepted: inherent to fallback; the Serif and Sans style packs give one family in Complete |
@@ -103,8 +106,8 @@ Lessons:
 
 ## Recommendations
 
-1. **RND-08:** measure a monochrome Noto Emoji pack for the Complete editions, giving sequence
-   ligatures without colour, against its size, and decide.
+1. **RND-08 (Q-19):** measured. Monochrome Noto Emoji is 1.0 MB WOFF2 and joins 4 of 6 test
+   sequences. Decide between accepting (recommended) and adding it as a Complete pack.
 2. Keep the minimal-device fixture as a regular check. Turn the marks census and script samples
    into e2e tests that run with a one-font fontconfig in CI.
 3. Fold these measurements into the next audit checkpoint's standard set.

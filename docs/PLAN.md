@@ -540,6 +540,37 @@ Status 2.3.3.0: **Phase 10 complete.** R-1 to R-6 were measured, and the report 
 - embedded outline fonts precede the packs (D-28);
 - the Charis subset adds basic Greek and Cyrillic.
 
+**Phase 10 closed 2026-10-10** (issue #22). One item stays open, tracked as #23 and Q-19.
+
+**Known limitation: emoji sequences without an emoji font (RND-08).** Many emoji are sequences
+of several code points that an emoji font joins into one picture:
+
+- ZWJ sequences, for example 👩‍💻 = U+1F469 U+200D U+1F4BB;
+- flags (two regional indicators);
+- keycaps (digit U+FE0F U+20E3);
+- skin tones (emoji + modifier).
+
+With an emoji font installed (Apple Color Emoji, Segoe UI Emoji, Noto Color Emoji), all of
+them draw as one glyph in both editions. On a device without one, which in testing meant a
+one-font Linux fixture, they fall apart into their components drawn by Unifont: 👩‍💻 shows
+as a woman, an invisible joiner and a laptop. No embedded font or pack joins them. This
+affects plain mode, the compose pad and the CSS dialog's preview; single-code-point emoji
+cells are unaffected.
+
+Q-19, options:
+
+- (A) Add a pack with the monochrome Noto Emoji variable font (OFL, already pinned for the
+  CSS dialog at google/fonts `51303ca9`). Measured: 1.0 MB WOFF2, 1,489 code points, and 4 of 6
+  test sequences joined as one glyph (woman technologist, US flag, skin tone, family; the
+  rainbow flag and keycap 1 did not). Outline, no colour, within the 8 MiB limit.
+- (B) A colour emoji font pack (Noto Color Emoji, COLRv1). Not measured; several megabytes;
+  colour rendering support varies by browser.
+- (C) Accept. Every major desktop and mobile system ships a colour emoji font, as with CJK
+  (D-25).
+
+**Recommended: C now**, and A if bare-device emoji matter, for example for a native wrapper
+(Phase 9).
+
 Open: RND-08, emoji sequences without an emoji font.
 
 Deliverables: `docs/audit/rendering/report.md` with findings `RND-*`, fixes for anything
