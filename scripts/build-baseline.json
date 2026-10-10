@@ -1,7 +1,7 @@
 {
   "_doc": "Size baseline for scripts/verify-build.mjs (CODING-STANDARDS §7.6). Update only in a reviewed commit that says what moved it.",
   "appVersion": "2.3.1.1",
-  "bytes": 3243792,
-  "gzipBytes": 2284401,
+  "bytes": 3245228,
+  "gzipBytes": 2285392,
   "note": "2.3.0.0: Charis Latin subset embedded (D-24) and the app reads a generated embedded-fonts table instead of the whole manifest: +243 KB. 2.2.5.0: Unifont self-host ranges in the web-font table (+10 KB). 2.2.4.0: embedded Fairfax HD Latin Extended-G subset (11.5 KB) and two more CSS-dialog web fonts. 2.2.3.0: 38 extra Noto web fonts in the CSS dialog table (+26 KB). 2.2.2.0: Latin-first font stacks (GLY-03). 2.2.1.0: unicode-range support for split packs (D-20). Phase 6 baseline: Unicode 18 data (353 blocks), properties table (42 KB) for the details strip, Unifont 18.0.01; prefix-range names no longer stored. Up from 2,914,679 bytes / 2,027,955 gzip at 2.1.0.0."
 }
