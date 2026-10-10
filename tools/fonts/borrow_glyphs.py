@@ -55,7 +55,8 @@ def add_charstring(top, name, charstring, cid_keyed: bool) -> None:
 
 def main() -> None:
     target_path, donor_path, out_path, cps = sys.argv[1:5]
-    target, donor = TTFont(target_path), TTFont(donor_path)
+    # Keep head.modified as upstream so the output is byte-identical on every machine.
+    target, donor = TTFont(target_path, recalcTimestamp=False), TTFont(donor_path)
     for cp in cps.split(","):
         borrow(target, donor, int(cp, 16))
     target.save(out_path)
