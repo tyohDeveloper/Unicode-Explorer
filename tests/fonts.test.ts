@@ -20,6 +20,10 @@ import { packScript, packsManifestScript } from "../tools/fonts/packScripts.js";
 import { readFontManifest } from "../tools/fonts/fontManifest.js";
 import { repoRoot } from "./ucdFixture.js";
 describe("composeFontStack", () => {
+  it("puts embedded outline fonts before the block packs and bitmap fonts last (D-28)", () => {
+    expect(composeFontStack({ stylePacks: [], style: ["serif"], device: [], embeddedOutline: ["UE Charis Latin"], blockPacks: ["UE Outline Noto Sans Mono"], embedded: ["UE Unifont"] }))
+      .toBe('serif,"UE Charis Latin","UE Outline Noto Sans Mono","UE Unifont"');
+  });
   it("orders style packs, style stack, device fonts, block packs, then embedded fonts; dedupes and quotes names with spaces", () => {
     expect(composeFontStack({ stylePacks: ["UE Charis"], style: ["system-ui", "serif"], device: ["Segoe UI Historic", "serif"], blockPacks: ["UE Tangut"], embedded: ["UE Unifont", "UE Unifont Upper"] }))
       .toBe('"UE Charis",system-ui,serif,"Segoe UI Historic","UE Tangut","UE Unifont","UE Unifont Upper"');
