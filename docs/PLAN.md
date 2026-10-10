@@ -44,6 +44,7 @@ repository under the same standards, build chain, and release discipline as
 | D-26 | Every subset font keeps U+00A0 and U+25CC when the font has them (`tools/fonts/subsetSfnt.ts`): marks are drawn on U+25CC and browsers draw a cluster from one font. | Phase 10 R-0, 2026-10-09. |
 | D-27 | A font may borrow glyphs it lacks from another manifest font (`borrow`, `tools/fonts/borrow_glyphs.py`). Unifont Upper borrows U+25CC from Unifont; Unifont declares no Reserved Font Name, so the OFL permits the modified font to keep its name. | Phase 10 R-0, 2026-10-09. |
 | D-28 | Stack order: style packs, style, device fonts, embedded outline fonts (Charis Latin), block packs, embedded bitmap fonts. Outline packs own whole blocks one font each; other fonts keep only characters the owner lacks. | Phase 10 R-2/R-3, 2026-10-09. |
+| D-29 | Performance changes that would save less than half a second are not scheduled; they go to "Parked: for later consideration" (#17, CP4-03). | Owner, 2026-10-10. |
 | D-25 | CJK/Hangul glyphs come from installed fonts, named per platform in `data/device-fonts.json` (CP4-01); no outline CJK pack ships. Unifont stays the fallback only on devices with no CJK font (42,318 characters). Revisit if a size-acceptable outline CJK source appears or users report bitmap CJK. | Owner kept Q-15 deferred, 2026-10-09. |
 | D-17 | Style packs carry only OFL fonts (Charis, Andika, Doulos SIL, Noto). DejaVu (Bitstream Vera licence) and GNU FreeFont (GPL-3.0 with font exception) are excluded under `licences_allowed`; the CSS dialog may still suggest them as text, labelled with their licences. Noto CJK is excluded for size. | Licence policy unchanged; recorded 2026-10-08. |
 | D-13 | A pack attaches to the blocks in its declared categories whose visible assigned characters it covers at least a quarter of (`fonts/manifest.json` `pack_rule`). | Coverage, not novelty: an installed outline pack is preferred over the embedded bitmap fonts wherever it applies (CJK Extension D and I render from Jigmo when the pack is present). The category scope keeps a CJK font's stray ASCII glyphs from attaching a 17 MB pack to Basic Latin. |
@@ -549,9 +550,10 @@ Agreed 2026-10-10; not started. When the next build begins:
 3. **Audit Checkpoint 5 as part of the build.** Re-measure on both devices (minimal and rich),
    fold the Phase 10 measures into the standard set, and re-examine every open finding.
 
-## Parked (outside any phase)
+## Parked (outside any phase): for later consideration
 
-Items deliberately not part of any phase definition. Revisit only on a trigger.
+Items deliberately not part of any phase definition. Revisit only on a trigger. By D-29, any
+performance change that would save less than half a second belongs here.
 
 - **Q-19 / RND-08 / #23: emoji sequences without an emoji font.** Parked 2026-10-10.
 
@@ -590,7 +592,12 @@ Items deliberately not part of any phase definition. Revisit only on a trigger.
   both lean to (D), decide per target.** Many emoji sit in ordinary blocks (digits, © ®, ™, ☀ ☺,
   ❤ ✂, ⬆ ⭐ …) with text and emoji forms, so the question is presentation, not which characters
   exist. Supersedes Q-19 if emoji-only features go.
-- **#17 / CP4-03: start-up and all-blocks speed.** Parked as optional for a later review.
+- **#17 / CP4-03: start-up and all-blocks speed (D-29).** Both save less than half a second:
+  - #17, deferring the device-font presence test: 0.07–0.18 s at start-up;
+  - CP4-03, loading off-screen packs after first paint: up to 0.36 s on the first cells of
+    "all blocks" in Complete.
+
+  For later consideration only.
 
 ## Platform-specific apps (not scheduled)
 
