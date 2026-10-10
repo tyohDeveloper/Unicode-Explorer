@@ -9,6 +9,18 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.2.1] — 2026-10-09
+
+Republishes 2.3.2.0, whose release build failed (no assets were published).
+
+### Fixed
+
+- The Unifont Upper conversion with the borrowed U+25CC is now byte-identical on every machine
+  (`borrow_glyphs.py` keeps the upstream `head.modified`), so the release workflow's check
+  that the vendored font matches the upstream conversion passes.
+- A style-pack e2e test read a font's load state once instead of polling; it failed on CI's
+  slower runner.
+
 ## [2.3.2.0] — 2026-10-09
 
 Phase 10, R-0 (#22).
