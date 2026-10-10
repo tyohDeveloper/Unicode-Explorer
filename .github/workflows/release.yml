@@ -25,7 +25,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.14"
-      - name: fontTools for pack subsetting (PLAN.md D-20)
+      - name: fontTools for pack subsetting (PLAN.md D-20) and uharfbuzz for shaping parity (R-1)
         run: pip install -r tools/fonts/requirements.txt
       - name: Composed build
         run: npm run build
@@ -39,6 +39,8 @@ jobs:
         run: npm run build:packs
       - name: Pack blocks unchanged by the build
         run: git diff --exit-code -- fonts/manifest.json
+      - name: Shipped fonts shape like their full sources (Phase 10 R-1)
+        run: npm run verify:shaping
       - name: Create the GitHub release with assets
         env:
           GH_TOKEN: ${{ github.token }}

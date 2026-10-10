@@ -27,7 +27,8 @@
     "build": "npm run check && npm run check:standards && npm run test:run && npm run build:bundle && npm run verify:build",
     "release": "node scripts/release.mjs",
     "report:gaps": "tsx tools/fonts/reportGaps.ts",
-    "plan:outline": "tsx tools/fonts/planOutlinePacks.ts"
+    "plan:outline": "tsx tools/fonts/planOutlinePacks.ts",
+    "verify:shaping": "python3 tools/fonts/verify_shaping.py --report docs/audit/rendering/evidence/shaping-parity.json"
   },
   "devDependencies": {
     "@playwright/test": "^1.64.0",
