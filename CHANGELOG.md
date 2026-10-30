@@ -9,6 +9,26 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+## [2.3.3.3] — 2026-10-30
+
+No change to the app's behaviour. Build-gate hardening under the adopted engineering standards
+and a hosted copy for bookmarking.
+
+### Added
+
+- GitHub Pages deployment on each app tag: `Unicode.html` served as the site root with the
+  sidecar font packs under `unicode-fonts/`, so the Complete editions load on demand when hosted.
+- Build-gate stages: `lint:dead` (knip), `lint:secrets` (secretlint), `verify:licenses`
+  (font manifest and inventory check). See `docs/CODING-STANDARDS.md`.
+
+### Changed
+
+- Adopted `tyohDeveloper/engineering-standards` release 1.0.1.1 (`STANDARDS-ADOPTION.json`);
+  the v2.2 portable copy moved to `docs/standards/portable-v2.2.md`.
+- Five module-internal symbols are no longer exported (`CHUNK_SIZE`, `coverageNote`,
+  `PackState`, `Listener`, `ChosenFont`); the regenerated artifact differs only in minified form.
+- CI runners pinned to `ubuntu-24.04` (EXC-0004).
+
 ## [2.3.3.2] — 2026-10-10
 
 Documentation only; the app's behaviour is unchanged from 2.3.3.1. Published to the test site.
