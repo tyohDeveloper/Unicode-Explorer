@@ -1,6 +1,6 @@
 import { isInSortedRanges } from "../codepoint/isInSortedRanges.js";
 
-export interface ChosenFont { family: string; gain: number }
+interface ChosenFont { family: string; gain: number }
 export interface WebFontChoice { chosen: ChosenFont[]; covered: number; total: number }
 
 type Ranges = Readonly<Record<string, readonly (readonly number[])[]>>;

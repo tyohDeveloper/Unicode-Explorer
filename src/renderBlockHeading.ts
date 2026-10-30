@@ -9,7 +9,7 @@ export function blockHeadingText(block: Block): string {
   return `${block.name}  (${formatCodePoint(block.start)} \u2013 ${formatCodePoint(block.end)})`;
 }
 
-export function coverageNote(coverage: BlockCoverage | undefined): string {
+function coverageNote(coverage: BlockCoverage | undefined): string {
   if (!coverage || coverage.verified + coverage.unverified === 0) return "";
   const total = coverage.verified + coverage.unverified;
   return coverage.unverified === 0 ? `${total} verified` : `${coverage.verified}/${total} verified`;
