@@ -62,7 +62,7 @@ Text representation (application convention kept from the predecessor §0): a ch
 
 ## Enforcement matrix
 
-Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build`, `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
+Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build` (check, check:standards, lint:dead, test:run, bundle, verify), `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
 
 | Core rule | Mechanism | Command | Enforcement |
 |---|---|---|---|
@@ -75,7 +75,7 @@ Commands are the repository's actual scripts. "Automated" runs in CI through `np
 | C-14, C-15 data external and verified | generated tables regenerated from the hash-verified UCD and compared | `npm run verify:regenerated` | automated |
 | C-16a code-point indexing | convention above | | manual-review |
 | C-18 stable test IDs | `scripts/testid-manifest.json`; duplicate and required-ID assertions | `npm run verify:build` | automated |
-| C-20 dead code | none | | manual-review (EXC-0001) |
+| C-20 dead code | knip (unused files, exports, types, dependencies) | `npm run lint:dead` | automated |
 | C-21 size budget | `scripts/build-baseline.json` gzip × 1.05 | `npm run verify:build` | automated |
 | C-22, C-23 tests, determinism | Vitest, Playwright over `file://` | `npm run test:run`, `npm run test:e2e` | automated |
 | C-24 dependency policy | no runtime dependencies; build tools reviewed | | manual-review |
@@ -95,4 +95,4 @@ Application-level conventions that are not hub rules and stay here:
 
 ## Exceptions
 
-Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0001 C-20, EXC-0002 C-26, EXC-0003 C-31, EXC-0004 runner pin). An expired entry fails `npm run check:standards`.
+Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0003 C-31, EXC-0004 runner pin; EXC-0001 closed 2026-10-30). An expired entry fails `npm run check:standards`.

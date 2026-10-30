@@ -3,18 +3,6 @@
   "note": "Repository-wide exceptions per core rule C-27. Each expires; scripts/check-standards.mjs fails on an expired entry until it is renewed or removed. EX-001..EX-005 (pre-standards concatenated JS) were retired by the Phase 3 module migration on 2026-10-08; see docs/PLAN.md.",
   "exceptions": [
     {
-      "id": "EXC-0001",
-      "section": "C-20",
-      "policyVersion": "1.0.1.1",
-      "scope": "Dead-code detection (unused files, exports, dependencies)",
-      "rationale": "No automated dead-code tool runs; check:standards covers purity, limits and exports but not reachability.",
-      "owner": "@tyohDeveloper",
-      "approved": "2026-10-30",
-      "expires": "2027-04-30",
-      "removal": "Add knip (or equivalent) as a build-gate stage; then remove.",
-      "enforcement": "manual review until then"
-    },
-    {
       "id": "EXC-0002",
       "section": "C-26",
       "policyVersion": "1.0.1.1",
@@ -49,6 +37,14 @@
       "expires": "2027-01-31",
       "removal": "Move the pin to the newer image once Playwright supports it; the pin itself stays.",
       "enforcement": "review at expiry"
+    }
+  ],
+  "closed": [
+    {
+      "id": "EXC-0001",
+      "section": "C-20",
+      "closedOn": "2026-10-30",
+      "closedBy": "knip added to the build gate (lint:dead); five unused exports removed"
     }
   ]
 }
