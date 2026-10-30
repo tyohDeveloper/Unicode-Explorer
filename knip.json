@@ -23,5 +23,8 @@
     "unresolved": "warn",
     "duplicates": "warn",
     "enumMembers": "off"
-  }
+  },
+  "ignoreDependencies": [
+    "@secretlint/secretlint-rule-preset-recommend"
+  ]
 }
