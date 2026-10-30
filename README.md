@@ -108,7 +108,7 @@ font is under the SIL Open Font License or CC0, and the application code is MIT.
 
 - [`AGENTS.md`](AGENTS.md): the rules most likely to be broken by accident.
 - [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): binding architecture for this repo.
-- [`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md): coding and architecture standards v2.2.
+- [`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md): adopted engineering-standards release 1.0.1.1 (profile, role mapping, enforcement); [`STANDARDS-ADOPTION.json`](STANDARDS-ADOPTION.json) is the adoption record.
 - [`docs/PLAN.md`](docs/PLAN.md): decisions, editions, phases. [`docs/adr/`](docs/adr/): decision records.
 - [`docs/audit/checkpoint-1/`](docs/audit/checkpoint-1/): the audit this plan answers.
 - [`docs/tasks/`](docs/tasks/): historical task records from the Replit build-out.
