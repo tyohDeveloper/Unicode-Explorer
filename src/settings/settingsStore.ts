@@ -8,7 +8,7 @@ import { initialSettings } from "../state/settings.js";
 import type { SettingsAction } from "../state/settingsActions.js";
 import { settingsReducer } from "../state/settingsReducer.js";
 
-export type Listener = (next: Settings, previous: Settings) => void;
+type Listener = (next: Settings, previous: Settings) => void;
 
 export interface SettingsStore {
   get(): Settings;

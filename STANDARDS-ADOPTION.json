@@ -82,8 +82,8 @@
     },
     {
       "requirement": "C-20 dead code",
-      "command": null,
-      "enforcement": "manual-review"
+      "command": "npm run lint:dead",
+      "enforcement": "automated"
     },
     {
       "requirement": "C-21 size budget (gzip baseline x1.05)",

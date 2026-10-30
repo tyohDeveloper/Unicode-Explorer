@@ -1,0 +1,27 @@
+{
+  "$schema": "https://unpkg.com/knip@latest/schema.json",
+  "entry": [
+    "index.html",
+    "scripts/*.mjs",
+    "tools/**/*.ts",
+    "tests/**/*.test.ts",
+    "tests/e2e/**/*.ts"
+  ],
+  "project": [
+    "src/**/*.ts",
+    "scripts/**/*.mjs",
+    "tools/**/*.ts",
+    "tests/**/*.ts"
+  ],
+  "rules": {
+    "files": "error",
+    "exports": "error",
+    "types": "error",
+    "dependencies": "error",
+    "unlisted": "warn",
+    "binaries": "off",
+    "unresolved": "warn",
+    "duplicates": "warn",
+    "enumMembers": "off"
+  }
+}

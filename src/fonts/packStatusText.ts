@@ -1,4 +1,4 @@
-export type PackState = "idle" | "loading" | "loaded" | "failed";
+type PackState = "idle" | "loading" | "loaded" | "failed";
 export interface PackStatus { id: string; label: string; state: PackState; bytes: number }
 
 const mb = (bytes: number) => `${(bytes / 1048576).toFixed(bytes >= 10485760 ? 0 : 1)} MB`;

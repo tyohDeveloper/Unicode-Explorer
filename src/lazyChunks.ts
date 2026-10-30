@@ -9,7 +9,7 @@ import type { CodePointItem } from "./selection/collectCodePoints.js";
 import { chunkItems } from "./selection/chunkItems.js";
 import { estimateChunkHeight, type CellMetrics } from "./selection/estimateChunkHeight.js";
 
-export const CHUNK_SIZE = 512;
+const CHUNK_SIZE = 512;
 
 export interface ChunkLayout {
   lazy: LazyMaterializer;
