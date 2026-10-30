@@ -3,18 +3,6 @@
   "note": "Repository-wide exceptions per core rule C-27. Each expires; scripts/check-standards.mjs fails on an expired entry until it is renewed or removed. EX-001..EX-005 (pre-standards concatenated JS) were retired by the Phase 3 module migration on 2026-10-08; see docs/PLAN.md.",
   "exceptions": [
     {
-      "id": "EXC-0002",
-      "section": "C-26",
-      "policyVersion": "1.0.1.1",
-      "scope": "License inventory is hand-maintained (THIRD_PARTY_LICENSES.md, fonts/manifest.json)",
-      "rationale": "Shipped third-party material is fonts with per-font provenance and license in fonts/manifest.json (OFL or CC0 only, enforced by the font pipeline); no runtime npm dependencies exist. No generated inventory check runs in CI.",
-      "owner": "@tyohDeveloper",
-      "approved": "2026-10-30",
-      "expires": "2027-04-30",
-      "removal": "Generate THIRD_PARTY_LICENSES.md from fonts/manifest.json and the shippable dependency tree and fail CI when stale; then remove.",
-      "enforcement": "manual review at release"
-    },
-    {
       "id": "EXC-0004",
       "section": "C-19 CI parity",
       "policyVersion": "1.0.1.1",
@@ -39,6 +27,12 @@
       "section": "C-31",
       "closedOn": "2026-10-30",
       "closedBy": "secretlint (preset-recommend) added to the build gate (lint:secrets)"
+    },
+    {
+      "id": "EXC-0002",
+      "section": "C-26",
+      "closedOn": "2026-10-30",
+      "closedBy": "scripts/verify-licenses.mjs in the build gate: no runtime dependencies, manifest licenses allowed, license files present, inventory names every family"
     }
   ]
 }

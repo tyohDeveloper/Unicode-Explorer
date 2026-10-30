@@ -97,13 +97,13 @@
     },
     {
       "requirement": "C-24 dependency policy (no runtime dependencies)",
-      "command": null,
-      "enforcement": "manual-review"
+      "command": "npm run verify:licenses",
+      "enforcement": "automated"
     },
     {
       "requirement": "C-26 license inventory (fonts and shipped code)",
-      "command": null,
-      "enforcement": "manual-review"
+      "command": "npm run verify:licenses",
+      "enforcement": "automated"
     },
     {
       "requirement": "C-27 exceptions recorded with owner and expiry",
