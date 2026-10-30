@@ -1,0 +1,129 @@
+{
+  "schemaVersion": 2,
+  "status": "adopted",
+  "applicationRepository": "tyohDeveloper/Unicode-Explorer",
+  "policyVersion": "1.0.1.1",
+  "sourceRepository": "https://github.com/tyohDeveloper/engineering-standards",
+  "sourceTag": "standards-1.0.1.1",
+  "sourceCommit": "9f00458c2f11e8e057dc987b926b4cf1ec4db43e",
+  "approvedBy": "David Hoyt",
+  "adoptedOn": "2026-10-30",
+  "roleMappingDocument": "docs/CODING-STANDARDS.md",
+  "standardsDocument": "docs/CODING-STANDARDS.md",
+  "exceptionsDocument": ".architecture-exceptions.json",
+  "profile": {
+    "state": "none",
+    "packaging": "single-file",
+    "store": "none",
+    "identity": "none",
+    "network": "none",
+    "compute": "interactive",
+    "localization": {
+      "scope": [],
+      "mode": "dynamic"
+    },
+    "ports": []
+  },
+  "bindings": [
+    {
+      "language": "typescript",
+      "class": "application"
+    },
+    {
+      "language": "python",
+      "class": "tooling"
+    }
+  ],
+  "checks": [
+    {
+      "requirement": "C-19 build gating",
+      "command": "npm run build",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-1, C-2 role mapping; every source file matches a role",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-3 no ambient effects in PURE or STATE",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-6, TS-7 one export per PURE file, no barrels, no shape names",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-11 function length (20 lines)",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-12 role file limits (PURE-CORE 100, PURE/STATE/CONTROLLER 150, VIEW 250)",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-14, C-15 data external; generated tables match vendored, hash-verified sources",
+      "command": "npm run verify:regenerated",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-16a zero-indexing, code-point keyed text",
+      "command": null,
+      "enforcement": "manual-review"
+    },
+    {
+      "requirement": "C-18 stable test identifiers",
+      "command": "npm run verify:build",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-20 dead code",
+      "command": null,
+      "enforcement": "manual-review"
+    },
+    {
+      "requirement": "C-21 size budget (gzip baseline x1.05)",
+      "command": "npm run verify:build",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-22, C-23 tests through public interfaces; determinism",
+      "command": "npm run test:run && npm run test:e2e",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-24 dependency policy (no runtime dependencies)",
+      "command": null,
+      "enforcement": "manual-review"
+    },
+    {
+      "requirement": "C-26 license inventory (fonts and shipped code)",
+      "command": null,
+      "enforcement": "manual-review"
+    },
+    {
+      "requirement": "C-27 exceptions recorded with owner and expiry",
+      "command": "npm run check:standards",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "C-31 no secrets",
+      "command": null,
+      "enforcement": "manual-review"
+    },
+    {
+      "requirement": "Artifact contract (single-file, no network, no storage, polyglot markup, CSP)",
+      "command": "npm run build:bundle && npm run verify:build",
+      "enforcement": "automated"
+    },
+    {
+      "requirement": "Profile \u00a73.5 network = none",
+      "command": "npm run verify:build",
+      "enforcement": "automated"
+    }
+  ]
+}
