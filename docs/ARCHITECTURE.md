@@ -5,7 +5,7 @@ These are the standalone-HTML5 deployment-target standards as they apply here; t
 implementations of the same pattern are
 [history-and-prehistory](https://github.com/tyohDeveloper/history-and-prehistory) and
 [OmniUnitConverter-Calculator](https://github.com/tyohDeveloper/OmniUnitConverter-Calculator).
-The binding rule text is [`CODING-STANDARDS.md`](CODING-STANDARDS.md); this file says how it
+The binding rule text is engineering-standards 1.0.1.1, adopted through [`CODING-STANDARDS.md`](CODING-STANDARDS.md); this file says how it
 lands in this repository. The plan of record is [`PLAN.md`](PLAN.md).
 
 ## 1. Deployment target
@@ -59,7 +59,7 @@ values that differ from the defaults are written.
 
 ## 4. Layers
 
-The §0 table in `CODING-STANDARDS.md` is the normative mapping and `check-standards` enforces it.
+The role mapping table in `CODING-STANDARDS.md` is the normative mapping and `check-standards` enforces it.
 In outline:
 
 ```

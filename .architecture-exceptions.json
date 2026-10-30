@@ -1,5 +1,54 @@
 {
-  "standards": "docs/CODING-STANDARDS.md v2.2",
-  "note": "Repository-wide exceptions per §11. Each expires; scripts/check-standards.mjs fails on an expired entry until it is renewed or removed. EX-001..EX-005 (pre-standards concatenated JS) were retired by the Phase 3 module migration on 2026-10-08; see docs/PLAN.md.",
-  "exceptions": []
+  "standards": "engineering-standards 1.0.1.1 (tag standards-1.0.1.1); see STANDARDS-ADOPTION.json",
+  "note": "Repository-wide exceptions per core rule C-27. Each expires; scripts/check-standards.mjs fails on an expired entry until it is renewed or removed. EX-001..EX-005 (pre-standards concatenated JS) were retired by the Phase 3 module migration on 2026-10-08; see docs/PLAN.md.",
+  "exceptions": [
+    {
+      "id": "EXC-0001",
+      "section": "C-20",
+      "policyVersion": "1.0.1.1",
+      "scope": "Dead-code detection (unused files, exports, dependencies)",
+      "rationale": "No automated dead-code tool runs; check:standards covers purity, limits and exports but not reachability.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-30",
+      "expires": "2027-04-30",
+      "removal": "Add knip (or equivalent) as a build-gate stage; then remove.",
+      "enforcement": "manual review until then"
+    },
+    {
+      "id": "EXC-0002",
+      "section": "C-26",
+      "policyVersion": "1.0.1.1",
+      "scope": "License inventory is hand-maintained (THIRD_PARTY_LICENSES.md, fonts/manifest.json)",
+      "rationale": "Shipped third-party material is fonts with per-font provenance and license in fonts/manifest.json (OFL or CC0 only, enforced by the font pipeline); no runtime npm dependencies exist. No generated inventory check runs in CI.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-30",
+      "expires": "2027-04-30",
+      "removal": "Generate THIRD_PARTY_LICENSES.md from fonts/manifest.json and the shippable dependency tree and fail CI when stale; then remove.",
+      "enforcement": "manual review at release"
+    },
+    {
+      "id": "EXC-0003",
+      "section": "C-31",
+      "policyVersion": "1.0.1.1",
+      "scope": "Repository-wide secret scanning",
+      "rationale": "verify:build checks the artifact for external references; no scanner covers the repository tree.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-30",
+      "expires": "2027-04-30",
+      "removal": "Add secretlint (or equivalent) to the build gate; then remove.",
+      "enforcement": "manual review until then"
+    },
+    {
+      "id": "EXC-0004",
+      "section": "C-19 CI parity",
+      "policyVersion": "1.0.1.1",
+      "scope": "GitHub Actions runners pinned to ubuntu-24.04",
+      "rationale": "Playwright 1.5x cannot install chromium on Ubuntu 26.04; the hub requires versioned runner images with a review note. Review when Playwright supports the latest runner image.",
+      "owner": "@tyohDeveloper",
+      "approved": "2026-10-30",
+      "expires": "2027-01-31",
+      "removal": "Move the pin to the newer image once Playwright supports it; the pin itself stays.",
+      "enforcement": "review at expiry"
+    }
+  ]
 }

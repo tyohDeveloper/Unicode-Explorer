@@ -28,6 +28,6 @@ This repository is not deployed on Replit at present (`docs/PLAN.md` D-7). If it
 
 ## Standards
 
-All code follows [`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md) (v2.2). §0 maps layer
-roles to this repository's paths. The canonical source is the `programming` project knowledge
-wiki page `concepts/coding-architecture-standards`; the in-repo file is a derived copy.
+Policy: engineering-standards release 1.0.1.1; see [`docs/CODING-STANDARDS.md`](docs/CODING-STANDARDS.md)
+(adopted release, profile, role mapping, enforcement) and [`STANDARDS-ADOPTION.json`](STANDARDS-ADOPTION.json).
+Rule text is retrieved from the hub at tag `standards-1.0.1.1`; proposals go to the hub.
