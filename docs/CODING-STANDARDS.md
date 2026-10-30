@@ -62,7 +62,7 @@ Text representation (application convention kept from the predecessor §0): a ch
 
 ## Enforcement matrix
 
-Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build` (check, check:standards, lint:dead, lint:secrets, test:run, bundle, verify), `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
+Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build` (check, check:standards, lint:dead, lint:secrets, verify:licenses, test:run, bundle, verify), `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
 
 | Core rule | Mechanism | Command | Enforcement |
 |---|---|---|---|
@@ -78,8 +78,8 @@ Commands are the repository's actual scripts. "Automated" runs in CI through `np
 | C-20 dead code | knip (unused files, exports, types, dependencies) | `npm run lint:dead` | automated |
 | C-21 size budget | `scripts/build-baseline.json` gzip × 1.05 | `npm run verify:build` | automated |
 | C-22, C-23 tests, determinism | Vitest, Playwright over `file://` | `npm run test:run`, `npm run test:e2e` | automated |
-| C-24 dependency policy | no runtime dependencies; build tools reviewed | | manual-review |
-| C-26 license inventory | `THIRD_PARTY_LICENSES.md`, `fonts/manifest.json` (OFL/CC0 only) | | manual-review (EXC-0002) |
+| C-24 dependency policy | `verify-licenses.mjs` fails on any runtime dependency; build tools reviewed | `npm run verify:licenses` | automated |
+| C-26 license inventory | `verify-licenses.mjs`: manifest licenses within policy, license files present, every family named in `THIRD_PARTY_LICENSES.md`, Noto count matches | `npm run verify:licenses` | automated |
 | C-27 exceptions | `.architecture-exceptions.json`, expiry checked | `npm run check:standards` | automated |
 | C-31 no secrets | secretlint preset-recommend over the tree (binaries, generated data and lockfile ignored) | `npm run lint:secrets` | automated |
 | Artifact contract, profile §3.5 network = none, §2.1 no storage | `verify-build.mjs`: no fetch/CDN/storage APIs, CSP, polyglot XHTML, CDATA wrapping, no comments | `npm run build:bundle && npm run verify:build` | automated |
@@ -95,4 +95,4 @@ Application-level conventions that are not hub rules and stay here:
 
 ## Exceptions
 
-Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0004 runner pin; EXC-0001 and EXC-0003 closed 2026-10-30). An expired entry fails `npm run check:standards`.
+Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0004 runner pin; EXC-0001, EXC-0002 and EXC-0003 closed 2026-10-30). An expired entry fails `npm run check:standards`.
