@@ -112,8 +112,8 @@
     },
     {
       "requirement": "C-31 no secrets",
-      "command": null,
-      "enforcement": "manual-review"
+      "command": "npm run lint:secrets",
+      "enforcement": "automated"
     },
     {
       "requirement": "Artifact contract (single-file, no network, no storage, polyglot markup, CSP)",

@@ -62,7 +62,7 @@ Text representation (application convention kept from the predecessor §0): a ch
 
 ## Enforcement matrix
 
-Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build` (check, check:standards, lint:dead, test:run, bundle, verify), `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
+Commands are the repository's actual scripts. "Automated" runs in CI through `npm run build` (check, check:standards, lint:dead, lint:secrets, test:run, bundle, verify), `npm run verify:regenerated` and the e2e job; "manual-review" is checked in architecture and compliance reviews until the listed exception closes.
 
 | Core rule | Mechanism | Command | Enforcement |
 |---|---|---|---|
@@ -81,7 +81,7 @@ Commands are the repository's actual scripts. "Automated" runs in CI through `np
 | C-24 dependency policy | no runtime dependencies; build tools reviewed | | manual-review |
 | C-26 license inventory | `THIRD_PARTY_LICENSES.md`, `fonts/manifest.json` (OFL/CC0 only) | | manual-review (EXC-0002) |
 | C-27 exceptions | `.architecture-exceptions.json`, expiry checked | `npm run check:standards` | automated |
-| C-31 no secrets | none | | manual-review (EXC-0003) |
+| C-31 no secrets | secretlint preset-recommend over the tree (binaries, generated data and lockfile ignored) | `npm run lint:secrets` | automated |
 | Artifact contract, profile §3.5 network = none, §2.1 no storage | `verify-build.mjs`: no fetch/CDN/storage APIs, CSP, polyglot XHTML, CDATA wrapping, no comments | `npm run build:bundle && npm run verify:build` | automated |
 | C-19 runner pinning | `ubuntu-24.04` in both workflows | | automated (EXC-0004 review date) |
 
@@ -95,4 +95,4 @@ Application-level conventions that are not hub rules and stay here:
 
 ## Exceptions
 
-Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0003 C-31, EXC-0004 runner pin; EXC-0001 closed 2026-10-30). An expired entry fails `npm run check:standards`.
+Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0004 runner pin; EXC-0001 and EXC-0003 closed 2026-10-30). An expired entry fails `npm run check:standards`.
