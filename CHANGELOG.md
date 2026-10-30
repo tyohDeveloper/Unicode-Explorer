@@ -11,13 +11,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [2.3.3.3] — 2026-10-30
 
-No change to the app's behaviour. Build-gate hardening under the adopted engineering standards
-and a hosted copy for bookmarking.
+No change to the app's behaviour. Build-gate hardening under the adopted engineering standards.
+Published to the owner's hosted test site.
 
 ### Added
 
-- GitHub Pages deployment on each app tag: `Unicode.html` served as the site root with the
-  sidecar font packs under `unicode-fonts/`, so the Complete editions load on demand when hosted.
 - Build-gate stages: `lint:dead` (knip), `lint:secrets` (secretlint), `verify:licenses`
   (font manifest and inventory check). See `docs/CODING-STANDARDS.md`.
 

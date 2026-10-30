@@ -13,7 +13,7 @@ network requests.
 
 ## Use it
 
-- Hosted (bookmark this): <https://tyohdeveloper.github.io/Unicode-Explorer/> — the current app release with the Complete font packs loading on demand.
+- Hosted: the owner runs a private hosted copy of each app release (Complete font packs load on demand); a public host is planned.
 - Offline: download `Unicode.html` from the latest [release](https://github.com/tyohDeveloper/Unicode-Explorer/releases) and open it from disk; the Complete editions are zips on the same release.
 
 ## Use
