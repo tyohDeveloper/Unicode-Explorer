@@ -58,7 +58,7 @@ Text representation (application convention kept from the predecessor §0): a ch
 | §9 libraries | C-24 |
 | §10 license | C-26 |
 | §17 standalone target | profiles §2.1, §3.1; artifact contract |
-| New in 1.0.x without a v2.2 counterpart | C-31 (EXC-0003), CI runner pinning under C-19 (done, EXC-0004 records the review date) |
+| New in 1.0.x without a v2.2 counterpart | C-31 (closed EXC-0003), CI runner pinning under C-19 (done, EXC-0004 records the review date) |
 
 ## Enforcement matrix
 
@@ -95,4 +95,4 @@ Application-level conventions that are not hub rules and stay here:
 
 ## Exceptions
 
-Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0002 C-26, EXC-0004 runner pin; EXC-0001, EXC-0002 and EXC-0003 closed 2026-10-30). An expired entry fails `npm run check:standards`.
+Open entries with owner and review date: [`.architecture-exceptions.json`](../.architecture-exceptions.json) (EXC-0004 runner pin; EXC-0001, EXC-0002 and EXC-0003 closed 2026-10-30). An expired entry fails `npm run check:standards`.

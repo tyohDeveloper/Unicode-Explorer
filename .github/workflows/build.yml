@@ -1,5 +1,5 @@
 # Build gate (CODING-STANDARDS §7.3, ARCHITECTURE §7). `npm run build` is the
-# composed chain — check → standards → unit tests → bundle → verify — and fails
+# composed chain — check → standards → dead code → secrets → licenses → unit tests → bundle → verify — and fails
 # on the first stage error. The regeneration check then proves the committed
 # Unicode.html is what the committed sources produce (PLAN.md D-9). Playwright
 # runs as a separate job against the built artifact over file://.
@@ -28,7 +28,7 @@ jobs:
       - run: npm ci
       - name: Verify the install actually completed
         run: node -e "require.resolve('vitest/package.json'); console.log('devDependencies present')"
-      - name: Composed build (check + standards + unit tests + bundle + verify)
+      - name: Composed build (check + standards + lint:dead + lint:secrets + verify:licenses + unit tests + bundle + verify)
         run: npm run build
       - name: Committed artifact matches its sources
         run: npm run verify:regenerated
