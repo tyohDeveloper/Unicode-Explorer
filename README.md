@@ -11,6 +11,11 @@ network requests.
 > historic scripts and CJK extensions. No free font yet covers more than a sliver of the new Seal
 > and Jurchen scripts, so they show Last Resort placeholders ([`docs/PLAN.md`](docs/PLAN.md) Phase 6).
 
+## Use it
+
+- Hosted: the owner runs a private hosted copy of each app release (Complete font packs load on demand); a public host is planned.
+- Offline: download `Unicode.html` from the latest [release](https://github.com/tyohDeveloper/Unicode-Explorer/releases) and open it from disk; the Complete editions are zips on the same release.
+
 ## Use
 
 Open `Unicode.html` in a browser. Select blocks in the sidebar; switch between Grid, Grid+CP,
