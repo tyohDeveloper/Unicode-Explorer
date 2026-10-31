@@ -5,7 +5,9 @@
 # which is also the rollback path.
 #
 # Triggers: called by release.yml after an app tag, or run by hand from
-# Actions -> deploy -> Run workflow (blank tag = latest release).
+# Actions -> deploy -> Run workflow (blank tag = latest release). Every run waits
+# for approval on the production environment, which only main and *-app tags
+# may use (repository settings; docs/DEPLOY.md "Approval").
 name: deploy
 
 on:
