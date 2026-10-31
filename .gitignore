@@ -29,3 +29,7 @@ Thumbs.db
 
 # sidecar font packs are release assets built by tools/fonts/buildPacks.ts, never committed (ADR-0001)
 unicode-fonts/
+
+# hosted-site staging and Wrangler state (docs/DEPLOY.md)
+/site/
+.wrangler/
