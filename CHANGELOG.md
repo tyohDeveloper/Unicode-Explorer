@@ -9,6 +9,9 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+- Release workflow publishes the hosted copy to Cloudflare Workers static assets after each app
+  tag, once the repository is configured (`docs/DEPLOY.md`). No change to the app.
+
 ## [2.3.3.3] — 2026-10-30
 
 No change to the app's behaviour. Build-gate hardening under the adopted engineering standards.
