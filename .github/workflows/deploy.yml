@@ -1,0 +1,82 @@
+# Hosted copy on Cloudflare Workers static assets (wrangler.jsonc, docs/DEPLOY.md).
+# The site is rebuilt from a published GitHub release, not from a build in this
+# run: Unicode.html as index plus the complete-hieroglyphs zip's unicode-fonts/
+# (packs, catalogue, LICENSES). Any past release can therefore be deployed,
+# which is also the rollback path.
+#
+# Triggers: called by release.yml after an app tag, or run by hand from
+# Actions -> deploy -> Run workflow (blank tag = latest release). Every run waits
+# for approval on the production environment, which only main and *-app tags
+# may use (repository settings; docs/DEPLOY.md "Approval").
+name: deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Release tag to deploy, e.g. 2.3.3.3-app (blank = latest release)"
+        required: false
+        default: ""
+  workflow_call:
+    inputs:
+      tag:
+        type: string
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-production
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04 # pinned per engineering-standards C-19 (EXC-0004)
+    environment:
+      name: production
+      url: ${{ steps.wrangler.outputs.deployment-url }}
+    steps:
+      - name: Cloudflare is configured
+        env:
+          ACCOUNT_ID: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          HAS_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+        run: |
+          [ -n "$ACCOUNT_ID" ] || { echo "::error::Repository variable CLOUDFLARE_ACCOUNT_ID is not set (docs/DEPLOY.md)"; exit 1; }
+          [ "$HAS_TOKEN" = true ] || { echo "::error::Repository secret CLOUDFLARE_API_TOKEN is not set (docs/DEPLOY.md)"; exit 1; }
+      - name: Resolve the release tag
+        id: tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          [ -n "$TAG" ] || TAG=$(gh release view -R "$GITHUB_REPOSITORY" --json tagName --jq .tagName)
+          [[ "$TAG" =~ ^[0-9]+(\.[0-9]+){3}-app$ ]] || { echo "::error::'$TAG' is not an app release tag (N.N.N.N-app)"; exit 1; }
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+      - uses: actions/checkout@v4
+        with:
+          sparse-checkout: wrangler.jsonc
+          sparse-checkout-cone-mode: false
+      - name: Stage the hosted site from the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          gh release download "$TAG" -R "$GITHUB_REPOSITORY" -p 'unicode-explorer-complete-hieroglyphs-*.zip' -D dl
+          mkdir site
+          unzip -q dl/*.zip -d site
+          test -f site/Unicode.html
+          test -f site/unicode-fonts/manifest.js
+          test -d site/unicode-fonts/LICENSES
+          cp site/Unicode.html site/index.html
+          echo "Staged $TAG: $(find site -type f | wc -l) files, $(du -sh site | cut -f1)"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22" # Wrangler 4 requires Node 22+
+      - id: wrangler
+        uses: cloudflare/wrangler-action@v4
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.156.0"
+          command: deploy --message "${{ steps.tag.outputs.tag }}"

@@ -2,7 +2,8 @@
 # pack fonts from their pinned upstream sources (the one network step of the
 # toolchain; hashes in fonts/manifest.json must match), builds the sidecar packs
 # and edition zips, and attaches them with Unicode.html to the GitHub release
-# for the tag. Standard needs nothing but Unicode.html.
+# for the tag. Standard needs nothing but Unicode.html. When Cloudflare is
+# configured (docs/DEPLOY.md) deploy.yml then publishes the hosted copy.
 name: release
 
 on:
@@ -47,3 +48,15 @@ jobs:
         run: |
           notes=$(node -e "const s=require('fs').readFileSync('CHANGELOG.md','utf8');const v=process.env.GITHUB_REF_NAME.replace(/-app$/,'');const m=s.split(/^## /m).find(x=>x.startsWith('['+v+']'));process.stdout.write(m?('## '+m):'See CHANGELOG.md')")
           gh release create "$GITHUB_REF_NAME" Unicode.html dist/release/*.zip --title "Unicode Explorer app $GITHUB_REF_NAME" --notes "$notes"
+
+  deploy:
+    # Publishes the release just created to Cloudflare (deploy.yml). Skipped
+    # until the repository variable CLOUDFLARE_ACCOUNT_ID is set.
+    needs: assets
+    if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
+    permissions:
+      contents: read
+    uses: ./.github/workflows/deploy.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets: inherit

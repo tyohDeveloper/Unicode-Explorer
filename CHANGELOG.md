@@ -9,6 +9,11 @@ Format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/). Version
 
 ## [Unreleased]
 
+- Hosted copy publishes to Cloudflare Workers static assets after each app tag, once the
+  repository is configured (`docs/DEPLOY.md`). The site is rebuilt from the release's
+  complete-hieroglyphs zip, so it carries the font licenses, and any past release can be deployed
+  by hand from Actions → deploy. Each deploy waits for the owner's approval. No change to the app.
+
 ## [2.3.3.3] — 2026-10-30
 
 No change to the app's behaviour. Build-gate hardening under the adopted engineering standards.

@@ -1,0 +1,12 @@
+// Cloudflare Workers static-assets site for the hosted copy.
+// Deployed only by the `deploy` job in .github/workflows/release.yml; never by hand.
+// The job stages ./site from the release build: index.html, Unicode.html, unicode-fonts/.
+// See docs/DEPLOY.md.
+{
+  "name": "unicode-explorer",
+  "compatibility_date": "2026-10-30",
+  "assets": { "directory": "./site" },
+  "workers_dev": true
+  // Once tyoh.app DNS is on Cloudflare, attach the subdomain:
+  // ,"routes": [{ "pattern": "unicode.tyoh.app", "custom_domain": true }]
+}
