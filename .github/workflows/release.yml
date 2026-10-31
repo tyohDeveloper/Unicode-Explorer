@@ -3,7 +3,7 @@
 # toolchain; hashes in fonts/manifest.json must match), builds the sidecar packs
 # and edition zips, and attaches them with Unicode.html to the GitHub release
 # for the tag. Standard needs nothing but Unicode.html. When Cloudflare is
-# configured (docs/DEPLOY.md) the deploy job then publishes the hosted copy.
+# configured (docs/DEPLOY.md) deploy.yml then publishes the hosted copy.
 name: release
 
 on:
@@ -42,17 +42,6 @@ jobs:
         run: git diff --exit-code -- fonts/manifest.json
       - name: Shipped fonts shape like their full sources (Phase 10 R-1)
         run: npm run verify:shaping
-      - name: Stage the hosted site (Unicode.html as index plus sidecar packs)
-        run: |
-          mkdir -p site
-          cp Unicode.html site/index.html
-          cp Unicode.html site/Unicode.html
-          cp -r unicode-fonts site/unicode-fonts
-      - uses: actions/upload-artifact@v4
-        with:
-          name: hosted-site
-          path: site
-          retention-days: 7
       - name: Create the GitHub release with assets
         env:
           GH_TOKEN: ${{ github.token }}
@@ -61,37 +50,13 @@ jobs:
           gh release create "$GITHUB_REF_NAME" Unicode.html dist/release/*.zip --title "Unicode Explorer app $GITHUB_REF_NAME" --notes "$notes"
 
   deploy:
-    # Hosted copy on Cloudflare Workers static assets (wrangler.jsonc). Inert
-    # until the repository variable CLOUDFLARE_ACCOUNT_ID is set; the API token
-    # lives only in the CLOUDFLARE_API_TOKEN secret. Re-running this job alone
-    # redeploys the same release without rebuilding it.
+    # Publishes the release just created to Cloudflare (deploy.yml). Skipped
+    # until the repository variable CLOUDFLARE_ACCOUNT_ID is set.
     needs: assets
     if: ${{ vars.CLOUDFLARE_ACCOUNT_ID != '' }}
-    runs-on: ubuntu-24.04 # pinned per engineering-standards C-19 (EXC-0004)
     permissions:
       contents: read
-    concurrency:
-      group: deploy-production
-      cancel-in-progress: false
-    environment:
-      name: production
-      url: ${{ steps.wrangler.outputs.deployment-url }}
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: wrangler.jsonc
-          sparse-checkout-cone-mode: false
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "22" # Wrangler 4 requires Node 22+
-      - uses: actions/download-artifact@v4
-        with:
-          name: hosted-site
-          path: site
-      - id: wrangler
-        uses: cloudflare/wrangler-action@v4
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
-          wranglerVersion: "4.156.0"
-          command: deploy --message "${{ github.ref_name }}"
+    uses: ./.github/workflows/deploy.yml
+    with:
+      tag: ${{ github.ref_name }}
+    secrets: inherit
