@@ -32,4 +32,5 @@ unicode-fonts/
 
 # hosted-site staging and Wrangler state (docs/DEPLOY.md)
 /site/
+/dl/
 .wrangler/
